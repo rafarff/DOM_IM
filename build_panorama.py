@@ -91,7 +91,7 @@ COORDS_BAIRRO = {
 
 # ─── Paleta DOM (cores por incorporadora no mapa) ────────────────────────────
 INC_COLORS = {
-    "Mota Machado":   "#C9A84C",
+    "Mota Machado":   "#B87333",  # bronze
     "Treviso":        "#8B2E2E",
     "Delman":         "#1B4584",
     "Canopus":        "#5D6E3C",
@@ -105,6 +105,8 @@ INC_COLORS = {
     "Lua Nova":       "#BA5A31",
     "Franere":        "#4D4D4D",
     "MB Engenharia":  "#8C8C8C",
+    "DOM Incorporação":"#C9A84C",  # DOURADO DOM (marca da casa — destaque)
+    "Hiali":          "#8C3B4A",  # vinho/bordô
 }
 
 
