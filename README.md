@@ -2,7 +2,7 @@
 
 Dashboard interativo com o panorama de empreendimentos residenciais em comercialização na Grande São Luís (MA), mantido pela DOM Incorporação para acompanhamento competitivo.
 
-**🌐 Acesso:** https://USUARIO.github.io/REPO/ *(ajustar após publicação no GitHub Pages)*
+**🌐 Acesso:** https://rafarff.github.io/DOM_IM/
 
 ---
 
@@ -22,17 +22,19 @@ Por decisão explícita, **não versionamos** neste repo:
 
 Esses arquivos ficam na máquina do Rafael. O GitHub serve só o HTML gerado.
 
-## Fluxo de atualização manual
+## Fluxo de atualização (manual, sob demanda)
 
-```bash
-# 1. Dropar novos arquivos em 01.Inteligência Mercado/ (raiz)
-# 2. Abrir Cowork/Claude, pedir: "organiza os novos arquivos e atualiza o estudo"
-# 3. Quando a planilha estiver atualizada:
-cd "/caminho/para/Inteligência de Mercado - DOM"
-./publish.sh "Atualização semanal DD/MM/AAAA"
+1. **Você dropa** PDFs novos (books, tabelas) dentro de `01.Inteligência Mercado/_INBOX/`
+2. **Chama o Claude** no Cowork: _"organiza o que tem no INBOX e atualiza o estudo"_
+3. **Claude faz**: identifica incorporadora, move PDF para subpasta correta, atualiza a Planilha Mestre, regenera `index.html`
+4. **Você publica** via GitHub Desktop (commit + push) ou pelo terminal:
+   ```bash
+   cd "/caminho/para/01.Inteligência Mercado/00_ESTUDO_CONSOLIDADO"
+   ./publish.sh "Atualização semanal DD/MM/AAAA"
+   ```
+5. Em 1-2 minutos o GitHub Pages está atualizado.
 
-# Em ~1-2 minutos o GitHub Pages está atualizado.
-```
+**Regra do _INBOX**: ao final de cada ciclo, a pasta deve ficar vazia. Se tem arquivo lá, é sinal de pendência.
 
 ## Estrutura de pastas (no computador do Rafael)
 
