@@ -1,0 +1,34 @@
+# ─── DOM · Inteligência de Mercado · .gitignore ─────────────────────────
+# Repositório público: apenas scripts, HTML gerado e documentação.
+# Planilhas mestre e dados sensíveis ficam locais, nunca vão ao GitHub.
+
+# Planilhas mestre (fonte da verdade, fica local)
+Planilha_Mestre_Panorama_*.xlsx
+*.xlsx
+*.xlsm
+*.xls
+
+# PDFs (books, tabelas, materiais de incorporadoras) — defensivo
+*.pdf
+
+# Pasta de relatórios (pode conter material interno)
+Relatorios/
+
+# Artefatos temporários e caches
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+*.log
+.DS_Store
+Thumbs.db
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+
+# Arquivos intermediários
+*.json.bak
+*_temp.*
