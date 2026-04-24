@@ -216,6 +216,10 @@ def parse_lancamento(raw: str, orig_col: str = "") -> tuple[str, str]:
     usado como fonte primária quando disponível.
     """
     if not raw or str(raw).strip() in ("—", "-", ""):
+        # Data vazia — respeita origem informada (ex: 'pendente', 'estimado-fraco')
+        if orig_col and str(orig_col).strip() not in ("", "—", "N/A"):
+            origem = str(orig_col).strip().title()
+            return ("—", origem)
         return ("—", "—")
     s = str(raw).strip()
 
@@ -447,17 +451,15 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
   .chip.st-pre { background: #E8D5A3; color: var(--dom-gold-dark); }
   .chip.st-comerc { background: #C3DAF9; color: #1B4584; }
   .chip.st-ultimas { background: #F7C8C8; color: #8C2525; }
-  .chip.or-memorial   { background: #000000; color: var(--dom-gold); }
-  .chip.or-interno    { background: var(--dom-gold); color: #000; border: 1px solid #8B6914; }
-  .chip.or-t36        { background: #8B6914; color: #FFFFFF; }
-  .chip.or-book       { background: #6A4C93; color: #FFFFFF; }
-  .chip.or-tabela     { background: #2F4858; color: #FFFFFF; }
-  .chip.or-tabelateto { background: #4A6070; color: #FFFFFF; }
-  .chip.or-imprensa   { background: #5D6E3C; color: #FFFFFF; }
-  .chip.or-site       { background: #3E6B93; color: #FFFFFF; }
-  .chip.or-estimado   { background: var(--dom-gray-mid); color: var(--dom-white); font-style: italic; }
-  .chip.or-pendente   { background: #B54B3A; color: #FFFFFF; font-weight: 700; }
-  .chip.or-other      { background: var(--dom-gray-light); color: var(--dom-gray-dark); }
+  /* Origem da data — formatação minimalista com graduação de confiança */
+  .origem { display: inline-block; font-size: 10.5px; padding: 1px 7px 1px 8px; border-radius: 3px; color: var(--dom-gray-dark); border-left: 3px solid var(--dom-gray-mid); background: #FAFAF5; font-variant: small-caps; letter-spacing: 0.3px; }
+  .origem.strong { border-left-color: var(--dom-black); color: var(--dom-black); font-weight: 600; }
+  .origem.medium { border-left-color: var(--dom-gold); color: var(--dom-gold-dark); }
+  .origem.weak   { border-left-color: var(--dom-gray-mid); color: var(--dom-gray-mid); font-style: italic; }
+  .origem.pending{ border-left-color: #B54B3A; color: #B54B3A; font-weight: 600; }
+  .origem-legend { display: flex; flex-wrap: wrap; gap: 10px 18px; padding: 10px 14px; background: #FAFAF5; border-left: 3px solid var(--dom-gold); margin-top: 8px; font-size: 11px; color: var(--dom-gray-dark); }
+  .origem-legend strong { color: var(--dom-black); font-size: 11px; letter-spacing: 0.5px; margin-right: 4px; }
+  .origem-legend .item { display: inline-flex; align-items: center; gap: 6px; }
   .chip.tp-vertical   { background: #3B4371; color: #FFFFFF; }
   .chip.tp-horizontal { background: #5D7A3C; color: #FFFFFF; }
   .chip.tp-other      { background: var(--dom-gray-light); color: var(--dom-gray-dark); }
@@ -541,6 +543,16 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
   <section class="legend" id="legend"></section>
   <section class="nomap-note" id="nomap-note"></section>
   <section id="map"></section>
+  <div class="origem-legend">
+    <strong>Origem da data:</strong>
+    <span class="item"><span class="origem strong">memorial</span> registro em cartório (prova legal)</span>
+    <span class="item"><span class="origem strong">interno</span> confirmado pela incorporadora (DOM)</span>
+    <span class="item"><span class="origem medium">T-36</span> estimativa: entrega menos 36 meses</span>
+    <span class="item"><span class="origem medium">book</span> data do book de vendas</span>
+    <span class="item"><span class="origem weak">imprensa/site</span> menção pública, estimativa fraca</span>
+    <span class="item"><span class="origem weak">estimado-fraco</span> data histórica preservada, sem evidência forte</span>
+    <span class="item"><span class="origem pending">pendente</span> sem evidência — buscar tabela</span>
+  </div>
   <div class="table-intro">
     <strong>📊 Tabela A — Empreendimentos com dados completos</strong> · com área, ticket e R$/m² confirmados (<strong id="cnt-complete">—</strong>)
   </div>
@@ -665,19 +677,12 @@ function statusClass(st) {
   return '';
 }
 function origemClass(o) {
-  if (!o) return 'or-other';
+  if (!o) return 'origem';
   const s = String(o).toLowerCase();
-  if (s === 'memorial') return 'or-memorial';
-  if (s === 'interno') return 'or-interno';
-  if (s === 't-36') return 'or-t36';
-  if (s === 'book') return 'or-book';
-  if (s === 'tabela-teto' || s.includes('tabela-teto')) return 'or-tabelateto';
-  if (s === 'tabela') return 'or-tabela';
-  if (s === 'imprensa') return 'or-imprensa';
-  if (s === 'site' || s.includes('site')) return 'or-site';
-  if (s === 'pendente') return 'or-pendente';
-  if (s.includes('estim')) return 'or-estimado';
-  return 'or-other';
+  if (s === 'memorial' || s === 'interno') return 'origem strong';
+  if (s === 't-36' || s === 'book') return 'origem medium';
+  if (s === 'pendente') return 'origem pending';
+  return 'origem weak'; // imprensa, site, estimado-fraco, outros
 }
 function tipoClass(t) {
   if (!t) return 'tp-other';
@@ -820,7 +825,7 @@ function renderTable(data) {
         <td><span class="chip ${tipoClass(e.tipo)}">${e.tipo}</span></td>
         <td><span class="chip ${segClass(e.segmento)}">${e.segmento}</span></td>
         <td class="price" style="font-weight:600">${e.lancamento}</td>
-        <td><span class="chip ${origemClass(e.lancamento_origem)}">${e.lancamento_origem}</span></td>
+        <td><span class="${origemClass(e.lancamento_origem)}">${e.lancamento_origem}</span></td>
         <td class="price">${area}</td>
         <td class="price">${ticket}</td>
         <td class="price">R$ ${formatBRL(e.rsm2)}</td>
@@ -843,7 +848,7 @@ function renderTable(data) {
         <td><span class="chip ${tipoClass(e.tipo)}">${e.tipo}</span></td>
         <td><span class="chip ${segClass(e.segmento)}">${e.segmento}</span></td>
         <td class="dim">${e.lancamento}</td>
-        <td><span class="chip ${origemClass(e.lancamento_origem)}">${e.lancamento_origem}</span></td>
+        <td><span class="${origemClass(e.lancamento_origem)}">${e.lancamento_origem}</span></td>
         <td><span class="chip or-pendente" title="Precisa buscar tabela">${faltam.join(' · ')}</span></td>
       </tr>
     `;
