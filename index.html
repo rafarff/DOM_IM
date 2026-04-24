@@ -70,13 +70,17 @@
   .chip.st-pre { background: #E8D5A3; color: var(--dom-gold-dark); }
   .chip.st-comerc { background: #C3DAF9; color: #1B4584; }
   .chip.st-ultimas { background: #F7C8C8; color: #8C2525; }
-  .chip.or-tabela   { background: #2F4858; color: #FFFFFF; }
-  .chip.or-book     { background: #6A4C93; color: #FFFFFF; }
-  .chip.or-estimado { background: var(--dom-gray-mid); color: var(--dom-white); font-style: italic; }
-  .chip.or-t36      { background: #B54B3A; color: #FFFFFF; }
-  .chip.or-imprensa { background: #5D6E3C; color: #FFFFFF; }
-  .chip.or-site     { background: #3E6B93; color: #FFFFFF; }
-  .chip.or-other    { background: var(--dom-gray-light); color: var(--dom-gray-dark); }
+  .chip.or-memorial   { background: #000000; color: var(--dom-gold); }
+  .chip.or-interno    { background: var(--dom-gold); color: #000; border: 1px solid #8B6914; }
+  .chip.or-t36        { background: #8B6914; color: #FFFFFF; }
+  .chip.or-book       { background: #6A4C93; color: #FFFFFF; }
+  .chip.or-tabela     { background: #2F4858; color: #FFFFFF; }
+  .chip.or-tabelateto { background: #4A6070; color: #FFFFFF; }
+  .chip.or-imprensa   { background: #5D6E3C; color: #FFFFFF; }
+  .chip.or-site       { background: #3E6B93; color: #FFFFFF; }
+  .chip.or-estimado   { background: var(--dom-gray-mid); color: var(--dom-white); font-style: italic; }
+  .chip.or-pendente   { background: #B54B3A; color: #FFFFFF; font-weight: 700; }
+  .chip.or-other      { background: var(--dom-gray-light); color: var(--dom-gray-dark); }
   .chip.tp-vertical   { background: #3B4371; color: #FFFFFF; }
   .chip.tp-horizontal { background: #5D7A3C; color: #FFFFFF; }
   .chip.tp-other      { background: var(--dom-gray-light); color: var(--dom-gray-dark); }
@@ -171,8 +175,8 @@
         <th data-col="bairro">Bairro</th>
         <th data-col="tipo">Tipo</th>
         <th data-col="segmento">Segmento</th>
-        <th data-col="status">Status</th>
         <th data-col="lancamento_sort">Lançamento</th>
+        <th data-col="lancamento_origem">Origem data</th>
         <th data-col="area_med">Área méd (m²)</th>
         <th data-col="ticket_med">Ticket (R$)</th>
         <th data-col="rsm2">R$/m²</th>
@@ -192,8 +196,8 @@
         <th data-col="bairro">Bairro</th>
         <th data-col="tipo">Tipo</th>
         <th data-col="segmento">Segmento</th>
-        <th data-col="status">Status</th>
         <th data-col="lancamento_sort">Lançamento</th>
+        <th data-col="lancamento_origem">Origem data</th>
         <th data-col="pendencias">O que falta</th>
       </tr></thead>
       <tbody id="tbody-b"></tbody>
@@ -285,13 +289,17 @@ function statusClass(st) {
 }
 function origemClass(o) {
   if (!o) return 'or-other';
-  const s = o.toLowerCase();
-  if (s === 'tabela') return 'or-tabela';
-  if (s === 'book') return 'or-book';
-  if (s === 'estimado' || s.includes('estim')) return 'or-estimado';
+  const s = String(o).toLowerCase();
+  if (s === 'memorial') return 'or-memorial';
+  if (s === 'interno') return 'or-interno';
   if (s === 't-36') return 'or-t36';
+  if (s === 'book') return 'or-book';
+  if (s === 'tabela-teto' || s.includes('tabela-teto')) return 'or-tabelateto';
+  if (s === 'tabela') return 'or-tabela';
   if (s === 'imprensa') return 'or-imprensa';
-  if (s === 'site') return 'or-site';
+  if (s === 'site' || s.includes('site')) return 'or-site';
+  if (s === 'pendente') return 'or-pendente';
+  if (s.includes('estim')) return 'or-estimado';
   return 'or-other';
 }
 function tipoClass(t) {
@@ -434,8 +442,8 @@ function renderTable(data) {
         <td>${e.bairro}</td>
         <td><span class="chip ${tipoClass(e.tipo)}">${e.tipo}</span></td>
         <td><span class="chip ${segClass(e.segmento)}">${e.segmento}</span></td>
-        <td><span class="chip ${statusClass(e.status)}">${e.status}</span></td>
         <td class="price" style="font-weight:600">${e.lancamento}</td>
+        <td><span class="chip ${origemClass(e.lancamento_origem)}">${e.lancamento_origem}</span></td>
         <td class="price">${area}</td>
         <td class="price">${ticket}</td>
         <td class="price">R$ ${formatBRL(e.rsm2)}</td>
@@ -457,9 +465,9 @@ function renderTable(data) {
         <td>${e.bairro}</td>
         <td><span class="chip ${tipoClass(e.tipo)}">${e.tipo}</span></td>
         <td><span class="chip ${segClass(e.segmento)}">${e.segmento}</span></td>
-        <td><span class="chip ${statusClass(e.status)}">${e.status}</span></td>
         <td class="dim">${e.lancamento}</td>
-        <td><span class="chip or-estimado" title="Precisa buscar tabela">${faltam.join(' · ')}</span></td>
+        <td><span class="chip ${origemClass(e.lancamento_origem)}">${e.lancamento_origem}</span></td>
+        <td><span class="chip or-pendente" title="Precisa buscar tabela">${faltam.join(' · ')}</span></td>
       </tr>
     `;
   }).join('');
