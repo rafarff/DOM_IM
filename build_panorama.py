@@ -549,6 +549,7 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
     <span class="item"><span class="origem strong">interno</span> confirmado pela incorporadora (DOM)</span>
     <span class="item"><span class="origem medium">T-36</span> estimativa: entrega menos 36 meses</span>
     <span class="item"><span class="origem medium">book</span> data do book de vendas</span>
+    <span class="item"><span class="origem medium">informado</span> fonte externa confiável, sem arquivo documental</span>
     <span class="item"><span class="origem weak">imprensa/site</span> menção pública, estimativa fraca</span>
     <span class="item"><span class="origem weak">estimado-fraco</span> data histórica preservada, sem evidência forte</span>
     <span class="item"><span class="origem pending">pendente</span> sem evidência — buscar tabela</span>
@@ -680,7 +681,7 @@ function origemClass(o) {
   if (!o) return 'origem';
   const s = String(o).toLowerCase();
   if (s === 'memorial' || s === 'interno') return 'origem strong';
-  if (s === 't-36' || s === 'book') return 'origem medium';
+  if (s === 't-36' || s === 'book' || s === 'informado') return 'origem medium';
   if (s === 'pendente') return 'origem pending';
   return 'origem weak'; // imprensa, site, estimado-fraco, outros
 }
