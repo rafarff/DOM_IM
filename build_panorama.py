@@ -66,31 +66,44 @@ def discover_search_dirs() -> list[Path]:
 
 # ─── Coordenadas aproximadas de bairros de São Luís/MA ───────────────────────
 COORDS_BAIRRO = {
-    # São Luís / MA — coordenadas aproximadas centradas em cada bairro (em terra firme).
-    # Referência: centro histórico ~-2.531, -44.307. Ilha orientada N-S, oceano no Norte
-    # e Baía de São Marcos a Oeste.
-    "Calhau":            (-2.5023, -44.2718),
-    "Renascença":        (-2.5057, -44.2939),
-    "Renascença II":     (-2.5082, -44.2952),
-    "Jardim Renascença": (-2.5081, -44.2808),
-    "Ponta d'Areia":     (-2.4963, -44.3012),
-    "Ponta D'Areia":     (-2.4963, -44.3012),
-    "Ponta do Farol":    (-2.4890, -44.2976),
-    "São Marcos":        (-2.5010, -44.2842),
-    "Cohama":            (-2.5320, -44.2750),
-    "Cohab Anil IV":     (-2.5515, -44.2640),
-    "Anil":              (-2.5450, -44.2620),
-    "Cohab Anil":        (-2.5515, -44.2640),
-    "Jardim Eldorado":   (-2.5580, -44.2470),
-    "Turú":              (-2.5605, -44.2505),
-    "Cantinho do Céu":   (-2.5647, -44.2650),
-    "Araçagi":           (-2.4880, -44.2160),
-    "Araçagy":           (-2.4880, -44.2160),
-    "São Francisco":     (-2.5280, -44.3030),
-    "Maranhão Novo":     (-2.5580, -44.2800),
-    "Santo Amaro":       (-2.5630, -44.2680),
-    "Cohatrac":          (-2.5680, -44.2270),
-    "São Luís":          (-2.5310, -44.3068),  # default centro histórico
+    # São Luís / MA — coordenadas no CENTRO geográfico de cada bairro (em terra firme).
+    # Metodologia: afastado no mínimo ~400m da linha de costa ou rio,
+    # priorizando áreas densamente urbanizadas.
+    "Calhau":            (-2.5030, -44.2740),
+    "Renascença":        (-2.5085, -44.2945),
+    "Renascença II":     (-2.5110, -44.2965),
+    "Jardim Renascença": (-2.5090, -44.2830),
+    "Ponta d'Areia":     (-2.4985, -44.3000),
+    "Ponta D'Areia":     (-2.4985, -44.3000),
+    "Ponta do Farol":    (-2.4925, -44.2960),
+    "São Marcos":        (-2.5030, -44.2855),
+    "Cohama":            (-2.5330, -44.2760),
+    "Cohab Anil IV":     (-2.5535, -44.2655),
+    "Anil":              (-2.5485, -44.2645),
+    "Cohab Anil":        (-2.5535, -44.2655),
+    "Jardim Eldorado":   (-2.5590, -44.2485),
+    "Turú":              (-2.5620, -44.2515),
+    "Cantinho do Céu":   (-2.5650, -44.2660),
+    "Araçagi":           (-2.4920, -44.2200),
+    "Araçagy":           (-2.4920, -44.2200),
+    "São Francisco":     (-2.5285, -44.3000),
+    "Maranhão Novo":     (-2.5585, -44.2810),
+    "Santo Amaro":       (-2.5635, -44.2685),
+    "Cohatrac":          (-2.5685, -44.2280),
+    "Iguaíba":           (-2.5730, -44.3580),
+    "São Luís":          (-2.5310, -44.3068),
+}
+
+# Overrides de endereço-específico quando temos endereço preciso
+COORDS_ENDERECO = {
+    "Dom Lucas":            (-2.5665, -44.2675),
+    "Dom José":             (-2.5594, -44.2492),
+    "Edifício Bossa":       (-2.5002, -44.2788),
+    "Al Mare Tirreno":      (-2.5018, -44.2870),
+    "Le Noir":              (-2.5115, -44.2960),
+    "Entre Rios":           (-2.5090, -44.2940),
+    "Residencial Novo Anil":(-2.5540, -44.2660),
+    "Edifício Sanpaolo":    (-2.5335, -44.2755),
 }
 
 
@@ -316,7 +329,12 @@ def enrich(rows: list[dict], include_all: bool = False) -> list[dict]:
         is_active = should_include(r, include_all)
         bairro_raw = r.get("Bairro")
         bairro = str(bairro_raw).strip() if bairro_raw else ""
-        coord = geocode_bairro(bairro)
+        emp_name = str(r.get("Empreendimento") or "").strip()
+        # Prioriza coordenada por endereço (quando conhecida) sobre bairro
+        if emp_name in COORDS_ENDERECO:
+            coord = COORDS_ENDERECO[emp_name]
+        else:
+            coord = geocode_bairro(bairro)
 
         # Se o bairro não foi identificado, não coloca no mapa (lat/lng = None)
         lat_j: float | None = None
@@ -326,7 +344,7 @@ def enrich(rows: list[dict], include_all: bool = False) -> list[dict]:
             lat, lng = coord
             # Jitter em espiral para não sobrepor markers do mesmo bairro
             idx = bairro_count[bairro]
-            r_off = 0.002 * idx
+            r_off = 0.0008 * idx   # reduzido: 220m → 88m (evita pin fora do bairro)
             theta = idx * 2.4
             lat_j = round(lat + r_off * math.cos(theta), 5)
             lng_j = round(lng + r_off * math.sin(theta), 5)
@@ -401,7 +419,9 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
   body { font-family: 'Calibri', 'Arial', sans-serif; background: var(--dom-gray-light); color: var(--dom-gray-dark); line-height: 1.5; }
   .hero { background: var(--dom-black); color: var(--dom-white); padding: 32px 40px 28px; border-bottom: 4px solid var(--dom-gold); }
   .hero-inner { max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
-  .hero h1 { font-size: 28px; font-weight: 700; letter-spacing: 2px; color: var(--dom-white); }
+  .hero-brand { display: flex; align-items: center; gap: 20px; }
+  .hero-logo { height: 60px; width: auto; }
+  .hero h1 { font-size: 24px; font-weight: 700; letter-spacing: 2px; color: var(--dom-white); }
   .hero h1 .gold { color: var(--dom-gold); }
   .hero .subtitle { font-size: 13px; color: var(--dom-gold); margin-top: 4px; letter-spacing: 1px; text-transform: uppercase; }
   .hero .meta { font-size: 12px; color: var(--dom-gray-mid); text-align: right; }
@@ -506,9 +526,12 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
 <body>
 <header class="hero">
   <div class="hero-inner">
-    <div>
-      <h1>DOM<span class="gold">·</span> INTELIGÊNCIA DE MERCADO</h1>
-      <div class="subtitle">Panorama de Lançamentos — Grande São Luís · __CICLO__</div>
+    <div class="hero-brand">
+      <img class="hero-logo" src="__LOGO_B64__" alt="DOM Incorporação" />
+      <div>
+        <h1>INTELIGÊNCIA DE MERCADO</h1>
+        <div class="subtitle">Panorama de Lançamentos — Grande São Luís · __CICLO__</div>
+      </div>
     </div>
     <div class="meta">
       Atualizado em __DATA_UPDATE__<br>
@@ -1041,13 +1064,21 @@ def build(include_all: bool = False) -> None:
     hoje = datetime.now().strftime("%d/%m/%Y")
     ciclo = "Todos os empreendimentos" if include_all else "2025/2026"
 
+    # Carrega logo DOM como data URI para embutir no HTML
+    logo_path = SCRIPT_DIR / "dom_logo.png"
+    logo_b64 = ""
+    if logo_path.exists():
+        import base64
+        logo_b64 = "data:image/png;base64," + base64.b64encode(logo_path.read_bytes()).decode('ascii')
+
     html = (HTML_TEMPLATE
             .replace("__DATA_PLACEHOLDER__", data_json)
             .replace("__INC_COLORS_PLACEHOLDER__", inc_colors_json)
             .replace("__VERSAO__", version)
             .replace("__DATA_UPDATE__", hoje)
             .replace("__CICLO__", ciclo)
-            .replace("__PLANILHA_NAME__", planilha.name))
+            .replace("__PLANILHA_NAME__", planilha.name)
+            .replace("__LOGO_B64__", logo_b64))
 
     OUTPUT_HTML.write_text(html, encoding="utf-8")
     print(f"\n✅ HTML gerado: {OUTPUT_HTML.name}")
