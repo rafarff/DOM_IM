@@ -559,7 +559,7 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
     <div class="filter-group"><label>Incorporadora</label><select id="f-inc"><option value="">Todas</option></select></div>
     <div class="filter-group"><label>Bairro</label><select id="f-bairro"><option value="">Todos</option></select></div>
     <div class="filter-group"><label>Segmento</label><select id="f-seg"><option value="">Todos</option></select></div>
-    <div class="filter-group"><label>Status</label><select id="f-status"><option value="">Todos</option></select></div>
+    <div class="filter-group"><label>Ano lançamento</label><select id="f-ano"><option value="">Todos</option></select></div>
     <div class="filter-group"><label>Busca</label><input type="text" id="f-search" placeholder="Nome do empreendimento..." /></div>
     <button class="reset-btn" onclick="resetFilters()">Limpar Filtros</button>
     <div class="results-count"><strong id="res-count">0</strong> de <span id="res-total">0</span> empreendimentos</div>
@@ -760,12 +760,17 @@ function populateFilters() {
   const incs = [...new Set(DATA.map(e => e.incorporadora))].sort();
   const bairros = [...new Set(DATA.map(e => e.bairro))].sort();
   const segs = [...new Set(DATA.map(e => e.segmento).filter(s => s && s !== '—'))].sort();
-  const statuses = [...new Set(DATA.map(e => e.status).filter(s => s && s !== '—'))].sort();
+  // Extrai anos do campo lancamento (formato MM/AAAA ou AAAA)
+  const anos = [...new Set(DATA.map(e => {
+    if (!e.lancamento || e.lancamento === '—') return null;
+    const m = String(e.lancamento).match(/(\d{4})/);
+    return m ? m[1] : null;
+  }).filter(Boolean))].sort().reverse(); // mais recentes primeiro
   const fillSel = (id, arr) => {
     const sel = document.getElementById(id);
     arr.forEach(v => { const o = document.createElement('option'); o.value = v; o.textContent = v; sel.appendChild(o); });
   };
-  fillSel('f-inc', incs); fillSel('f-bairro', bairros); fillSel('f-seg', segs); fillSel('f-status', statuses);
+  fillSel('f-inc', incs); fillSel('f-bairro', bairros); fillSel('f-seg', segs); fillSel('f-ano', anos);
 }
 function buildLegend() {
   const incs = [...new Set(DATA.map(e => e.incorporadora))].sort();
@@ -779,13 +784,16 @@ function applyFilters() {
   const fi = document.getElementById('f-inc').value;
   const fb = document.getElementById('f-bairro').value;
   const fs = document.getElementById('f-seg').value;
-  const ft = document.getElementById('f-status').value;
+  const fa = document.getElementById('f-ano').value;
   const fq = document.getElementById('f-search').value.toLowerCase();
   const filt = DATA.filter(e => {
     if (fi && e.incorporadora !== fi) return false;
     if (fb && e.bairro !== fb) return false;
     if (fs && e.segmento !== fs) return false;
-    if (ft && e.status !== ft) return false;
+    if (fa) {
+      const m = String(e.lancamento || '').match(/(\d{4})/);
+      if (!m || m[1] !== fa) return false;
+    }
     if (fq && !(e.empreendimento.toLowerCase().includes(fq) || e.incorporadora.toLowerCase().includes(fq))) return false;
     return true;
   });
@@ -894,7 +902,7 @@ function focusEmp(name) {
   }
 }
 function resetFilters() {
-  ['f-inc','f-bairro','f-seg','f-status','f-search'].forEach(id => document.getElementById(id).value = '');
+  ['f-inc','f-bairro','f-seg','f-ano','f-search'].forEach(id => document.getElementById(id).value = '');
   applyFilters();
 }
 document.querySelectorAll('.filters select, .filters input').forEach(el => { el.addEventListener('input', applyFilters); el.addEventListener('change', applyFilters); });
