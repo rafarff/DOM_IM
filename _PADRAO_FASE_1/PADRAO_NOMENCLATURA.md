@@ -119,6 +119,25 @@ Quando um empreendimento tem fases ou torres comercializadas separadamente (ex: 
 5. **A data no nome da TABELA é de VIGÊNCIA declarada**, não criação
 6. Se nunca soubermos a data, use `SEMDATA` explicitamente (melhor que mentir)
 
+## Regra de classificação por Segmento
+
+O segmento de cada empreendimento é determinado **automaticamente** pelo R$/m² (preço por metro quadrado da área privativa média):
+
+| Segmento | R$/m² |
+|---|---|
+| **Popular** | abaixo de R$ 6.000 |
+| **Médio** | de R$ 6.000 a R$ 8.000 |
+| **Médio-alto** | de R$ 8.000 a R$ 11.000 |
+| **Alto** | de R$ 11.000 a R$ 16.000 |
+| **Luxo** | acima de R$ 16.000 |
+
+**Notas importantes:**
+
+- **Bordas**: limites inferiores são inclusivos (ex: R$ 8.000 exato → Médio-alto, não Médio).
+- **Empreendimentos sem R$/m² conhecido** (Tabela B, sem tabela de preços arquivada) aparecem com segmento `—`. Quando a tabela chegar e os dados forem preenchidos, o segmento é classificado automaticamente.
+- **Horizontais vs Verticais**: a mesma faixa se aplica a ambos. Isso significa que condomínios horizontais tendem a ficar em segmentos mais baixos (Médio / Médio-alto) porque o R$/m² inclui custos de terreno diluídos, mesmo que o ticket total seja alto. Essa é a escolha deliberada do estudo — queremos um critério objetivo e comparável.
+- **Al Mare Tirreno** (Mota Machado Collection, 215 m², ticket R$ 3M+) é classificado como **Alto** mesmo sendo posicionamento de marca "luxo" pela incorporadora. O R$/m² de R$ 14.293 é o que fala mais alto aqui.
+
 ---
 
 *DOM Incorporação · Inteligência de Mercado · Fase 2*
