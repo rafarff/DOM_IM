@@ -66,26 +66,30 @@ def discover_search_dirs() -> list[Path]:
 
 # ─── Coordenadas aproximadas de bairros de São Luís/MA ───────────────────────
 COORDS_BAIRRO = {
-    "Calhau":            (-2.4938, -44.2688),
-    "Renascença":        (-2.4983, -44.2910),
-    "Renascença II":     (-2.4985, -44.2925),
-    "Jardim Renascença": (-2.5020, -44.2790),
-    "Ponta d'Areia":     (-2.4920, -44.3130),
-    "Ponta D'Areia":     (-2.4920, -44.3130),
-    "Ponta do Farol":    (-2.4805, -44.3060),
-    "São Marcos":        (-2.5100, -44.2950),
-    "Cohama":            (-2.5270, -44.2740),
-    "Cohab Anil IV":     (-2.5360, -44.2630),
-    "Anil":              (-2.5360, -44.2630),
-    "Jardim Eldorado":   (-2.5530, -44.2410),
-    "Turú":              (-2.5550, -44.2430),
-    "Araçagi":           (-2.4900, -44.1890),
-    "Araçagy":           (-2.4900, -44.1890),
-    "São Francisco":     (-2.5240, -44.3160),
-    "Maranhão Novo":     (-2.5460, -44.2740),
-    "Santo Amaro":       (-2.5500, -44.2600),
-    "Cohatrac":          (-2.5600, -44.2100),
-    "São Luís":          (-2.5310, -44.3068),  # default centro
+    # São Luís / MA — coordenadas aproximadas centradas em cada bairro (em terra firme).
+    # Referência: centro histórico ~-2.531, -44.307. Ilha orientada N-S, oceano no Norte
+    # e Baía de São Marcos a Oeste.
+    "Calhau":            (-2.5023, -44.2718),
+    "Renascença":        (-2.5057, -44.2939),
+    "Renascença II":     (-2.5082, -44.2952),
+    "Jardim Renascença": (-2.5081, -44.2808),
+    "Ponta d'Areia":     (-2.4963, -44.3012),
+    "Ponta D'Areia":     (-2.4963, -44.3012),
+    "Ponta do Farol":    (-2.4890, -44.2976),
+    "São Marcos":        (-2.5010, -44.2842),
+    "Cohama":            (-2.5320, -44.2750),
+    "Cohab Anil IV":     (-2.5515, -44.2640),
+    "Anil":              (-2.5450, -44.2620),
+    "Cohab Anil":        (-2.5515, -44.2640),
+    "Jardim Eldorado":   (-2.5580, -44.2470),
+    "Turú":              (-2.5605, -44.2505),
+    "Araçagi":           (-2.4880, -44.2160),
+    "Araçagy":           (-2.4880, -44.2160),
+    "São Francisco":     (-2.5280, -44.3030),
+    "Maranhão Novo":     (-2.5580, -44.2800),
+    "Santo Amaro":       (-2.5630, -44.2680),
+    "Cohatrac":          (-2.5680, -44.2270),
+    "São Luís":          (-2.5310, -44.3068),  # default centro histórico
 }
 
 
@@ -336,6 +340,7 @@ def enrich(rows: list[dict], include_all: bool = False) -> list[dict]:
             "empreendimento": r.get("Empreendimento"),
             "endereco":       r.get("Endereço") or "",
             "bairro":         bairro_label,
+            "tipo":           r.get("Tipo") or "—",
             "segmento":       r.get("Segmento") or "—",
             "status":         r.get("Status") or "—",
             "unidades":       r.get("Nº unid."),
@@ -449,6 +454,13 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
   .chip.or-imprensa { background: #5D6E3C; color: #FFFFFF; }
   .chip.or-site     { background: #3E6B93; color: #FFFFFF; }
   .chip.or-other    { background: var(--dom-gray-light); color: var(--dom-gray-dark); }
+  .chip.tp-vertical   { background: #3B4371; color: #FFFFFF; }
+  .chip.tp-horizontal { background: #5D7A3C; color: #FFFFFF; }
+  .chip.tp-other      { background: var(--dom-gray-light); color: var(--dom-gray-dark); }
+  .table-intro { background: var(--dom-white); padding: 14px 20px; font-size: 12px; color: var(--dom-gray-dark); border-left: 3px solid var(--dom-gold); margin-top: 18px; margin-bottom: 0; }
+  .table-intro strong { color: var(--dom-gold-dark); }
+  .table-intro.incomplete { border-left-color: #B54B3A; }
+  .table-intro.incomplete strong { color: #B54B3A; }
   .nomap-badge { font-size: 9.5px; color: var(--dom-gray-mid); font-style: italic; margin-left: 6px; letter-spacing: 0.5px; }
   .nomap-note { display: none; background: var(--dom-white); padding: 10px 16px; margin-bottom: 12px; font-size: 11.5px; color: var(--dom-gray-dark); border-left: 3px solid var(--dom-gray-mid); }
   .nomap-note.show { display: block; }
@@ -525,13 +537,16 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
   <section class="legend" id="legend"></section>
   <section class="nomap-note" id="nomap-note"></section>
   <section id="map"></section>
+  <div class="table-intro">
+    <strong>📊 Tabela A — Empreendimentos com dados completos</strong> · com área, ticket e R$/m² confirmados (<strong id="cnt-complete">—</strong>)
+  </div>
   <section class="table-wrap">
-    <div class="table-header">Tabela Detalhada</div>
     <table id="tbl">
       <thead><tr>
         <th data-col="incorporadora">Incorporadora</th>
         <th data-col="empreendimento">Empreendimento</th>
         <th data-col="bairro">Bairro</th>
+        <th data-col="tipo">Tipo</th>
         <th data-col="segmento">Segmento</th>
         <th data-col="status">Status</th>
         <th data-col="lancamento_sort">Lançamento</th>
@@ -540,6 +555,25 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
         <th data-col="rsm2">R$/m²</th>
       </tr></thead>
       <tbody id="tbody"></tbody>
+    </table>
+  </section>
+
+  <div class="table-intro incomplete">
+    <strong>🔎 Tabela B — Faltam dados (área / ticket / R$/m²)</strong> · <strong id="cnt-incomplete">—</strong> empreendimento(s) — <em>priorizar buscar tabela com corretor/site</em>
+  </div>
+  <section class="table-wrap">
+    <table id="tbl-b">
+      <thead><tr>
+        <th data-col="incorporadora">Incorporadora</th>
+        <th data-col="empreendimento">Empreendimento</th>
+        <th data-col="bairro">Bairro</th>
+        <th data-col="tipo">Tipo</th>
+        <th data-col="segmento">Segmento</th>
+        <th data-col="status">Status</th>
+        <th data-col="lancamento_sort">Lançamento</th>
+        <th data-col="pendencias">O que falta</th>
+      </tr></thead>
+      <tbody id="tbody-b"></tbody>
     </table>
   </section>
   </div><!-- /tab-panorama -->
@@ -560,6 +594,7 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
           <th data-col="empreendimento">Empreendimento</th>
           <th data-col="endereco">Endereço</th>
           <th data-col="bairro">Bairro</th>
+          <th data-col="tipo">Tipo</th>
           <th data-col="segmento">Segmento</th>
           <th data-col="status">Status</th>
           <th data-col="unidades">Nº unid.</th>
@@ -635,6 +670,16 @@ function origemClass(o) {
   if (s === 'imprensa') return 'or-imprensa';
   if (s === 'site') return 'or-site';
   return 'or-other';
+}
+function tipoClass(t) {
+  if (!t) return 'tp-other';
+  const s = String(t).toLowerCase();
+  if (s.includes('horizontal')) return 'tp-horizontal';
+  if (s.includes('vertical')) return 'tp-vertical';
+  return 'tp-other';
+}
+function isComplete(e) {
+  return e.area_med != null && e.ticket_min != null && e.ticket_max != null && e.rsm2 != null;
 }
 let map = null, markers = [];
 function initMap() {
@@ -738,32 +783,65 @@ function renderMap(data) {
   }
 }
 function renderTable(data) {
-  const sorted = [...data].sort((a,b) => {
+  const doSort = arr => [...arr].sort((a,b) => {
     let av = a[sortCol] ?? '';
     let bv = b[sortCol] ?? '';
     if (sortCol === 'ticket_med') { av = ((a.ticket_min||0) + (a.ticket_max||0))/2; bv = ((b.ticket_min||0) + (b.ticket_max||0))/2; }
     if (typeof av === 'number' && typeof bv === 'number') return sortAsc ? av-bv : bv-av;
     return sortAsc ? String(av).localeCompare(String(bv)) : String(bv).localeCompare(String(av));
   });
-  document.getElementById('tbody').innerHTML = sorted.map(e => {
-    const ticket = (e.ticket_min && e.ticket_max) ? `R$ ${formatBRL(e.ticket_min, true)}–${formatBRL(e.ticket_max, true)}` : (e.ticket_min ? `R$ ${formatBRL(e.ticket_min, true)}` : '—');
-    const area = e.area_med ? formatArea(e.area_med) : (e.area_min ? formatArea(e.area_min) : '—');
+
+  // Divide em COMPLETOS e INCOMPLETOS
+  const completos = doSort(data.filter(isComplete));
+  const incompletos = doSort(data.filter(e => !isComplete(e)));
+
+  // Contadores
+  document.getElementById('cnt-complete').textContent = completos.length;
+  document.getElementById('cnt-incomplete').textContent = incompletos.length;
+
+  // Tabela A: completos
+  document.getElementById('tbody').innerHTML = completos.map(e => {
+    const ticket = `R$ ${formatBRL(e.ticket_min, true)}–${formatBRL(e.ticket_max, true)}`;
+    const area = formatArea(e.area_med);
     const nomap = e.on_map ? '' : '<span class="nomap-badge" title="Empreendimento sem bairro identificado — não plotado no mapa">◌ fora do mapa</span>';
     return `
       <tr onclick="focusEmp('${e.empreendimento.replace(/'/g, "\\'")}')">
         <td><span class="inc-name" style="color:${getColor(e.incorporadora)}">●</span> <span class="inc-name">${e.incorporadora}</span></td>
         <td class="emp-name">${e.empreendimento}${nomap}</td>
         <td>${e.bairro}</td>
+        <td><span class="chip ${tipoClass(e.tipo)}">${e.tipo}</span></td>
         <td><span class="chip ${segClass(e.segmento)}">${e.segmento}</span></td>
         <td><span class="chip ${statusClass(e.status)}">${e.status}</span></td>
         <td class="price" style="font-weight:600">${e.lancamento}</td>
         <td class="price">${area}</td>
         <td class="price">${ticket}</td>
-        <td class="price">${e.rsm2 ? 'R$ ' + formatBRL(e.rsm2) : '<span class="dim">—</span>'}</td>
+        <td class="price">R$ ${formatBRL(e.rsm2)}</td>
       </tr>
     `;
   }).join('');
-  document.querySelectorAll('thead th').forEach(th => {
+
+  // Tabela B: incompletos — mostra o que está faltando
+  document.getElementById('tbody-b').innerHTML = incompletos.map(e => {
+    const nomap = e.on_map ? '' : '<span class="nomap-badge">◌ fora do mapa</span>';
+    const faltam = [];
+    if (e.area_med == null) faltam.push('área');
+    if (e.ticket_min == null || e.ticket_max == null) faltam.push('ticket');
+    if (e.rsm2 == null) faltam.push('R$/m²');
+    return `
+      <tr onclick="focusEmp('${e.empreendimento.replace(/'/g, "\\'")}')">
+        <td><span class="inc-name" style="color:${getColor(e.incorporadora)}">●</span> <span class="inc-name">${e.incorporadora}</span></td>
+        <td class="emp-name">${e.empreendimento}${nomap}</td>
+        <td>${e.bairro}</td>
+        <td><span class="chip ${tipoClass(e.tipo)}">${e.tipo}</span></td>
+        <td><span class="chip ${segClass(e.segmento)}">${e.segmento}</span></td>
+        <td><span class="chip ${statusClass(e.status)}">${e.status}</span></td>
+        <td class="dim">${e.lancamento}</td>
+        <td><span class="chip or-estimado" title="Precisa buscar tabela">${faltam.join(' · ')}</span></td>
+      </tr>
+    `;
+  }).join('');
+
+  document.querySelectorAll('#tbl thead th, #tbl-b thead th').forEach(th => {
     th.classList.remove('sorted', 'asc');
     if (th.dataset.col === sortCol) { th.classList.add('sorted'); if (sortAsc) th.classList.add('asc'); }
   });
@@ -782,7 +860,7 @@ function resetFilters() {
   applyFilters();
 }
 document.querySelectorAll('.filters select, .filters input').forEach(el => { el.addEventListener('input', applyFilters); el.addEventListener('change', applyFilters); });
-document.querySelectorAll('thead th').forEach(th => {
+document.querySelectorAll('#tbl thead th, #tbl-b thead th').forEach(th => {
   th.addEventListener('click', () => {
     const col = th.dataset.col;
     if (sortCol === col) sortAsc = !sortAsc; else { sortCol = col; sortAsc = false; }
@@ -846,6 +924,7 @@ function renderFullTable(data) {
       <td class="emp-name">${e.empreendimento || '—'}</td>
       <td class="wrap dim">${e.endereco || '—'}</td>
       <td>${e.bairro || '—'}</td>
+      <td>${e.tipo ? `<span class="chip ${tipoClass(e.tipo)}">${e.tipo}</span>` : '—'}</td>
       <td>${e.segmento ? `<span class="chip ${segClass(e.segmento)}">${e.segmento}</span>` : '—'}</td>
       <td>${e.status ? `<span class="chip ${statusClass(e.status)}">${e.status}</span>` : '—'}</td>
       <td class="price">${cell(e.unidades)}</td>
