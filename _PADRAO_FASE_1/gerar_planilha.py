@@ -18,16 +18,14 @@ from openpyxl.drawing.image import Image as XLImage
 # ═══════════════════════════════════════════════════════════════
 # PARÂMETROS GLOBAIS
 # ═══════════════════════════════════════════════════════════════
-VERSION = "4.2"
-DATE_STR = "14/04/2026"
-# v4.1 — Varredura web geral (14/04/2026): +13 novos empreend. mapeados via
-# site oficial + Instagram + imprensa (Imirante, Diego Emir, MaHoje).
-# Novos: Bossa (Mota Machado) atualizado; Giardino (Alfa); Villagio Treviso;
-# Village Reserva II / Prime Eldorado / Del Ville II (Canopus);
-# Vila Coimbra + Villa di Carpi + Ana Vitória (Castelucci);
-# Varandas Grand Park (Franere); Villa Adagio + Lagoon (Lua Nova);
-# Dom Ricardo + Prime Cohama + Dom Antônio (MB); Renaissance Conceito + Sanpaolo (Monteplan);
-# Reserva Península (Sá Cavalcante). Handles IG corrigidos para 13 incorp.
+VERSION = "4.17"
+DATE_STR = "25/04/2026"
+# v4.17 — (25/04/2026): +1 empreend. Delman: Edifício The View (Calhau, Av. dos
+# Holandeses, Qd 02 nº 08). PRÉ-LANÇAMENTO ABR/2026 (Tabela 1.1 versão 0000001).
+# Tipologias 36,05–85,87 m² na tabela vigente; site Delman indica até 101,06m²
+# (cobertura provavelmente fora de comercialização inicial). Tickets R$529k–R$1,5M.
+# 17º andar (cobertura) com R$/m² ~R$18.090 (premium). Status no site: "Próximos
+# Lançamentos". Calhau passa a ter 2 produtos Delman simultâneos (Landscape + The View).
 
 # ═══════════════════════════════════════════════════════════════
 # IDENTIDADE VISUAL DOM
@@ -38,7 +36,7 @@ DOM_GOLD_LIGHT="FFE8D5A3"; DOM_GOLD_DARK="FF8B6914"
 DOM_RED_SOFT="FFF4B7B7"; DOM_GREEN_SOFT="FFBEE0B4"
 DOM_BLUE_SOFT="FFCEE1F2"
 
-SKILL_ASSETS="/sessions/brave-confident-meitner/mnt/.claude/skills/dom-xlsx-theme/assets"
+SKILL_ASSETS="/sessions/intelligent-festive-lamport/mnt/.claude/skills/dom-xlsx-theme/assets"
 LOGO_TRANSP=os.path.join(SKILL_ASSETS,"DOM_LOGO_TRANSPARENTE.png")
 
 # ═══════════════════════════════════════════════════════════════
@@ -199,6 +197,15 @@ E_RAW = [
      "tabela_local","tabela_local","imprensa",
      "https://www.delman.com.br","14/04/2026",
      "Evento de apresentação oficial 2024. 5 de 30 à venda. ≈83% vendido. Piscina privativa na varanda."),
+
+    ("Delman","The View",
+     "Avenida dos Holandeses, Qd. 02, Nº 08, Calhau, São Luís - MA","Calhau",
+     None,"Pré-lançamento",
+     None,"04/2026","—", 36.05,85.87,None, "Studio a 3Q (1Q/2Q dominantes)",
+     529580,1504011, None,None,None,
+     "tabela_local","N/A","tabela_local",
+     "https://delman.com.br/maranhao/empreendimentos/proximos-lancamentos/edificio-the-view","25/04/2026",
+     "PRÉ-LANÇAMENTO. Tabela 1.1 v.0000001 datada 24/04/2026. 14 pavtos tipo (1º pav.tipo = 4º andar). 110 unidades disponíveis na tabela (107 aptos + 3 lojas). Tipologias residenciais: 36,05/36,45/42,45/43,60/47,52/54,06/68,91/69,64/72,10/72,50/74,92/80,72/85,87 m². Lojas térreas 32,38–48,02 m². 17º andar premium R$/m² ~R$18.090 (vs ~R$14.700–17.500 nos pavtos tipo). Site oficial Delman indica até 101,06m² (provável cobertura/duplex fora da tabela atual). Parcelamento até 100 meses + INCC obra / IGP-M+1% pós. Vista mar (Calhau, lado par da Holandeses). 2º produto Delman simultâneo no Calhau (ao lado do Landscape)."),
 
     # ═══ ERGUS ═════════════════════════════════════════════════════════
     ("Ergus","Zion Ponta d'Areia",
@@ -471,7 +478,7 @@ I_META = {
     "Lua Nova":         ("https://construtoraluanova.com.br","@construtoraluanova",
                          "Desde 1985 (40+ anos). Villa Adagio + Lagoon Residence (Santo Amaro). Perfil médio-padrão. Mapeada via web."),
     "Delman":           ("https://www.delman.com.br","@delmanincorporadora",
-                         "Referência de luxo em Ponta d'Areia; 6 empreend. ticket R$710k-R$5,8M. Novo LandSpace (Landscape) no Calhau 2026."),
+                         "Referência de luxo em Ponta d'Areia; 7 empreend. mapeados (ticket R$530k-R$5,8M). 2026 traz forte movimento no Calhau: Landscape (lançamento) + The View (pré-lançamento ABR/2026, 36-101m², 17º andar premium ~R$18k/m²)."),
     "Treviso":          ("https://trevisoengenharia.com.br","@treviso.engenharia",
                          "Vernazza (120 un. Ponta d'Areia) + Villagio Treviso (loteamento). Ed. Biadene Oaice é sede."),
     "Ergus":            ("https://ergusengenharia.com.br","@ergusengenharia",
@@ -802,7 +809,7 @@ ft2.alignment = Alignment(horizontal="right",vertical="center")
 # SALVAR — usa a pasta NFD (a real do usuário, com .DS_Store) para
 # evitar criar pasta fantasma NFC por causa do Unicode do nome.
 # ═══════════════════════════════════════════════════════════════
-BASE = "/sessions/brave-confident-meitner/mnt"
+BASE = "/sessions/intelligent-festive-lamport/mnt"
 # Pasta NFD (forma canônica do macOS: "e" + combining circumflex U+0302)
 NFD_DIR_BYTES = os.path.join(BASE.encode(), b'01.Intelige\xcc\x82ncia Mercado')
 if os.path.exists(NFD_DIR_BYTES):
