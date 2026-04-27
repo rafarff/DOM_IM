@@ -18,7 +18,7 @@ from openpyxl.drawing.image import Image as XLImage
 # ═══════════════════════════════════════════════════════════════
 # PARÂMETROS GLOBAIS
 # ═══════════════════════════════════════════════════════════════
-VERSION = "6.2"
+VERSION = "6.3"
 DATE_STR = "27/04/2026"
 # v5.0 — (25/04/2026): MUDANÇA ESTRUTURAL — adoção do PADRAO v2.0.
 # +Coluna Tipo (Vertical/Horizontal/Misto) inserida como col. 5. 24 → 25 colunas.
@@ -77,6 +77,13 @@ DATE_STR = "27/04/2026"
 # A pendência "endereço" entra automaticamente na lista da Tabela B. Implementação
 # em build_panorama.py: tem_endereco_completo() + on_map=True só com ambos
 # (endereço_ok + geocoda). PADRAO §1 col 3 atualizada e v3.2 emitida.
+# v6.3 — (27/04/2026): MAPA REMOVIDO do HTML (PADRAO v3.3). Decisão do Rafael —
+# pins aproximados por bairro estavam confundindo mais que ajudando. Visual: aba
+# Panorama foca nas tabelas A e B sem o mapa interativo. Site identidade DOM
+# (logo embutido + fundo cinza-dark) + filtro Tipo + senha JS (DOM2026) + remoção
+# de "2025/2026" e legenda Origem data. Funções tem_endereco_completo() e
+# geocode_bairro() preservadas no build_panorama.py para futuro retorno. Pendência
+# "endereço" continua útil na Tabela B até reativarmos o mapa.
 
 # ═══════════════════════════════════════════════════════════════
 # IDENTIDADE VISUAL DOM

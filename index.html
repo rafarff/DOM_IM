@@ -7,8 +7,6 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <title>DOM Incorporação — Panorama de Lançamentos Grande São Luís</title>
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <style>
   :root {
     --dom-black: #000000; --dom-gray-dark: #4D4D4D; --dom-gray-mid: #8C8C8C;
@@ -42,13 +40,7 @@
   .reset-btn:hover { background: var(--dom-gold); color: var(--dom-black); }
   .results-count { margin-left: auto; font-size: 12px; color: var(--dom-gray-dark); margin-top: 15px; }
   .results-count strong { color: var(--dom-gold-dark); font-size: 14px; }
-  #map { height: 480px; margin-bottom: 24px; border: 2px solid var(--dom-black); box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
-  .leaflet-popup-content-wrapper { border-radius: 0; border-left: 3px solid var(--dom-gold); }
-  .leaflet-popup-content { margin: 12px 14px; font-family: 'Calibri', Arial, sans-serif; font-size: 13px; color: var(--dom-gray-dark); min-width: 200px; }
-  .leaflet-popup-content .pop-title { font-weight: 700; color: var(--dom-black); font-size: 14px; margin-bottom: 4px; }
-  .leaflet-popup-content .pop-inc { color: var(--dom-gold-dark); font-size: 11px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
-  .leaflet-popup-content .pop-field { font-size: 12px; margin-top: 2px; }
-  .leaflet-popup-content .pop-field strong { color: var(--dom-gray-dark); }
+
   .table-wrap { background: var(--dom-white); box-shadow: 0 1px 3px rgba(0,0,0,0.08); overflow-x: auto; }
   .table-header { background: var(--dom-black); color: var(--dom-white); padding: 14px 20px; font-weight: 700; font-size: 14px; letter-spacing: 1.5px; text-transform: uppercase; border-bottom: 3px solid var(--dom-gold); }
   table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
@@ -88,10 +80,7 @@
   .table-intro strong { color: var(--dom-gold-dark); }
   .table-intro.incomplete { border-left-color: #B54B3A; }
   .table-intro.incomplete strong { color: #B54B3A; }
-  .nomap-badge { font-size: 9.5px; color: var(--dom-gray-mid); font-style: italic; margin-left: 6px; letter-spacing: 0.5px; }
-  .nomap-note { display: none; background: var(--dom-white); padding: 10px 16px; margin-bottom: 12px; font-size: 11.5px; color: var(--dom-gray-dark); border-left: 3px solid var(--dom-gray-mid); }
-  .nomap-note.show { display: block; }
-  .nomap-note strong { color: var(--dom-gray-dark); }
+
   .inc-name { font-weight: 700; color: var(--dom-black); }
   .emp-name { font-weight: 700; color: var(--dom-gold-dark); }
   .price { font-variant-numeric: tabular-nums; color: var(--dom-black); font-weight: 600; }
@@ -118,7 +107,7 @@
   .tbl-compact { overflow-x: auto; max-height: 75vh; }
   @media (max-width: 768px) {
     .hero { padding: 20px; } .hero h1 { font-size: 20px; } .container { padding: 16px; }
-    #map { height: 350px; } table { font-size: 11px; } thead th, tbody td { padding: 8px 6px; }
+    table { font-size: 11px; } thead th, tbody td { padding: 8px 6px; }
     .tabs-inner { padding: 0 16px; } .tab-btn { padding: 12px 16px; font-size: 11px; }
   }
 </style>
@@ -170,7 +159,7 @@ if (sessionStorage.getItem("dom-auth") === "1") {
     </div>
     <div class="meta">
       Atualizado em 27/04/2026<br>
-      <span style="color: var(--dom-gold);">v6.2 · Fase 2 — Dashboard Interativo</span>
+      <span style="color: var(--dom-gold);">v6.3 · Fase 2 — Dashboard Interativo</span>
     </div>
   </div>
 </header>
@@ -201,8 +190,6 @@ if (sessionStorage.getItem("dom-auth") === "1") {
     <div class="results-count"><strong id="res-count">0</strong> de <span id="res-total">0</span> empreendimentos</div>
   </section>
   <section class="legend" id="legend"></section>
-  <section class="nomap-note" id="nomap-note"></section>
-  <section id="map"></section>
 
   <div class="table-intro">
     <strong>📊 Tabela A — Empreendimentos com dados completos</strong> · com área, ticket e R$/m² confirmados (<strong id="cnt-complete">—</strong>)
@@ -289,7 +276,7 @@ if (sessionStorage.getItem("dom-auth") === "1") {
 
   <div class="footer">
     <strong>DOM Incorporação</strong> · Inteligência de Mercado · São Luís/MA<br>
-    Fonte: books e tabelas oficiais das incorporadoras · Gerado de Planilha_Mestre_Panorama_v6.2.xlsx
+    Fonte: books e tabelas oficiais das incorporadoras · Gerado de Planilha_Mestre_Panorama_v6.3.xlsx
   </div>
 </main>
 <script>
@@ -345,43 +332,6 @@ function tipoClass(t) {
 function isComplete(e) {
   return e.area_med != null && e.ticket_min != null && e.ticket_max != null && e.rsm2 != null;
 }
-let map = null, markers = [];
-function initMap() {
-  if (typeof L === 'undefined') {
-    const el = document.getElementById('map');
-    el.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:#8C8C8C;font-size:13px;background:#F2F2F2;border:1px dashed #8C8C8C;">Mapa indisponível (Leaflet não carregado). Verifique conexão com internet.</div>';
-    el.style.height = '120px';
-    return false;
-  }
-  map = L.map('map').setView([-2.51, -44.27], 12);
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution: '© OpenStreetMap', maxZoom: 19}).addTo(map);
-  return true;
-}
-function makeMarker(e) {
-  // Pula se não estiver no mapa (bairro não identificado)
-  if (!e.on_map || e.lat == null || e.lng == null) return null;
-  if (!map || typeof L === 'undefined') return null;
-  const color = getColor(e.incorporadora);
-  const icon = L.divIcon({
-    className: 'custom-marker',
-    html: `<div style="background:${color};width:22px;height:22px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 1.5px #000, 0 2px 4px rgba(0,0,0,0.3);"></div>`,
-    iconSize: [22, 22], iconAnchor: [11, 11]
-  });
-  const marker = L.marker([e.lat, e.lng], {icon}).addTo(map);
-  const ticket = (e.ticket_min && e.ticket_max) ? `R$ ${formatBRL(e.ticket_min, true)} – R$ ${formatBRL(e.ticket_max, true)}` : '—';
-  const area = e.area_med ? formatArea(e.area_med) + ' m²' : (e.area_min && e.area_max ? formatArea(e.area_min)+'–'+formatArea(e.area_max)+' m²' : '—');
-  marker.bindPopup(`
-    <div class="pop-inc">${e.incorporadora}</div>
-    <div class="pop-title">${e.empreendimento}</div>
-    <div class="pop-field"><strong>Bairro:</strong> ${e.bairro}</div>
-    <div class="pop-field"><strong>Segmento:</strong> ${e.segmento}</div>
-    <div class="pop-field"><strong>Lançamento:</strong> ${e.lancamento} <span style="color:#8B6914;font-size:10.5px;">(${e.lancamento_origem})</span></div>
-    <div class="pop-field"><strong>Área:</strong> ${area}</div>
-    <div class="pop-field"><strong>Ticket:</strong> ${ticket}</div>
-    <div class="pop-field"><strong>R$/m²:</strong> ${e.rsm2 ? 'R$ ' + formatBRL(e.rsm2) : '—'}</div>
-  `);
-  return marker;
-}
 function populateFilters() {
   const incs = [...new Set(DATA.map(e => e.incorporadora))].sort();
   const bairros = [...new Set(DATA.map(e => e.bairro))].sort();
@@ -426,7 +376,7 @@ function applyFilters() {
     if (fq && !(e.empreendimento.toLowerCase().includes(fq) || e.incorporadora.toLowerCase().includes(fq))) return false;
     return true;
   });
-  renderTable(filt); renderMap(filt); renderKPIs(filt);
+  renderTable(filt); renderKPIs(filt);
   document.getElementById('res-count').textContent = filt.length;
   document.getElementById('res-total').textContent = DATA.length;
 }
@@ -441,21 +391,6 @@ function renderKPIs(data) {
   document.getElementById('kpi-rsm2').innerHTML = (rMed ? formatBRL(rMed) : '—') + ' <span class="unit">R$/m²</span>';
   const vgv = data.map(e => e.vgv).filter(v => v).reduce((a,b)=>a+b, 0);
   document.getElementById('kpi-vgv').innerHTML = (vgv ? formatBRL(vgv, true) : '—') + ' <span class="unit">R$</span>';
-}
-function renderMap(data) {
-  if (!map) return;
-  markers.forEach(m => m && map.removeLayer(m));
-  markers = data.map(makeMarker).filter(Boolean);
-  // Aviso sobre empreendimentos sem coordenadas
-  const noMap = data.filter(e => !e.on_map);
-  const note = document.getElementById('nomap-note');
-  if (noMap.length > 0) {
-    const names = noMap.map(e => `<strong>${e.empreendimento}</strong> (${e.incorporadora})`).join(', ');
-    note.innerHTML = `📍 <strong>${noMap.length}</strong> empreendimento(s) sem bairro identificado, fora do mapa: ${names}.`;
-    note.classList.add('show');
-  } else {
-    note.classList.remove('show');
-  }
 }
 function tipologiaDetail(obs) {
   // Extrai trecho "Tipologia detalhada: ..." das Observações para tooltip do ℹ
@@ -485,7 +420,7 @@ function renderTable(data) {
   document.getElementById('tbody').innerHTML = completos.map(e => {
     const ticket = `R$ ${formatBRL(e.ticket_min, true)}–${formatBRL(e.ticket_max, true)}`;
     const area = formatArea(e.area_med);
-    const nomap = e.on_map ? '' : '<span class="nomap-badge" title="Endereço incompleto (só bairro) — pin não plotado. Atualize Endereço para mapear.">◌ sem endereço</span>';
+    const nomap = '';  // mapa removido v6.4 — badge sem propósito
     return `
       <tr onclick="focusEmp('${e.empreendimento.replace(/'/g, "\\'")}')">
         <td><span class="inc-name" style="color:${getColor(e.incorporadora)}">●</span> <span class="inc-name">${e.incorporadora}</span></td>
@@ -504,7 +439,7 @@ function renderTable(data) {
 
   // Tabela B: incompletos — mostra o que está faltando
   document.getElementById('tbody-b').innerHTML = incompletos.map(e => {
-    const nomap = e.on_map ? '' : '<span class="nomap-badge" title="Endereço incompleto — pin não plotado">◌ sem endereço</span>';
+    const nomap = '';  // mapa removido v6.4
     const faltam = [];
     if (!e.on_map) faltam.push('endereço');
     if (e.area_med == null) faltam.push('área');
@@ -529,15 +464,7 @@ function renderTable(data) {
     if (th.dataset.col === sortCol) { th.classList.add('sorted'); if (sortAsc) th.classList.add('asc'); }
   });
 }
-function focusEmp(name) {
-  if (!map) return;
-  const e = DATA.find(x => x.empreendimento === name);
-  if (e && e.on_map && e.lat != null) {
-    map.setView([e.lat, e.lng], 15);
-    const m = markers.find(mk => mk.getLatLng().lat === e.lat && mk.getLatLng().lng === e.lng);
-    if (m) m.openPopup();
-  }
-}
+function focusEmp(name) { /* mapa removido v6.4 — função stub para evitar quebrar onclick antigos */ }
 function resetFilters() {
   ['f-inc','f-bairro','f-tipo','f-seg','f-ano','f-search'].forEach(id => document.getElementById(id).value = '');
   applyFilters();
@@ -661,13 +588,9 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
 document.getElementById('tab-count-panorama').textContent = DATA.length;
 document.getElementById('tab-count-dados').textContent = ALL_DATA.length;
 
-// Inicializa ambas
-initMap(); populateFilters(); buildLegend(); applyFilters();
+// Inicializa ambas (mapa removido v6.4)
+populateFilters(); buildLegend(); applyFilters();
 populateFullFilters(); applyFullFilters();
-if (map) {
-  const latlngs = DATA.filter(e => e.on_map && e.lat != null).map(e => [e.lat, e.lng]);
-  if (latlngs.length > 0) map.fitBounds(latlngs, {padding: [40, 40]});
-}
 </script>
 </body>
 </html>

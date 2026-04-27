@@ -1,5 +1,5 @@
 # PADRÃO FASE 1 — Inteligência de Mercado DOM
-**Versão:** 3.2 (atualizada em 27/04/2026)
+**Versão:** 3.3 (atualizada em 27/04/2026)
 **Status:** 🟢 APROVADO pelo Rafael
 
 > **ATENÇÃO — Claude:** este documento é um CONTRATO. Toda vez que o Rafael
@@ -78,7 +78,7 @@ Antes de fazer qualquer alteração de dado, Claude executa:
 
 > **v3.0 (27/04/2026):** coluna **Status** removida (antes col 7). Motivo: classificação muito subjetiva e parcialmente derivada de outros campos (estoque, data). §4.3 (enum de Status) e função `reclassificar_status` no script foram removidas. 25 → 24 colunas. **Adicionalmente:** o filtro "ativo no ciclo" no HTML foi eliminado — o Panorama mostra TODOS os 45 empreendimentos mapeados, sem distinção de fase comercial.
 
-> **v3.2 (27/04/2026) — Regra de pin no mapa:** o pin no mapa interativo aparece apenas quando o **Endereço** (col 3) está **completo** — ou seja, contém **Rua/Avenida/Travessa/Praça** com número/quadra, OU um **Plus Code** do Google Maps (ex: `FQV9+JJ`). Endereços com apenas bairro (`"Endereço não localizado, Calhau, São Luís - MA"` ou `"Calhau, São Luís - MA"`) **não vão para o mapa** e aparecem com badge `◌ sem endereço`. Pendência "endereço" entra na lista de gaps da Tabela B (Pendências) automaticamente. Atualizar manualmente conforme info chegar (book, busca de corretor, Google Maps).
+> **v3.2 → v3.3 (27/04/2026) — Mapa removido temporariamente:** a feature de mapa interativo (Leaflet + pins por endereço) foi removida do HTML em 27/04/2026 por decisão do Rafael — pins aproximados por bairro estavam confundindo mais do que ajudando. As funções `tem_endereco_completo()` e `geocode_bairro()` permanecem no `build_panorama.py` para futuro retorno. **Regra preservada:** quando o mapa voltar, pin aparece SÓ com endereço completo (Rua/Avenida/Travessa/Praça com nº/quadra OU Plus Code). Pendência "endereço" continua aparecendo na Tabela B até atualização manual via book/corretor.
 
 > **v2.0 (25/04/2026):** coluna **Tipo** (Vertical/Horizontal/Misto) formalizada como col. 5. Antes existia em sessões anteriores mas não estava no PADRAO — daí o drift que perdeu a classificação na v4.17.
 
