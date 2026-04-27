@@ -1,5 +1,5 @@
 # PADRÃO FASE 1 — Inteligência de Mercado DOM
-**Versão:** 2.2 (atualizada em 27/04/2026)
+**Versão:** 3.0 (atualizada em 27/04/2026)
 **Status:** 🟢 APROVADO pelo Rafael
 
 > **ATENÇÃO — Claude:** este documento é um CONTRATO. Toda vez que o Rafael
@@ -13,7 +13,7 @@
 
 ## Sumário
 0. Invariantes operacionais (3 regras invioláveis)
-1. Dicionário de dados — aba Empreendimentos (25 colunas)
+1. Dicionário de dados — aba Empreendimentos (24 colunas)
 2. Dicionário de dados — aba Incorporadoras (15 colunas)
 3. Regras de cálculo (fórmulas congeladas)
 4. Enumerações fixas
@@ -47,7 +47,7 @@ Antes de fazer qualquer alteração de dado, Claude executa:
 
 ---
 
-## 1. Aba Empreendimentos — 25 colunas
+## 1. Aba Empreendimentos — 24 colunas
 
 | # | Campo | Tipo | Formato / Regra | Obrig. |
 |---|---|---|---|---|
@@ -57,25 +57,26 @@ Antes de fazer qualquer alteração de dado, Claude executa:
 | 4 | Bairro | Texto | Bairro oficial | ✅ |
 | 5 | **Tipo** | **Enum §4.5** | **Vertical / Horizontal / Misto** | ✅ |
 | 6 | Segmento | Enum §4.2 | Classificado por R$/m² calculado, não por ticket | ✅ |
-| 7 | Status | Enum §4.3 | Status comercial (não físico) | ✅ |
-| 8 | Nº total unidades | Inteiro | Da memorial/book/web | ⚠️ |
-| 9 | Mês lançamento | Data MM/AAAA | Se estimado, sufixar `⚠ T-36` | ✅ |
-| 10 | Mês entrega | Data MM/AAAA | | ⚠️ |
-| 11 | Área mín (m²) | Decimal | | ⚠️ |
-| 12 | Área máx (m²) | Decimal | | ⚠️ |
-| 13 | Tipologia média (m²) | Calculado | `(área_min + área_max) / 2` | 🔄 |
-| 14 | Tipologia (dorms) | Texto | Ex: `2Q (1 suíte) a 3Q (1 suíte)` | ⚠️ |
-| 15 | Ticket mín (R$) | Moeda | | ⚠️ |
-| 16 | Ticket máx (R$) | Moeda | | ⚠️ |
-| 17 | Preço médio R$/m² | Calculado | §3.1 | 🔄 |
-| 18 | VGV estimado (R$) | Calculado | §3.2 | 🔄 |
-| 19 | % Vendido | Calculado | §3.3. Inverso do estoque (1 − estoque%). Sem coloração condicional. | 🔄 |
-| 20 | Origem preços | Enum §4.4 | | ✅ |
-| 21 | Origem estoque | Enum §4.4 | | ✅ |
-| 22 | Origem lançamento | Enum §4.4 | | ✅ |
-| 23 | Link fonte principal | URL | Obrigatório se origem ≠ tabela_local | ⚠️ |
-| 24 | Data última verificação | Data DD/MM/AAAA | | ✅ |
-| 25 | Observações | Texto livre | Números absolutos do estoque, datas da tabela usada | opcional |
+| 7 | Nº total unidades | Inteiro | Da memorial/book/web | ⚠️ |
+| 8 | Mês lançamento | Data MM/AAAA | Se estimado, sufixar `⚠ T-36` | ✅ |
+| 9 | Mês entrega | Data MM/AAAA | | ⚠️ |
+| 10 | Área mín (m²) | Decimal | | ⚠️ |
+| 11 | Área máx (m²) | Decimal | | ⚠️ |
+| 12 | Tipologia média (m²) | Calculado | `(área_min + área_max) / 2` | 🔄 |
+| 13 | Tipologia (dorms) | Texto | Ex: `2Q (1 suíte) a 3Q (1 suíte)` | ⚠️ |
+| 14 | Ticket mín (R$) | Moeda | | ⚠️ |
+| 15 | Ticket máx (R$) | Moeda | | ⚠️ |
+| 16 | Preço médio R$/m² | Calculado | §3.1 | 🔄 |
+| 17 | VGV estimado (R$) | Calculado | §3.2 | 🔄 |
+| 18 | % Vendido | Calculado | §3.3. Inverso do estoque (1 − estoque%). Sem coloração condicional. | 🔄 |
+| 19 | Origem preços | Enum §4.4 | | ✅ |
+| 20 | Origem estoque | Enum §4.4 | | ✅ |
+| 21 | Origem lançamento | Enum §4.4 | | ✅ |
+| 22 | Link fonte principal | URL | Obrigatório se origem ≠ tabela_local | ⚠️ |
+| 23 | Data última verificação | Data DD/MM/AAAA | | ✅ |
+| 24 | Observações | Texto livre | Números absolutos do estoque, datas da tabela usada | opcional |
+
+> **v3.0 (27/04/2026):** coluna **Status** removida (antes col 7). Motivo: classificação muito subjetiva e parcialmente derivada de outros campos (estoque, data). Filtros de "ativo no ciclo" no HTML passam a depender só do **Mês lançamento** (col 8). §4.3 (enum de Status) e função `reclassificar_status` no script foram removidas. 25 → 24 colunas.
 
 > **v2.0 (25/04/2026):** coluna **Tipo** (Vertical/Horizontal/Misto) formalizada como col. 5. Antes existia em sessões anteriores mas não estava no PADRAO — daí o drift que perdeu a classificação na v4.17.
 
@@ -143,7 +144,7 @@ vendido_% = (unidades_totais − unidades_disponíveis) / unidades_totais × 100
          = 1 − estoque_%
 ```
 **Sem coloração condicional** — coluna apresenta apenas o número percentual.
-Interpretação executiva: **≥85% = últimas unidades; 60–85% = em absorção; <60% = estoque amplo** (usado pelo Status §4.3, não como formatação da célula).
+Interpretação executiva (analítica, não estrutural): ≥85% = últimas unidades; 60–85% = em absorção; <60% = estoque amplo.
 
 ### 3.4 VGV por ano (aba Incorporadoras)
 ```
@@ -179,15 +180,8 @@ Mota Machado, Berg Engenharia, Alfa Engenharia, Lua Nova, Delman, Treviso, Ergus
 
 ⚠️ **v2.2 (27/04/2026):** faixas recalibradas para refletir o mercado real de SLZ. Antes (v2.0): Médio 6-9k, Médio-alto 9-13k, Alto 13-18k, Luxo >18k. Detectado que muitos empreend. de alto padrão (R$ 14-17k) ficavam em Alto pela classificação antiga, contradizendo o posicionamento de marca. Revisar em cada update anual ou se o mercado mover.
 
-### 4.3 Status (6 níveis — comercial, não físico)
-| Status | Critério |
-|---|---|
-| Pré-lançamento | Teaser ativo, sem tabela pública |
-| Lançamento | Tabela ativa, < 6 meses de venda |
-| Em comercialização | Tabela ativa, > 6 meses, % vendido < 60% |
-| Últimas unidades | % vendido ≥ 85% |
-| Entregue | Habite-se emitido |
-| Esgotado | % vendido = 100% ou retirado do site/tabela |
+### 4.3 ~~Status~~ — REMOVIDO em v3.0
+> A coluna Status foi removida na v3.0 (27/04/2026). Justificativa: classificação ambígua entre tempo de venda e estoque, parcialmente derivada de outros campos. Filtro de "ativo no ciclo" passa a usar Mês lançamento (col 8). Análise de absorção segue via % Vendido (col 18).
 
 ### 4.4 Origens (valores permitidos)
 **Origem preços:** `tabela_local` | `site_oficial` | `agregador` | `imprensa` | `estimativa`
@@ -218,7 +212,7 @@ Passo-a-passo obrigatório:
    c. 1 portal agregador (Ziag ou MGF)
    d. 1 busca de notícias (Imirante/Diego Emir)
 5. Aplicar regras §3 para recalcular campos calculados
-6. Reclassificar Segmento (§4.2) e Status (§4.3) com base nos valores novos
+6. Reclassificar Segmento (§4.2) com base no R$/m² novo
 7. Gerar planilha chamando `gerar_planilha.py`
 8. Executar `publish.sh` (regera HTML + commita pacote)
 9. Escrever mini-changelog no final do chat (o que mudou, novas linhas, alertas)
@@ -237,7 +231,7 @@ Passo-a-passo obrigatório:
 3. Listar apenas diferenças:
    - Novos empreendimentos
    - Mudanças de ticket, R$/m² ou estoque
-   - Mudanças de status
+   - Mudanças de Tipo ou Segmento
 4. Retornar bullet list (sem planilha nova)
 
 ### 5.4 "oportunidades"
@@ -272,7 +266,7 @@ Passo-a-passo obrigatório:
 
 **Regra de conflito:** quando Instagram e site divergem, Instagram prevalece para informações de <90 dias (lançamentos, campanhas, eventos); site prevalece para informações consolidadas (plantas, tabela cheia).
 
-> `Link fonte principal` (col. 23) é obrigatório quando Origem preços ≠ `tabela_local`.
+> `Link fonte principal` (col. 22) é obrigatório quando Origem preços ≠ `tabela_local`.
 
 ---
 

@@ -276,25 +276,12 @@ def parse_lancamento(raw: str, orig_col: str = "") -> tuple[str, str]:
 def should_include(row: dict, include_all: bool = False) -> bool:
     """
     Filtro: empreendimentos ATIVOS no mercado (ciclo 2025/2026).
-    Inclui qualquer empreendimento:
-      - lançado em 2025 ou 2026, OU
-      - com status que indique venda ativa (Lançamento, Pré-lançamento,
-        Em comercialização, Últimas unidades), independente do ano de lançamento.
-    Exclui: Entregue/esgotado e explicitamente inativos.
+    Após v6.0 (Status removido), critério passa a ser SOMENTE por Mês lançamento.
+    Inclui qualquer empreendimento lançado em 2025 ou 2026.
     """
     if include_all:
         return True
     launch = str(row.get("Mês lançamento") or "")
-    status = str(row.get("Status") or "").lower().strip()
-    # Status que indicam comercialização ativa no ciclo atual
-    active_statuses = {
-        "lançamento", "pré-lançamento", "pre-lançamento",
-        "em comercialização", "em comercializacao",
-        "últimas unidades", "ultimas unidades",
-    }
-    if status in active_statuses:
-        return True
-    # Fallback: lançamento no ciclo 2025/2026
     if "2025" in launch or "2026" in launch:
         return True
     return False
@@ -363,7 +350,6 @@ def enrich(rows: list[dict], include_all: bool = False) -> list[dict]:
             "bairro":         bairro_label,
             "tipo":           r.get("Tipo") or "—",
             "segmento":       r.get("Segmento") or "—",
-            "status":         r.get("Status") or "—",
             "unidades":       r.get("Nº unid."),
             "lancamento":     data_fmt,
             "lancamento_origem": origem,
@@ -622,7 +608,7 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
     <section class="filters" style="margin-top:8px;">
       <div class="filter-group"><label>Busca</label><input type="text" id="fd-search" placeholder="Buscar em qualquer coluna..." style="min-width:280px"/></div>
       <div class="filter-group"><label>Incorporadora</label><select id="fd-inc"><option value="">Todas</option></select></div>
-      <div class="filter-group"><label>Status</label><select id="fd-status"><option value="">Todos</option></select></div>
+      
       <div class="results-count"><strong id="fd-res-count">0</strong> de <span id="fd-res-total">0</span> linhas</div>
     </section>
     <section class="table-wrap tbl-compact">
@@ -635,7 +621,6 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
           <th data-col="bairro">Bairro</th>
           <th data-col="tipo">Tipo</th>
           <th data-col="segmento">Segmento</th>
-          <th data-col="status">Status</th>
           <th data-col="unidades">Nº unid.</th>
           <th data-col="lancamento_sort">Lançamento</th>
           <th data-col="entrega">Entrega</th>
@@ -747,7 +732,7 @@ function makeMarker(e) {
     <div class="pop-inc">${e.incorporadora}</div>
     <div class="pop-title">${e.empreendimento}</div>
     <div class="pop-field"><strong>Bairro:</strong> ${e.bairro}</div>
-    <div class="pop-field"><strong>Segmento:</strong> ${e.segmento} · ${e.status}</div>
+    <div class="pop-field"><strong>Segmento:</strong> ${e.segmento}</div>
     <div class="pop-field"><strong>Lançamento:</strong> ${e.lancamento} <span style="color:#8B6914;font-size:10.5px;">(${e.lancamento_origem})</span></div>
     <div class="pop-field"><strong>Área:</strong> ${area}</div>
     <div class="pop-field"><strong>Ticket:</strong> ${ticket}</div>
@@ -918,12 +903,11 @@ let sortAscFull = false;
 
 function populateFullFilters() {
   const incs = [...new Set(ALL_DATA.map(e => e.incorporadora))].filter(Boolean).sort();
-  const statuses = [...new Set(ALL_DATA.map(e => e.status).filter(s => s && s !== '—'))].sort();
   const fillSel = (id, arr) => {
     const sel = document.getElementById(id);
     arr.forEach(v => { const o = document.createElement('option'); o.value = v; o.textContent = v; sel.appendChild(o); });
   };
-  fillSel('fd-inc', incs); fillSel('fd-status', statuses);
+  fillSel('fd-inc', incs);
 }
 
 function cell(v, opts={}) {
@@ -937,12 +921,10 @@ function cell(v, opts={}) {
 function applyFullFilters() {
   const fq = document.getElementById('fd-search').value.toLowerCase();
   const fi = document.getElementById('fd-inc').value;
-  const fs = document.getElementById('fd-status').value;
   const filt = ALL_DATA.filter(e => {
     if (fi && e.incorporadora !== fi) return false;
-    if (fs && e.status !== fs) return false;
     if (fq) {
-      const blob = [e.incorporadora, e.empreendimento, e.endereco, e.bairro, e.segmento, e.status,
+      const blob = [e.incorporadora, e.empreendimento, e.endereco, e.bairro, e.segmento,
                     e.lancamento, e.entrega, e.dorms, e.orig_precos, e.orig_estoque, e.orig_lancamento,
                     e.data_verif, e.obs].filter(Boolean).join(' ').toLowerCase();
       if (!blob.includes(fq)) return false;
@@ -971,7 +953,6 @@ function renderFullTable(data) {
       <td>${e.bairro || '—'}</td>
       <td>${e.tipo ? `<span class="chip ${tipoClass(e.tipo)}">${e.tipo}</span>` : '—'}</td>
       <td>${e.segmento ? `<span class="chip ${segClass(e.segmento)}">${e.segmento}</span>` : '—'}</td>
-      <td>${e.status ? `<span class="chip ${statusClass(e.status)}">${e.status}</span>` : '—'}</td>
       <td class="price">${cell(e.unidades)}</td>
       <td class="price">${e.lancamento || '—'}</td>
       <td>${e.entrega || '—'}</td>
