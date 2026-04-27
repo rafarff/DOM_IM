@@ -76,7 +76,7 @@ Antes de fazer qualquer alteração de dado, Claude executa:
 | 23 | Data última verificação | Data DD/MM/AAAA | | ✅ |
 | 24 | Observações | Texto livre | Números absolutos do estoque, datas da tabela usada | opcional |
 
-> **v3.0 (27/04/2026):** coluna **Status** removida (antes col 7). Motivo: classificação muito subjetiva e parcialmente derivada de outros campos (estoque, data). Filtros de "ativo no ciclo" no HTML passam a depender só do **Mês lançamento** (col 8). §4.3 (enum de Status) e função `reclassificar_status` no script foram removidas. 25 → 24 colunas.
+> **v3.0 (27/04/2026):** coluna **Status** removida (antes col 7). Motivo: classificação muito subjetiva e parcialmente derivada de outros campos (estoque, data). §4.3 (enum de Status) e função `reclassificar_status` no script foram removidas. 25 → 24 colunas. **Adicionalmente:** o filtro "ativo no ciclo" no HTML foi eliminado — o Panorama mostra TODOS os 45 empreendimentos mapeados, sem distinção de fase comercial.
 
 > **v2.0 (25/04/2026):** coluna **Tipo** (Vertical/Horizontal/Misto) formalizada como col. 5. Antes existia em sessões anteriores mas não estava no PADRAO — daí o drift que perdeu a classificação na v4.17.
 
@@ -181,7 +181,7 @@ Mota Machado, Berg Engenharia, Alfa Engenharia, Lua Nova, Delman, Treviso, Ergus
 ⚠️ **v2.2 (27/04/2026):** faixas recalibradas para refletir o mercado real de SLZ. Antes (v2.0): Médio 6-9k, Médio-alto 9-13k, Alto 13-18k, Luxo >18k. Detectado que muitos empreend. de alto padrão (R$ 14-17k) ficavam em Alto pela classificação antiga, contradizendo o posicionamento de marca. Revisar em cada update anual ou se o mercado mover.
 
 ### 4.3 ~~Status~~ — REMOVIDO em v3.0
-> A coluna Status foi removida na v3.0 (27/04/2026). Justificativa: classificação ambígua entre tempo de venda e estoque, parcialmente derivada de outros campos. Filtro de "ativo no ciclo" passa a usar Mês lançamento (col 8). Análise de absorção segue via % Vendido (col 18).
+> A coluna Status foi removida na v3.0 (27/04/2026). Justificativa: classificação ambígua entre tempo de venda e estoque, parcialmente derivada de outros campos. O filtro "ativo no ciclo" foi também eliminado — Panorama mostra todos os empreendimentos mapeados sem filtro de fase. Análise de absorção segue via % Vendido (col 18).
 
 ### 4.4 Origens (valores permitidos)
 **Origem preços:** `tabela_local` | `site_oficial` | `agregador` | `imprensa` | `estimativa`

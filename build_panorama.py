@@ -275,16 +275,15 @@ def parse_lancamento(raw: str, orig_col: str = "") -> tuple[str, str]:
 
 def should_include(row: dict, include_all: bool = False) -> bool:
     """
-    Filtro: empreendimentos ATIVOS no mercado (ciclo 2025/2026).
-    Após v6.0 (Status removido), critério passa a ser SOMENTE por Mês lançamento.
-    Inclui qualquer empreendimento lançado em 2025 ou 2026.
+    Filtro removido na v6.0 (decisão do Rafael 27/04/2026).
+    
+    Antes da v6.0 havia distinção entre "ativos no ciclo" (Panorama) e "todos"
+    (Dados Completos). Após análise, decidimos que o Panorama deve mostrar
+    TODOS os empreendimentos mapeados — sem filtro de Status nem de data de
+    lançamento. As 3 abas do HTML mostram o mesmo universo de 45 entries,
+    diferenciando-se apenas pela visualização (mapa, pendências, tabela full).
     """
-    if include_all:
-        return True
-    launch = str(row.get("Mês lançamento") or "")
-    if "2025" in launch or "2026" in launch:
-        return True
-    return False
+    return True
 
 
 # ─── Leitura da planilha ─────────────────────────────────────────────────────

@@ -61,9 +61,12 @@ DATE_STR = "27/04/2026"
 # v6.0 — (27/04/2026): MUDANÇA ESTRUTURAL — coluna Status REMOVIDA (PADRAO v3.0).
 # 25 → 24 colunas. Motivo: classificação subjetiva, parcialmente derivada de outros
 # campos (estoque, data). Removido: STATUS list, função reclassificar_status, todas
-# as 45 entries do E_RAW perderam o 7º campo. Filtro "ativo no ciclo" no HTML passa
-# a depender só do Mês lançamento (col 8 → 7 após shift). Indices internos do script
-# todos shiftados em -1 a partir da col 7. PADRAO §4.3 marcado como removido.
+# as 45 entries do E_RAW perderam o 7º campo. Indices internos do script todos
+# shiftados em -1 a partir da col 7. PADRAO §4.3 marcado como removido.
+# Adicionalmente: filtro "ativo no ciclo" no HTML também eliminado — Panorama mostra
+# TODOS os 45 empreendimentos mapeados (decisão Rafael). build_panorama.should_include
+# sempre retorna True. As 3 abas (Panorama, Pendências, Dados Completos) compartilham
+# o mesmo universo, diferenciando-se apenas pela visualização.
 
 # ═══════════════════════════════════════════════════════════════
 # IDENTIDADE VISUAL DOM
