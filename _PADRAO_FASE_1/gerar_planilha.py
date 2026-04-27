@@ -18,7 +18,7 @@ from openpyxl.drawing.image import Image as XLImage
 # ═══════════════════════════════════════════════════════════════
 # PARÂMETROS GLOBAIS
 # ═══════════════════════════════════════════════════════════════
-VERSION = "5.1"
+VERSION = "5.2"
 DATE_STR = "27/04/2026"
 # v5.0 — (25/04/2026): MUDANÇA ESTRUTURAL — adoção do PADRAO v2.0.
 # +Coluna Tipo (Vertical/Horizontal/Misto) inserida como col. 5. 24 → 25 colunas.
@@ -40,6 +40,11 @@ DATE_STR = "27/04/2026"
 # 8 entries sem pasta-data: estimadas como 06/AAAA + ⚠ T-36. parse_launch_date
 # em ambos os scripts agora REJEITA AAAA puro (vai pro fim da lista).
 # Validação assert no início do script bloqueia E_RAW com mês fora do padrão.
+# v5.2 — (27/04/2026): +Edifício Bossa (Mota Machado) atualizado a partir da tabela
+# local 04/2026: tickets R$2,85-3,71M, áreas 191-196m², R$/m² médio R$16.663 (faixa
+# 14,9-19,2k), 36 aptos disponíveis de 60 (~60% estoque, 40% vendido), entrega
+# 09/2030. Endereço completo (Av. Holandeses Lote 07 Qd 02). Origem migra de
+# "imprensa" para "tabela_local". Segmento reclassifica auto pelo R$/m².
 
 # ═══════════════════════════════════════════════════════════════
 # IDENTIDADE VISUAL DOM
@@ -82,7 +87,12 @@ def classificar_segmento_por_m2(preco_m2):
 
 def reclassificar_status(status_atual, estoque_pct):
     """§4.3 — Status comercial. Reclassifica automaticamente quando houver estoque.
-    Preserva Pré-lançamento, Lançamento, Entregue, Esgotado (manuais)."""
+    Preserva Pré-lançamento, Lançamento, Entregue, Esgotado (manuais).
+
+    Lógica (v5.2): Lançamento é decisão de TEMPO (< 6 meses de venda), não de
+    estoque. Por isso preserva Lançamento independente do estoque (exceto se zerar
+    ou ficar nas últimas unidades). Antes da v5.2, estoque entre 15-40% forçava
+    "Em comercialização" mesmo em Lançamento — bug detectado com Bossa."""
     # Estados manuais preservados (não dependem de estoque)
     if status_atual in ("Pré-lançamento", "Entregue", "Esgotado"):
         return status_atual
@@ -91,13 +101,10 @@ def reclassificar_status(status_atual, estoque_pct):
     if estoque_pct == 0:
         return "Esgotado"
     if estoque_pct <= 0.15:
-        return "Últimas unidades"
-    if estoque_pct > 0.40:
-        # Se estava como Lançamento e tem estoque >40%, pode continuar Lançamento
-        # se for recente; por ora deixamos "Em comercialização" como padrão quando >40%
-        # exceto se foi explicitamente "Lançamento" (até 6m de venda — info não temos agora)
-        return "Em comercialização" if status_atual != "Lançamento" else "Lançamento"
-    # 15% < estoque <= 40%
+        return "Últimas unidades"  # >85% vendido sobrescreve até Lançamento
+    # estoque entre 15% e 100%
+    if status_atual == "Lançamento":
+        return "Lançamento"  # preserva: tempo de venda < 6m é decisão manual
     return "Em comercialização"
 
 # ═══════════════════════════════════════════════════════════════
@@ -281,13 +288,13 @@ E_RAW = [
 
     # ═══ MOTA MACHADO ═══════════════════════════════════════════════════
     ("Mota Machado","Edifício Bossa",
-     "Endereço não localizado, Calhau, São Luís - MA","Calhau",
-     "Vertical","Luxo","Lançamento",
-     60,"04/2026","—", 191,195,None, "4 suítes + vista mar",
-     None,None, None,None,None,
-     "imprensa","N/A","imprensa",
-     "https://motamachado.com.br","14/04/2026",
-     "LANÇAMENTO ABRIL/2026 — evento oficial em 09/04/2026 (Frisson, MaHoje, Portal IN). 2 torres, 4 suítes, 191-195m², vista mar. Alto padrão/luxo. Mota Machado (CE) expandindo no NE, VGV 2025 R$350M."),
+     "Avenida dos Holandeses, Lote 07, Quadra 02, Calhau, São Luís - MA","Calhau",
+     "Vertical",None,"Lançamento",
+     60,"04/2026","09/2030", 191.02,196.04,None, "4 suítes (1 master c/ varanda, closet, banheiro duplo) + lavabo + varanda gourmet + qto/WC serviço",
+     2850507,3708342, None,None, 36/60,
+     "tabela_local","tabela_local","tabela_local",
+     "https://motamachado.com.br","27/04/2026",
+     "LANÇAMENTO 04/2026 — evento oficial 09/04/2026 (Frisson, MaHoje, Portal IN). 2 torres (Harmonia + Sintonia) × 15 pavtos tipo × 2 aptos/andar = 60 aptos. 6 elevadores. 3 tipologias: 191,02 / 192,64 / 196,04 m². 3 vagas (até 12º andar) ou 4 vagas (13º+ premium). Tabela 04/2026: 36 aptos disponíveis (24 vendidos = 40%). Tickets R$ 2,85-3,71M. R$/m² médio R$ 16.663 (faixa 14,9-19,2k — andares altos finais 01/02 tocam Luxo). Entrega 09/2030 (T-53). Memorial R 01, Matrícula 134.922 - 1º RI SL. Projeto: Nasser Hissa Arquitetos. Lazer: brinquedoteca, salão festas, academia, pista funcional, quadra, lounge champanheira, piscina, pet wash, minimercado, estação carro elétrico. Mota Machado (CE) expandindo no NE, VGV 2025 R$350M."),
 
     ("Mota Machado","Reserva São Marcos",
      "Endereço não localizado, Calhau, São Luís - MA","Calhau",
