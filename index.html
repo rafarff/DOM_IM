@@ -253,6 +253,7 @@
           <th data-col="orig_precos">Orig. preços</th>
           <th data-col="orig_estoque">Orig. estoque</th>
           <th data-col="orig_lancamento">Orig. lançamento</th>
+          <th data-col="link">Fonte</th>
           <th data-col="data_verif">Data verif.</th>
           <th data-col="obs">Observações</th>
         </tr></thead>
@@ -588,6 +589,7 @@ function renderFullTable(data) {
       <td class="dim">${e.orig_precos || '—'}</td>
       <td class="dim">${e.orig_estoque || '—'}</td>
       <td class="dim">${e.orig_lancamento || '—'}</td>
+      <td class="dim" style="text-align:center">${e.link ? `<a href="${e.link}" target="_blank" rel="noopener" title="${e.link}" style="text-decoration:none;font-size:14px">🔗</a>` : '—'}</td>
       <td class="dim">${e.data_verif || '—'}</td>
       <td class="wrap dim" style="font-size:10.5px">${e.obs || '—'}</td>
     </tr>
