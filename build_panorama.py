@@ -156,26 +156,24 @@ def find_latest_planilha() -> Path:
 def parse_lancamento_sort(lancamento: str) -> int:
     """
     Converte string de lançamento em inteiro AAAAMM para ordenação cronológica.
+    PADRAO v2.0 §1: formato esperado é SEMPRE MM/AAAA (com flag opcional ⚠ T-36).
     Exemplos:
         '04/2026'            → 202604
-        '2026'               → 202606   (meio do ano)
-        '~2025'              → 202506   (aproximado = meio do ano)
         '04/2025 ⚠ T-36'     → 202504
         '10/2025'            → 202510
-        '—'                  → 0        (sem data, vai para o fim)
+        '—' / vazio          → 0 (faltam dados — vai para o fim da lista)
+        'AAAA' puro          → 0 (formato inválido — força correção, vai pro fim)
     """
     if not lancamento or lancamento == "—":
         return 0
     s = str(lancamento).strip()
-    # Tenta capturar MM/AAAA
-    m = re.search(r"(\d{1,2})/(\d{4})", s)
+    # Aceita SOMENTE MM/AAAA (com ou sem ⚠ T-36)
+    m = re.match(r"^(\d{1,2})/(\d{4})( ⚠ T-36)?$", s)
     if m:
         month, year = int(m.group(1)), int(m.group(2))
         return year * 100 + max(1, min(12, month))
-    # Só AAAA (com ou sem "~")
-    m = re.search(r"(\d{4})", s)
-    if m:
-        return int(m.group(1)) * 100 + 6  # meio do ano
+    # Formato inválido (AAAA puro, ~AAAA, etc.) → empurrar pro fim
+    # Sinaliza visualmente que falta dado preciso
     return 0
 
 

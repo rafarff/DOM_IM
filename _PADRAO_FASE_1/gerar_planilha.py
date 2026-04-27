@@ -24,15 +24,22 @@ DATE_STR = "27/04/2026"
 # +Coluna Tipo (Vertical/Horizontal/Misto) inserida como col. 5. 24 → 25 colunas.
 # +Hiali e DOM Incorporação como incorporadoras monitoradas (14 → 16). Tracking da
 # .xlsx no git habilitado. Total: 45 empreendimentos, 16 incorporadoras.
-# v5.1 — (27/04/2026): Atualização de dados a partir de tabelas locais novas.
-# +Vila Coimbra (Castelucci): tabela 03/2026 → áreas 124,63m², ticket R$1.019k-1.082k,
-# 36+ casas Araçagi, status Lançamento. +Giardino Fiore (Alfa): tabela 03/2026 → 6
-# disponíveis de 45 (~87% vendido) → Últimas unidades. +Giardino Luce (Alfa): 5/60
-# (~92%) → Últimas unidades, dorms corrigido para 3 suítes. +Monte Meru (Berg): tabela
-# ABR/2026 → área 135m², ticket R$1.932k-1.944k, segmento Alto, entrega 04/2027.
-# +The View (Delman): tabela 27.04 substitui 24.04 (mantida como v1) → ticket_min sobe
-# para R$559k (apto 409 vendido), 90 aptos disponíveis (de ~110 em 24.04, ~20 vendidos
-# em 3 dias = tração forte na pré-venda).
+# v5.1 — (27/04/2026): DOIS GRUPOS de mudança:
+#
+# (a) NOVOS DADOS de tabelas locais:
+# +Vila Coimbra (Castelucci): tabela 03/2026 → 124,63m², ticket R$1.019k-1.082k,
+# 36+ casas Araçagi. +Giardino Fiore (Alfa): 6/45 → 87% vendido → Últimas unidades.
+# +Giardino Luce (Alfa): 5/60 → 92%, dorms corrigido para 3 suítes. +Monte Meru
+# (Berg): tabela ABR/2026 → 135m², ticket R$1.932k-1.944k. +The View (Delman):
+# tabela 27.04 substitui 24.04 → ticket_min sobe para R$559k (apto 409 vendido),
+# 90 aptos disponíveis de ~110 = ~20 vendas em 3 dias.
+#
+# (b) CORREÇÃO SISTÊMICA de Mês lançamento (PADRAO §1 — col 9 deve ser MM/AAAA):
+# 13 entries com pasta XX_MMAAAA tinham datas imprecisas no E_RAW (ex: Lagoon
+# como ~2024 quando pasta dizia 042026). Atualizadas para MM/AAAA preciso.
+# 8 entries sem pasta-data: estimadas como 06/AAAA + ⚠ T-36. parse_launch_date
+# em ambos os scripts agora REJEITA AAAA puro (vai pro fim da lista).
+# Validação assert no início do script bloqueia E_RAW com mês fora do padrão.
 
 # ═══════════════════════════════════════════════════════════════
 # IDENTIDADE VISUAL DOM
@@ -127,7 +134,7 @@ E_RAW = [
     ("Alfa Engenharia","Connect Península",
      "Endereço não localizado, Ponta d'Areia, São Luís - MA","Ponta d'Areia",
      "Vertical","Alto","Pré-lançamento",
-     None,"~2024","—", None,None,None, "—",
+     None,"07/2024","—", None,None,None, "—",
      None,None, None,None,None,
      "N/A","N/A","site_oficial",
      "https://www.alfaengenharia.com.br","14/04/2026",
@@ -136,7 +143,7 @@ E_RAW = [
     ("Alfa Engenharia","Legacy Residence",
      "Endereço não localizado, Ponta d'Areia, São Luís - MA","Ponta d'Areia",
      "Vertical","Luxo","Lançamento",
-     None,"~2023","10/2027", None,None,None, "4 suítes",
+     None,"07/2024","10/2027", None,None,None, "4 suítes",
      None,None, None,None,None,
      "N/A","N/A","imprensa",
      "https://www.alfaengenharia.com.br","14/04/2026",
@@ -145,7 +152,7 @@ E_RAW = [
     ("Alfa Engenharia","LIV Residence",
      "Rua Aziz Heluy, S/N, Ponta d'Areia, São Luís - MA","Ponta d'Areia",
      "Vertical","Alto","Lançamento",
-     None,"~2024","—", None,None,None, "3 suítes",
+     None,"07/2023","—", None,None,None, "3 suítes",
      None,None, None,None,None,
      "N/A","N/A","site_oficial",
      "https://www.alfaengenharia.com.br","14/04/2026",
@@ -155,7 +162,7 @@ E_RAW = [
     ("Delman","Azimuth",
      "Endereço não localizado, Ponta d'Areia, São Luís - MA","Ponta d'Areia",
      "Vertical",None,"Em comercialização",
-     30,"~2023","10/2026", 196.62,196.62,None, "3 suítes",
+     30,"07/2023","10/2026", 196.62,196.62,None, "3 suítes",
      3600000,3600000, None,None, 1/30,
      "tabela_local","tabela_local","imprensa",
      "https://www.delman.com.br","14/04/2026",
@@ -164,7 +171,7 @@ E_RAW = [
     ("Delman","Landscape",
      "Avenida dos Holandeses, S/N, Calhau, São Luís - MA","Calhau",
      "Vertical",None,"Lançamento",
-     95,"2026","09/2029", 88,103,None, "3 suítes",
+     95,"03/2026","09/2029", 88,103,None, "3 suítes",
      1200000,1500000, None,None, 52/95,
      "tabela_local","tabela_local","imprensa",
      "https://www.delman.com.br","14/04/2026",
@@ -200,7 +207,7 @@ E_RAW = [
     ("Delman","Wave Residence",
      "Endereço não localizado, Ponta do Farol, São Luís - MA","Ponta do Farol",
      "Vertical",None,"Em comercialização",
-     30,"2024","03/2029", 293.69,293.69,None, "4 suítes",
+     30,"09/2025","03/2029", 293.69,293.69,None, "4 suítes",
      5500000,5800000, None,None, 5/30,
      "tabela_local","tabela_local","imprensa",
      "https://www.delman.com.br","14/04/2026",
@@ -228,7 +235,7 @@ E_RAW = [
     ("Ergus","Nexus Renascença",
      "Endereço não localizado, Renascença, São Luís - MA","Renascença",
      "Vertical","Médio-alto","Em comercialização",
-     None,"~2023","—", 33,94,None, "Studio a 2Q",
+     None,"04/2026","—", 33,94,None, "Studio a 2Q",
      None,None, None,None,None,
      "site_oficial","N/A","imprensa",
      "https://www.ergus.com.br","14/04/2026",
@@ -256,7 +263,7 @@ E_RAW = [
     ("Treviso","Altos do São Francisco",
      "Bairro São Francisco, São Luís - MA","São Francisco",
      "Vertical","Médio-alto","Entregue",
-     26,"—","Pronto", 57.93,67.15,None, "2-3Q (1 ou 2 vagas)",
+     26,"01/2024 ⚠ T-36","Pronto", 57.93,67.15,None, "2-3Q (1 ou 2 vagas)",
      495800,761700, None,None, None,
      "tabela","tabela","pendente",
      "https://trevisoengenharia.com.br","23/04/2026",
@@ -266,7 +273,7 @@ E_RAW = [
     ("Niágara","ORO Ponta d'Areia",
      "Endereço não localizado, Ponta d'Areia, São Luís - MA","Ponta d'Areia",
      "Vertical",None,"Lançamento",
-     None,"~2026 ⚠ T-36","~2029", 80.32,160.64,None, "2-4 suítes",
+     None,"01/2026 ⚠ T-36","~2029", 80.32,160.64,None, "2-4 suítes",
      1000000,2600000, None,None,None,
      "tabela_local","N/A","estimativa_T-36",
      "https://www.niagara-imoveis.com.br","14/04/2026",
@@ -285,7 +292,7 @@ E_RAW = [
     ("Mota Machado","Reserva São Marcos",
      "Endereço não localizado, Calhau, São Luís - MA","Calhau",
      "Vertical","Alto","Em comercialização",
-     None,"~2024","—", None,None,None, "—",
+     None,"01/2025","—", None,None,None, "—",
      None,None, None,None,None,
      "site_oficial","N/A","site_oficial",
      "https://www.motamachado.com.br","14/04/2026",
@@ -322,7 +329,7 @@ E_RAW = [
     ("Berg Engenharia","Mount Solaro",
      "Endereço não localizado, São Luís - MA","São Luís",
      "Vertical",None,"Pré-lançamento",
-     None,"~2025","—", None,None,None, "—",
+     None,"06/2025 ⚠ T-36","—", None,None,None, "—",
      None,None, None,None,None,
      "N/A","N/A","imprensa",
      "https://www.bergengenharia.com.br","14/04/2026",
@@ -332,7 +339,7 @@ E_RAW = [
     ("Sá Cavalcante","Ilha Parque Residence",
      "Endereço não localizado, Maranhão Novo, São Luís - MA","Maranhão Novo",
      "Horizontal","Médio","Entregue",
-     120,"—","Entregue", 64,85,None, "2-3 quartos",
+     120,"02/2019","Entregue", 64,85,None, "2-3 quartos",
      None,None, None,None,None,
      "N/A","N/A","site_oficial",
      "https://www.sacavalcante.com.br","14/04/2026",
@@ -366,7 +373,7 @@ E_RAW = [
     ("Treviso","Villagio Treviso",
      "Endereço não localizado, São Luís - MA","São Luís",
      "Horizontal",None,"Em comercialização",
-     None,"~2025","—", None,None,None, "Terrenos em condomínio",
+     None,"06/2025 ⚠ T-36","—", None,None,None, "Terrenos em condomínio",
      None,None, None,None,None,
      "N/A","N/A","site_oficial",
      "https://trevisoengenharia.com.br","14/04/2026",
@@ -413,7 +420,7 @@ E_RAW = [
     ("Castelucci","Villa di Carpi",
      "Endereço não localizado, Cohatrac, São Luís - MA","Cohatrac",
      "Horizontal",None,"Em comercialização",
-     None,"~2024","—", 49,52,None, "2Q",
+     None,"06/2024 ⚠ T-36","—", 49,52,None, "2Q",
      None,None, None,None,None,
      "agregador","N/A","site_oficial",
      "https://construtoracastelucci.com.br","14/04/2026",
@@ -422,7 +429,7 @@ E_RAW = [
     ("Castelucci","Residencial Ana Vitória",
      "Endereço não localizado, Araçagy, São Luís - MA","Araçagy",
      "Horizontal",None,"Em comercialização",
-     None,"~2023","—", None,None,None, "2-3Q",
+     None,"01/2018","—", None,None,None, "2-3Q",
      None,None, None,None,None,
      "site_oficial","N/A","site_oficial",
      "https://construtoracastelucci.com.br","14/04/2026",
@@ -432,7 +439,7 @@ E_RAW = [
     ("Franere","Varandas Grand Park",
      "Endereço não localizado, São Luís - MA","São Luís",
      "Horizontal",None,"Em comercialização",
-     None,"~2024","—", None,None,None, "—",
+     None,"06/2024 ⚠ T-36","—", None,None,None, "—",
      None,None, None,None,None,
      "site_oficial","N/A","site_oficial",
      "https://franere.com.br","14/04/2026",
@@ -442,7 +449,7 @@ E_RAW = [
     ("Lua Nova","Villa Adagio",
      "Endereço não localizado, São Luís - MA","São Luís",
      "Horizontal",None,"Em comercialização",
-     None,"~2024","—", None,None,None, "—",
+     None,"06/2024 ⚠ T-36","—", None,None,None, "—",
      None,None, None,None,None,
      "site_oficial","N/A","site_oficial",
      "https://construtoraluanova.com.br","14/04/2026",
@@ -451,7 +458,7 @@ E_RAW = [
     ("Lua Nova","Lagoon Residence",
      "Endereço não localizado, Santo Amaro, São Luís - MA","Santo Amaro",
      "Vertical",None,"Em comercialização",
-     None,"~2024","—", None,None,None, "—",
+     None,"04/2026","—", None,None,None, "—",
      None,None, None,None,None,
      "site_oficial","N/A","site_oficial",
      "https://construtoraluanova.com.br","14/04/2026",
@@ -470,7 +477,7 @@ E_RAW = [
     ("MB Engenharia","Condomínio Prime Cohama",
      "Endereço não localizado, Cohama, São Luís - MA","Cohama",
      "Vertical",None,"Em comercialização",
-     22,"~2023","—", 140,140,None, "Casas duplex",
+     22,"01/2026","—", 140,140,None, "Casas duplex",
      None,None, None,None,None,
      "N/A","N/A","imprensa",
      "https://www.instagram.com/mbengenharia.br/","14/04/2026",
@@ -489,7 +496,7 @@ E_RAW = [
     ("Monteplan","Renaissance Conceito",
      "Rua Caxuxa, S/N, Renascença II, São Luís - MA","Renascença II",
      "Vertical","Alto","Lançamento",
-     None,"~2025","—", None,None,None, "3Q",
+     None,"06/2025 ⚠ T-36","—", None,None,None, "3Q",
      None,None, None,None,None,
      "site_oficial","N/A","site_oficial",
      "https://monteplanengenharia.com.br/empreendimentos/renaissance-conceito/","14/04/2026",
@@ -498,7 +505,7 @@ E_RAW = [
     ("Monteplan","Edifício Sanpaolo",
      "Endereço não localizado, São Luís - MA","São Luís",
      "Vertical","Médio-alto","Esgotado",
-     None,"~2023","—", None,None,None, "2-3Q",
+     None,"12/2022","—", None,None,None, "2-3Q",
      None,None, None,None, 0.0,
      "site_oficial","site_oficial","site_oficial",
      "https://monteplanengenharia.com.br/empreendimentos/edificio-sanpaolo/","14/04/2026",
@@ -552,6 +559,26 @@ E_RAW = [
      "","23/04/2026",
      "Condomínio horizontal alto padrão. Casa 154,64 m² + terreno 170-181 m². Maioria das unidades VENDIDAS (14+ marcadas VENDIDA na tabela ABR/2026). Entrega JUL/2027. Ticket ~R$ 1,4M. R$/m² construção ~R$ 9.150. [reconstituído da v4.16 em 25/04/2026]"),
 ]
+
+# ═══════════════════════════════════════════════════════════════
+# VALIDAÇÃO §0.1 do PADRAO v2.0: Mês lançamento DEVE ser MM/AAAA (com ⚠ T-36
+# opcional) ou "—". Qualquer outro formato (AAAA puro, ~AAAA) é REJEITADO.
+# ═══════════════════════════════════════════════════════════════
+import re as _re_validate
+_RGX_MES = _re_validate.compile(r'^(\d{2}/\d{4}( ⚠ T-36)?|—)$')
+_problemas = []
+for _row in E_RAW:
+    _inc, _emp, _mes = _row[0], _row[1], _row[8]  # idx 8 = Mês lançamento
+    if _mes is None:
+        _problemas.append(f"  • {_inc} | {_emp}: Mês lançamento é None — usar \"—\" se faltam dados")
+    elif not _RGX_MES.match(str(_mes)):
+        _problemas.append(f"  • {_inc} | {_emp}: Mês lançamento {_mes!r} fora do padrão MM/AAAA")
+if _problemas:
+    raise ValueError(
+        "❌ VALIDAÇÃO PADRAO v2.0 §1 (col 9 — Mês lançamento) FALHOU:\n" +
+        "\n".join(_problemas) +
+        "\n\nFormato exigido: MM/AAAA, ou MM/AAAA ⚠ T-36, ou \"—\" (sem dados)."
+    )
 
 # ═══════════════════════════════════════════════════════════════
 # DATASET — 13 INCORPORADORAS (serão auto-calculadas a partir de E)
@@ -623,18 +650,17 @@ def extract_year(mes_str):
 
 def parse_launch_date(mes_str):
     """Converte string de mês de lançamento para tupla (ano, mês) para ordenação.
-    Retorna (0,0) para desconhecidos (vão para o fim em ordem decrescente)."""
+    PADRAO v2.0 §1: formato esperado é SEMPRE MM/AAAA (com flag opcional ⚠ T-36).
+    Retorna (0,0) para vazios E para formatos inválidos (AAAA puro, ~AAAA) —
+    todos vão para o fim em ordem decrescente, sinalizando que falta dado preciso."""
     if not mes_str or mes_str=="—":
         return (0, 0)
     import re
-    # Formato MM/AAAA
-    m = re.search(r'(\d{1,2})/(\d{4})', mes_str)
+    # Aceita SOMENTE MM/AAAA (com ou sem ⚠ T-36)
+    m = re.match(r'^(\d{1,2})/(\d{4})( ⚠ T-36)?$', mes_str)
     if m:
         return (int(m.group(2)), int(m.group(1)))
-    # Formato só ano
-    y = re.search(r'(\d{4})', mes_str)
-    if y:
-        return (int(y.group(1)), 0)  # sem mês: assume janeiro para ordenação
+    # Formato inválido — vai pro fim (faltam dados)
     return (0, 0)
 
 # Processa cada empreendimento: preenche campos calculados
