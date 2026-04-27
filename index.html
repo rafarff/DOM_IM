@@ -77,6 +77,9 @@
   .origem.strong { border-left-color: var(--dom-black); color: var(--dom-black); font-weight: 600; }
   .origem.medium { border-left-color: var(--dom-gold); color: var(--dom-gold-dark); }
   .origem.weak   { border-left-color: var(--dom-gray-mid); color: var(--dom-gray-mid); font-style: italic; }
+  /* Tooltip clicável (ℹ) — info adicional sobre fonte do dado */
+  .info-icon { display: inline-block; width: 14px; height: 14px; line-height: 13px; text-align: center; border-radius: 50%; background: var(--dom-gold-light); color: var(--dom-gold-dark); font-size: 10px; font-style: normal; font-weight: 700; cursor: help; margin-left: 4px; vertical-align: middle; transition: all 0.15s; }
+  .info-icon:hover { background: var(--dom-gold); color: var(--dom-black); }
   .origem.pending{ border-left-color: #B54B3A; color: #B54B3A; font-weight: 600; }
   .origem-legend { display: flex; flex-wrap: wrap; gap: 10px 18px; padding: 10px 14px; background: #FAFAF5; border-left: 3px solid var(--dom-gold); margin-top: 8px; font-size: 11px; color: var(--dom-gray-dark); }
   .origem-legend strong { color: var(--dom-black); font-size: 11px; letter-spacing: 0.5px; margin-right: 4px; }
@@ -190,7 +193,7 @@
         <th data-col="tipo">Tipo</th>
         <th data-col="segmento">Segmento</th>
         <th data-col="lancamento_sort">Lançamento</th>
-        <th data-col="lancamento_origem">Origem data</th>
+        <th data-col="dorms">Tipologia</th>
         <th data-col="area_med">Área méd (m²)</th>
         <th data-col="ticket_med">Ticket (R$)</th>
         <th data-col="rsm2">R$/m²</th>
@@ -211,7 +214,7 @@
         <th data-col="tipo">Tipo</th>
         <th data-col="segmento">Segmento</th>
         <th data-col="lancamento_sort">Lançamento</th>
-        <th data-col="lancamento_origem">Origem data</th>
+        <th data-col="dorms">Tipologia</th>
         <th data-col="pendencias">O que falta</th>
       </tr></thead>
       <tbody id="tbody-b"></tbody>
@@ -454,14 +457,14 @@ function renderTable(data) {
       <tr onclick="focusEmp('${e.empreendimento.replace(/'/g, "\\'")}')">
         <td><span class="inc-name" style="color:${getColor(e.incorporadora)}">●</span> <span class="inc-name">${e.incorporadora}</span></td>
         <td class="emp-name">${e.empreendimento}${nomap}</td>
-        <td>${e.bairro}</td>
+        <td>${e.bairro}${e.endereco && e.endereco !== '—' ? ` <span class="info-icon" title="Endereço: ${e.endereco.replace(/"/g, '&quot;')}">ℹ</span>` : ''}</td>
         <td><span class="chip ${tipoClass(e.tipo)}">${e.tipo}</span></td>
         <td><span class="chip ${segClass(e.segmento)}">${e.segmento}</span></td>
-        <td class="price" style="font-weight:600">${e.lancamento}</td>
-        <td><span class="${origemClass(e.lancamento_origem)}">${e.lancamento_origem}</span></td>
+        <td class="price" style="font-weight:600">${e.lancamento}${e.lancamento_origem && e.lancamento_origem !== '—' ? ` <span class="info-icon" title="Origem da data: ${e.lancamento_origem}">ℹ</span>` : ''}</td>
+        <td class="dim" style="font-size:11px">${e.dorms || '—'}</td>
         <td class="price">${area}</td>
-        <td class="price">${ticket}</td>
-        <td class="price">R$ ${formatBRL(e.rsm2)}</td>
+        <td class="price">${ticket}${e.orig_precos && e.orig_precos !== '—' ? ` <span class="info-icon" title="Origem dos preços: ${e.orig_precos}">ℹ</span>` : ''}</td>
+        <td class="price">R$ ${formatBRL(e.rsm2)}${e.orig_precos && e.orig_precos !== '—' ? ` <span class="info-icon" title="Origem dos preços: ${e.orig_precos}">ℹ</span>` : ''}</td>
       </tr>
     `;
   }).join('');
@@ -477,11 +480,11 @@ function renderTable(data) {
       <tr onclick="focusEmp('${e.empreendimento.replace(/'/g, "\\'")}')">
         <td><span class="inc-name" style="color:${getColor(e.incorporadora)}">●</span> <span class="inc-name">${e.incorporadora}</span></td>
         <td class="emp-name">${e.empreendimento}${nomap}</td>
-        <td>${e.bairro}</td>
+        <td>${e.bairro}${e.endereco && e.endereco !== '—' ? ` <span class="info-icon" title="Endereço: ${e.endereco.replace(/"/g, '&quot;')}">ℹ</span>` : ''}</td>
         <td><span class="chip ${tipoClass(e.tipo)}">${e.tipo}</span></td>
         <td><span class="chip ${segClass(e.segmento)}">${e.segmento}</span></td>
-        <td class="dim">${e.lancamento}</td>
-        <td><span class="${origemClass(e.lancamento_origem)}">${e.lancamento_origem}</span></td>
+        <td class="dim">${e.lancamento}${e.lancamento_origem && e.lancamento_origem !== '—' ? ` <span class="info-icon" title="Origem da data: ${e.lancamento_origem}">ℹ</span>` : ''}</td>
+        <td class="dim" style="font-size:11px">${e.dorms || '—'}</td>
         <td><span class="chip or-pendente" title="Precisa buscar tabela">${faltam.join(' · ')}</span></td>
       </tr>
     `;
