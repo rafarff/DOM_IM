@@ -18,17 +18,14 @@ from openpyxl.drawing.image import Image as XLImage
 # ═══════════════════════════════════════════════════════════════
 # PARÂMETROS GLOBAIS
 # ═══════════════════════════════════════════════════════════════
-VERSION = "4.18"
+VERSION = "5.0"
 DATE_STR = "25/04/2026"
-# v4.18 — (25/04/2026): RECONCILIAÇÃO da divergência entre script-fonte e v4.16.xlsx.
-# Em ciclos anteriores, o E_RAW foi enriquecido (10+ empreend.) e a v4.16.xlsx foi
-# regenerada, mas o source nunca foi commitado no git → quando a v4.17 rodou, voltou
-# para o estado magro do d7d584c (35 empreend.) perdendo dados. Esta versão restaura:
-# +Mota Machado: Entre Rios + Al Mare Tirreno; +Treviso: Vernazza split (Norte/Sul) +
-# Altos do São Francisco; +Monteplan: Residencial Novo Anil; +Hiali (NOVA): Le Noir;
-# +DOM Incorporação (NOVA, products próprios + parcerias): Dom Lucas, Dom José, Dom
-# Antônio (era MB), Edifício Dom Ricardo (era MB); +Alfa: Giardino split (Torre Fiore/
-# Luce). Mantém The View (v4.17). Total: 46 empreendimentos, 16 incorporadoras.
+# v5.0 — (25/04/2026): MUDANÇA ESTRUTURAL — adoção do PADRAO v2.0.
+# +Coluna Tipo (Vertical/Horizontal/Misto) inserida como col. 5 (era posição informal
+# em sessões anteriores, agora formalizada). 24 → 25 colunas. +Hiali e DOM Incorporação
+# como incorporadoras monitoradas (14 → 16). Tracking da .xlsx no git habilitado para
+# drift detection (antes gitignored). Workflow do publish.sh agora commita pacote
+# script + xlsx + html. Total: 45 empreendimentos, 16 incorporadoras.
 
 # ═══════════════════════════════════════════════════════════════
 # IDENTIDADE VISUAL DOM
@@ -122,7 +119,7 @@ E_RAW = [
     # ═══ ALFA ENGENHARIA ═════════════════════════════════════════════════
     ("Alfa Engenharia","Connect Península",
      "Endereço não localizado, Ponta d'Areia, São Luís - MA","Ponta d'Areia",
-     "Alto","Pré-lançamento",
+     "Vertical","Alto","Pré-lançamento",
      None,"~2024","—", None,None,None, "—",
      None,None, None,None,None,
      "N/A","N/A","site_oficial",
@@ -131,7 +128,7 @@ E_RAW = [
 
     ("Alfa Engenharia","Legacy Residence",
      "Endereço não localizado, Ponta d'Areia, São Luís - MA","Ponta d'Areia",
-     "Luxo","Lançamento",
+     "Vertical","Luxo","Lançamento",
      None,"~2023","10/2027", None,None,None, "4 suítes",
      None,None, None,None,None,
      "N/A","N/A","imprensa",
@@ -140,7 +137,7 @@ E_RAW = [
 
     ("Alfa Engenharia","LIV Residence",
      "Rua Aziz Heluy, S/N, Ponta d'Areia, São Luís - MA","Ponta d'Areia",
-     "Alto","Lançamento",
+     "Vertical","Alto","Lançamento",
      None,"~2024","—", None,None,None, "3 suítes",
      None,None, None,None,None,
      "N/A","N/A","site_oficial",
@@ -150,7 +147,7 @@ E_RAW = [
     # ═══ DELMAN ═════════════════════════════════════════════════════════
     ("Delman","Azimuth",
      "Endereço não localizado, Ponta d'Areia, São Luís - MA","Ponta d'Areia",
-     None,"Em comercialização",
+     "Vertical",None,"Em comercialização",
      30,"~2023","10/2026", 196.62,196.62,None, "3 suítes",
      3600000,3600000, None,None, 1/30,
      "tabela_local","tabela_local","imprensa",
@@ -159,7 +156,7 @@ E_RAW = [
 
     ("Delman","Landscape",
      "Avenida dos Holandeses, S/N, Calhau, São Luís - MA","Calhau",
-     None,"Lançamento",
+     "Vertical",None,"Lançamento",
      95,"2026","09/2029", 88,103,None, "3 suítes",
      1200000,1500000, None,None, 52/95,
      "tabela_local","tabela_local","imprensa",
@@ -168,7 +165,7 @@ E_RAW = [
 
     ("Delman","Quartier 22",
      "Endereço não localizado, Ponta d'Areia, São Luís - MA","Ponta d'Areia",
-     None,"Em comercialização",
+     "Vertical",None,"Em comercialização",
      30,"09/2022 ⚠ T-36","09/2025", 165,165,None, "3 suítes",
      3000000,3000000, None,None, 1/30,
      "tabela_local","tabela_local","estimativa_T-36",
@@ -177,7 +174,7 @@ E_RAW = [
 
     ("Delman","Sky Residence",
      "Endereço não localizado, Ponta d'Areia, São Luís - MA","Ponta d'Areia",
-     None,"Em comercialização",
+     "Vertical",None,"Em comercialização",
      12,"09/2024 ⚠ T-36","09/2027", 246.69,246.69,None, "4 suítes",
      4700000,4700000, None,None, 1/12,
      "tabela_local","tabela_local","estimativa_T-36",
@@ -186,7 +183,7 @@ E_RAW = [
 
     ("Delman","Studio Design 7 Península",
      "Endereço não localizado, Ponta d'Areia, São Luís - MA","Ponta d'Areia",
-     None,"Em comercialização",
+     "Vertical",None,"Em comercialização",
      125,"04/2025 ⚠ T-36","04/2028", 43,64,None, "Studio / 1Q",
      710000,1000000, None,None, 33/125,
      "tabela_local","tabela_local","estimativa_T-36",
@@ -195,7 +192,7 @@ E_RAW = [
 
     ("Delman","Wave Residence",
      "Endereço não localizado, Ponta do Farol, São Luís - MA","Ponta do Farol",
-     None,"Em comercialização",
+     "Vertical",None,"Em comercialização",
      30,"2024","03/2029", 293.69,293.69,None, "4 suítes",
      5500000,5800000, None,None, 5/30,
      "tabela_local","tabela_local","imprensa",
@@ -204,7 +201,7 @@ E_RAW = [
 
     ("Delman","The View",
      "Avenida dos Holandeses, Qd. 02, Nº 08, Calhau, São Luís - MA","Calhau",
-     None,"Pré-lançamento",
+     "Vertical",None,"Pré-lançamento",
      None,"04/2026","—", 36.05,85.87,None, "Studio a 3Q (1Q/2Q dominantes)",
      529580,1504011, None,None,None,
      "tabela_local","N/A","tabela_local",
@@ -214,7 +211,7 @@ E_RAW = [
     # ═══ ERGUS ═════════════════════════════════════════════════════════
     ("Ergus","Zion Ponta d'Areia",
      "Rua Aziz Heluy, S/N, Ponta d'Areia, São Luís - MA","Ponta d'Areia",
-     "Alto","Em comercialização",
+     "Vertical","Alto","Em comercialização",
      None,"09/2025","12/2026", 148,148,None, "4 suítes + 3 vagas",
      None,None, None,None,None,
      "site_oficial","N/A","treinamento_corretor",
@@ -223,7 +220,7 @@ E_RAW = [
 
     ("Ergus","Nexus Renascença",
      "Endereço não localizado, Renascença, São Luís - MA","Renascença",
-     "Médio-alto","Em comercialização",
+     "Vertical","Médio-alto","Em comercialização",
      None,"~2023","—", 33,94,None, "Studio a 2Q",
      None,None, None,None,None,
      "site_oficial","N/A","imprensa",
@@ -233,7 +230,7 @@ E_RAW = [
     # ═══ TREVISO ═══════════════════════════════════════════════════════
     ("Treviso","Vernazza Torre Norte",
      "Endereço não localizado, Ponta d'Areia, São Luís - MA","Ponta d'Areia",
-     "Alto","Em comercialização",
+     "Vertical","Alto","Em comercialização",
      120,"02/2025","12/2029", 130,130,None, "Aptos 130 m² — Leste/Sul/Norte",
      1820000,2235000, None,None, 0.4666666666666667,
      "tabela_local","tabela_local","informado",
@@ -242,7 +239,7 @@ E_RAW = [
 
     ("Treviso","Vernazza Torre Sul",
      "Ponta d'Areia, São Luís - MA","Ponta d'Areia",
-     "Alto","Em comercialização",
+     "Vertical","Alto","Em comercialização",
      None,"02/2025","12/2029", 87.98,90.1,None, "87,98 e 90,10 m² (Norte/Sul)",
      1277000,1586000, None,None, None,
      "tabela","tabela","informado",
@@ -251,7 +248,7 @@ E_RAW = [
 
     ("Treviso","Altos do São Francisco",
      "Bairro São Francisco, São Luís - MA","São Francisco",
-     "Médio-alto","Entregue",
+     "Vertical","Médio-alto","Entregue",
      26,"—","Pronto", 57.93,67.15,None, "2-3Q (1 ou 2 vagas)",
      495800,761700, None,None, None,
      "tabela","tabela","pendente",
@@ -261,7 +258,7 @@ E_RAW = [
     # ═══ NIÁGARA ═══════════════════════════════════════════════════════
     ("Niágara","ORO Ponta d'Areia",
      "Endereço não localizado, Ponta d'Areia, São Luís - MA","Ponta d'Areia",
-     None,"Lançamento",
+     "Vertical",None,"Lançamento",
      None,"~2026 ⚠ T-36","~2029", 80.32,160.64,None, "2-4 suítes",
      1000000,2600000, None,None,None,
      "tabela_local","N/A","estimativa_T-36",
@@ -271,7 +268,7 @@ E_RAW = [
     # ═══ MOTA MACHADO ═══════════════════════════════════════════════════
     ("Mota Machado","Edifício Bossa",
      "Endereço não localizado, Calhau, São Luís - MA","Calhau",
-     "Luxo","Lançamento",
+     "Vertical","Luxo","Lançamento",
      60,"04/2026","—", 191,195,None, "4 suítes + vista mar",
      None,None, None,None,None,
      "imprensa","N/A","imprensa",
@@ -280,7 +277,7 @@ E_RAW = [
 
     ("Mota Machado","Reserva São Marcos",
      "Endereço não localizado, Calhau, São Luís - MA","Calhau",
-     "Alto","Em comercialização",
+     "Vertical","Alto","Em comercialização",
      None,"~2024","—", None,None,None, "—",
      None,None, None,None,None,
      "site_oficial","N/A","site_oficial",
@@ -289,7 +286,7 @@ E_RAW = [
 
     ("Mota Machado","Entre Rios",
      "Rua dos Bicudos, S/N, Qd. XIV-A Lote 02, Renascença, São Luís - MA","Renascença",
-     "Alto","Lançamento",
+     "Vertical","Alto","Lançamento",
      None,"08/2024","—", 125,157,None, "3 suítes (1 master)",
      1732000,2720000, None,None, None,
      "tabela","tabela","book",
@@ -298,7 +295,7 @@ E_RAW = [
 
     ("Mota Machado","Al Mare Tirreno",
      "Av. dos Holandeses, Qd 9 Lt 9, São Marcos, São Luís - MA","São Marcos",
-     "Alto","Em comercialização",
+     "Vertical","Alto","Em comercialização",
      None,"08/2024","Pronto", 215,215,None, "4 suítes, 3 vagas",
      3025856,3120721, None,None, None,
      "tabela","tabela","book",
@@ -308,7 +305,7 @@ E_RAW = [
     # ═══ BERG ══════════════════════════════════════════════════════════
     ("Berg Engenharia","Monte Meru",
      "Endereço não localizado, Ponta d'Areia, São Luís - MA","Ponta d'Areia",
-     "Alto","Pré-lançamento",
+     "Vertical","Alto","Pré-lançamento",
      None,"~2025","—", None,None,None, "—",
      None,None, None,None,None,
      "site_oficial","N/A","site_oficial",
@@ -317,7 +314,7 @@ E_RAW = [
 
     ("Berg Engenharia","Mount Solaro",
      "Endereço não localizado, São Luís - MA","São Luís",
-     None,"Pré-lançamento",
+     "Vertical",None,"Pré-lançamento",
      None,"~2025","—", None,None,None, "—",
      None,None, None,None,None,
      "N/A","N/A","imprensa",
@@ -327,7 +324,7 @@ E_RAW = [
     # ═══ SÁ CAVALCANTE ══════════════════════════════════════════════════
     ("Sá Cavalcante","Ilha Parque Residence",
      "Endereço não localizado, Maranhão Novo, São Luís - MA","Maranhão Novo",
-     "Médio","Entregue",
+     "Horizontal","Médio","Entregue",
      120,"—","Entregue", 64,85,None, "2-3 quartos",
      None,None, None,None,None,
      "N/A","N/A","site_oficial",
@@ -342,7 +339,7 @@ E_RAW = [
     # ─── ALFA ENGENHARIA — Giardino Residenza split (Torre Fiore Norte + Torre Luce Sul) ───
     ("Alfa Engenharia","Giardino Residenza Torre Fiore",
      "Ponta do Farol, São Luís - MA","Ponta do Farol",
-     "Alto","Lançamento",
+     "Vertical","Alto","Lançamento",
      45,"02/2025","12/2029", 110.77,128.37,None, "2 suítes + varanda + dep. serviço, 3 vagas",
      1838492,2032939, None,None, None,
      "tabela","tabela","memorial",
@@ -351,7 +348,7 @@ E_RAW = [
 
     ("Alfa Engenharia","Giardino Residenza Torre Luce",
      "Ponta do Farol, São Luís - MA","Ponta do Farol",
-     "Alto","Em comercialização",
+     "Vertical","Alto","Em comercialização",
      60,"02/2025","12/2029", 93.18,101.31,None, "2 suítes/1 suíte + varanda + dep. serviço, 2 vagas",
      1442168,1595303, None,None, None,
      "tabela","tabela","memorial",
@@ -361,7 +358,7 @@ E_RAW = [
     # ─── TREVISO — Villagio Treviso ───
     ("Treviso","Villagio Treviso",
      "Endereço não localizado, São Luís - MA","São Luís",
-     None,"Em comercialização",
+     "Horizontal",None,"Em comercialização",
      None,"~2025","—", None,None,None, "Terrenos em condomínio",
      None,None, None,None,None,
      "N/A","N/A","site_oficial",
@@ -371,7 +368,7 @@ E_RAW = [
     # ─── CANOPUS — 3 lançamentos out/2025 (Imirante) ───
     ("Canopus","Village Reserva II",
      "Endereço não localizado, São Luís - MA","São Luís",
-     None,"Lançamento",
+     "Horizontal",None,"Lançamento",
      None,"10/2025","—", None,None,None, "—",
      None,None, None,None,None,
      "N/A","N/A","imprensa",
@@ -380,7 +377,7 @@ E_RAW = [
 
     ("Canopus","Village Prime Eldorado",
      "Endereço não localizado, Jardim Eldorado, São Luís - MA","Jardim Eldorado",
-     None,"Lançamento",
+     "Horizontal",None,"Lançamento",
      None,"10/2025","—", None,None,None, "—",
      None,None, None,None,None,
      "N/A","N/A","imprensa",
@@ -389,7 +386,7 @@ E_RAW = [
 
     ("Canopus","Village Del Ville II",
      "Endereço não localizado, São Luís - MA","São Luís",
-     None,"Lançamento",
+     "Horizontal",None,"Lançamento",
      None,"10/2025","—", None,None,None, "—",
      None,None, None,None,None,
      "N/A","N/A","imprensa",
@@ -399,7 +396,7 @@ E_RAW = [
     # ─── CASTELUCCI — 3 empreend. mapeados (site + Instagram + agregador) ───
     ("Castelucci","Vila Coimbra",
      "Endereço não localizado, Araçagi, São Luís - MA","Araçagi",
-     "Alto","Lançamento",
+     "Horizontal","Alto","Lançamento",
      None,"~2026","—", None,None,None, "—",
      None,None, None,None,None,
      "site_oficial","N/A","site_oficial",
@@ -408,7 +405,7 @@ E_RAW = [
 
     ("Castelucci","Villa di Carpi",
      "Endereço não localizado, Cohatrac, São Luís - MA","Cohatrac",
-     None,"Em comercialização",
+     "Horizontal",None,"Em comercialização",
      None,"~2024","—", 49,52,None, "2Q",
      None,None, None,None,None,
      "agregador","N/A","site_oficial",
@@ -417,7 +414,7 @@ E_RAW = [
 
     ("Castelucci","Residencial Ana Vitória",
      "Endereço não localizado, Araçagy, São Luís - MA","Araçagy",
-     None,"Em comercialização",
+     "Horizontal",None,"Em comercialização",
      None,"~2023","—", None,None,None, "2-3Q",
      None,None, None,None,None,
      "site_oficial","N/A","site_oficial",
@@ -427,7 +424,7 @@ E_RAW = [
     # ─── FRANERE — série Gran Park ───
     ("Franere","Varandas Grand Park",
      "Endereço não localizado, São Luís - MA","São Luís",
-     None,"Em comercialização",
+     "Horizontal",None,"Em comercialização",
      None,"~2024","—", None,None,None, "—",
      None,None, None,None,None,
      "site_oficial","N/A","site_oficial",
@@ -437,7 +434,7 @@ E_RAW = [
     # ─── LUA NOVA — 2 empreend. ───
     ("Lua Nova","Villa Adagio",
      "Endereço não localizado, São Luís - MA","São Luís",
-     None,"Em comercialização",
+     "Horizontal",None,"Em comercialização",
      None,"~2024","—", None,None,None, "—",
      None,None, None,None,None,
      "site_oficial","N/A","site_oficial",
@@ -446,7 +443,7 @@ E_RAW = [
 
     ("Lua Nova","Lagoon Residence",
      "Endereço não localizado, Santo Amaro, São Luís - MA","Santo Amaro",
-     None,"Em comercialização",
+     "Vertical",None,"Em comercialização",
      None,"~2024","—", None,None,None, "—",
      None,None, None,None,None,
      "site_oficial","N/A","site_oficial",
@@ -456,7 +453,7 @@ E_RAW = [
     # ─── MB ENGENHARIA — 3 empreend. ───
     ("DOM Incorporação","Edifício Dom Ricardo",
      "Rua dos Rouxinóis, 8, Jardim Renascença, São Luís - MA","Jardim Renascença",
-     None,"Últimas unidades",
+     "Vertical",None,"Últimas unidades",
      None,"12/2023","—", 71,85,None, "2-3Q",
      None,None, None,None, 0.06,
      "agregador","agregador","interno",
@@ -465,7 +462,7 @@ E_RAW = [
 
     ("MB Engenharia","Condomínio Prime Cohama",
      "Endereço não localizado, Cohama, São Luís - MA","Cohama",
-     None,"Em comercialização",
+     "Vertical",None,"Em comercialização",
      22,"~2023","—", 140,140,None, "Casas duplex",
      None,None, None,None,None,
      "N/A","N/A","imprensa",
@@ -474,7 +471,7 @@ E_RAW = [
 
     ("DOM Incorporação","Dom Antônio",
      "Endereço não localizado, Jardim Eldorado (Turú), São Luís - MA","Jardim Eldorado",
-     "Médio","Em comercialização",
+     "Horizontal","Médio","Em comercialização",
      None,"06/2023","—", 136,136,None, "3Q casas duplex",
      906870,906870, None,None,None,
      "agregador","N/A","interno",
@@ -484,7 +481,7 @@ E_RAW = [
     # ─── MONTEPLAN — 2 empreend. ativos ───
     ("Monteplan","Renaissance Conceito",
      "Rua Caxuxa, S/N, Renascença II, São Luís - MA","Renascença II",
-     "Alto","Lançamento",
+     "Vertical","Alto","Lançamento",
      None,"~2025","—", None,None,None, "3Q",
      None,None, None,None,None,
      "site_oficial","N/A","site_oficial",
@@ -493,7 +490,7 @@ E_RAW = [
 
     ("Monteplan","Edifício Sanpaolo",
      "Endereço não localizado, São Luís - MA","São Luís",
-     "Médio-alto","Esgotado",
+     "Vertical","Médio-alto","Esgotado",
      None,"~2023","—", None,None,None, "2-3Q",
      None,None, None,None, 0.0,
      "site_oficial","site_oficial","site_oficial",
@@ -502,7 +499,7 @@ E_RAW = [
 
     ("Monteplan","Residencial Novo Anil",
      "Rua Estevão Braga, Cohab Anil IV, São Luís - MA","Cohab Anil IV",
-     "Médio","Entregue",
+     "Vertical","Médio","Entregue",
      None,"01/2022","Pronto", 53.94,53.94,None, "—",
      324142,324142, None,None, None,
      "tabela","tabela","memorial",
@@ -512,7 +509,7 @@ E_RAW = [
     # ─── SÁ CAVALCANTE — Reserva Península (novo) ───
     ("Sá Cavalcante","Reserva Península",
      "Endereço não localizado, Ponta d'Areia (Península), São Luís - MA","Ponta d'Areia",
-     "Alto","Lançamento",
+     "Vertical","Alto","Lançamento",
      None,"10/2025","—", None,None,None, "—",
      None,None, None,None,None,
      "site_oficial","N/A","site_oficial",
@@ -522,7 +519,7 @@ E_RAW = [
     # ═══ HIALI ═════════════════════════════════════════════════════════
     ("Hiali","Le Noir",
      "Rua Osires, 05, Renascença II, São Luís - MA","Renascença II",
-     "Alto","Lançamento",
+     "Vertical","Alto","Lançamento",
      25,"04/2025","12/2027", 49.74,62.62,None, "Studios e 1-2 dorm (compactos premium)",
      710000,870000, None,None, None,
      "tabela","tabela","memorial",
@@ -532,7 +529,7 @@ E_RAW = [
     # ═══ DOM INCORPORAÇÃO (própria) ═════════════════════════════════════
     ("DOM Incorporação","Dom Lucas",
      "Tv. Boa Esperança, 101 - Cantinho do Céu, São Luís - MA, 65074-030","Cantinho do Céu",
-     "Médio-alto","Em comercialização",
+     "Horizontal","Médio-alto","Em comercialização",
      None,"02/2026","01/2029", 100.35,145.78,None, "Casa 3 dorm (1 suíte) + 2 vagas",
      835000,851000, None,None, None,
      "tabela","tabela","interno",
@@ -541,7 +538,7 @@ E_RAW = [
 
     ("DOM Incorporação","Dom José",
      "FQV9+JJ Jardim Eldorado, São Luís - MA","Jardim Eldorado",
-     "Médio-alto","Em comercialização",
+     "Horizontal","Médio-alto","Em comercialização",
      None,"06/2024","06/2027", 154.64,180.98,None, "Casa 4+ dorm, alto padrão",
      1400000,1415000, None,None, None,
      "tabela","tabela","interno",
@@ -637,22 +634,22 @@ def parse_launch_date(mes_str):
 E_PROCESSED = []
 for row in E_RAW:
     row = list(row)
-    # calcular área média (idx 11)
-    if row[11] is None:
-        row[11] = calc_area_media(row[9],row[10])
-    # calcular preço médio R$/m² (idx 15)
-    if row[15] is None:
-        row[15] = calc_preco_m2(row[13],row[14],row[9],row[10])
-    # calcular VGV (idx 16)
+    # calcular área média (idx 12 — antes 11; +1 por inserção da col Tipo)
+    if row[12] is None:
+        row[12] = calc_area_media(row[10],row[11])
+    # calcular preço médio R$/m² (idx 16 — antes 15)
     if row[16] is None:
-        row[16] = calc_vgv(row[13],row[14],row[6])
-    # auto-classificar segmento se não definido (idx 4)
-    if row[4] is None and row[15] is not None:
-        row[4] = classificar_segmento_por_m2(row[15])
-    elif row[4] is None:
-        row[4] = "—"
-    # auto-reclassificar status pelo estoque (idx 5 usando idx 17)
-    row[5] = reclassificar_status(row[5], row[17])
+        row[16] = calc_preco_m2(row[14],row[15],row[10],row[11])
+    # calcular VGV (idx 17 — antes 16)
+    if row[17] is None:
+        row[17] = calc_vgv(row[14],row[15],row[7])
+    # auto-classificar segmento se não definido (idx 5 — antes 4)
+    if row[5] is None and row[16] is not None:
+        row[5] = classificar_segmento_por_m2(row[16])
+    elif row[5] is None:
+        row[5] = "—"
+    # auto-reclassificar status pelo estoque (idx 6 usando idx 18)
+    row[6] = reclassificar_status(row[6], row[18])
     E_PROCESSED.append(tuple(row))
 
 # ═══════════════════════════════════════════════════════════════
@@ -691,7 +688,7 @@ wb = Workbook()
 
 # ── ABA 1: EMPREENDIMENTOS ─────────────────────────────────────
 ws1 = wb.active; ws1.title = "Empreendimentos"
-N_COLS_E = 24
+N_COLS_E = 25
 ws1.row_dimensions[1].height=22; ws1.row_dimensions[2].height=28; ws1.row_dimensions[3].height=18
 for r in (1,2,3):
     for c in range(1,N_COLS_E+1):
@@ -706,7 +703,7 @@ s=ws1.cell(row=3,column=4,
 s.font=font(DOM_GOLD,10,italic=True); s.alignment=Alignment(horizontal="left",vertical="center")
 
 headers_e = [
-    "Incorporadora","Empreendimento","Endereço","Bairro","Segmento","Status",
+    "Incorporadora","Empreendimento","Endereço","Bairro","Tipo","Segmento","Status",
     "Nº unid.","Mês lançamento","Mês entrega",
     "Área mín (m²)","Área máx (m²)","Tipologia média (m²)","Tipologia (dorms)",
     "Ticket mín (R$)","Ticket máx (R$)","R$/m²","VGV (R$)","% Vendido",
@@ -716,19 +713,19 @@ headers_e = [
 apply_header_row(ws1,5,headers_e)
 
 formats_e = [None]*N_COLS_E
-formats_e[9] = formats_e[10] = formats_e[11] = '0.0'
-formats_e[13] = formats_e[14] = 'R$ #,##0'
-formats_e[15] = 'R$ #,##0'
+formats_e[10] = formats_e[11] = formats_e[12] = '0.0'
+formats_e[14] = formats_e[15] = 'R$ #,##0'
 formats_e[16] = 'R$ #,##0'
-formats_e[17] = '0.0%'
+formats_e[17] = 'R$ #,##0'
+formats_e[18] = '0.0%'
 
 # §7 PADRAO.md: ordenar por Mês Lançamento DESCENDENTE (mais recente 1º),
 # depois Incorporadora A-Z, depois Empreendimento A-Z
 empreend_sorted = sorted(
     E_PROCESSED,
     key=lambda r: (
-        -parse_launch_date(r[7])[0],  # ano desc
-        -parse_launch_date(r[7])[1],  # mês desc
+        -parse_launch_date(r[8])[0],  # ano desc
+        -parse_launch_date(r[8])[1],  # mês desc
         r[0],                          # incorporadora asc
         r[1]                           # empreendimento asc
     )
@@ -740,13 +737,13 @@ for i, row_data in enumerate(empreend_sorted):
     row_fill = DOM_WHITE if row_idx%2==0 else DOM_GRAY_LIGHT
     # Converter coluna 17 (estoque fração) em % vendido = 1 - estoque
     row_values = list(row_data)
-    if isinstance(row_values[17], (int, float)):
-        row_values[17] = 1 - row_values[17]
+    if isinstance(row_values[18], (int, float)):
+        row_values[18] = 1 - row_values[18]
     for j, v in enumerate(row_values):
         cel = ws1.cell(row=row_idx, column=1+j, value=v)
         cel.font = font(DOM_GRAY_DARK, 9)
         cel.fill = fill(row_fill)
-        cel.alignment = left() if j in (2, 12, 23) else center()
+        cel.alignment = left() if j in (2, 13, 24) else center()
         cel.border = border_thin()
         if formats_e[j]:
             cel.number_format = formats_e[j]
@@ -756,7 +753,7 @@ for i, row_data in enumerate(empreend_sorted):
 
 total_row_e = 6+len(empreend_sorted)
 
-widths_e = [15,22,30,14,11,17, 7,14,11, 10,10,11,20, 13,13,11,14,10,
+widths_e = [15,22,30,14, 11, 11,17, 7,14,11, 10,10,11,20, 13,13,11,14,10,
             14,14,18, 28,10,50]
 set_column_widths(ws1, widths_e)
 ws1.freeze_panes = "C6"
@@ -811,26 +808,26 @@ for inc_name in INCORPORADORAS:
     meta = I_META.get(inc_name, ("","",""))
     emps = [r for r in E_PROCESSED if r[0]==inc_name]
     n = len(emps)
-    vgv_list = [r[16] for r in emps if r[16] is not None]
+    vgv_list = [r[17] for r in emps if r[17] is not None]
     vgv_total = sum(vgv_list) if vgv_list else None
     vgv_2024=vgv_2025=vgv_2026=0
     for r in emps:
-        if r[16] is None: continue
-        y = extract_year(r[7])
-        if y==2024: vgv_2024 += r[16]
-        elif y==2025: vgv_2025 += r[16]
-        elif y==2026: vgv_2026 += r[16]
-    segs = sorted(set(r[4] for r in emps if r[4] and r[4]!="—"))
+        if r[17] is None: continue
+        y = extract_year(r[8])
+        if y==2024: vgv_2024 += r[17]
+        elif y==2025: vgv_2025 += r[17]
+        elif y==2026: vgv_2026 += r[17]
+    segs = sorted(set(r[5] for r in emps if r[5] and r[5]!="—"))
     bairros = sorted(set(r[3] for r in emps if r[3]))
     tickets = []
     for r in emps:
-        if r[13] is not None and r[14] is not None:
-            tickets.append((r[13]+r[14])/2)
+        if r[14] is not None and r[15] is not None:
+            tickets.append((r[14]+r[15])/2)
     ticket_med = sum(tickets)/len(tickets) if tickets else None
-    precos_m2 = [r[15] for r in emps if r[15] is not None]
+    precos_m2 = [r[16] for r in emps if r[16] is not None]
     preco_m2_med = sum(precos_m2)/len(precos_m2) if precos_m2 else None
     # % com arquivo: heurística — se tem tabela_local em preços OU estoque
-    com_arquivo = sum(1 for r in emps if r[18]=="tabela_local" or r[19]=="tabela_local")
+    com_arquivo = sum(1 for r in emps if r[19]=="tabela_local" or r[20]=="tabela_local")
     pct_arquivo = (com_arquivo / n) if n else 0
     I_ROWS.append((
         inc_name, n,
@@ -918,5 +915,5 @@ wb.save(OUT)
 print(f"✓ Salvo: {OUT}")
 print(f"  Empreendimentos: {len(E_PROCESSED)}")
 print(f"  Incorporadoras:  {len(I_ROWS)} (ativas: {sum(1 for r in I_ROWS if r[1]>0)}, sem material: {sum(1 for r in I_ROWS if r[1]==0)})")
-print(f"  VGV total mapeado: R$ {sum(r[16] for r in E_PROCESSED if r[16]):,.0f}")
-print(f"  Preço médio calculado para: {sum(1 for r in E_PROCESSED if r[15])} de {len(E_PROCESSED)} empreend.")
+print(f"  VGV total mapeado: R$ {sum(r[17] for r in E_PROCESSED if r[17]):,.0f}")
+print(f"  Preço médio calculado para: {sum(1 for r in E_PROCESSED if r[16])} de {len(E_PROCESSED)} empreend.")

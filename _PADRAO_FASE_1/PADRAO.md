@@ -1,27 +1,53 @@
 # PADRÃO FASE 1 — Inteligência de Mercado DOM
-**Versão:** 1.2 (atualizada em 14/04/2026)
+**Versão:** 2.0 (atualizada em 25/04/2026)
 **Status:** 🟢 APROVADO pelo Rafael
 
 > **ATENÇÃO — Claude:** este documento é um CONTRATO. Toda vez que o Rafael
 > disser qualquer um dos 5 comandos (§5), LEIA ESTE ARQUIVO E O SCRIPT
-> `gerar_planilha.py` ANTES de executar qualquer ação. Não improvise regras
-> fora deste padrão. Para qualquer mudança estrutural, **peça aprovação
-> explícita** antes de alterar este arquivo.
+> `gerar_planilha.py` ANTES de executar qualquer ação. **Antes de QUALQUER
+> alteração de dado, executar o protocolo de §0 (sanity check de drift).**
+> Não improvise regras fora deste padrão. Para qualquer mudança estrutural,
+> **peça aprovação explícita** antes de alterar este arquivo.
 
 ---
 
 ## Sumário
-1. Dicionário de dados — aba Empreendimentos (24 colunas)
-2. Dicionário de dados — aba Incorporadoras (17 colunas)
+0. Invariantes operacionais (3 regras invioláveis)
+1. Dicionário de dados — aba Empreendimentos (25 colunas)
+2. Dicionário de dados — aba Incorporadoras (15 colunas)
 3. Regras de cálculo (fórmulas congeladas)
 4. Enumerações fixas
 5. Comandos padronizados (5 gatilhos)
 6. Hierarquia de fontes
 7. Output e naming
+8. Estado e versionamento (git)
 
 ---
 
-## 1. Aba Empreendimentos — 24 colunas
+## 0. Invariantes operacionais (3 regras invioláveis)
+
+Estas regras existem porque já tivemos perda de dados entre sessões. **São absolutas.**
+
+### 0.1 Fonte da verdade ÚNICA: `gerar_planilha.py`
+Toda informação de empreendimento mora dentro do `E_RAW` em `_PADRAO_FASE_1/gerar_planilha.py`. **Não é permitido editar `.xlsx` ou `index.html` diretamente.** Estes são *outputs* derivados — qualquer edição neles é sobrescrita na próxima rodada do script.
+
+### 0.2 Commit em pacote: script + xlsx + html
+Ao regerar a planilha, os 3 arquivos são commitados juntos via `publish.sh`:
+- `_PADRAO_FASE_1/gerar_planilha.py` (source-of-truth)
+- `Planilha_Mestre_Panorama_vX.Y.xlsx` (output Excel — ver §8 sobre tracking)
+- `index.html` (output HTML)
+
+Commit isolado de qualquer um dos 3 sem os outros = drift potencial. Mensagem de commit segue o padrão `vX.Y — descrição curta`.
+
+### 0.3 Sanity check de drift no início de cada sessão
+Antes de fazer qualquer alteração de dado, Claude executa:
+1. `git status` em `00_ESTUDO_CONSOLIDADO/` — se houver `.py` modificado e não commitado, **PARAR** e avisar Rafael que existe drift de sessão anterior.
+2. Contar `len(E_RAW)` e comparar com o número de linhas da última `.xlsx` commitada. Se script gera **menos** empreendimentos que a `.xlsx`, **PARAR** e alertar.
+3. Só prossegue depois de Rafael confirmar.
+
+---
+
+## 1. Aba Empreendimentos — 25 colunas
 
 | # | Campo | Tipo | Formato / Regra | Obrig. |
 |---|---|---|---|---|
@@ -29,28 +55,31 @@
 | 2 | Empreendimento | Texto | Nome comercial | ✅ |
 | 3 | Endereço | Texto | `Rua, Nº, Bairro, São Luís - MA`. Se não souber: `Não localizado` | ✅ (formato) |
 | 4 | Bairro | Texto | Bairro oficial | ✅ |
-| 5 | Segmento | Enum §4.2 | Classificado por R$/m² calculado, não por ticket | ✅ |
-| 6 | Status | Enum §4.3 | Status comercial (não físico) | ✅ |
-| 7 | Nº total unidades | Inteiro | Da memorial/book/web | ⚠️ |
-| 8 | Mês lançamento | Data MM/AAAA | Se estimado, sufixar `⚠ T-36` | ✅ |
-| 9 | Mês entrega | Data MM/AAAA | | ⚠️ |
-| 10 | Área mín (m²) | Decimal | | ⚠️ |
-| 11 | Área máx (m²) | Decimal | | ⚠️ |
-| 12 | Tipologia média (m²) | Calculado | `(área_min + área_max) / 2` | 🔄 |
-| 13 | Tipologia (dorms) | Texto | Ex: `2Q (1 suíte) a 3Q (1 suíte)` | ⚠️ |
-| 14 | Ticket mín (R$) | Moeda | | ⚠️ |
-| 15 | Ticket máx (R$) | Moeda | | ⚠️ |
-| 16 | Preço médio R$/m² | Calculado | §3.1 | 🔄 |
-| 17 | VGV estimado (R$) | Calculado | §3.2 | 🔄 |
-| 18 | % Vendido | Calculado | §3.3. Inverso do estoque (1 − estoque%). Sem coloração condicional. | 🔄 |
-| 19 | Origem preços | Enum §4.4 | | ✅ |
-| 20 | Origem estoque | Enum §4.4 | | ✅ |
-| 21 | Origem lançamento | Enum §4.4 | | ✅ |
-| 22 | Link fonte principal | URL | Obrigatório se origem ≠ tabela_local | ⚠️ |
-| 23 | Data última verificação | Data DD/MM/AAAA | | ✅ |
-| 24 | Observações | Texto livre | Números absolutos do estoque, datas da tabela usada | opcional |
+| 5 | **Tipo** | **Enum §4.5** | **Vertical / Horizontal / Misto** | ✅ |
+| 6 | Segmento | Enum §4.2 | Classificado por R$/m² calculado, não por ticket | ✅ |
+| 7 | Status | Enum §4.3 | Status comercial (não físico) | ✅ |
+| 8 | Nº total unidades | Inteiro | Da memorial/book/web | ⚠️ |
+| 9 | Mês lançamento | Data MM/AAAA | Se estimado, sufixar `⚠ T-36` | ✅ |
+| 10 | Mês entrega | Data MM/AAAA | | ⚠️ |
+| 11 | Área mín (m²) | Decimal | | ⚠️ |
+| 12 | Área máx (m²) | Decimal | | ⚠️ |
+| 13 | Tipologia média (m²) | Calculado | `(área_min + área_max) / 2` | 🔄 |
+| 14 | Tipologia (dorms) | Texto | Ex: `2Q (1 suíte) a 3Q (1 suíte)` | ⚠️ |
+| 15 | Ticket mín (R$) | Moeda | | ⚠️ |
+| 16 | Ticket máx (R$) | Moeda | | ⚠️ |
+| 17 | Preço médio R$/m² | Calculado | §3.1 | 🔄 |
+| 18 | VGV estimado (R$) | Calculado | §3.2 | 🔄 |
+| 19 | % Vendido | Calculado | §3.3. Inverso do estoque (1 − estoque%). Sem coloração condicional. | 🔄 |
+| 20 | Origem preços | Enum §4.4 | | ✅ |
+| 21 | Origem estoque | Enum §4.4 | | ✅ |
+| 22 | Origem lançamento | Enum §4.4 | | ✅ |
+| 23 | Link fonte principal | URL | Obrigatório se origem ≠ tabela_local | ⚠️ |
+| 24 | Data última verificação | Data DD/MM/AAAA | | ✅ |
+| 25 | Observações | Texto livre | Números absolutos do estoque, datas da tabela usada | opcional |
 
-## 2. Aba Incorporadoras — 17 colunas
+> **v2.0 (25/04/2026):** coluna **Tipo** (Vertical/Horizontal/Misto) formalizada como col. 5. Antes existia em sessões anteriores mas não estava no PADRAO — daí o drift que perdeu a classificação na v4.17.
+
+## 2. Aba Incorporadoras — 15 colunas
 
 | # | Campo | Tipo |
 |---|---|---|
@@ -131,9 +160,10 @@ flag = "⚠ T-36"
 
 ## 4. Enumerações fixas
 
-### 4.1 Incorporadoras monitoradas (14 — lista fechada)
-Mota Machado, Berg Engenharia, Alfa Engenharia, Lua Nova, Delman, Treviso, Ergus, Monteplan, Franere, Canopus, Niágara, MB Engenharia, Sá Cavalcante, **Castelucci**.
+### 4.1 Incorporadoras monitoradas (16 — lista fechada)
+Mota Machado, Berg Engenharia, Alfa Engenharia, Lua Nova, Delman, Treviso, Ergus, Monteplan, Franere, Canopus, Niágara, MB Engenharia, Sá Cavalcante, **Castelucci**, **Hiali**, **DOM Incorporação**.
 
+> **v2.0 (25/04/2026):** +Hiali (Le Noir), +DOM Incorporação (própria — para benchmarking interno: Dom Lucas, Dom José, e parcerias com MB em Dom Antônio + Edifício Dom Ricardo).
 > Adicionar/remover: só com aprovação explícita do Rafael; atualizar este arquivo.
 
 ### 4.2 Segmento (por R$/m² médio calculado — São Luís, 2026)
@@ -162,6 +192,15 @@ Mota Machado, Berg Engenharia, Alfa Engenharia, Lua Nova, Delman, Treviso, Ergus
 **Origem estoque:** `tabela_local` | `site_oficial` | `agregador` | `corretor` | `estimativa`
 **Origem lançamento:** `book` | `release` | `treinamento_corretor` | `site_oficial` | `imprensa` | `estimativa_T-36`
 
+### 4.5 Tipo (vertical vs. horizontal)
+| Tipo | Definição | Exemplos |
+|---|---|---|
+| Vertical | Edifício multifamiliar (apartamentos) | The View, Bossa, Quartier 22 |
+| Horizontal | Condomínio de casas, sobrados, lotes | Dom Lucas, Dom José, Dom Antônio, Villagio Treviso |
+| Misto | Empreendimento com torres + casas, ou loteamento + condomínio vertical | (raros — usar só se claramente híbrido) |
+
+⚠️ Esta classificação é fundamental para análise de oportunidades — bairros como Eldorado/Cohatrac concentram horizontal, enquanto Ponta d'Areia/Calhau dominam vertical alto.
+
 ---
 
 ## 5. Comandos padronizados (5 gatilhos)
@@ -169,16 +208,18 @@ Mota Machado, Berg Engenharia, Alfa Engenharia, Lua Nova, Delman, Treviso, Ergus
 ### 5.1 "atualiza o estudo"
 Passo-a-passo obrigatório:
 1. Ler este PADRAO.md primeiro
-2. Varrer `/01.Inteligência Mercado/XX_*/` por arquivos novos
-3. Para cada uma das 14 incorporadoras: pesquisa web obrigatória nesta ordem:
+2. **Executar §0.3 — sanity check de drift** (parar se script ≠ última xlsx)
+3. Varrer `/01.Inteligência Mercado/XX_*/` por arquivos novos
+4. Para cada uma das 16 incorporadoras (excl. DOM Incorporação que é nossa, mas inclui-la para tracking interno): pesquisa web obrigatória nesta ordem:
    a. **Instagram oficial** (últimos ~20 posts — buscar lançamentos, tabelas, teasers)
    b. **Site oficial** (empreendimentos atuais, atualizações de tabela)
    c. 1 portal agregador (Ziag ou MGF)
    d. 1 busca de notícias (Imirante/Diego Emir)
-4. Aplicar regras §3 para recalcular campos 12, 16, 17, 18
-5. Reclassificar Segmento (§4.2) e Status (§4.3) com base nos valores novos
-6. Gerar planilha chamando `gerar_planilha.py`
-7. Escrever mini-changelog no final do chat (o que mudou, novas linhas, alertas)
+5. Aplicar regras §3 para recalcular campos calculados
+6. Reclassificar Segmento (§4.2) e Status (§4.3) com base nos valores novos
+7. Gerar planilha chamando `gerar_planilha.py`
+8. Executar `publish.sh` (regera HTML + commita pacote)
+9. Escrever mini-changelog no final do chat (o que mudou, novas linhas, alertas)
 
 ### 5.2 "analisa [incorporadora]"
 1. Ler este PADRAO.md
@@ -201,16 +242,18 @@ Passo-a-passo obrigatório:
 1. Ler planilha atual
 2. Cruzar dados para encontrar:
    - Gap segmento × bairro (ex: "nenhum luxo no Renascença")
+   - Gap **Tipo** × bairro (ex: "nenhum horizontal no Calhau")
    - Faixas de ticket pouco disputadas
    - Tipologias ausentes (ex: "nenhum 4Q no Calhau")
    - Bairros com 0-1 concorrente
 3. Retornar lista priorizada de 5 oportunidades com: descrição, racional quantitativo, movimento DOM sugerido
 
 ### 5.5 "adicionei arquivos de [incorporadora]"
-1. Ler SÓ os arquivos novos na pasta indicada
-2. Atualizar SÓ as linhas da incorporadora citada
-3. Regerar planilha com versão minor bumpada (ex: v2.0 → v2.1)
-4. Reportar diff daquela incorporadora
+1. **Executar §0.3 — sanity check de drift**
+2. Ler SÓ os arquivos novos na pasta indicada
+3. Atualizar SÓ as linhas da incorporadora citada
+4. Regerar planilha + HTML via `publish.sh` (versão minor bumpada, ex: v5.0 → v5.1)
+5. Reportar diff daquela incorporadora
 
 ---
 
@@ -227,7 +270,7 @@ Passo-a-passo obrigatório:
 
 **Regra de conflito:** quando Instagram e site divergem, Instagram prevalece para informações de <90 dias (lançamentos, campanhas, eventos); site prevalece para informações consolidadas (plantas, tabela cheia).
 
-> `Link fonte principal` (col. 22) é obrigatório quando Origem preços ≠ `tabela_local`.
+> `Link fonte principal` (col. 23) é obrigatório quando Origem preços ≠ `tabela_local`.
 
 ---
 
@@ -244,10 +287,42 @@ Passo-a-passo obrigatório:
 Empreendimentos sem data de lançamento vão para o fim da lista.
 
 **Regra de versão:**
-- `X` muda com alteração estrutural (nova coluna, nova aba, mudança em §1-§4)
-- `Y` muda com nova carga de dados sem mudança estrutural
+- `X` (major): mudança estrutural — nova coluna, nova aba, novo enum, mudança em §0–§4
+- `Y` (minor): nova carga de dados, correções, novos empreendimentos, sem mudança estrutural
 
 Arquivos antigos mantidos (histórico). Ao regerar, criar novo vY+1, não sobrescrever.
+
+---
+
+## 8. Estado e versionamento (git)
+
+### 8.1 Política de tracking
+| Arquivo | No git? | Motivo |
+|---|---|---|
+| `_PADRAO_FASE_1/gerar_planilha.py` | ✅ Sim | Source-of-truth |
+| `_PADRAO_FASE_1/PADRAO.md` | ✅ Sim | Contrato |
+| `build_panorama.py` | ✅ Sim | Gerador HTML |
+| `publish.sh` | ✅ Sim | Workflow |
+| `Planilha_Mestre_Panorama_vX.Y.xlsx` | ✅ Sim (atual) | **Mudança v2.0** — antes era gitignored, agora trackeado para drift detection |
+| `index.html` | ✅ Sim | Output publicado (GitHub Pages) |
+| Books, tabelas PDF nas pastas de incorporadoras | ❌ Não | Material de origem, fica local |
+
+### 8.2 Mudança de política (v2.0)
+A v1.x do PADRAO mantinha `.xlsx` no `.gitignore` ("planilha fica local"). **Reverte-se essa decisão** porque:
+1. O dado já está commitado dentro do `E_RAW` no `gerar_planilha.py` — não há ganho de privacidade em ocultar a `.xlsx`.
+2. Sem `.xlsx` no git, sessões diferentes não conseguem detectar drift entre script-fonte e output materializado.
+3. O incidente da v4.16→v4.17 (perda de 12 empreendimentos) só foi detectável porque a `.xlsx` órfã sobreviveu localmente — em ambiente menos sortudo, teria sido perda silenciosa.
+
+### 8.3 Mensagens de commit
+Formato obrigatório: `vX.Y — <descrição curta de 1 linha>`.
+Exemplos válidos: `v4.18 — Reconciliação +The View +Hiali`, `v5.0 — Coluna Tipo formalizada`.
+Exemplos a EVITAR: `update`, `1`, `2`, `m`, `datas`.
+
+### 8.4 Workflow de mudança
+1. Toda alteração começa editando `gerar_planilha.py` (E_RAW ou I_META).
+2. Rodar `publish.sh` — ele regenera xlsx + html, commita os 3 juntos, e dá push.
+3. **Nunca** editar `.xlsx` ou `index.html` direto.
+4. Para mudanças estruturais (nova coluna, novo enum), atualizar este PADRAO.md ANTES de mexer no script.
 
 ---
 

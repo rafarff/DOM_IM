@@ -1,10 +1,12 @@
 #!/usr/bin/env bash
 # ─── DOM Incorporação · Publish Panorama ──────────────────────────────────
-# 1. Regenera Planilha Mestre via gerar_planilha.py (source of truth)
-# 2. Regenera index.html via build_panorama.py
-# 3. Commit gerar_planilha.py + build_panorama.py + index.html + push
-#    (planilhas .xlsx ficam LOCAIS — gitignored por política, são output)
-# Uso:  ./publish.sh "Mensagem opcional do commit"
+# 1. Limpa locks travados de runs anteriores (defesa contra index.lock órfão)
+# 2. Regenera Planilha Mestre via gerar_planilha.py (source of truth)
+# 3. Regenera index.html via build_panorama.py
+# 4. Commit pacote completo + push
+#
+# Política v2.0 do PADRAO: tracking permissivo (.xlsx commitada, sem .gitignore
+# restritivo). Uso:  ./publish.sh "Mensagem opcional do commit"
 # ──────────────────────────────────────────────────────────────────────────
 set -e
 
@@ -18,6 +20,12 @@ echo "  DOM · Panorama de Lançamentos · Publish"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo ""
 
+# 0. Limpa locks travados (sandbox às vezes deixa órfãos quando crash)
+if [ -f .git/index.lock ] || [ -f .git/HEAD.lock ]; then
+    echo "▸ Limpando locks órfãos do git..."
+    rm -f .git/index.lock .git/HEAD.lock
+fi
+
 # 1. Regenera Planilha Mestre a partir do source-of-truth (gerar_planilha.py)
 echo "▸ Regenerando Planilha Mestre (gerar_planilha.py)..."
 python3 _PADRAO_FASE_1/gerar_planilha.py
@@ -27,28 +35,23 @@ echo ""
 echo "▸ Regenerando index.html (build_panorama.py)..."
 python3 build_panorama.py
 
-# 3. Verifica se há mudanças em SOURCE ou no HTML
-HAS_CHANGES=0
-if ! git diff --quiet _PADRAO_FASE_1/gerar_planilha.py 2>/dev/null; then HAS_CHANGES=1; fi
-if ! git diff --quiet build_panorama.py 2>/dev/null; then HAS_CHANGES=1; fi
-if ! git diff --quiet index.html 2>/dev/null; then HAS_CHANGES=1; fi
-if ! git ls-files --error-unmatch index.html > /dev/null 2>&1; then HAS_CHANGES=1; fi
-
-if [ "$HAS_CHANGES" -eq 0 ]; then
-    echo ""
-    echo "✓ Nada a publicar (sem mudanças em source nem em HTML)."
-    exit 0
-fi
-
-# 4. Commit (script-fonte + html) e push
+# 3. Adiciona pacote completo ao git (tracking permissivo)
 echo ""
-echo "▸ Adicionando arquivos:"
-echo "    • _PADRAO_FASE_1/gerar_planilha.py (source-of-truth)"
-echo "    • build_panorama.py (gerador de HTML)"
-echo "    • index.html (output publicado)"
+echo "▸ Adicionando arquivos ao git..."
+git add _PADRAO_FASE_1/PADRAO.md
 git add _PADRAO_FASE_1/gerar_planilha.py
 git add build_panorama.py
+git add publish.sh
+git add .gitignore
+git add "Planilha_Mestre_Panorama_v"*.xlsx 2>/dev/null || true
 git add index.html
+
+# 4. Verifica se há algo realmente novo
+if git diff --cached --quiet; then
+    echo ""
+    echo "✓ Nada a publicar (sem mudanças)."
+    exit 0
+fi
 
 echo ""
 echo "▸ Commit: \"$MSG\""
