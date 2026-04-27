@@ -358,7 +358,7 @@ def enrich(rows: list[dict], include_all: bool = False) -> list[dict]:
             "area_min":       r.get("Área mín (m²)"),
             "area_max":       r.get("Área máx (m²)"),
             "area_med":       r.get("Tipologia média (m²)"),
-            "dorms":          r.get("Tipologia (dorms)") or "—",
+            "dorms":          r.get("Tipologia") or "—",  # v6.1: header xlsx renomeado de "Tipologia (dorms)" para "Tipologia"
             "ticket_min":     r.get("Ticket mín (R$)"),
             "ticket_max":     r.get("Ticket máx (R$)"),
             "rsm2":           r.get("R$/m²"),
@@ -629,7 +629,7 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
           <th data-col="area_min">Área mín</th>
           <th data-col="area_max">Área máx</th>
           <th data-col="area_med">Área méd</th>
-          <th data-col="dorms">Dorms</th>
+          <th data-col="dorms">Tipologia</th>
           <th data-col="ticket_min">Ticket mín</th>
           <th data-col="ticket_max">Ticket máx</th>
           <th data-col="rsm2">R$/m²</th>
