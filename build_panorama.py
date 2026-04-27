@@ -814,6 +814,13 @@ function renderMap(data) {
     note.classList.remove('show');
   }
 }
+function tipologiaDetail(obs) {
+  // Extrai trecho "Tipologia detalhada: ..." das Observações para tooltip do ℹ
+  if (!obs) return null;
+  const m = String(obs).match(/Tipologia detalhada: (.+?)\.\s/);
+  return m ? m[1] : null;
+}
+
 function renderTable(data) {
   const doSort = arr => [...arr].sort((a,b) => {
     let av = a[sortCol] ?? '';
@@ -844,7 +851,7 @@ function renderTable(data) {
         <td><span class="chip ${tipoClass(e.tipo)}">${e.tipo}</span></td>
         <td><span class="chip ${segClass(e.segmento)}">${e.segmento}</span></td>
         <td class="price" style="font-weight:600">${e.lancamento}${e.lancamento_origem && e.lancamento_origem !== '—' ? ` <span class="info-icon" title="Origem da data: ${e.lancamento_origem}">ℹ</span>` : ''}</td>
-        <td class="dim" style="font-size:11px">${e.dorms || '—'}</td>
+        <td class="dim" style="font-size:11px">${e.dorms || '—'}${(() => { const d = tipologiaDetail(e.obs); return d ? ` <span class="info-icon" title="Tipologia detalhada: ${d.replace(/"/g, '&quot;')}">ℹ</span>` : ''; })()}</td>
         <td class="price">${area}</td>
         <td class="price">${ticket}${e.orig_precos && e.orig_precos !== '—' ? ` <span class="info-icon" title="Origem dos preços: ${e.orig_precos}">ℹ</span>` : ''}</td>
         <td class="price">R$ ${formatBRL(e.rsm2)}${e.orig_precos && e.orig_precos !== '—' ? ` <span class="info-icon" title="Origem dos preços: ${e.orig_precos}">ℹ</span>` : ''}</td>
@@ -867,7 +874,7 @@ function renderTable(data) {
         <td><span class="chip ${tipoClass(e.tipo)}">${e.tipo}</span></td>
         <td><span class="chip ${segClass(e.segmento)}">${e.segmento}</span></td>
         <td class="dim">${e.lancamento}${e.lancamento_origem && e.lancamento_origem !== '—' ? ` <span class="info-icon" title="Origem da data: ${e.lancamento_origem}">ℹ</span>` : ''}</td>
-        <td class="dim" style="font-size:11px">${e.dorms || '—'}</td>
+        <td class="dim" style="font-size:11px">${e.dorms || '—'}${(() => { const d = tipologiaDetail(e.obs); return d ? ` <span class="info-icon" title="Tipologia detalhada: ${d.replace(/"/g, '&quot;')}">ℹ</span>` : ''; })()}</td>
         <td><span class="chip or-pendente" title="Precisa buscar tabela">${faltam.join(' · ')}</span></td>
       </tr>
     `;

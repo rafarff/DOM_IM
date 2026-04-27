@@ -1,5 +1,5 @@
 # PADRÃO FASE 1 — Inteligência de Mercado DOM
-**Versão:** 3.0 (atualizada em 27/04/2026)
+**Versão:** 3.1 (atualizada em 27/04/2026)
 **Status:** 🟢 APROVADO pelo Rafael
 
 > **ATENÇÃO — Claude:** este documento é um CONTRATO. Toda vez que o Rafael
@@ -63,7 +63,7 @@ Antes de fazer qualquer alteração de dado, Claude executa:
 | 10 | Área mín (m²) | Decimal | | ⚠️ |
 | 11 | Área máx (m²) | Decimal | | ⚠️ |
 | 12 | Tipologia média (m²) | Calculado | `(área_min + área_max) / 2` | 🔄 |
-| 13 | Tipologia (dorms) | Texto | Ex: `2Q (1 suíte) a 3Q (1 suíte)` | ⚠️ |
+| 13 | Tipologia | Enum §4.6 | Combinação curta: `Studio`, `1D`, `2D`, `3D`, `4D`, `Lote` (separar por `;` se múltiplas). Ex: `Studio; 2D; 3D` | ✅ |
 | 14 | Ticket mín (R$) | Moeda | | ⚠️ |
 | 15 | Ticket máx (R$) | Moeda | | ⚠️ |
 | 16 | Preço médio R$/m² | Calculado | §3.1 | 🔄 |
@@ -196,6 +196,24 @@ Mota Machado, Berg Engenharia, Alfa Engenharia, Lua Nova, Delman, Treviso, Ergus
 | Misto | Empreendimento com torres + casas, ou loteamento + condomínio vertical | (raros — usar só se claramente híbrido) |
 
 ⚠️ Esta classificação é fundamental para análise de oportunidades — bairros como Eldorado/Cohatrac concentram horizontal, enquanto Ponta d'Areia/Calhau dominam vertical alto.
+
+### 4.6 Tipologia (dormitórios) — enum padronizado v3.1
+| Código | Significado |
+|---|---|
+| Studio | Studio (1 ambiente, sem dormitório separado) |
+| 1D | 1 dormitório (quarto-sala / 1 suíte) |
+| 2D | 2 dormitórios (suítes ou comuns — não distinguimos) |
+| 3D | 3 dormitórios |
+| 4D | 4 dormitórios |
+| Lote | Loteamento / terreno em condomínio (sem dormitório, ainda categoria válida) |
+| — | Sem dado (precisa book/tabela) |
+
+**Regras:**
+- Múltiplas tipologias num mesmo empreendimento: separar por `; ` (ex: `Studio; 1D; 2D`)
+- **Suíte conta como dormitório** — não distinguimos suíte vs comum no código curto. Detalhes (master, closet, banheiro duplo, etc.) ficam nas **Observações** com prefixo `Tipologia detalhada: ...`
+- **HTML mostra o código curto** + ícone ℹ que abre tooltip com a descrição detalhada (extraída das Observações)
+
+⚠️ **v3.1 (27/04/2026):** Antes da v3.1, col 13 era texto livre ("Tipologia (dorms)") com formato heterogêneo. Agora é enum estruturado. Valores antigos foram migrados para Observações com prefixo `Tipologia detalhada:` para preservar info qualitativa.
 
 ---
 
