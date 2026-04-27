@@ -45,6 +45,7 @@ git add publish.sh
 git add .gitignore
 git add "Planilha_Mestre_Panorama_v"*.xlsx 2>/dev/null || true
 git add index.html
+git add dom_logo.png 2>/dev/null || true  # logo embutido no HTML como data URI
 
 # 4. Verifica se há algo realmente novo
 if git diff --cached --quiet; then

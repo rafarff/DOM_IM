@@ -418,7 +418,7 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: 'Calibri', 'Arial', sans-serif; background: var(--dom-gray-light); color: var(--dom-gray-dark); line-height: 1.5; }
-  .hero { background: var(--dom-black); color: var(--dom-white); padding: 32px 40px 28px; border-bottom: 4px solid var(--dom-gold); }
+  .hero { background: var(--dom-gray-dark); color: var(--dom-white); padding: 32px 40px 28px; border-bottom: 4px solid var(--dom-gold); }
   .hero-inner { max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
   .hero-brand { display: flex; align-items: center; gap: 20px; }
   .hero-logo { height: 60px; width: auto; }
@@ -432,7 +432,7 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
   .kpi .label { font-size: 11px; color: var(--dom-gray-mid); text-transform: uppercase; letter-spacing: 1.2px; }
   .kpi .value { font-size: 26px; font-weight: 700; color: var(--dom-black); margin-top: 6px; }
   .kpi .unit { font-size: 13px; color: var(--dom-gray-dark); margin-left: 4px; font-weight: 400; }
-  .kpi.highlight { background: var(--dom-black); color: var(--dom-white); border-left-color: var(--dom-gold); }
+  .kpi.highlight { background: var(--dom-gray-dark); color: var(--dom-white); border-left-color: var(--dom-gold); }
   .kpi.highlight .value { color: var(--dom-gold); } .kpi.highlight .label { color: var(--dom-gold-light); } .kpi.highlight .unit { color: var(--dom-white); }
   .filters { background: var(--dom-white); padding: 16px 20px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
   .filters label { font-size: 11px; color: var(--dom-gray-mid); text-transform: uppercase; letter-spacing: 0.8px; display: block; margin-bottom: 4px; }
@@ -482,9 +482,6 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
   .info-icon { display: inline-block; width: 14px; height: 14px; line-height: 13px; text-align: center; border-radius: 50%; background: var(--dom-gold-light); color: var(--dom-gold-dark); font-size: 10px; font-style: normal; font-weight: 700; cursor: help; margin-left: 4px; vertical-align: middle; transition: all 0.15s; }
   .info-icon:hover { background: var(--dom-gold); color: var(--dom-black); }
   .origem.pending{ border-left-color: #B54B3A; color: #B54B3A; font-weight: 600; }
-  .origem-legend { display: flex; flex-wrap: wrap; gap: 10px 18px; padding: 10px 14px; background: #FAFAF5; border-left: 3px solid var(--dom-gold); margin-top: 8px; font-size: 11px; color: var(--dom-gray-dark); }
-  .origem-legend strong { color: var(--dom-black); font-size: 11px; letter-spacing: 0.5px; margin-right: 4px; }
-  .origem-legend .item { display: inline-flex; align-items: center; gap: 6px; }
   .chip.tp-vertical   { background: #3B4371; color: #FFFFFF; }
   .chip.tp-horizontal { background: #5D7A3C; color: #FFFFFF; }
   .chip.tp-other      { background: var(--dom-gray-light); color: var(--dom-gray-dark); }
@@ -528,13 +525,48 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
 </style>
 </head>
 <body>
+<!-- Pseudo-senha (não é segurança forte; bloqueia usuários casuais) -->
+<div id="pwd-gate" style="position:fixed;inset:0;background:#4D4D4D;z-index:99999;display:flex;align-items:center;justify-content:center;font-family:'Calibri','Arial',sans-serif;">
+  <div style="background:#fff;padding:40px 48px;border-top:4px solid #C9A84C;box-shadow:0 4px 24px rgba(0,0,0,0.3);max-width:380px;text-align:center;">
+    <div style="font-size:11px;letter-spacing:2px;color:#8C8C8C;text-transform:uppercase;margin-bottom:8px;">DOM Incorporação</div>
+    <div style="font-size:18px;font-weight:600;color:#000;margin-bottom:24px;letter-spacing:0.5px;">Inteligência de Mercado</div>
+    <input id="pwd-input" type="password" placeholder="Senha de acesso" autofocus
+           style="width:100%;padding:12px 14px;border:1px solid #ccc;border-radius:4px;font-size:14px;font-family:inherit;outline:none;margin-bottom:12px;"
+           onkeydown="if(event.key==='Enter')checkPwd()" />
+    <button onclick="checkPwd()" style="width:100%;padding:12px;background:#C9A84C;border:none;color:#000;font-size:13px;font-weight:600;letter-spacing:1px;text-transform:uppercase;cursor:pointer;border-radius:4px;font-family:inherit;">Entrar</button>
+    <div id="pwd-err" style="color:#8C2525;font-size:12px;margin-top:12px;display:none;">Senha incorreta</div>
+  </div>
+</div>
+<script>
+const PWD_HASH = "81da67e9aed4bda371aaaeae1b81d014d7e70a355bd917fce8c2e718745e4848"; // senha: DOM2026 (troque o hash com sha256 da nova senha)
+async function sha256Hex(s) {
+  const buf = new TextEncoder().encode(s);
+  const hash = await crypto.subtle.digest("SHA-256", buf);
+  return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2, "0")).join("");
+}
+async function checkPwd() {
+  const inp = document.getElementById("pwd-input").value;
+  const h = await sha256Hex(inp);
+  if (h === PWD_HASH) {
+    sessionStorage.setItem("dom-auth", "1");
+    document.getElementById("pwd-gate").style.display = "none";
+  } else {
+    document.getElementById("pwd-err").style.display = "block";
+  }
+}
+// Pula gate se já autenticou nessa sessão
+if (sessionStorage.getItem("dom-auth") === "1") {
+  document.getElementById("pwd-gate").style.display = "none";
+}
+</script>
+
 <header class="hero">
   <div class="hero-inner">
     <div class="hero-brand">
       <img class="hero-logo" src="__LOGO_B64__" alt="DOM Incorporação" />
       <div>
         <h1>INTELIGÊNCIA DE MERCADO</h1>
-        <div class="subtitle">Panorama de Lançamentos — Grande São Luís · __CICLO__</div>
+        <div class="subtitle">Panorama de Lançamentos — Grande São Luís</div>
       </div>
     </div>
     <div class="meta">
@@ -562,6 +594,7 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
   <section class="filters">
     <div class="filter-group"><label>Incorporadora</label><select id="f-inc"><option value="">Todas</option></select></div>
     <div class="filter-group"><label>Bairro</label><select id="f-bairro"><option value="">Todos</option></select></div>
+    <div class="filter-group"><label>Tipo</label><select id="f-tipo"><option value="">Todos</option></select></div>
     <div class="filter-group"><label>Segmento</label><select id="f-seg"><option value="">Todos</option></select></div>
     <div class="filter-group"><label>Ano lançamento</label><select id="f-ano"><option value="">Todos</option></select></div>
     <div class="filter-group"><label>Busca</label><input type="text" id="f-search" placeholder="Nome do empreendimento..." /></div>
@@ -571,17 +604,7 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
   <section class="legend" id="legend"></section>
   <section class="nomap-note" id="nomap-note"></section>
   <section id="map"></section>
-  <div class="origem-legend">
-    <strong>Origem da data:</strong>
-    <span class="item"><span class="origem strong">memorial</span> registro em cartório (prova legal)</span>
-    <span class="item"><span class="origem strong">interno</span> confirmado pela incorporadora (DOM)</span>
-    <span class="item"><span class="origem medium">T-36</span> estimativa: entrega menos 36 meses</span>
-    <span class="item"><span class="origem medium">book</span> data do book de vendas</span>
-    <span class="item"><span class="origem medium">informado</span> fonte externa confiável, sem arquivo documental</span>
-    <span class="item"><span class="origem weak">imprensa/site</span> menção pública, estimativa fraca</span>
-    <span class="item"><span class="origem weak">estimado-fraco</span> data histórica preservada, sem evidência forte</span>
-    <span class="item"><span class="origem pending">pendente</span> sem evidência — buscar tabela</span>
-  </div>
+
   <div class="table-intro">
     <strong>📊 Tabela A — Empreendimentos com dados completos</strong> · com área, ticket e R$/m² confirmados (<strong id="cnt-complete">—</strong>)
   </div>
@@ -763,6 +786,7 @@ function makeMarker(e) {
 function populateFilters() {
   const incs = [...new Set(DATA.map(e => e.incorporadora))].sort();
   const bairros = [...new Set(DATA.map(e => e.bairro))].sort();
+  const tipos = [...new Set(DATA.map(e => e.tipo).filter(t => t && t !== '—'))].sort();
   const segs = [...new Set(DATA.map(e => e.segmento).filter(s => s && s !== '—'))].sort();
   // Extrai anos do campo lancamento (formato MM/AAAA ou AAAA)
   const anos = [...new Set(DATA.map(e => {
@@ -774,7 +798,7 @@ function populateFilters() {
     const sel = document.getElementById(id);
     arr.forEach(v => { const o = document.createElement('option'); o.value = v; o.textContent = v; sel.appendChild(o); });
   };
-  fillSel('f-inc', incs); fillSel('f-bairro', bairros); fillSel('f-seg', segs); fillSel('f-ano', anos);
+  fillSel('f-inc', incs); fillSel('f-bairro', bairros); fillSel('f-tipo', tipos); fillSel('f-seg', segs); fillSel('f-ano', anos);
 }
 function buildLegend() {
   const incs = [...new Set(DATA.map(e => e.incorporadora))].sort();
@@ -787,12 +811,14 @@ let sortAsc = false;
 function applyFilters() {
   const fi = document.getElementById('f-inc').value;
   const fb = document.getElementById('f-bairro').value;
+  const ft = document.getElementById('f-tipo').value;
   const fs = document.getElementById('f-seg').value;
   const fa = document.getElementById('f-ano').value;
   const fq = document.getElementById('f-search').value.toLowerCase();
   const filt = DATA.filter(e => {
     if (fi && e.incorporadora !== fi) return false;
     if (fb && e.bairro !== fb) return false;
+    if (ft && e.tipo !== ft) return false;
     if (fs && e.segmento !== fs) return false;
     if (fa) {
       const m = String(e.lancamento || '').match(/(\d{4})/);
@@ -914,7 +940,7 @@ function focusEmp(name) {
   }
 }
 function resetFilters() {
-  ['f-inc','f-bairro','f-seg','f-ano','f-search'].forEach(id => document.getElementById(id).value = '');
+  ['f-inc','f-bairro','f-tipo','f-seg','f-ano','f-search'].forEach(id => document.getElementById(id).value = '');
   applyFilters();
 }
 document.querySelectorAll('.filters select, .filters input').forEach(el => { el.addEventListener('input', applyFilters); el.addEventListener('change', applyFilters); });
