@@ -492,7 +492,7 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
   .footer { text-align: center; padding: 20px; font-size: 11px; color: var(--dom-gray-mid); border-top: 1px solid var(--dom-gray-mid); margin-top: 32px; }
   .footer strong { color: var(--dom-gold-dark); }
   /* Tab navigation */
-  .tabs { background: var(--dom-black); border-bottom: 3px solid var(--dom-gold); }
+  .tabs { background: var(--dom-gray-dark); border-bottom: 3px solid var(--dom-gold); }
   .tabs-inner { max-width: 1400px; margin: 0 auto; padding: 0 40px; display: flex; gap: 2px; }
   .tab-btn { background: transparent; color: var(--dom-gray-mid); border: none; padding: 16px 28px; font-family: inherit; font-size: 12px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; cursor: pointer; border-bottom: 3px solid transparent; margin-bottom: -3px; transition: all 0.2s; }
   .tab-btn:hover { color: var(--dom-gold-light); }
