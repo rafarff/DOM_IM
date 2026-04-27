@@ -1,5 +1,5 @@
 # PADRÃO FASE 1 — Inteligência de Mercado DOM
-**Versão:** 3.1 (atualizada em 27/04/2026)
+**Versão:** 3.2 (atualizada em 27/04/2026)
 **Status:** 🟢 APROVADO pelo Rafael
 
 > **ATENÇÃO — Claude:** este documento é um CONTRATO. Toda vez que o Rafael
@@ -53,7 +53,7 @@ Antes de fazer qualquer alteração de dado, Claude executa:
 |---|---|---|---|---|
 | 1 | Incorporadora | Enum §4.1 | Nome exato da lista | ✅ |
 | 2 | Empreendimento | Texto | Nome comercial | ✅ |
-| 3 | Endereço | Texto | `Rua, Nº, Bairro, São Luís - MA`. Se não souber: `Não localizado` | ✅ (formato) |
+| 3 | Endereço | Texto | `Rua, Nº, Bairro, São Luís - MA` ou Plus Code. Pin no mapa só com endereço completo (§v3.2). Se desconhecido: `Endereço não localizado, BAIRRO, São Luís - MA` | ✅ (formato) |
 | 4 | Bairro | Texto | Bairro oficial | ✅ |
 | 5 | **Tipo** | **Enum §4.5** | **Vertical / Horizontal / Misto** | ✅ |
 | 6 | Segmento | Enum §4.2 | Classificado por R$/m² calculado, não por ticket | ✅ |
@@ -77,6 +77,8 @@ Antes de fazer qualquer alteração de dado, Claude executa:
 | 24 | Observações | Texto livre | Números absolutos do estoque, datas da tabela usada | opcional |
 
 > **v3.0 (27/04/2026):** coluna **Status** removida (antes col 7). Motivo: classificação muito subjetiva e parcialmente derivada de outros campos (estoque, data). §4.3 (enum de Status) e função `reclassificar_status` no script foram removidas. 25 → 24 colunas. **Adicionalmente:** o filtro "ativo no ciclo" no HTML foi eliminado — o Panorama mostra TODOS os 45 empreendimentos mapeados, sem distinção de fase comercial.
+
+> **v3.2 (27/04/2026) — Regra de pin no mapa:** o pin no mapa interativo aparece apenas quando o **Endereço** (col 3) está **completo** — ou seja, contém **Rua/Avenida/Travessa/Praça** com número/quadra, OU um **Plus Code** do Google Maps (ex: `FQV9+JJ`). Endereços com apenas bairro (`"Endereço não localizado, Calhau, São Luís - MA"` ou `"Calhau, São Luís - MA"`) **não vão para o mapa** e aparecem com badge `◌ sem endereço`. Pendência "endereço" entra na lista de gaps da Tabela B (Pendências) automaticamente. Atualizar manualmente conforme info chegar (book, busca de corretor, Google Maps).
 
 > **v2.0 (25/04/2026):** coluna **Tipo** (Vertical/Horizontal/Misto) formalizada como col. 5. Antes existia em sessões anteriores mas não estava no PADRAO — daí o drift que perdeu a classificação na v4.17.
 

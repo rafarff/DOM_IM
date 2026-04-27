@@ -18,7 +18,7 @@ from openpyxl.drawing.image import Image as XLImage
 # ═══════════════════════════════════════════════════════════════
 # PARÂMETROS GLOBAIS
 # ═══════════════════════════════════════════════════════════════
-VERSION = "6.1"
+VERSION = "6.2"
 DATE_STR = "27/04/2026"
 # v5.0 — (25/04/2026): MUDANÇA ESTRUTURAL — adoção do PADRAO v2.0.
 # +Coluna Tipo (Vertical/Horizontal/Misto) inserida como col. 5. 24 → 25 colunas.
@@ -71,6 +71,12 @@ DATE_STR = "27/04/2026"
 # Studio | 1D | 2D | 3D | 4D | Lote (separar por ;). Suíte conta como dormitório.
 # Texto descritivo antigo migrado para Observações com prefixo "Tipologia detalhada:".
 # Tooltip ℹ na col Tipologia (HTML) extrai esse prefixo das Observações.
+# v6.2 — (27/04/2026): apenas regra de UI (sem mudança nos DADOS). Pin no mapa
+# passa a aparecer SÓ quando Endereço (col 3) é "completo" (Rua/Av./Plus Code).
+# Endereços com só bairro ficam fora do mapa, sinalizados com badge ◌ "sem endereço".
+# A pendência "endereço" entra automaticamente na lista da Tabela B. Implementação
+# em build_panorama.py: tem_endereco_completo() + on_map=True só com ambos
+# (endereço_ok + geocoda). PADRAO §1 col 3 atualizada e v3.2 emitida.
 
 # ═══════════════════════════════════════════════════════════════
 # IDENTIDADE VISUAL DOM

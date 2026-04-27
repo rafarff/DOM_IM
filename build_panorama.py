@@ -177,6 +177,24 @@ def parse_lancamento_sort(lancamento: str) -> int:
     return 0
 
 
+def tem_endereco_completo(endereco: str) -> bool:
+    """
+    Heurística para decidir se o endereço identifica uma localização precisa
+    (rua + número/quadra) ou é apenas o bairro.
+    Critério (PADRAO §1 col 3): pin no mapa SÓ se houver endereço completo.
+    """
+    if not endereco:
+        return False
+    e = str(endereco).strip()
+    if e.startswith("Endereço não localizado"):
+        return False
+    if re.search(r'\b(Rua|Av\.?|Avenida|Travessa|Tv\.?|Praça|Pç\.?|Estrada|Rod\.|Rodovia)\s+', e):
+        return True
+    if re.search(r'\b[A-Z0-9]{4,8}\+[A-Z0-9]{2,3}\b', e):
+        return True
+    return False
+
+
 def geocode_bairro(bairro: str) -> tuple[float, float] | None:
     """
     Retorna (lat, lng) aproximados para o bairro, ou None se o bairro
@@ -314,21 +332,21 @@ def enrich(rows: list[dict], include_all: bool = False) -> list[dict]:
         bairro_raw = r.get("Bairro")
         bairro = str(bairro_raw).strip() if bairro_raw else ""
         emp_name = str(r.get("Empreendimento") or "").strip()
-        # Prioriza coordenada por endereço (quando conhecida) sobre bairro
+        endereco = str(r.get("Endereço") or "").strip()
+        # Política v6.2: pin no mapa SÓ se endereço completo (rua + nº/quadra OU Plus Code).
+        endereco_ok = tem_endereco_completo(endereco)
         if emp_name in COORDS_ENDERECO:
             coord = COORDS_ENDERECO[emp_name]
         else:
             coord = geocode_bairro(bairro)
 
-        # Se o bairro não foi identificado, não coloca no mapa (lat/lng = None)
         lat_j: float | None = None
         lng_j: float | None = None
         on_map = False
-        if coord is not None:
+        if endereco_ok and coord is not None:
             lat, lng = coord
-            # Jitter em espiral para não sobrepor markers do mesmo bairro
             idx = bairro_count[bairro]
-            r_off = 0.0008 * idx   # reduzido: 220m → 88m (evita pin fora do bairro)
+            r_off = 0.0008 * idx
             theta = idx * 2.4
             lat_j = round(lat + r_off * math.cos(theta), 5)
             lng_j = round(lng + r_off * math.sin(theta), 5)
@@ -842,7 +860,7 @@ function renderTable(data) {
   document.getElementById('tbody').innerHTML = completos.map(e => {
     const ticket = `R$ ${formatBRL(e.ticket_min, true)}–${formatBRL(e.ticket_max, true)}`;
     const area = formatArea(e.area_med);
-    const nomap = e.on_map ? '' : '<span class="nomap-badge" title="Empreendimento sem bairro identificado — não plotado no mapa">◌ fora do mapa</span>';
+    const nomap = e.on_map ? '' : '<span class="nomap-badge" title="Endereço incompleto (só bairro) — pin não plotado. Atualize Endereço para mapear.">◌ sem endereço</span>';
     return `
       <tr onclick="focusEmp('${e.empreendimento.replace(/'/g, "\\'")}')">
         <td><span class="inc-name" style="color:${getColor(e.incorporadora)}">●</span> <span class="inc-name">${e.incorporadora}</span></td>
@@ -861,8 +879,9 @@ function renderTable(data) {
 
   // Tabela B: incompletos — mostra o que está faltando
   document.getElementById('tbody-b').innerHTML = incompletos.map(e => {
-    const nomap = e.on_map ? '' : '<span class="nomap-badge">◌ fora do mapa</span>';
+    const nomap = e.on_map ? '' : '<span class="nomap-badge" title="Endereço incompleto — pin não plotado">◌ sem endereço</span>';
     const faltam = [];
+    if (!e.on_map) faltam.push('endereço');
     if (e.area_med == null) faltam.push('área');
     if (e.ticket_min == null || e.ticket_max == null) faltam.push('ticket');
     if (e.rsm2 == null) faltam.push('R$/m²');
