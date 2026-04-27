@@ -18,14 +18,21 @@ from openpyxl.drawing.image import Image as XLImage
 # ═══════════════════════════════════════════════════════════════
 # PARÂMETROS GLOBAIS
 # ═══════════════════════════════════════════════════════════════
-VERSION = "5.0"
-DATE_STR = "25/04/2026"
+VERSION = "5.1"
+DATE_STR = "27/04/2026"
 # v5.0 — (25/04/2026): MUDANÇA ESTRUTURAL — adoção do PADRAO v2.0.
-# +Coluna Tipo (Vertical/Horizontal/Misto) inserida como col. 5 (era posição informal
-# em sessões anteriores, agora formalizada). 24 → 25 colunas. +Hiali e DOM Incorporação
-# como incorporadoras monitoradas (14 → 16). Tracking da .xlsx no git habilitado para
-# drift detection (antes gitignored). Workflow do publish.sh agora commita pacote
-# script + xlsx + html. Total: 45 empreendimentos, 16 incorporadoras.
+# +Coluna Tipo (Vertical/Horizontal/Misto) inserida como col. 5. 24 → 25 colunas.
+# +Hiali e DOM Incorporação como incorporadoras monitoradas (14 → 16). Tracking da
+# .xlsx no git habilitado. Total: 45 empreendimentos, 16 incorporadoras.
+# v5.1 — (27/04/2026): Atualização de dados a partir de tabelas locais novas.
+# +Vila Coimbra (Castelucci): tabela 03/2026 → áreas 124,63m², ticket R$1.019k-1.082k,
+# 36+ casas Araçagi, status Lançamento. +Giardino Fiore (Alfa): tabela 03/2026 → 6
+# disponíveis de 45 (~87% vendido) → Últimas unidades. +Giardino Luce (Alfa): 5/60
+# (~92%) → Últimas unidades, dorms corrigido para 3 suítes. +Monte Meru (Berg): tabela
+# ABR/2026 → área 135m², ticket R$1.932k-1.944k, segmento Alto, entrega 04/2027.
+# +The View (Delman): tabela 27.04 substitui 24.04 (mantida como v1) → ticket_min sobe
+# para R$559k (apto 409 vendido), 90 aptos disponíveis (de ~110 em 24.04, ~20 vendidos
+# em 3 dias = tração forte na pré-venda).
 
 # ═══════════════════════════════════════════════════════════════
 # IDENTIDADE VISUAL DOM
@@ -203,10 +210,10 @@ E_RAW = [
      "Avenida dos Holandeses, Qd. 02, Nº 08, Calhau, São Luís - MA","Calhau",
      "Vertical",None,"Pré-lançamento",
      None,"04/2026","—", 36.05,85.87,None, "Studio a 3Q (1Q/2Q dominantes)",
-     529580,1504011, None,None,None,
-     "tabela_local","N/A","tabela_local",
-     "https://delman.com.br/maranhao/empreendimentos/proximos-lancamentos/edificio-the-view","25/04/2026",
-     "PRÉ-LANÇAMENTO. Tabela 1.1 v.0000001 datada 24/04/2026. 14 pavtos tipo (1º pav.tipo = 4º andar). 110 unidades disponíveis na tabela (107 aptos + 3 lojas). Tipologias residenciais: 36,05/36,45/42,45/43,60/47,52/54,06/68,91/69,64/72,10/72,50/74,92/80,72/85,87 m². Lojas térreas 32,38–48,02 m². 17º andar premium R$/m² ~R$18.090 (vs ~R$14.700–17.500 nos pavtos tipo). Site oficial Delman indica até 101,06m² (provável cobertura/duplex fora da tabela atual). Parcelamento até 100 meses + INCC obra / IGP-M+1% pós. Vista mar (Calhau, lado par da Holandeses). 2º produto Delman simultâneo no Calhau (ao lado do Landscape)."),
+     559580,1504011, None,None,None,
+     "tabela_local","tabela_local","tabela_local",
+     "https://delman.com.br/maranhao/empreendimentos/proximos-lancamentos/edificio-the-view","27/04/2026",
+     "PRÉ-LANÇAMENTO. Tabela atualizada 27/04/2026 (v2 — antiga 24/04 mantida em arquivo). 14 pavtos tipo (1º pav.tipo = 4º andar). 90 aptos disponíveis na 27.04 (vs ~110 na 24.04 → ~20 unidades vendidas/reservadas em 3 dias = TRAÇÃO FORTE na pré-venda). Tipologias 36,05–85,87 m² + cobertura. 17º andar premium R$/m² ~R$18.090. Site oficial indica até 101,06m². Ticket mín sobe para R$559k (apto 409 do 4º andar foi vendido). Parcelamento 100m + INCC/IGP-M+1%. Vista mar Calhau."),
 
     # ═══ ERGUS ═════════════════════════════════════════════════════════
     ("Ergus","Zion Ponta d'Areia",
@@ -305,12 +312,12 @@ E_RAW = [
     # ═══ BERG ══════════════════════════════════════════════════════════
     ("Berg Engenharia","Monte Meru",
      "Endereço não localizado, Ponta d'Areia, São Luís - MA","Ponta d'Areia",
-     "Vertical","Alto","Pré-lançamento",
-     None,"~2025","—", None,None,None, "—",
-     None,None, None,None,None,
-     "site_oficial","N/A","site_oficial",
-     "https://www.bergengenharia.com.br","14/04/2026",
-     "Histórico Berg: Montparnasse, Golden Tower, Peninsula Mall, Monte Olimpo, Monte Fuji. SEM material local."),
+     "Vertical",None,"Em comercialização",
+     None,"04/2024","04/2027", 135.32,135.83,None, "Aptos 135 m², 2-3 vagas",
+     1932400,1944500, None,None,None,
+     "tabela_local","tabela_local","imprensa",
+     "https://www.bergengenharia.com.br","27/04/2026",
+     "Tabela ABR/2026 (Berg Engenharia). 4 tipologias (1-4) com áreas similares 135,32 / 135,83 m². Lançamento 04/2024 estimado pela pasta. Conclusão: 30/04/2027 (T-36 perfeito). Tipo 3 (135,32m²): apto 103 disponível R$ 1.932.400. Tipo 4 (135,83m²): apto 104 disponível R$ 1.944.500, demais (204-1004) VENDIDOS = 9 vendidos no Tipo 4 → estoque concentrado em 1 unidade visível. Apto 704 tem 3 vagas (diferencial). Correção INCC. Histórico Berg: Montparnasse, Golden Tower, Peninsula Mall, Monte Olimpo, Monte Fuji."),
 
     ("Berg Engenharia","Mount Solaro",
      "Endereço não localizado, São Luís - MA","São Luís",
@@ -339,21 +346,21 @@ E_RAW = [
     # ─── ALFA ENGENHARIA — Giardino Residenza split (Torre Fiore Norte + Torre Luce Sul) ───
     ("Alfa Engenharia","Giardino Residenza Torre Fiore",
      "Ponta do Farol, São Luís - MA","Ponta do Farol",
-     "Vertical","Alto","Lançamento",
-     45,"02/2025","12/2029", 110.77,128.37,None, "2 suítes + varanda + dep. serviço, 3 vagas",
-     1838492,2032939, None,None, None,
-     "tabela","tabela","memorial",
-     "https://www.instagram.com/alfaengenhariama/","24/04/2026",
-     "Torre NORTE do Giardino. 15 pav × 3 un = 45 unidades. 3 tipologias (127,30 / 128,37 / 110,77 m²). 2 suítes, 3 vagas, depósito. Tabela MAR/26 arquivada. Memorial R.06/56.931 - 1º RI SL. Entrega DEZ/29. Apto.vc: lançamento 02/2025. [reconstituído da v4.16 em 25/04/2026]"),
+     "Vertical","Alto","Últimas unidades",
+     45,"02/2025","12/2029", 110.77,128.37,None, "2 suítes + 2 semi-suítes OU 3 suítes, varanda, lavabo, 3 vagas, depósito",
+     1838492,2032939, None,None, 6/45,
+     "tabela_local","tabela_local","memorial",
+     "https://www.instagram.com/alfaengenhariama/","27/04/2026",
+     "Torre NORTE do Giardino. 15 pav × 3 un = 45 unidades. 3 tipologias: 127,30 / 128,37 / 110,77 m². Tabela MAR/2026: 6 unidades disponíveis (1001/701/201/101 da coluna 127m², 102 da coluna 128m², 1403 da coluna 110m²) = ~13% estoque, 87% VENDIDO → Últimas unidades. Entrega DEZ/29. Memorial R.06/56.931 - 1º RI SL. Endereço Alfa: Rua Peixe Pedra, Qd 12 lote 04, Calhau."),
 
     ("Alfa Engenharia","Giardino Residenza Torre Luce",
      "Ponta do Farol, São Luís - MA","Ponta do Farol",
-     "Vertical","Alto","Em comercialização",
-     60,"02/2025","12/2029", 93.18,101.31,None, "2 suítes/1 suíte + varanda + dep. serviço, 2 vagas",
-     1442168,1595303, None,None, None,
-     "tabela","tabela","memorial",
-     "https://www.instagram.com/alfaengenhariama/","24/04/2026",
-     "Torre SUL do Giardino. 15 pav × 4 un = 60 unidades. 4 tipologias (99,08 / 101,31 / 93,18 / 93,62 m²). 2 vagas, mais acessível que Torre Fiore. Tabela MAR/26 arquivada. Memorial R.06/56.931 - 1º RI SL. [reconstituído da v4.16 em 25/04/2026]"),
+     "Vertical","Alto","Últimas unidades",
+     60,"02/2025","12/2029", 93.18,101.31,None, "3 suítes, varanda, lavabo, 2 vagas, depósito",
+     1442168,1595303, None,None, 5/60,
+     "tabela_local","tabela_local","memorial",
+     "https://www.instagram.com/alfaengenhariama/","27/04/2026",
+     "Torre SUL do Giardino. 15 pav × 4 un = 60 unidades. 4 tipologias: 99,08 / 101,31 / 93,18 / 93,62 m². Tabela MAR/2026: 5 unidades disponíveis (701/101 col 99m², 1502/1402 col 101m², 104 col 93m²) = ~8% estoque, 92% VENDIDO → Últimas unidades. CORREÇÃO v5.1: dorms = 3 suítes (descrição da tabela MAR/26), antes constava '2 suítes/1 suíte' incorretamente. 2 vagas + 1 depósito. Mais acessível que Torre Fiore. Entrega DEZ/29. Memorial R.06/56.931 - 1º RI SL."),
 
     # ─── TREVISO — Villagio Treviso ───
     ("Treviso","Villagio Treviso",
@@ -396,12 +403,12 @@ E_RAW = [
     # ─── CASTELUCCI — 3 empreend. mapeados (site + Instagram + agregador) ───
     ("Castelucci","Vila Coimbra",
      "Endereço não localizado, Araçagi, São Luís - MA","Araçagi",
-     "Horizontal","Alto","Lançamento",
-     None,"~2026","—", None,None,None, "—",
-     None,None, None,None,None,
-     "site_oficial","N/A","site_oficial",
-     "https://construtoracastelucci.com.br","14/04/2026",
-     "Novo alto padrão no Araçagi em parceria com Grupo Coimbra Alves. Paulo Castelucci (CEO) em entrevista à Mirante FM. Patrocinando Imob Summit 2026."),
+     "Horizontal",None,"Lançamento",
+     None,"03/2026","03/2029", 124.63,124.63,None, "Casa 124,63 m² (terreno 164-204 m²)",
+     1019834,1081967, None,None,None,
+     "tabela_local","N/A","book",
+     "https://construtoracastelucci.com.br","27/04/2026",
+     "Tabela LANÇAMENTO 03/2026. Parceria Castelucci + Grupo Coimbra Alves. ~36-41 casas no Araçagi (numeração até casa 41, várias agrupadas: 02-17, 36-38, 39-40). Área construída UNIFORME 124,63 m². Terreno varia 164-204 m². Ticket à vista R$ 1.019.834 (casa 21) a R$ 1.081.967 (casa 41) — VARIAÇÃO POR TAMANHO DE TERRENO, não por área construída. Avaliação: R$ 915.000. Pagamento: 24m IPCA+0,49% / 36m IPCA+1,49% / Caixa. Lazer privativa não integrada ao preço. Paulo Castelucci (CEO) em entrevista à Mirante FM. Patrocínio Imob Summit 2026."),
 
     ("Castelucci","Villa di Carpi",
      "Endereço não localizado, Cohatrac, São Luís - MA","Cohatrac",
