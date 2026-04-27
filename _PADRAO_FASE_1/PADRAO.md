@@ -1,5 +1,5 @@
 # PADRÃO FASE 1 — Inteligência de Mercado DOM
-**Versão:** 3.3 (atualizada em 27/04/2026)
+**Versão:** 3.4 (atualizada em 27/04/2026)
 **Status:** 🟢 APROVADO pelo Rafael
 
 > **ATENÇÃO — Claude:** este documento é um CONTRATO. Toda vez que o Rafael
@@ -190,12 +190,14 @@ Mota Machado, Berg Engenharia, Alfa Engenharia, Lua Nova, Delman, Treviso, Ergus
 **Origem estoque:** `tabela_local` | `site_oficial` | `agregador` | `corretor` | `estimativa`
 **Origem lançamento:** `book` | `release` | `treinamento_corretor` | `site_oficial` | `imprensa` | `estimativa_T-36`
 
-### 4.5 Tipo (vertical vs. horizontal)
+### 4.5 Tipo (3 categorias)
 | Tipo | Definição | Exemplos |
 |---|---|---|
 | Vertical | Edifício multifamiliar (apartamentos) | The View, Bossa, Quartier 22 |
-| Horizontal | Condomínio de casas, sobrados, lotes | Dom Lucas, Dom José, Dom Antônio, Villagio Treviso |
-| Misto | Empreendimento com torres + casas, ou loteamento + condomínio vertical | (raros — usar só se claramente híbrido) |
+| Horizontal | Condomínio de casas, sobrados (unidades construídas) | Dom Lucas, Dom José, Dom Antônio |
+| Loteamento | Loteamento ou condomínio de terrenos (sem unidades construídas) | Golden Green Beach, Villagio Treviso |
+
+> **v3.4 (27/04/2026):** Tipo "Misto" removido (não havia entries usando) e **Loteamento** formalizado como 3ª categoria — antes ficava equivocadamente em Horizontal. Diferenciação importante: R$/m² em Loteamento é **m² de terreno** (não construído), não comparável com Vertical/Horizontal. Análise por Tipo no dashboard usa essa distinção.
 
 ⚠️ Esta classificação é fundamental para análise de oportunidades — bairros como Eldorado/Cohatrac concentram horizontal, enquanto Ponta d'Areia/Calhau dominam vertical alto.
 

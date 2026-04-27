@@ -506,12 +506,28 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
   .tbl-compact tbody td { padding: 8px; white-space: nowrap; }
   .tbl-compact tbody td.wrap { white-space: normal; min-width: 180px; }
   .tbl-compact { overflow-x: auto; max-height: 75vh; }
+  /* Dashboard cards */
+  .dash-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 18px; margin-bottom: 24px; }
+  .dash-card { background: var(--dom-white); border-left: 4px solid var(--dom-gold); padding: 18px 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+  .dash-card h3 { font-size: 12px; font-weight: 700; color: var(--dom-gray-mid); text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 14px; }
+  .dash-card .chart-wrap { position: relative; height: 260px; }
+  .dash-card-wide { grid-column: 1 / -1; }
+  .matrix-tbl { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .matrix-tbl th, .matrix-tbl td { padding: 10px 8px; text-align: center; border: 1px solid var(--dom-gray-light); }
+  .matrix-tbl th { background: var(--dom-gray-dark); color: var(--dom-white); font-size: 10px; text-transform: uppercase; letter-spacing: 1px; }
+  .matrix-tbl td.row-label { text-align: left; font-weight: 600; color: var(--dom-gray-dark); background: var(--dom-gray-light); }
+  .matrix-tbl td .cell-val { font-weight: 700; font-size: 14px; }
+  .insights { font-size: 13px; line-height: 1.7; color: var(--dom-gray-dark); }
+  .insights strong { color: var(--dom-black); }
+  .insights .insight { padding: 8px 0; border-bottom: 1px solid var(--dom-gray-light); }
+  .insights .insight:last-child { border-bottom: none; }
   @media (max-width: 768px) {
     .hero { padding: 20px; } .hero h1 { font-size: 20px; } .container { padding: 16px; }
     table { font-size: 11px; } thead th, tbody td { padding: 8px 6px; }
     .tabs-inner { padding: 0 16px; } .tab-btn { padding: 12px 16px; font-size: 11px; }
   }
 </style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
 <body>
 <!-- Pseudo-senha (não é segurança forte; bloqueia usuários casuais) -->
@@ -567,6 +583,7 @@ if (sessionStorage.getItem("dom-auth") === "1") {
 <nav class="tabs">
   <div class="tabs-inner">
     <button class="tab-btn active" data-tab="panorama">Panorama <span class="count" id="tab-count-panorama">—</span></button>
+    <button class="tab-btn" data-tab="dashboard">Dashboard</button>
     <button class="tab-btn" data-tab="dados">Dados Completos <span class="count" id="tab-count-dados">—</span></button>
   </div>
 </nav>
@@ -632,6 +649,19 @@ if (sessionStorage.getItem("dom-auth") === "1") {
     </table>
   </section>
   </div><!-- /tab-panorama -->
+
+  <!-- TAB: DASHBOARD -->
+  <div class="tab-panel" id="tab-dashboard">
+    <section class="dash-grid">
+      <div class="dash-card"><h3>📈 VGV por Ano de Lançamento</h3><div class="chart-wrap"><canvas id="ch-vgv-ano"></canvas></div></div>
+      <div class="dash-card"><h3>🥧 Distribuição por Segmento</h3><div class="chart-wrap"><canvas id="ch-segmento"></canvas></div></div>
+      <div class="dash-card"><h3>🏘️ Top 8 Bairros por VGV</h3><div class="chart-wrap"><canvas id="ch-bairros"></canvas></div></div>
+      <div class="dash-card"><h3>🎯 Posicionamento das Incorporadoras</h3><div class="chart-wrap"><canvas id="ch-posic"></canvas></div></div>
+      <div class="dash-card"><h3>⚡ Velocidade de Absorção</h3><div class="chart-wrap"><canvas id="ch-veloc"></canvas></div></div>
+      <div class="dash-card dash-card-wide"><h3>📊 Matriz Tipo × Segmento</h3><div id="matrix-host"></div></div>
+      <div class="dash-card dash-card-wide"><h3>💡 Insights Automáticos</h3><div class="insights" id="insights-host"></div></div>
+    </section>
+  </div><!-- /tab-dashboard -->
 
   <!-- TAB: DADOS COMPLETOS -->
   <div class="tab-panel" id="tab-dados">
@@ -990,7 +1020,219 @@ document.getElementById('tab-count-panorama').textContent = DATA.length;
 document.getElementById('tab-count-dados').textContent = ALL_DATA.length;
 
 // Inicializa ambas (mapa removido v6.4)
+
+// ─── DASHBOARD (v6.4) ─────────────────────────────────────────────────────
+const SEG_ORDER = ['Popular', 'Médio', 'Médio-alto', 'Alto', 'Luxo'];
+const SEG_COLORS = {
+  'Popular': '#B8DBC5', 'Médio': '#8C8C8C', 'Médio-alto': '#E8D5A3',
+  'Alto': '#C9A84C', 'Luxo': '#000000', '—': '#F2F2F2'
+};
+const TIPO_ORDER = ['Vertical', 'Horizontal', 'Loteamento'];
+
+function renderDashboard() {
+  if (typeof Chart === 'undefined') return;
+  Chart.defaults.font.family = "Calibri, Arial, sans-serif";
+  Chart.defaults.color = '#4D4D4D';
+
+  // (a) VGV por ano de lançamento
+  const byYear = {};
+  ALL_DATA.forEach(e => {
+    if (!e.vgv) return;
+    const m = String(e.lancamento || '').match(/(\d{4})/);
+    if (!m) return;
+    const y = m[1];
+    byYear[y] = (byYear[y] || 0) + e.vgv;
+  });
+  const years = Object.keys(byYear).sort();
+  new Chart(document.getElementById('ch-vgv-ano'), {
+    type: 'line',
+    data: {
+      labels: years,
+      datasets: [{
+        label: 'VGV (R$ M)',
+        data: years.map(y => byYear[y] / 1e6),
+        borderColor: '#C9A84C', backgroundColor: 'rgba(201,168,76,0.15)',
+        fill: true, tension: 0.25, pointRadius: 5, pointBackgroundColor: '#000'
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: { y: { ticks: { callback: v => 'R$ ' + v + 'M' } } }
+    }
+  });
+
+  // (b) Distribuição por Segmento
+  const segCount = {};
+  SEG_ORDER.forEach(s => segCount[s] = 0);
+  ALL_DATA.forEach(e => {
+    const seg = e.segmento && e.segmento !== '—' ? e.segmento : null;
+    if (seg && segCount[seg] !== undefined) segCount[seg]++;
+  });
+  const segLabels = SEG_ORDER.filter(s => segCount[s] > 0);
+  new Chart(document.getElementById('ch-segmento'), {
+    type: 'doughnut',
+    data: {
+      labels: segLabels,
+      datasets: [{
+        data: segLabels.map(s => segCount[s]),
+        backgroundColor: segLabels.map(s => SEG_COLORS[s]),
+        borderColor: '#fff', borderWidth: 2
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { position: 'right', labels: { boxWidth: 14, font: { size: 11 } } } }
+    }
+  });
+
+  // (c) Top 8 bairros por VGV
+  const byBairro = {};
+  ALL_DATA.forEach(e => {
+    if (!e.vgv || !e.bairro || e.bairro === 'Não identificado') return;
+    byBairro[e.bairro] = (byBairro[e.bairro] || 0) + e.vgv;
+  });
+  const topB = Object.entries(byBairro).sort((a,b) => b[1] - a[1]).slice(0, 8);
+  new Chart(document.getElementById('ch-bairros'), {
+    type: 'bar',
+    data: {
+      labels: topB.map(x => x[0]),
+      datasets: [{
+        label: 'VGV (R$ M)',
+        data: topB.map(x => x[1] / 1e6),
+        backgroundColor: '#C9A84C', borderColor: '#8B6914', borderWidth: 1
+      }]
+    },
+    options: {
+      indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: { x: { ticks: { callback: v => 'R$ ' + v + 'M' } } }
+    }
+  });
+
+  // (d) Posicionamento das incorporadoras (scatter: R$/m² x nº empreend, tamanho = VGV)
+  const byInc = {};
+  ALL_DATA.forEach(e => {
+    if (!byInc[e.incorporadora]) byInc[e.incorporadora] = { count: 0, vgv: 0, rsm2_sum: 0, rsm2_n: 0 };
+    byInc[e.incorporadora].count++;
+    if (e.vgv) byInc[e.incorporadora].vgv += e.vgv;
+    if (e.rsm2) { byInc[e.incorporadora].rsm2_sum += e.rsm2; byInc[e.incorporadora].rsm2_n++; }
+  });
+  const posicData = Object.entries(byInc)
+    .filter(([_, v]) => v.rsm2_n > 0)
+    .map(([nome, v]) => ({
+      x: v.rsm2_sum / v.rsm2_n,
+      y: v.count,
+      r: Math.max(6, Math.min(28, Math.sqrt((v.vgv || 0) / 5e6))),
+      label: nome
+    }));
+  new Chart(document.getElementById('ch-posic'), {
+    type: 'bubble',
+    data: {
+      datasets: [{
+        data: posicData,
+        backgroundColor: 'rgba(201,168,76,0.55)',
+        borderColor: '#000', borderWidth: 1.5
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: ctx => {
+              const d = ctx.raw;
+              return `${d.label}: ${d.y} empreend., R$/m² ${d.x.toFixed(0)}`;
+            }
+          }
+        }
+      },
+      scales: {
+        x: { title: { display: true, text: 'R$/m² médio' }, ticks: { callback: v => 'R$ ' + (v/1000).toFixed(0) + 'k' } },
+        y: { title: { display: true, text: 'Nº empreendimentos' }, beginAtZero: true }
+      }
+    }
+  });
+
+  // (e) Velocidade de absorção (top 12 com % vendido conhecido)
+  const veloc = ALL_DATA
+    .filter(e => e.vendido != null)
+    .sort((a,b) => b.vendido - a.vendido)
+    .slice(0, 12);
+  new Chart(document.getElementById('ch-veloc'), {
+    type: 'bar',
+    data: {
+      labels: veloc.map(e => e.empreendimento),
+      datasets: [{
+        label: '% Vendido',
+        data: veloc.map(e => Math.round(e.vendido * 100)),
+        backgroundColor: veloc.map(e => {
+          const v = e.vendido * 100;
+          if (v >= 85) return '#0F7B6C';
+          if (v >= 60) return '#C9A84C';
+          return '#8C8C8C';
+        })
+      }]
+    },
+    options: {
+      indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: { x: { max: 100, ticks: { callback: v => v + '%' } } }
+    }
+  });
+
+  // (f) Matriz Tipo × Segmento (HTML table)
+  const matrix = {};
+  TIPO_ORDER.forEach(t => { matrix[t] = {}; SEG_ORDER.forEach(s => matrix[t][s] = 0); });
+  ALL_DATA.forEach(e => {
+    const t = e.tipo, sg = e.segmento;
+    if (matrix[t] && matrix[t][sg] !== undefined) matrix[t][sg]++;
+  });
+  let mhtml = '<table class="matrix-tbl"><thead><tr><th></th>';
+  SEG_ORDER.forEach(s => mhtml += `<th>${s}</th>`);
+  mhtml += '<th>Total</th></tr></thead><tbody>';
+  TIPO_ORDER.forEach(t => {
+    let rowTotal = 0;
+    mhtml += `<tr><td class="row-label">${t}</td>`;
+    SEG_ORDER.forEach(s => {
+      const n = matrix[t][s]; rowTotal += n;
+      const intensity = Math.min(0.85, n * 0.18);
+      const bg = n > 0 ? `rgba(201,168,76,${intensity})` : 'transparent';
+      mhtml += `<td style="background:${bg}"><span class="cell-val">${n || '—'}</span></td>`;
+    });
+    mhtml += `<td><span class="cell-val">${rowTotal}</span></td></tr>`;
+  });
+  mhtml += '</tbody></table>';
+  document.getElementById('matrix-host').innerHTML = mhtml;
+
+  // (g) Insights automáticos
+  const total = ALL_DATA.length;
+  const totalVgv = ALL_DATA.reduce((a, e) => a + (e.vgv || 0), 0);
+  const topInc = Object.entries(byInc).sort((a,b) => b[1].vgv - a[1].vgv)[0];
+  const topBairroData = topB[0];
+  const topBairroPct = topBairroData ? (topBairroData[1] / totalVgv * 100).toFixed(0) : 0;
+  const luxoCount = segCount['Luxo'] || 0;
+  const altoCount = segCount['Alto'] || 0;
+  const ultimasUnid = ALL_DATA.filter(e => e.vendido != null && e.vendido >= 0.85).length;
+  const semDados = ALL_DATA.filter(e => e.vgv == null).length;
+  const loteCount = ALL_DATA.filter(e => e.tipo === 'Loteamento').length;
+  const verticalCount = ALL_DATA.filter(e => e.tipo === 'Vertical').length;
+  const horizCount = ALL_DATA.filter(e => e.tipo === 'Horizontal').length;
+
+  const insights = [
+    `📍 <strong>${topBairroData ? topBairroData[0] : 'N/A'}</strong> concentra <strong>${topBairroPct}%</strong> do VGV mapeado (R$ ${topBairroData ? (topBairroData[1]/1e6).toFixed(0) : 0}M).`,
+    `🏗️ Mercado SLZ: <strong>${verticalCount}</strong> verticais, <strong>${horizCount}</strong> horizontais e <strong>${loteCount}</strong> loteamentos.`,
+    `💎 <strong>${luxoCount}</strong> empreendimentos no segmento Luxo e <strong>${altoCount}</strong> no Alto — juntos somam ${((luxoCount+altoCount)/total*100).toFixed(0)}% da carteira mapeada.`,
+    `🏆 Maior incorporadora por VGV: <strong>${topInc ? topInc[0] : 'N/A'}</strong> com R$ ${topInc ? (topInc[1].vgv/1e6).toFixed(0) : 0}M em ${topInc ? topInc[1].count : 0} empreendimento(s).`,
+    `⚡ <strong>${ultimasUnid}</strong> empreendimentos em "Últimas unidades" (≥85% vendido) — janela curta para aprender com a competição.`,
+    `📋 <strong>${semDados}</strong> empreendimentos sem ticket/VGV mapeados — priorizar busca de tabelas com corretores.`,
+  ];
+  document.getElementById('insights-host').innerHTML = insights.map(i => `<div class="insight">${i}</div>`).join('');
+}
+
 populateFilters(); buildLegend(); applyFilters();
+renderDashboard();
 populateFullFilters(); applyFullFilters();
 </script>
 </body>

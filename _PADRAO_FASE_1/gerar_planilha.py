@@ -18,7 +18,7 @@ from openpyxl.drawing.image import Image as XLImage
 # ═══════════════════════════════════════════════════════════════
 # PARÂMETROS GLOBAIS
 # ═══════════════════════════════════════════════════════════════
-VERSION = "6.3"
+VERSION = "6.4"
 DATE_STR = "27/04/2026"
 # v5.0 — (25/04/2026): MUDANÇA ESTRUTURAL — adoção do PADRAO v2.0.
 # +Coluna Tipo (Vertical/Horizontal/Misto) inserida como col. 5. 24 → 25 colunas.
@@ -84,6 +84,13 @@ DATE_STR = "27/04/2026"
 # de "2025/2026" e legenda Origem data. Funções tem_endereco_completo() e
 # geocode_bairro() preservadas no build_panorama.py para futuro retorno. Pendência
 # "endereço" continua útil na Tabela B até reativarmos o mapa.
+# v6.4 — (27/04/2026): MUDANÇA DUPLA. (a) Tipo "Misto" removido (não havia entries).
+# +Tipo "Loteamento" formalizado (PADRAO 3.4 §4.5). Villagio Treviso reclassificado
+# de Horizontal → Loteamento. +Novo empreend. Lua Nova: Golden Green Beach (lotes
+# de luxo no Calhau, R$2,65-4,4M, terrenos 453-682m²). Atenção: R$/m² em loteamento
+# é m² de TERRENO, não comparável com construído. (b) Aba Dashboard adicionada ao
+# HTML com 6 cards de análise usando Chart.js CDN. Logo DOM atualizado (versão
+# minimalista do INBOX, só ícone). 45 → 46 empreendimentos.
 
 # ═══════════════════════════════════════════════════════════════
 # IDENTIDADE VISUAL DOM
@@ -396,7 +403,7 @@ E_RAW = [
     # ─── TREVISO — Villagio Treviso ───
     ("Treviso","Villagio Treviso",
      "Endereço não localizado, São Luís - MA","São Luís",
-     "Horizontal",None,
+     "Loteamento",None,
      None,"06/2025 ⚠ T-36","—", None,None,None, "Lote",
      None,None, None,None,None,
      "N/A","N/A","site_oficial",
@@ -487,6 +494,15 @@ E_RAW = [
      "site_oficial","N/A","site_oficial",
      "https://construtoraluanova.com.br","14/04/2026",
      "Residência no Santo Amaro — região com oferta crescente de médio padrão."),
+
+    ("Lua Nova","Golden Green Beach",
+     "Acesso pela Avenida dos Holandeses, São Luís - MA","Calhau",
+     "Loteamento",None,
+     None,"06/2025 ⚠ T-36","—", 453,682,None, "Lote",
+     2650000,4400000, None,None,None,
+     "book","N/A","book",
+     "https://construtoraluanova.com.br","27/04/2026",
+     "LOTEAMENTO DE LUXO. Projeto Golden Green Beach (GGB) — bairro de luxo planejado, acesso pela Av. dos Holandeses. Lote 41: 453 m² R$ 2,65M (R$ 5.850/m² terreno). Lote 42: 682 m² R$ 4,40M (R$ 6.452/m² terreno). Em obra. Áreas comuns: piscina coberta aquecida, sauna a vapor, heliponto com acesso por escada e elevador, estacionamento 30 carros, área administrativa. Projeto arquitetônico das áreas comuns: Marcelo Franco. Urbanismo: SA Urbanismo. Referências de luxo (book): Porto Frade RJ, Fazenda Boa Vista SP, Quinta da Baroneza SP. Bairro a confirmar (Calhau ou São Marcos pela posição na Av. Holandeses). ATENÇÃO: R$/m² em loteamento é TERRENO, não construído — não compara diretamente com aptos."),
 
     # ─── MB ENGENHARIA — 3 empreend. ───
     ("DOM Incorporação","Edifício Dom Ricardo",
