@@ -43,8 +43,13 @@ DATE_STR = "27/04/2026"
 # v5.2 — (27/04/2026): +Edifício Bossa (Mota Machado) atualizado a partir da tabela
 # local 04/2026: tickets R$2,85-3,71M, áreas 191-196m², R$/m² médio R$16.663 (faixa
 # 14,9-19,2k), 36 aptos disponíveis de 60 (~60% estoque, 40% vendido), entrega
-# 09/2030. Endereço completo (Av. Holandeses Lote 07 Qd 02). Origem migra de
-# "imprensa" para "tabela_local". Segmento reclassifica auto pelo R$/m².
+# 09/2030. Endereço completo. Segmento reclassifica auto pelo R$/m².
+# +Fix reclassificar_status: preserva "Lançamento" como decisão de tempo (< 6m de
+# venda), não força "Em comercialização" só por estoque > 15%.
+# +Fix áreas em horizontais (Dom Lucas + Dom José): valores armazenados como
+# construído/terreno misturados — corrigido para área CONSTRUÍDA em min e max
+# (uma única tipologia em ambos). Terreno migrado para Observações. Convenção
+# nova no PADRAO v2.0 §1 nota.
 
 # ═══════════════════════════════════════════════════════════════
 # IDENTIDADE VISUAL DOM
@@ -550,21 +555,21 @@ E_RAW = [
     # ═══ DOM INCORPORAÇÃO (própria) ═════════════════════════════════════
     ("DOM Incorporação","Dom Lucas",
      "Tv. Boa Esperança, 101 - Cantinho do Céu, São Luís - MA, 65074-030","Cantinho do Céu",
-     "Horizontal","Médio-alto","Em comercialização",
-     None,"02/2026","01/2029", 100.35,145.78,None, "Casa 3 dorm (1 suíte) + 2 vagas",
+     "Horizontal",None,"Em comercialização",
+     None,"02/2026","01/2029", 100.35,100.35,None, "Casa 3 dorm (1 suíte) + 2 vagas",
      835000,851000, None,None, None,
      "tabela","tabela","interno",
-     "","23/04/2026",
-     "Condomínio horizontal (sobrados). Área casa 100,35 m² + terreno 136-146 m². ~38 casas. Lazer: campo society, piscina, deck, salão, gourmet, petplay, playground. Muitas unidades VENDIDAS. Entrega DEZ/2026. Ticket R$ 835-851k. R$/m² construção ~R$ 8.400. [reconstituído da v4.16 em 25/04/2026]"),
+     "","27/04/2026",
+     "Condomínio horizontal (sobrados). 1 ÚNICA tipologia: casa 100,35 m² construída (área usada para R$/m²). Terreno varia 136-146 m² conforme posição. ~38 casas. Lazer: campo society, piscina, deck, salão, gourmet, petplay, playground. Muitas unidades VENDIDAS. Entrega 01/2029. Ticket R$ 835-851k → R$/m² construção ~R$ 8.400. CORREÇÃO v5.2: Área máx era 145,78 (terreno) — corrigida para 100,35 (construída). Convenção PADRAO §1: Tipo=Horizontal usa área construída."),
 
     ("DOM Incorporação","Dom José",
      "FQV9+JJ Jardim Eldorado, São Luís - MA","Jardim Eldorado",
-     "Horizontal","Médio-alto","Em comercialização",
-     None,"06/2024","06/2027", 154.64,180.98,None, "Casa 4+ dorm, alto padrão",
+     "Horizontal",None,"Em comercialização",
+     None,"06/2024","06/2027", 154.64,154.64,None, "Casa 4+ dorm, alto padrão",
      1400000,1415000, None,None, None,
      "tabela","tabela","interno",
-     "","23/04/2026",
-     "Condomínio horizontal alto padrão. Casa 154,64 m² + terreno 170-181 m². Maioria das unidades VENDIDAS (14+ marcadas VENDIDA na tabela ABR/2026). Entrega JUL/2027. Ticket ~R$ 1,4M. R$/m² construção ~R$ 9.150. [reconstituído da v4.16 em 25/04/2026]"),
+     "","27/04/2026",
+     "Condomínio horizontal alto padrão. 1 ÚNICA tipologia: casa 154,64 m² construída. Terreno varia 170-181 m² conforme posição. Maioria das unidades VENDIDAS (14+ marcadas VENDIDA na tabela ABR/2026). Entrega 06/2027. Ticket ~R$ 1,4M → R$/m² construção ~R$ 9.150. CORREÇÃO v5.2: Área máx era 180,98 (terreno) — corrigida para 154,64 (construída). Convenção PADRAO §1: Tipo=Horizontal usa área construída."),
 ]
 
 # ═══════════════════════════════════════════════════════════════

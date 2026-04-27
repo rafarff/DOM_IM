@@ -1,5 +1,5 @@
 # PADRÃO FASE 1 — Inteligência de Mercado DOM
-**Versão:** 2.0 (atualizada em 25/04/2026)
+**Versão:** 2.1 (atualizada em 27/04/2026)
 **Status:** 🟢 APROVADO pelo Rafael
 
 > **ATENÇÃO — Claude:** este documento é um CONTRATO. Toda vez que o Rafael
@@ -78,6 +78,8 @@ Antes de fazer qualquer alteração de dado, Claude executa:
 | 25 | Observações | Texto livre | Números absolutos do estoque, datas da tabela usada | opcional |
 
 > **v2.0 (25/04/2026):** coluna **Tipo** (Vertical/Horizontal/Misto) formalizada como col. 5. Antes existia em sessões anteriores mas não estava no PADRAO — daí o drift que perdeu a classificação na v4.17.
+
+> **v2.1 (27/04/2026) — Convenção de área em Horizontais:** quando `Tipo=Horizontal` (casas/sobrados/lotes), as colunas **Área mín/máx (m²)** referem-se SEMPRE à **área CONSTRUÍDA** da unidade. Terreno (geralmente variável por lote) vai para **Observações**, no formato `terreno N–M m²`. Motivo: o cálculo de R$/m² em §3.1 só faz sentido contra a área construída — misturar com terreno distorce a média. Regra detectada com Dom Lucas em 27/04/2026: área máx estava 145,78 (terreno) quando a casa é 100,35 m² construída uniforme.
 
 ## 2. Aba Incorporadoras — 15 colunas
 
