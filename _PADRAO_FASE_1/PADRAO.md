@@ -1,5 +1,5 @@
 # PADRÃO FASE 1 — Inteligência de Mercado DOM
-**Versão:** 2.1 (atualizada em 27/04/2026)
+**Versão:** 2.2 (atualizada em 27/04/2026)
 **Status:** 🟢 APROVADO pelo Rafael
 
 > **ATENÇÃO — Claude:** este documento é um CONTRATO. Toda vez que o Rafael
@@ -172,12 +172,12 @@ Mota Machado, Berg Engenharia, Alfa Engenharia, Lua Nova, Delman, Treviso, Ergus
 | Segmento | Faixa R$/m² | Observação |
 |---|---|---|
 | Popular | < R$ 6.000 | MCMV, faixas 2-3 |
-| Médio | R$ 6.000 – R$ 9.000 | |
-| Médio-alto | R$ 9.000 – R$ 13.000 | |
-| Alto | R$ 13.000 – R$ 18.000 | Maior concentração atual em Ponta d'Areia |
-| Luxo | > R$ 18.000 | Wave, Sky, Azimuth, Quartier 22 |
+| Médio | R$ 6.000 – R$ 8.000 | |
+| Médio-alto | R$ 8.000 – R$ 10.000 | Casas 100-155m² horizontais (Eldorado, Cohatrac) |
+| Alto | R$ 10.000 – R$ 15.000 | Faixa principal SLZ — Calhau/Ponta d'Areia |
+| Luxo | > R$ 15.000 | Bossa, The View, Vernazza, Giardino, Wave, Sky, Azimuth, Quartier 22 |
 
-⚠️ Valores calibráveis após migração inicial dos dados. Revisar em cada update anual.
+⚠️ **v2.2 (27/04/2026):** faixas recalibradas para refletir o mercado real de SLZ. Antes (v2.0): Médio 6-9k, Médio-alto 9-13k, Alto 13-18k, Luxo >18k. Detectado que muitos empreend. de alto padrão (R$ 14-17k) ficavam em Alto pela classificação antiga, contradizendo o posicionamento de marca. Revisar em cada update anual ou se o mercado mover.
 
 ### 4.3 Status (6 níveis — comercial, não físico)
 | Status | Critério |

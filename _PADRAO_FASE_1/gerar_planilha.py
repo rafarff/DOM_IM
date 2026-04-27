@@ -18,7 +18,7 @@ from openpyxl.drawing.image import Image as XLImage
 # ═══════════════════════════════════════════════════════════════
 # PARÂMETROS GLOBAIS
 # ═══════════════════════════════════════════════════════════════
-VERSION = "5.2"
+VERSION = "5.3"
 DATE_STR = "27/04/2026"
 # v5.0 — (25/04/2026): MUDANÇA ESTRUTURAL — adoção do PADRAO v2.0.
 # +Coluna Tipo (Vertical/Horizontal/Misto) inserida como col. 5. 24 → 25 colunas.
@@ -50,6 +50,14 @@ DATE_STR = "27/04/2026"
 # construído/terreno misturados — corrigido para área CONSTRUÍDA em min e max
 # (uma única tipologia em ambos). Terreno migrado para Observações. Convenção
 # nova no PADRAO v2.0 §1 nota.
+# v5.3 — (27/04/2026): RECALIBRAÇÃO de faixas de Segmento (PADRAO §4.2 v2.2):
+# Médio 6-8k (antes 6-9k), Médio-alto 8-10k (antes 9-13k), Alto 10-15k (antes
+# 13-18k), Luxo >15k (antes >18k). Motivo: classificação antiga punha Bossa,
+# The View, Vernazza, Giardino (R$ 14-17k) em Alto, contradizendo posicionamento
+# de marca real. Distribuição da carteira após recalibragem: 2 Médio, 3 Médio-
+# alto, 6 Alto, 12 Luxo, 22 sem dados. 8 entries com Segmento hardcoded
+# divergente do cálculo: trocadas para None (auto-classifica) — evita drift
+# futuro entre intent e fórmula.
 
 # ═══════════════════════════════════════════════════════════════
 # IDENTIDADE VISUAL DOM
@@ -83,11 +91,14 @@ ORIG_ESTOQUE   = ["tabela_local","site_oficial","agregador","corretor","estimati
 ORIG_LANCAMENTO= ["book","release","treinamento_corretor","site_oficial","imprensa","estimativa_T-36"]
 
 def classificar_segmento_por_m2(preco_m2):
+    """§4.2 do PADRAO v2.2 (recalibrada 27/04/2026):
+       Popular <6k | Médio 6-8k | Médio-alto 8-10k | Alto 10-15k | Luxo >15k
+       Antes (v2.0): Médio 6-9k, Médio-alto 9-13k, Alto 13-18k, Luxo >18k."""
     if preco_m2 is None: return None
     if preco_m2 < 6000: return "Popular"
-    if preco_m2 < 9000: return "Médio"
-    if preco_m2 < 13000: return "Médio-alto"
-    if preco_m2 < 18000: return "Alto"
+    if preco_m2 < 8000: return "Médio"
+    if preco_m2 < 10000: return "Médio-alto"
+    if preco_m2 < 15000: return "Alto"
     return "Luxo"
 
 def reclassificar_status(status_atual, estoque_pct):
@@ -256,7 +267,7 @@ E_RAW = [
     # ═══ TREVISO ═══════════════════════════════════════════════════════
     ("Treviso","Vernazza Torre Norte",
      "Endereço não localizado, Ponta d'Areia, São Luís - MA","Ponta d'Areia",
-     "Vertical","Alto","Em comercialização",
+     "Vertical",None,"Em comercialização",
      120,"02/2025","12/2029", 130,130,None, "Aptos 130 m² — Leste/Sul/Norte",
      1820000,2235000, None,None, 0.4666666666666667,
      "tabela_local","tabela_local","informado",
@@ -265,7 +276,7 @@ E_RAW = [
 
     ("Treviso","Vernazza Torre Sul",
      "Ponta d'Areia, São Luís - MA","Ponta d'Areia",
-     "Vertical","Alto","Em comercialização",
+     "Vertical",None,"Em comercialização",
      None,"02/2025","12/2029", 87.98,90.1,None, "87,98 e 90,10 m² (Norte/Sul)",
      1277000,1586000, None,None, None,
      "tabela","tabela","informado",
@@ -274,7 +285,7 @@ E_RAW = [
 
     ("Treviso","Altos do São Francisco",
      "Bairro São Francisco, São Luís - MA","São Francisco",
-     "Vertical","Médio-alto","Entregue",
+     "Vertical",None,"Entregue",
      26,"01/2024 ⚠ T-36","Pronto", 57.93,67.15,None, "2-3Q (1 ou 2 vagas)",
      495800,761700, None,None, None,
      "tabela","tabela","pendente",
@@ -312,7 +323,7 @@ E_RAW = [
 
     ("Mota Machado","Entre Rios",
      "Rua dos Bicudos, S/N, Qd. XIV-A Lote 02, Renascença, São Luís - MA","Renascença",
-     "Vertical","Alto","Lançamento",
+     "Vertical",None,"Lançamento",
      None,"08/2024","—", 125,157,None, "3 suítes (1 master)",
      1732000,2720000, None,None, None,
      "tabela","tabela","book",
@@ -321,7 +332,7 @@ E_RAW = [
 
     ("Mota Machado","Al Mare Tirreno",
      "Av. dos Holandeses, Qd 9 Lt 9, São Marcos, São Luís - MA","São Marcos",
-     "Vertical","Alto","Em comercialização",
+     "Vertical",None,"Em comercialização",
      None,"08/2024","Pronto", 215,215,None, "4 suítes, 3 vagas",
      3025856,3120721, None,None, None,
      "tabela","tabela","book",
@@ -365,7 +376,7 @@ E_RAW = [
     # ─── ALFA ENGENHARIA — Giardino Residenza split (Torre Fiore Norte + Torre Luce Sul) ───
     ("Alfa Engenharia","Giardino Residenza Torre Fiore",
      "Ponta do Farol, São Luís - MA","Ponta do Farol",
-     "Vertical","Alto","Últimas unidades",
+     "Vertical",None,"Últimas unidades",
      45,"02/2025","12/2029", 110.77,128.37,None, "2 suítes + 2 semi-suítes OU 3 suítes, varanda, lavabo, 3 vagas, depósito",
      1838492,2032939, None,None, 6/45,
      "tabela_local","tabela_local","memorial",
@@ -374,7 +385,7 @@ E_RAW = [
 
     ("Alfa Engenharia","Giardino Residenza Torre Luce",
      "Ponta do Farol, São Luís - MA","Ponta do Farol",
-     "Vertical","Alto","Últimas unidades",
+     "Vertical",None,"Últimas unidades",
      60,"02/2025","12/2029", 93.18,101.31,None, "3 suítes, varanda, lavabo, 2 vagas, depósito",
      1442168,1595303, None,None, 5/60,
      "tabela_local","tabela_local","memorial",
@@ -545,7 +556,7 @@ E_RAW = [
     # ═══ HIALI ═════════════════════════════════════════════════════════
     ("Hiali","Le Noir",
      "Rua Osires, 05, Renascença II, São Luís - MA","Renascença II",
-     "Vertical","Alto","Lançamento",
+     "Vertical",None,"Lançamento",
      25,"04/2025","12/2027", 49.74,62.62,None, "Studios e 1-2 dorm (compactos premium)",
      710000,870000, None,None, None,
      "tabela","tabela","memorial",
