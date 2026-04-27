@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 # ─── DOM Incorporação · Publish Panorama ──────────────────────────────────
-# Regenera o index.html a partir da Planilha Mestre e publica no GitHub.
+# 1. Regenera Planilha Mestre via gerar_planilha.py (source of truth)
+# 2. Regenera index.html via build_panorama.py
+# 3. Commit gerar_planilha.py + build_panorama.py + index.html + push
+#    (planilhas .xlsx ficam LOCAIS — gitignored por política, são output)
 # Uso:  ./publish.sh "Mensagem opcional do commit"
 # ──────────────────────────────────────────────────────────────────────────
 set -e
@@ -15,26 +18,40 @@ echo "  DOM · Panorama de Lançamentos · Publish"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo ""
 
-# 1. Regenera o HTML a partir da Planilha Mestre
-echo "▸ Regenerando index.html..."
+# 1. Regenera Planilha Mestre a partir do source-of-truth (gerar_planilha.py)
+echo "▸ Regenerando Planilha Mestre (gerar_planilha.py)..."
+python3 _PADRAO_FASE_1/gerar_planilha.py
+
+# 2. Regenera o HTML a partir da Planilha Mestre mais recente
+echo ""
+echo "▸ Regenerando index.html (build_panorama.py)..."
 python3 build_panorama.py
 
-# 2. Verifica se há mudanças
-if git diff --quiet index.html 2>/dev/null && git diff --cached --quiet index.html 2>/dev/null; then
-  # Verifica se index.html é novo (não rastreado)
-  if ! git ls-files --error-unmatch index.html > /dev/null 2>&1; then
-    echo "  (index.html é novo — será adicionado)"
-  else
+# 3. Verifica se há mudanças em SOURCE ou no HTML
+HAS_CHANGES=0
+if ! git diff --quiet _PADRAO_FASE_1/gerar_planilha.py 2>/dev/null; then HAS_CHANGES=1; fi
+if ! git diff --quiet build_panorama.py 2>/dev/null; then HAS_CHANGES=1; fi
+if ! git diff --quiet index.html 2>/dev/null; then HAS_CHANGES=1; fi
+if ! git ls-files --error-unmatch index.html > /dev/null 2>&1; then HAS_CHANGES=1; fi
+
+if [ "$HAS_CHANGES" -eq 0 ]; then
     echo ""
-    echo "✓ Nenhuma mudança no index.html. Nada a publicar."
+    echo "✓ Nada a publicar (sem mudanças em source nem em HTML)."
     exit 0
-  fi
 fi
 
-# 3. Commit e push
+# 4. Commit (script-fonte + html) e push
 echo ""
-echo "▸ Fazendo commit: \"$MSG\""
+echo "▸ Adicionando arquivos:"
+echo "    • _PADRAO_FASE_1/gerar_planilha.py (source-of-truth)"
+echo "    • build_panorama.py (gerador de HTML)"
+echo "    • index.html (output publicado)"
+git add _PADRAO_FASE_1/gerar_planilha.py
+git add build_panorama.py
 git add index.html
+
+echo ""
+echo "▸ Commit: \"$MSG\""
 git commit -m "$MSG"
 
 echo ""

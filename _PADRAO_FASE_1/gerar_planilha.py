@@ -18,14 +18,17 @@ from openpyxl.drawing.image import Image as XLImage
 # ═══════════════════════════════════════════════════════════════
 # PARÂMETROS GLOBAIS
 # ═══════════════════════════════════════════════════════════════
-VERSION = "4.17"
+VERSION = "4.18"
 DATE_STR = "25/04/2026"
-# v4.17 — (25/04/2026): +1 empreend. Delman: Edifício The View (Calhau, Av. dos
-# Holandeses, Qd 02 nº 08). PRÉ-LANÇAMENTO ABR/2026 (Tabela 1.1 versão 0000001).
-# Tipologias 36,05–85,87 m² na tabela vigente; site Delman indica até 101,06m²
-# (cobertura provavelmente fora de comercialização inicial). Tickets R$529k–R$1,5M.
-# 17º andar (cobertura) com R$/m² ~R$18.090 (premium). Status no site: "Próximos
-# Lançamentos". Calhau passa a ter 2 produtos Delman simultâneos (Landscape + The View).
+# v4.18 — (25/04/2026): RECONCILIAÇÃO da divergência entre script-fonte e v4.16.xlsx.
+# Em ciclos anteriores, o E_RAW foi enriquecido (10+ empreend.) e a v4.16.xlsx foi
+# regenerada, mas o source nunca foi commitado no git → quando a v4.17 rodou, voltou
+# para o estado magro do d7d584c (35 empreend.) perdendo dados. Esta versão restaura:
+# +Mota Machado: Entre Rios + Al Mare Tirreno; +Treviso: Vernazza split (Norte/Sul) +
+# Altos do São Francisco; +Monteplan: Residencial Novo Anil; +Hiali (NOVA): Le Noir;
+# +DOM Incorporação (NOVA, products próprios + parcerias): Dom Lucas, Dom José, Dom
+# Antônio (era MB), Edifício Dom Ricardo (era MB); +Alfa: Giardino split (Torre Fiore/
+# Luce). Mantém The View (v4.17). Total: 46 empreendimentos, 16 incorporadoras.
 
 # ═══════════════════════════════════════════════════════════════
 # IDENTIDADE VISUAL DOM
@@ -45,7 +48,8 @@ LOGO_TRANSP=os.path.join(SKILL_ASSETS,"DOM_LOGO_TRANSPARENTE.png")
 INCORPORADORAS = [
     "Mota Machado","Berg Engenharia","Alfa Engenharia","Lua Nova",
     "Delman","Treviso","Ergus","Monteplan","Franere","Canopus",
-    "Niágara","MB Engenharia","Sá Cavalcante","Castelucci"
+    "Niágara","MB Engenharia","Sá Cavalcante","Castelucci",
+    "Hiali","DOM Incorporação"
 ]
 
 SEGMENTOS = ["Popular","Médio","Médio-alto","Alto","Luxo"]
@@ -227,14 +231,32 @@ E_RAW = [
      "Complexo 10mil m² multi-produto (residencial + comercial + Open Mall). Book local + site oficial."),
 
     # ═══ TREVISO ═══════════════════════════════════════════════════════
-    ("Treviso","Vernazza Residenziale",
+    ("Treviso","Vernazza Torre Norte",
      "Endereço não localizado, Ponta d'Areia, São Luís - MA","Ponta d'Areia",
-     None,"Em comercialização",
-     120,"2025","12/2029", 88,130,None, "3 suítes",
-     1250000,2190000, None,None, 64/120,
-     "tabela_local","tabela_local","imprensa",
-     "https://www.treviso.com.br","14/04/2026",
-     "Tabela 02/2026: 37 Norte + 27 Sul = 64 de 120. ≈47% vendido. Fonte web indica pré-lançamento 2025."),
+     "Alto","Em comercialização",
+     120,"02/2025","12/2029", 130,130,None, "Aptos 130 m² — Leste/Sul/Norte",
+     1820000,2235000, None,None, 0.4666666666666667,
+     "tabela_local","tabela_local","informado",
+     "https://www.treviso.com.br","23/04/2026",
+     "Lançamento 02/2025 informado pelo Rafael (fonte externa confiável). Tabela de 02/2026 arquivada confirma vendas ativas naquela data, mas não é data de lançamento — aguarda book ou memorial para data confiável. Torre Norte: 37 unid, área 130 m², ticket R$ 1,82-2,24M (méd R$ 2,02M). R$/m² méd R$ 15.524. VGV listado R$ 74,8M. Entrega 12/2029. [reconstituído da v4.16 em 25/04/2026]"),
+
+    ("Treviso","Vernazza Torre Sul",
+     "Ponta d'Areia, São Luís - MA","Ponta d'Areia",
+     "Alto","Em comercialização",
+     None,"02/2025","12/2029", 87.98,90.1,None, "87,98 e 90,10 m² (Norte/Sul)",
+     1277000,1586000, None,None, None,
+     "tabela","tabela","informado",
+     "—","23/04/2026",
+     "Lançamento 02/2025 informado pelo Rafael. 26 unid listadas, área 87,98/90,10 m². Ticket R$ 1,28-1,59M (méd R$ 1,40M). R$/m² pond R$ 15.600 (faixa R$ 14,2-17,6k). VGV listado R$ 36,3M. Entrega 12/2029. [reconstituído da v4.16 em 25/04/2026]"),
+
+    ("Treviso","Altos do São Francisco",
+     "Bairro São Francisco, São Luís - MA","São Francisco",
+     "Médio-alto","Entregue",
+     26,"—","Pronto", 57.93,67.15,None, "2-3Q (1 ou 2 vagas)",
+     495800,761700, None,None, None,
+     "tabela","tabela","pendente",
+     "https://trevisoengenharia.com.br","23/04/2026",
+     "IMÓVEL PRONTO. 26+ unid na tab ABR/26 (VGV R$ 15,8M). Tipos: 57,93 m² (1 vaga) e 67,15 m² (2 vagas). Ticket R$ 495k–762k (méd R$ 607k). R$/m² pond R$ 10.042. Estoque amplo. [reconstituído da v4.16 em 25/04/2026]"),
 
     # ═══ NIÁGARA ═══════════════════════════════════════════════════════
     ("Niágara","ORO Ponta d'Areia",
@@ -264,6 +286,24 @@ E_RAW = [
      "site_oficial","N/A","site_oficial",
      "https://www.motamachado.com.br","14/04/2026",
      "Obras iniciadas 09/2025. Empresa de Fortaleza expandindo no Nordeste. SEM material local."),
+
+    ("Mota Machado","Entre Rios",
+     "Rua dos Bicudos, S/N, Qd. XIV-A Lote 02, Renascença, São Luís - MA","Renascença",
+     "Alto","Lançamento",
+     None,"08/2024","—", 125,157,None, "3 suítes (1 master)",
+     1732000,2720000, None,None, None,
+     "tabela","tabela","book",
+     "https://motamachado.com.br","23/04/2026",
+     "3 tipologias (125 / 146,82 / 156,94 m²). 2 torres x 15 pav. Tab ABR/26: 15 unid, VGV R$ 32,3M. Ticket R$ 1,73–2,72M (méd R$ 2,15M). R$/m² pond R$ 15.162 (faixa R$ 13,9k–17,3k). Rua dos Bicudos, Renascença. [reconstituído da v4.16 em 25/04/2026]"),
+
+    ("Mota Machado","Al Mare Tirreno",
+     "Av. dos Holandeses, Qd 9 Lt 9, São Marcos, São Luís - MA","São Marcos",
+     "Alto","Em comercialização",
+     None,"08/2024","Pronto", 215,215,None, "4 suítes, 3 vagas",
+     3025856,3120721, None,None, None,
+     "tabela","tabela","book",
+     "https://motamachado.com.br","23/04/2026",
+     "Torre A 'Tirreno' da Mota Machado Collection. Imóvel PRONTO. 215 m², 4 suítes, 3 vagas. Apts 102, 201, 202 listados. Ticket R$ 3,02-3,12M. R$/m² méd R$ 14.293. Av. dos Holandeses / São Marcos. [reconstituído da v4.16 em 25/04/2026]"),
 
     # ═══ BERG ══════════════════════════════════════════════════════════
     ("Berg Engenharia","Monte Meru",
@@ -299,15 +339,24 @@ E_RAW = [
     # ─── MOTA MACHADO (atualização Bossa com dados de imprensa) ───
     # (mantém linha Bossa anterior e adiciona nada; obs complementar abaixo só para referência)
 
-    # ─── ALFA ENGENHARIA — Giardino Residenza (novo, Ponta do Farol) ───
-    ("Alfa Engenharia","Giardino Residenza",
-     "Endereço não localizado, Ponta do Farol, São Luís - MA","Ponta do Farol",
-     None,"Lançamento",
-     None,"~2025","—", None,None,None, "—",
-     None,None, None,None,None,
-     "N/A","N/A","imprensa",
-     "https://www.instagram.com/alfaengenhariama/","14/04/2026",
-     "Lançamento Alfa — Ponta do Farol. Fonte: @alfaengenhariama + reel de corretor (CRECI/MA 3021). Sem tabela pública."),
+    # ─── ALFA ENGENHARIA — Giardino Residenza split (Torre Fiore Norte + Torre Luce Sul) ───
+    ("Alfa Engenharia","Giardino Residenza Torre Fiore",
+     "Ponta do Farol, São Luís - MA","Ponta do Farol",
+     "Alto","Lançamento",
+     45,"02/2025","12/2029", 110.77,128.37,None, "2 suítes + varanda + dep. serviço, 3 vagas",
+     1838492,2032939, None,None, None,
+     "tabela","tabela","memorial",
+     "https://www.instagram.com/alfaengenhariama/","24/04/2026",
+     "Torre NORTE do Giardino. 15 pav × 3 un = 45 unidades. 3 tipologias (127,30 / 128,37 / 110,77 m²). 2 suítes, 3 vagas, depósito. Tabela MAR/26 arquivada. Memorial R.06/56.931 - 1º RI SL. Entrega DEZ/29. Apto.vc: lançamento 02/2025. [reconstituído da v4.16 em 25/04/2026]"),
+
+    ("Alfa Engenharia","Giardino Residenza Torre Luce",
+     "Ponta do Farol, São Luís - MA","Ponta do Farol",
+     "Alto","Em comercialização",
+     60,"02/2025","12/2029", 93.18,101.31,None, "2 suítes/1 suíte + varanda + dep. serviço, 2 vagas",
+     1442168,1595303, None,None, None,
+     "tabela","tabela","memorial",
+     "https://www.instagram.com/alfaengenhariama/","24/04/2026",
+     "Torre SUL do Giardino. 15 pav × 4 un = 60 unidades. 4 tipologias (99,08 / 101,31 / 93,18 / 93,62 m²). 2 vagas, mais acessível que Torre Fiore. Tabela MAR/26 arquivada. Memorial R.06/56.931 - 1º RI SL. [reconstituído da v4.16 em 25/04/2026]"),
 
     # ─── TREVISO — Villagio Treviso ───
     ("Treviso","Villagio Treviso",
@@ -405,14 +454,14 @@ E_RAW = [
      "Residência no Santo Amaro — região com oferta crescente de médio padrão."),
 
     # ─── MB ENGENHARIA — 3 empreend. ───
-    ("MB Engenharia","Edifício Dom Ricardo",
+    ("DOM Incorporação","Edifício Dom Ricardo",
      "Rua dos Rouxinóis, 8, Jardim Renascença, São Luís - MA","Jardim Renascença",
      None,"Últimas unidades",
-     None,"~2023","—", 71,85,None, "2-3Q",
-     None,None, None,None, 6/100,
-     "agregador","agregador","imprensa",
-     "https://www.imeu.com.br/empreendimento/dom-ricardo-apartamentos-sao-luis-2-a-3-quartos-71-a-85-m/19044585-MIM","14/04/2026",
-     "Próximo à Praça da Lagoa (Foguete). 'Sucesso de vendas, 6 unidades disponíveis' (IG jan/2025). Estoque estimado ≤6%."),
+     None,"12/2023","—", 71,85,None, "2-3Q",
+     None,None, None,None, 0.06,
+     "agregador","agregador","interno",
+     "https://www.imeu.com.br/empreendimento/dom-ricardo-apartamentos-sao-luis-2-a-3-quartos-71-a-85-m/19044585-MIM","23/04/2026",
+     "DOM Incorporação com MB Engenharia como sócia (empreendimento conjunto). Lançamento 12/2023 confirmado internamente. Próximo à Praça da Lagoa (Foguete). 'Sucesso de vendas, 6 unidades disponíveis' (IG jan/2025). Estoque estimado ≤6%. [reconstituído da v4.16 em 25/04/2026]"),
 
     ("MB Engenharia","Condomínio Prime Cohama",
      "Endereço não localizado, Cohama, São Luís - MA","Cohama",
@@ -423,14 +472,14 @@ E_RAW = [
      "https://www.instagram.com/mbengenharia.br/","14/04/2026",
      "22 casas duplex 140m² — produto horizontal diferenciado. Pré-lançamento anunciado 2023, hoje em comercialização."),
 
-    ("MB Engenharia","Dom Antônio",
+    ("DOM Incorporação","Dom Antônio",
      "Endereço não localizado, Jardim Eldorado (Turú), São Luís - MA","Jardim Eldorado",
-     None,"Em comercialização",
-     None,"~2024","—", 136,136,None, "3Q casas duplex",
+     "Médio","Em comercialização",
+     None,"06/2023","—", 136,136,None, "3Q casas duplex",
      906870,906870, None,None,None,
-     "agregador","N/A","site_oficial",
-     "https://www.imovelnacidade.com/destaque/mb-construtora/","14/04/2026",
-     "Casa duplex 3Q, 136m², R$906.870. Produto horizontal Eldorado/Turú."),
+     "agregador","N/A","interno",
+     "https://www.imovelnacidade.com/destaque/mb-construtora/","23/04/2026",
+     "DOM Incorporação com MB Engenharia como sócia (empreendimento conjunto). Lançamento 06/2023 confirmado internamente. Casa duplex 3Q, 136m², R$906.870. Produto horizontal Eldorado/Turú. [reconstituído da v4.16 em 25/04/2026]"),
 
     # ─── MONTEPLAN — 2 empreend. ativos ───
     ("Monteplan","Renaissance Conceito",
@@ -451,6 +500,15 @@ E_RAW = [
      "https://monteplanengenharia.com.br/empreendimentos/edificio-sanpaolo/","14/04/2026",
      "2Q (2 suítes, 1 reversível) ou 3Q (1 suíte). 'Todas as unidades vendidas' (Facebook out/2025)."),
 
+    ("Monteplan","Residencial Novo Anil",
+     "Rua Estevão Braga, Cohab Anil IV, São Luís - MA","Cohab Anil IV",
+     "Médio","Entregue",
+     None,"01/2022","Pronto", 53.94,53.94,None, "—",
+     324142,324142, None,None, None,
+     "tabela","tabela","memorial",
+     "https://monteplanengenharia.com.br","23/04/2026",
+     "OBRA CONCLUÍDA (Monteplan, Cohab Anil IV). 32 unid listadas, todas ~R$ 324.142 (área 53,94 m²). R$/m² uniforme R$ 6.009. Padrão popular. SFH 60%. VGV residual listado R$ 10,4M. [reconstituído da v4.16 em 25/04/2026]"),
+
     # ─── SÁ CAVALCANTE — Reserva Península (novo) ───
     ("Sá Cavalcante","Reserva Península",
      "Endereço não localizado, Ponta d'Areia (Península), São Luís - MA","Ponta d'Areia",
@@ -460,6 +518,35 @@ E_RAW = [
      "site_oficial","N/A","site_oficial",
      "https://www.instagram.com/sacavalcantema/","14/04/2026",
      "Lançamento Sá Cavalcante out/2025. Estande 'Casa Sal' na Península. 'Os espaços conversam...' — narrativa de estilo de vida."),
+
+    # ═══ HIALI ═════════════════════════════════════════════════════════
+    ("Hiali","Le Noir",
+     "Rua Osires, 05, Renascença II, São Luís - MA","Renascença II",
+     "Alto","Lançamento",
+     25,"04/2025","12/2027", 49.74,62.62,None, "Studios e 1-2 dorm (compactos premium)",
+     710000,870000, None,None, None,
+     "tabela","tabela","memorial",
+     "","23/04/2026",
+     "Parceria Hiali + Silveira Inc. Compactos premium: 49,74 / 58,91 / 62,62 m². 5 pavimentos tipo × 5 aptos/andar = ~25 unidades. Entrega DEZ/2027. Ticket R$ 710-870k. R$/m² méd R$ 13.810. Memorial R.09/25.101 registrado 17/04/2025 no 1º RI São Luís. Foco em mercado jovem / investidor. [reconstituído da v4.16 em 25/04/2026]"),
+
+    # ═══ DOM INCORPORAÇÃO (própria) ═════════════════════════════════════
+    ("DOM Incorporação","Dom Lucas",
+     "Tv. Boa Esperança, 101 - Cantinho do Céu, São Luís - MA, 65074-030","Cantinho do Céu",
+     "Médio-alto","Em comercialização",
+     None,"02/2026","01/2029", 100.35,145.78,None, "Casa 3 dorm (1 suíte) + 2 vagas",
+     835000,851000, None,None, None,
+     "tabela","tabela","interno",
+     "","23/04/2026",
+     "Condomínio horizontal (sobrados). Área casa 100,35 m² + terreno 136-146 m². ~38 casas. Lazer: campo society, piscina, deck, salão, gourmet, petplay, playground. Muitas unidades VENDIDAS. Entrega DEZ/2026. Ticket R$ 835-851k. R$/m² construção ~R$ 8.400. [reconstituído da v4.16 em 25/04/2026]"),
+
+    ("DOM Incorporação","Dom José",
+     "FQV9+JJ Jardim Eldorado, São Luís - MA","Jardim Eldorado",
+     "Médio-alto","Em comercialização",
+     None,"06/2024","06/2027", 154.64,180.98,None, "Casa 4+ dorm, alto padrão",
+     1400000,1415000, None,None, None,
+     "tabela","tabela","interno",
+     "","23/04/2026",
+     "Condomínio horizontal alto padrão. Casa 154,64 m² + terreno 170-181 m². Maioria das unidades VENDIDAS (14+ marcadas VENDIDA na tabela ABR/2026). Entrega JUL/2027. Ticket ~R$ 1,4M. R$/m² construção ~R$ 9.150. [reconstituído da v4.16 em 25/04/2026]"),
 ]
 
 # ═══════════════════════════════════════════════════════════════
@@ -492,11 +579,15 @@ I_META = {
     "Niágara":          ("https://niagaraempreendimentos.com.br","@niagaraimoveis",
                          "ORO com ampla faixa 80-160m², parcelamento 48m pós-assinatura. Reserva dos Vinhais (Vinhais 2Q 48m²) + Reserva dos Buritis."),
     "MB Engenharia":    ("","@mbengenharia.br",
-                         "Ed. Dom Ricardo (Renascença, 2-3Q 71-85m²) + Prime Cohama (22 casas duplex 140m²) + Dom Antônio (Turú 136m² R$906k) + Fernando de Noronha 2ª etapa. Ativo e diversificado."),
+                         "Sócia da DOM Incorporação em Dom Antônio + Edifício Dom Ricardo (reclassificados como DOM em v4.18). Próprios: Prime Cohama (22 casas duplex 140m²) + Fernando de Noronha 2ª etapa."),
     "Sá Cavalcante":    ("https://www.sacavalcante.com.br","@sacavalcantema",
                          "Grupo desde 1974 (shoppings + incorporação). Ilha Parque entregue + NOVO Reserva Península (out/2025, Ponta d'Areia)."),
     "Castelucci":       ("https://construtoracastelucci.com.br","@construtoracastelucci",
                          "10+ anos. CEO Paulo Castelucci (Mirante FM). Vila Coimbra (parceria Coimbra Alves, Araçagi alto padrão) + Villa di Carpi (Cohatrac) + Ana Vitória (Araçagy). Patrocinador Imob Summit."),
+    "Hiali":            ("","@hialiconstrucoes",
+                         "Parceria com Silveira Inc. Le Noir (Renascença II): compactos premium 49-62m², ticket R$ 710-870k. Memorial 04/2025. Posicionamento jovem/investidor. Mapeada via tabela arquivada."),
+    "DOM Incorporação": ("https://domincorporacao.com.br","@domincorporacao",
+                         "EU. Portfólio próprio: Dom Lucas (horizontal Cantinho do Céu, 100m²+terreno, R$ 835-851k), Dom José (horizontal Eldorado alto padrão, casa 154m², R$ 1,4M). Em parceria com MB Engenharia: Dom Antônio (Turú) + Edifício Dom Ricardo (Jd. Renascença). Tracked aqui para benchmarking interno."),
 }
 
 # ═══════════════════════════════════════════════════════════════
