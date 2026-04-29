@@ -40,9 +40,11 @@ echo ""
 echo "▸ Adicionando arquivos ao git..."
 git add _PADRAO_FASE_1/PADRAO.md
 git add _PADRAO_FASE_1/gerar_planilha.py
+git add _PADRAO_FASE_1/assets/ 2>/dev/null || true  # v6.5: logos locais (auto-suficiência)
 git add build_panorama.py
 git add publish.sh
 git add .gitignore
+git add ESTADO_ATUAL.md 2>/dev/null || true        # v6.5: declarativo de bootstrap (PADRAO §0.4)
 git add "Planilha_Mestre_Panorama_v"*.xlsx 2>/dev/null || true
 git add index.html
 git add dom_logo.png 2>/dev/null || true  # logo embutido no HTML como data URI

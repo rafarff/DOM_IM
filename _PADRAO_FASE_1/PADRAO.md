@@ -1,5 +1,5 @@
 # PADRÃO FASE 1 — Inteligência de Mercado DOM
-**Versão:** 3.4 (atualizada em 27/04/2026)
+**Versão:** 3.5 (atualizada em 28/04/2026)
 **Status:** 🟢 APROVADO pelo Rafael
 
 > **ATENÇÃO — Claude:** este documento é um CONTRATO. Toda vez que o Rafael
@@ -12,7 +12,7 @@
 ---
 
 ## Sumário
-0. Invariantes operacionais (3 regras invioláveis)
+0. Invariantes operacionais (5 regras invioláveis)
 1. Dicionário de dados — aba Empreendimentos (24 colunas)
 2. Dicionário de dados — aba Incorporadoras (15 colunas)
 3. Regras de cálculo (fórmulas congeladas)
@@ -24,7 +24,7 @@
 
 ---
 
-## 0. Invariantes operacionais (3 regras invioláveis)
+## 0. Invariantes operacionais (5 regras invioláveis)
 
 Estas regras existem porque já tivemos perda de dados entre sessões. **São absolutas.**
 
@@ -44,6 +44,38 @@ Antes de fazer qualquer alteração de dado, Claude executa:
 1. `git status` em `00_ESTUDO_CONSOLIDADO/` — se houver `.py` modificado e não commitado, **PARAR** e avisar Rafael que existe drift de sessão anterior.
 2. Contar `len(E_RAW)` e comparar com o número de linhas da última `.xlsx` commitada. Se script gera **menos** empreendimentos que a `.xlsx`, **PARAR** e alertar.
 3. Só prossegue depois de Rafael confirmar.
+
+### 0.4 Bootstrap obrigatório (primeira leitura de toda sessão)
+
+Adicionado em **v3.5 (28/04/2026)** após incidente de truncamento silencioso de Glob (Claude confundiu v4.5 com a vigente, quando real era v6.4).
+
+Antes de qualquer ação em qualquer comando (§5), Claude DEVE ler **`ESTADO_ATUAL.md`** na raiz do `00_ESTUDO_CONSOLIDADO/`. Esse arquivo declara:
+- Versão Planilha vigente
+- Versão PADRAO vigente
+- len(E_RAW) e schema (nº de colunas)
+- Distribuição da carteira (sanity numérica)
+- Bugs latentes conhecidos
+- Armadilhas comuns (p.ex.: filtros `startswith` que matam entries reais)
+
+Se contagens em `ESTADO_ATUAL.md` divergirem do que Claude observa em `gerar_planilha.py` ou na .xlsx vigente: **PARAR** e alertar Rafael (provável drift entre sessões).
+
+**Comando one-liner para descobrir versão vigente** (executar antes de confiar em qualquer Glob amplo):
+```bash
+cd 00_ESTUDO_CONSOLIDADO/ && ls -1 Planilha_Mestre_Panorama_v*.xlsx | sort -V | tail -1
+```
+Nunca usar `ls` simples para identificar "última versão" — `v4.5` ordena depois de `v4.16` em ordem lexicográfica.
+
+### 0.5 Pre-flight obrigatório (antes de qualquer write/move)
+
+Antes de criar arquivo, mover arquivo, regenerar planilha, ou alterar `gerar_planilha.py`/`PADRAO.md`, Claude apresenta **relatório pre-flight** ao Rafael:
+
+1. **Base atual:** versão Planilha + versão PADRAO + nº empreendimentos
+2. **Deltas planejados:** entries +/-, arquivos a mover (origem → destino), regras a alterar
+3. **Verificações já realizadas:** invariante 0.3 (sync script ↔ xlsx), bootstrap §0.4
+4. **Pendências/riscos:** bugs latentes que possam afetar o ciclo
+5. **Aguardar OK explícito do Rafael.** Só prossegue após confirmação.
+
+Exceções (não exigem pre-flight): leitura de arquivos, criação no `outputs/` sandbox, comandos de análise sem persistência (§5.2 "analisa", §5.3 "o que mudou?", §5.4 "oportunidades").
 
 ---
 

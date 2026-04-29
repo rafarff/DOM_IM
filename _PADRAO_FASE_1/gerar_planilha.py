@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 gerar_planilha.py — Script ÚNICO da Fase 1 (Inteligência de Mercado DOM)
 Padrão congelado em 14/04/2026. Ver PADRAO.md no mesmo diretório.
@@ -18,8 +19,8 @@ from openpyxl.drawing.image import Image as XLImage
 # ═══════════════════════════════════════════════════════════════
 # PARÂMETROS GLOBAIS
 # ═══════════════════════════════════════════════════════════════
-VERSION = "6.4"
-DATE_STR = "27/04/2026"
+VERSION = "6.5"
+DATE_STR = "28/04/2026"
 # v5.0 — (25/04/2026): MUDANÇA ESTRUTURAL — adoção do PADRAO v2.0.
 # +Coluna Tipo (Vertical/Horizontal/Misto) inserida como col. 5. 24 → 25 colunas.
 # +Hiali e DOM Incorporação como incorporadoras monitoradas (14 → 16). Tracking da
@@ -91,6 +92,22 @@ DATE_STR = "27/04/2026"
 # é m² de TERRENO, não comparável com construído. (b) Aba Dashboard adicionada ao
 # HTML com 6 cards de análise usando Chart.js CDN. Logo DOM atualizado (versão
 # minimalista do INBOX, só ícone). 45 → 46 empreendimentos.
+# v6.5 — (28/04/2026): Atualização Inbox 28/04. (a) The View — tabela 28/04
+# (versão 0000001 - 1.1) substitui v2_2704: 93 aptos disponíveis residenciais +
+# 1 loja. Ticket_min CAI para R$ 539.969 (apto 414, 36,45m²) — vs R$559k em
+# 27/04 (apto que era min foi vendido OU apto 414 voltou ao mercado). Ticket_max
+# inalterado (R$1.504k, apto 1601). Estimativa ~49% vendido (assumindo ~182
+# unidades totais = 13 andares × 14 aptos). Cobertura 17º pavto com 5 aptos
+# diferenciados (54-80m²). +1 loja (LOJA 21, 48m², R$890k).
+# (b) Edifício Bossa — sem mudança em tickets/áreas (tabela 04/2026 idêntica
+# md5 à arquivada em 24/04 → eram duplicatas no Inbox). Enriquecimento de
+# observações: arquiteto Nasser Hissa Arquitetos Associados (parceiro), nota
+# de vizinhança com The View (mesma quadra 02 da Av. Holandeses, lotes 07 e 08).
+# Endereço refinado para "Loteamento Calhau".
+# (c) Fix estrutural — BASE e SKILL_ASSETS deixam de ser hardcoded com session
+# ID antiga (intelligent-festive-lamport). Agora são derivados via pathlib
+# relativa ao __file__, tornando script auto-suficiente em qualquer sessão.
+# Logo DOM copiado para _PADRAO_FASE_1/assets/.
 
 # ═══════════════════════════════════════════════════════════════
 # IDENTIDADE VISUAL DOM
@@ -101,7 +118,9 @@ DOM_GOLD_LIGHT="FFE8D5A3"; DOM_GOLD_DARK="FF8B6914"
 DOM_RED_SOFT="FFF4B7B7"; DOM_GREEN_SOFT="FFBEE0B4"
 DOM_BLUE_SOFT="FFCEE1F2"
 
-SKILL_ASSETS="/sessions/intelligent-festive-lamport/mnt/.claude/skills/dom-xlsx-theme/assets"
+# v6.5: assets locais em _PADRAO_FASE_1/assets/ (não dependem mais da skill DOM)
+import pathlib
+SKILL_ASSETS = str(pathlib.Path(__file__).resolve().parent / "assets")
 LOGO_TRANSP=os.path.join(SKILL_ASSETS,"DOM_LOGO_TRANSPARENTE.png")
 
 # ═══════════════════════════════════════════════════════════════
@@ -248,10 +267,10 @@ E_RAW = [
      "Avenida dos Holandeses, Qd. 02, Nº 08, Calhau, São Luís - MA","Calhau",
      "Vertical",None,
      None,"04/2026","—", 36.05,85.87,None, "Studio; 1D; 2D; 3D",
-     559580,1504011, None,None,None,
+     539969,1504011, None,None,None,
      "tabela_local","tabela_local","tabela_local",
-     "https://delman.com.br/maranhao/empreendimentos/proximos-lancamentos/edificio-the-view","27/04/2026",
-     "Tipologia detalhada: Studio a 3Q (1Q/2Q dominantes). PRÉ-LANÇAMENTO. Tabela atualizada 27/04/2026 (v2 — antiga 24/04 mantida em arquivo). 14 pavtos tipo (1º pav.tipo = 4º andar). 90 aptos disponíveis na 27.04 (vs ~110 na 24.04 → ~20 unidades vendidas/reservadas em 3 dias = TRAÇÃO FORTE na pré-venda). Tipologias 36,05–85,87 m² + cobertura. 17º andar premium R$/m² ~R$18.090. Site oficial indica até 101,06m². Ticket mín sobe para R$559k (apto 409 do 4º andar foi vendido). Parcelamento 100m + INCC/IGP-M+1%. Vista mar Calhau."),
+     "https://delman.com.br/maranhao/empreendimentos/proximos-lancamentos/edificio-the-view","28/04/2026",
+     "Tipologia detalhada: Studio a 3Q (1Q/2Q dominantes). PRÉ-LANÇAMENTO. Tabela atualizada 28/04/2026 (v3, versão 0000001 - 1.1). 13 pavtos tipo úteis (4º a 17º, exceto 10º — andar técnico/lazer). 93 aptos residenciais disponíveis + 1 loja (LOJA 21, 48,02m², R$890k). Tipologias 36,05–85,87 m² + cobertura 17º (5 aptos diferenciados 54-80m²). Estimativa ~49% vendido (assumindo ~182 unidades totais = 13 andares × 14 aptos). Ticket_min CAI para R$540k (apto 414, 36,45m²) — vs R$559k em 27/04 (apto que era min vendido OU apto 414 voltou ao mercado). Histórico tabelas: v1 24/04 (~110 disp.) → v2 27/04 (90 disp.) → v3 28/04 (93 disp. — leve recuperação, possível desistência de reserva). Parcelamento 100m + INCC/IGP-M+1%. Vista mar Calhau. VIZINHO ao Edifício Bossa (Mota Machado, mesma quadra 02 da Av. dos Holandeses)."),
 
     # ═══ ERGUS ═════════════════════════════════════════════════════════
     ("Ergus","Zion Ponta d'Areia",
@@ -312,13 +331,13 @@ E_RAW = [
 
     # ═══ MOTA MACHADO ═══════════════════════════════════════════════════
     ("Mota Machado","Edifício Bossa",
-     "Avenida dos Holandeses, Lote 07, Quadra 02, Calhau, São Luís - MA","Calhau",
+     "Avenida dos Holandeses, Lote 07, Quadra 02, Loteamento Calhau, São Luís - MA","Calhau",
      "Vertical",None,
      60,"04/2026","09/2030", 191.02,196.04,None, "4D",
      2850507,3708342, None,None, 36/60,
      "tabela_local","tabela_local","tabela_local",
-     "https://motamachado.com.br","27/04/2026",
-     "Tipologia detalhada: 4 suítes (1 master c/ varanda, closet, banheiro duplo) + lavabo + varanda gourmet + qto/WC serviço. LANÇAMENTO 04/2026 — evento oficial 09/04/2026 (Frisson, MaHoje, Portal IN). 2 torres (Harmonia + Sintonia) × 15 pavtos tipo × 2 aptos/andar = 60 aptos. 6 elevadores. 3 tipologias: 191,02 / 192,64 / 196,04 m². 3 vagas (até 12º andar) ou 4 vagas (13º+ premium). Tabela 04/2026: 36 aptos disponíveis (24 vendidos = 40%). Tickets R$ 2,85-3,71M. R$/m² médio R$ 16.663 (faixa 14,9-19,2k — andares altos finais 01/02 tocam Luxo). Entrega 09/2030 (T-53). Memorial R 01, Matrícula 134.922 - 1º RI SL. Projeto: Nasser Hissa Arquitetos. Lazer: brinquedoteca, salão festas, academia, pista funcional, quadra, lounge champanheira, piscina, pet wash, minimercado, estação carro elétrico. Mota Machado (CE) expandindo no NE, VGV 2025 R$350M."),
+     "https://motamachado.com.br","28/04/2026",
+     "Tipologia detalhada: 4 suítes (1 master c/ varanda, closet, banheiro duplo) + lavabo + varanda gourmet + qto/WC serviço. LANÇAMENTO 04/2026 — evento oficial 09/04/2026 (Frisson, MaHoje, Portal IN). 2 torres (Harmonia + Sintonia) × 15 pavtos tipo × 2 aptos/andar = 60 aptos. 6 elevadores. 3 tipologias: 191,02 / 192,64 / 196,04 m². 3 vagas (até 12º andar) ou 4 vagas (13º+ premium). Tabela 04/2026: 36 aptos disponíveis (24 vendidos = 40%). Tickets R$ 2,85-3,71M. R$/m² médio R$ 16.663 (faixa 14,9-19,2k — andares altos finais 01/02 tocam Luxo). Entrega 09/2030 (T-53). Memorial R 01, Matrícula 134.922 - 1º RI SL. **Projeto Arquitetônico: Nasser Hissa Arquitetos Associados** (parceiro recorrente em alto padrão). Lazer: brinquedoteca, salão festas, academia, pista funcional, quadra, lounge champanheira, piscina, pet wash, minimercado, estação carro elétrico. Mota Machado (CE) expandindo no NE, VGV 2025 R$350M. **VIZINHO ao The View (Delman, Lote 08 da mesma Quadra 02 — ambos na Av. dos Holandeses, Calhau)** — competição direta lado-a-lado, ambos lançados em 04/2026 mas com posicionamentos distintos: Bossa 4-suítes 191m² alto-padrão luxo vs The View Studio-3D 36-86m² médio-alto/alto."),
 
     ("Mota Machado","Reserva São Marcos",
      "Endereço não localizado, Calhau, São Luís - MA","Calhau",
@@ -969,19 +988,17 @@ ft2.alignment = Alignment(horizontal="right",vertical="center")
 # SALVAR — usa a pasta NFD (a real do usuário, com .DS_Store) para
 # evitar criar pasta fantasma NFC por causa do Unicode do nome.
 # ═══════════════════════════════════════════════════════════════
-BASE = "/sessions/intelligent-festive-lamport/mnt"
-# Pasta NFD (forma canônica do macOS: "e" + combining circumflex U+0302)
-NFD_DIR_BYTES = os.path.join(BASE.encode(), b'01.Intelige\xcc\x82ncia Mercado')
-if os.path.exists(NFD_DIR_BYTES):
-    DST_BASE = NFD_DIR_BYTES.decode('utf-8')
-else:
-    # Fallback: se NFD não existe, usa o primeiro glob disponível
-    matches = glob.glob(os.path.join(BASE, "01.Intelig*"))
-    if not matches:
-        raise FileNotFoundError("Pasta '01.Inteligência Mercado' não encontrada")
-    DST_BASE = matches[0]
-OUT = os.path.join(DST_BASE, "00_ESTUDO_CONSOLIDADO",
-                   f"Planilha_Mestre_Panorama_v{VERSION}.xlsx")
+# v6.5: DST_BASE derivado do próprio caminho do script (auto-suficiente)
+# /<...>/01.Inteligência Mercado/00_ESTUDO_CONSOLIDADO/_PADRAO_FASE_1/gerar_planilha.py
+#  → parent = _PADRAO_FASE_1
+#  → parent.parent = 00_ESTUDO_CONSOLIDADO
+SCRIPT_PARENT = pathlib.Path(__file__).resolve().parent.parent
+DST_BASE = str(SCRIPT_PARENT)
+# Verificar NFD (memória feedback_unicode_nfd_paths.md): garantir que a forma do
+# path resolvido pelo pathlib bate com a forma real do filesystem.
+if not os.path.exists(DST_BASE):
+    raise FileNotFoundError(f"Pasta resolvida não existe: {DST_BASE}")
+OUT = os.path.join(DST_BASE, f"Planilha_Mestre_Panorama_v{VERSION}.xlsx")
 wb.save(OUT)
 
 print(f"✓ Salvo: {OUT}")
