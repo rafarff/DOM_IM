@@ -19,8 +19,8 @@ from openpyxl.drawing.image import Image as XLImage
 # ═══════════════════════════════════════════════════════════════
 # PARÂMETROS GLOBAIS
 # ═══════════════════════════════════════════════════════════════
-VERSION = "6.5"
-DATE_STR = "28/04/2026"
+VERSION = "6.6"
+DATE_STR = "29/04/2026"
 # v5.0 — (25/04/2026): MUDANÇA ESTRUTURAL — adoção do PADRAO v2.0.
 # +Coluna Tipo (Vertical/Horizontal/Misto) inserida como col. 5. 24 → 25 colunas.
 # +Hiali e DOM Incorporação como incorporadoras monitoradas (14 → 16). Tracking da
@@ -108,6 +108,22 @@ DATE_STR = "28/04/2026"
 # ID antiga (intelligent-festive-lamport). Agora são derivados via pathlib
 # relativa ao __file__, tornando script auto-suficiente em qualquer sessão.
 # Logo DOM copiado para _PADRAO_FASE_1/assets/.
+# v6.6 — (29/04/2026): TRÊS GRUPOS de mudança.
+# (a) UI HTML: logo aumentado 60→90px (presença de marca). +Coluna "% Vendido"
+# na Tabela A da aba Panorama com tooltip rico de origem (orig_estoque,
+# orig_precos, data_verif, ref §3.3). Coloração leve: ≥85% dourado bold,
+# 60-85% neutro, <60% cinza claro.
+# (b) AUDITORIA de gaps tabela arquivada vs E_RAW: 26 empreend. com tabela
+# em /TABELA/, 22 já completos. 4 gaps reais identificados.
+# (c) Preenchimento de 3 dos 4 gaps a partir das tabelas locais 04/2026:
+#   - Renaissance Conceito: 105 unid (Leonardo 110m² 3suítes / Botticelli
+#     82m² 3Q). Tickets R$1.038-1.565k. ~79% vendido (22 livres listadas).
+#   - Sanpaolo: ~99% vendido (1 unid restante apto 204-205, R$610k).
+#     Áreas 54-59m². Confirma "esgotado" da observação anterior.
+#   - Reserva São Marcos: tickets R$977k-1.317k. Áreas 67,48-104,05m²
+#     extraídas do BOOK (tabela RSM não traz áreas). Tipologias 2D+3D suítes.
+#   - Zion (Ergus) NÃO preenchido: 9 PDFs em arquivo, todos imagem (sem
+#     texto extraível). Pendente OCR robusto ou tabela texto via corretor.
 
 # ═══════════════════════════════════════════════════════════════
 # IDENTIDADE VISUAL DOM
@@ -279,8 +295,8 @@ E_RAW = [
      None,"09/2025","12/2026", 148,148,None, "4D",
      None,None, None,None,None,
      "site_oficial","N/A","treinamento_corretor",
-     "https://www.ergus.com.br","14/04/2026",
-     "Tipologia detalhada: 4 suítes + 3 vagas. 2 torres, 2 aptos/andar, 15 andares. Elevadores triplos. Treinamento corretor 12/09/2025 confirma lançamento comercial ~set/2025."),
+     "https://www.ergus.com.br","29/04/2026",
+     "Tipologia detalhada: 4 suítes + 3 vagas. 2 torres, 2 aptos/andar, 15 andares. Elevadores triplos. Treinamento corretor 12/09/2025 confirma lançamento comercial ~set/2025. **PENDÊNCIA EXTRAÇÃO (29/04/2026):** 9 PDFs de tabela arquivados em /TABELA/ (incluindo TABELA_ZION_PONTA_D_AREIA_042026.pdf). Todos baseados em IMAGEM — pdftotext retorna apenas elementos decorativos (mapas, endereço, data entrega DEZ/2026). OCR via tesseract testado na pág 1 do 042026 mas resultado ilegível pela complexidade visual. Próxima rodada: solicitar tabela em formato texto/Excel ao corretor da Ergus, ou aplicar OCR mais robusto (ex: Google Vision, Adobe). Endereço refinado: Rua Aziz Heluy, 34, Lotes 8-16, Quadra 28, Ponta d'Areia."),
 
     ("Ergus","Nexus Renascença",
      "Endereço não localizado, Renascença, São Luís - MA","Renascença",
@@ -341,12 +357,12 @@ E_RAW = [
 
     ("Mota Machado","Reserva São Marcos",
      "Endereço não localizado, Calhau, São Luís - MA","Calhau",
-     "Vertical","Alto",
-     None,"01/2025","—", None,None,None, "—",
-     None,None, None,None,None,
-     "site_oficial","N/A","site_oficial",
-     "https://www.motamachado.com.br","14/04/2026",
-     "Obras iniciadas 09/2025. Empresa de Fortaleza expandindo no Nordeste. SEM material local."),
+     "Vertical",None,
+     None,"01/2025","02/2029", 67.48,104.05,None, "2D; 3D",
+     977382,1316965, None,None,None,
+     "tabela_local","N/A","site_oficial",
+     "https://www.motamachado.com.br","29/04/2026",
+     "Tipologia detalhada: 2 torres (Litorânea + Lagoa). **Planta 1** (67,48-68,75m²) — 2D: 1 quarto + 1 suíte de casal, varanda gourmet, 1-2 vagas. **Planta 2** (102,25-104,05m²) — 3D: 2 suítes + suíte de casal, varanda gourmet, 1 vaga. Tabela 04/2026 PRÉ-LANÇAMENTO mostra preços por andar (plano 60% mensal): R$977k (Lagoa 301-303) a R$1.317k (Litorânea 1701-1703). Plano 100% mensais (com juros embutidos) chega a R$1,87M. Áreas extraídas do BOOK — tabela em si não traz m². Projeto IDEA (Fabián Salles), paisagismo Beth Miyazaki, interiores Sobre Arquitetura. Entrega 28/02/2029 (T-49 desde lançamento 01/2025). % Vendido não calculado: tabela é PRÉ-LANÇAMENTO, sem total de unidades visível. Mota Machado (Fortaleza/CE) — Empresa expandindo no Nordeste."),
 
     ("Mota Machado","Entre Rios",
      "Rua dos Bicudos, S/N, Qd. XIV-A Lote 02, Renascença, São Luís - MA","Renascença",
@@ -553,22 +569,22 @@ E_RAW = [
 
     # ─── MONTEPLAN — 2 empreend. ativos ───
     ("Monteplan","Renaissance Conceito",
-     "Rua Caxuxa, S/N, Renascença II, São Luís - MA","Renascença II",
-     "Vertical","Alto",
-     None,"06/2025 ⚠ T-36","—", None,None,None, "3D",
-     None,None, None,None,None,
-     "site_oficial","N/A","site_oficial",
-     "https://monteplanengenharia.com.br/empreendimentos/renaissance-conceito/","14/04/2026",
-     "Tipologia detalhada: 3Q. Alto padrão Renascença II (Loteamento Boa Vista). Dois torres, lazer completo."),
+     "Rua Assis Chateaubriand (Caxuxa), Renascença II, São Luís - MA","Renascença II",
+     "Vertical",None,
+     105,"06/2025 ⚠ T-36","08/2027", 82.0,110.0,None, "3D",
+     1038621,1565192, None,None, 22/105,
+     "tabela_local","tabela_local","site_oficial",
+     "https://monteplanengenharia.com.br/empreendimentos/renaissance-conceito/","29/04/2026",
+     "Tipologia detalhada: 2 torres × 15 pav. tipo. **Torre Leonardo da Vinci** 45 unid (3 aptos/andar): 110m², 3 SUÍTES + lavabo, 2 ou 3 vagas (1º-5º andar 2 vagas / 6º-15º 3 vagas). **Torre Botticelli** 60 unid (4 aptos/andar): 82m², 3 quartos (2 suítes, sendo 1 reversível), 2 vagas. Total 105 unidades. Tabela 04/2026 lista 22 unidades LIVRES (15 Botticelli + 7 Leonardo) — assumindo que tabela só lista LIVRES, estimativa 79% vendido (margem: pode haver reservadas/contratadas não mostradas). Tickets R$ 1.038k (BO 101, menor) a R$ 1.565k (LE 1401, maior). Conclusão obra AGO/2027. Construtora Monteplan. Versão tabela 1.04."),
 
     ("Monteplan","Edifício Sanpaolo",
-     "Endereço não localizado, São Luís - MA","São Luís",
-     "Vertical","Médio-alto",
-     None,"12/2022","—", None,None,None, "2D; 3D",
-     None,None, None,None, 0.0,
-     "site_oficial","site_oficial","site_oficial",
-     "https://monteplanengenharia.com.br/empreendimentos/edificio-sanpaolo/","14/04/2026",
-     "Tipologia detalhada: 2-3Q. 2Q (2 suítes, 1 reversível) ou 3Q (1 suíte). 'Todas as unidades vendidas' (Facebook out/2025)."),
+     "Rua Boa Esperança, 125, Cohama, São Luís - MA","Cohama",
+     "Vertical",None,
+     None,"12/2022","12/2025", 54.0,59.0,None, "2D; 3D",
+     610000,610000, None,None, 1 - 1/64,
+     "tabela_local","tabela_local","site_oficial",
+     "https://monteplanengenharia.com.br/empreendimentos/edificio-sanpaolo/","29/04/2026",
+     "Tipologia detalhada: 2 plantas. **Colunas 1,2,7,8** com 59m² — 3 quartos (1 suíte), 2 vagas. **Colunas 3,4,5,6** com 54m² — 2 quartos (2 suítes, sendo 1 reversível), 1 vaga. Tabela 04/2026 lista APENAS 1 unidade LIVRE (apto 204-205, R$ 610.000 — par de unidades unidas, situação L-L). Estimativa ≥98% vendido. Confirma 'todas as unidades vendidas' (Facebook out/2025) — restou só 1 unid. dupla. Endereço completo: Rua Boa Esperança, 125, Cohama (ao lado da Igreja Batista). Conclusão obra DEZ/2025."),
 
     ("Monteplan","Residencial Novo Anil",
      "Rua Estevão Braga, Cohab Anil IV, São Luís - MA","Cohab Anil IV",

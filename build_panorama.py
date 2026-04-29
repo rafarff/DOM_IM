@@ -419,7 +419,7 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
   .hero { background: var(--dom-gray-dark); color: var(--dom-white); padding: 32px 40px 28px; border-bottom: 4px solid var(--dom-gold); }
   .hero-inner { max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
   .hero-brand { display: flex; align-items: center; gap: 20px; }
-  .hero-logo { height: 60px; width: auto; }
+  .hero-logo { height: 90px; width: auto; }  /* v6.6: 60 → 90 */
   .hero h1 { font-size: 24px; font-weight: 700; letter-spacing: 2px; color: var(--dom-white); }
   .hero h1 .gold { color: var(--dom-gold); }
   .hero .subtitle { font-size: 13px; color: var(--dom-gold); margin-top: 4px; letter-spacing: 1px; text-transform: uppercase; }
@@ -625,6 +625,7 @@ if (sessionStorage.getItem("dom-auth") === "1") {
         <th data-col="area_med">Área méd (m²)</th>
         <th data-col="ticket_med">Ticket (R$)</th>
         <th data-col="rsm2">R$/m²</th>
+        <th data-col="vendido">% Vendido</th>
       </tr></thead>
       <tbody id="tbody"></tbody>
     </table>
@@ -864,6 +865,7 @@ function renderTable(data) {
         <td class="price">${area}</td>
         <td class="price">${ticket}${e.orig_precos && e.orig_precos !== '—' ? ` <span class="info-icon" title="Origem dos preços: ${e.orig_precos}">ℹ</span>` : ''}</td>
         <td class="price">R$ ${formatBRL(e.rsm2)}${e.orig_precos && e.orig_precos !== '—' ? ` <span class="info-icon" title="Origem dos preços: ${e.orig_precos}">ℹ</span>` : ''}</td>
+        <td class="price">${vendidoCell(e)}</td>
       </tr>
     `;
   }).join('');
@@ -895,6 +897,23 @@ function renderTable(data) {
     if (th.dataset.col === sortCol) { th.classList.add('sorted'); if (sortAsc) th.classList.add('asc'); }
   });
 }
+// v6.6: helper para célula % Vendido com tooltip rico de origem (PADRAO §3.3)
+function vendidoCell(e) {
+  if (e.vendido == null || isNaN(e.vendido)) return '<span class="dim">—</span>';
+  const pct = Math.round(e.vendido * 100);
+  const partes = [];
+  if (e.orig_estoque && e.orig_estoque !== '—') partes.push(`Origem do estoque: ${e.orig_estoque}`);
+  if (e.orig_precos && e.orig_precos !== '—') partes.push(`Origem dos preços: ${e.orig_precos}`);
+  if (e.data_verif && e.data_verif !== '—') partes.push(`Última verificação: ${e.data_verif}`);
+  partes.push('Método: hierarquia §3.3 do PADRAO (1º tabela local, 2º site oficial, 3º agregador, 4º corretor, 5º estimativa). Detalhes em "Observações" na aba Dados Completos.');
+  const titleAttr = partes.join(' · ').replace(/"/g, '&quot;');
+  let style = '';
+  if (pct >= 85) style = 'color:#8B6914;font-weight:600';
+  else if (pct >= 60) style = 'color:#4D4D4D';
+  else style = 'color:#8C8C8C';
+  return `<span style="${style}">${pct}%</span> <span class="info-icon" title="${titleAttr}">ℹ</span>`;
+}
+
 function focusEmp(name) { /* mapa removido v6.4 — função stub para evitar quebrar onclick antigos */ }
 function resetFilters() {
   ['f-inc','f-bairro','f-tipo','f-seg','f-ano','f-search'].forEach(id => document.getElementById(id).value = '');
