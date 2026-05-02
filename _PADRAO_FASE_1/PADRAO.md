@@ -1,5 +1,5 @@
 # PADRÃO FASE 1 — Inteligência de Mercado DOM
-**Versão:** 5.1 (atualizada em 02/05/2026)
+**Versão:** 5.2 (atualizada em 02/05/2026)
 **Status:** 🟢 APROVADO pelo Rafael
 
 > **ATENÇÃO — Claude:** este documento é um CONTRATO. Toda vez que o Rafael
@@ -144,7 +144,7 @@ A aba Empreendimentos é a fonte primária. A aba Composição enriquece com det
 | 7 | Ticket mín (R$) | Moeda | |
 | 8 | Ticket máx (R$) | Moeda | |
 | 9 | R$/m² médio | Calculado | Σ(ticket_unidade) / Σ(área_unidade) das unidades dessa tipologia |
-| 10 | Origem | Enum §4.4 | Como foi obtida a info |
+| 10 | Origem | Enum §3.7.A | `tabela_local`, `tabela_local_imagem`, `book`, `informado_manualmente` |
 
 **Regra de inferência tipologia × área (SLZ-padrão):** quando tabela não declara explicitamente a tipologia por unidade, usar:
 - < 40m² → Studio
@@ -290,6 +290,82 @@ Antes de marcar a entry como atualizada:
 4. ☐ Detectei se tabela é completa ou parcial?
 5. ☐ Registrei método/cálculo/confiança nas Observações?
 6. ☐ Rodei o script e validação §3.6 passou (ou WARN justificado)?
+
+---
+
+## 3.7 Determinação da Composição por Tipologia (v5.2+)
+
+Quando se processa tabela/book novo de empreendimento (comandos §5.1, §5.5), além de preencher `Nº total unidades` (§3.6), deve-se popular a **aba Composição** (1 linha por empreend × tipologia) seguindo este processo.
+
+### A. Hierarquia de fontes (5 níveis)
+
+| # | Fonte | Origem (col 10 da aba Composição) |
+|---|---|---|
+| 1 | **Tabela detalhada em `/TABELA/`** com texto extraível (linhas apto-área-preço) | `tabela_local` |
+| 2 | **Tabela em PDF imagem** → leitura via visão multimodal Claude (`pdftoppm` + Read tool) | `tabela_local_imagem` |
+| 3 | **Book** com plantas/contagens declarando unidades por tipologia | `book` |
+| 4 | **Informado manualmente** (Rafael, corretor, reunião) | `informado_manualmente` |
+| 5 | **Nada se aplica** | NÃO criar entry em C_RAW. Empreend. fica sem composição (gap explícito do roadmap). |
+
+### B. Workflow obrigatório de extração
+
+1. **Identificar formato** da tabela/book → escolher parser correto (catálogo §3.7.1)
+2. **Rodar parser** → lista de tuplas `(apto, area, ticket)`
+3. **Validar não-duplicação** — algumas tabelas listam aptos em múltiplos planos de pagamento (ex: Renaissance Conceito tem SFH e FDC, ambas listam mesmas unidades). Deduplicar por nº do apto.
+4. **Aplicar regras de tipologia:**
+   - Se mono-tipologia (E_RAW col 14 tem 1 valor único): todas unidades vão pra essa categoria, ignora heurística por área
+   - Se multi-tipologia (col 14 tem `;`): aplicar heurística §2.1 por área de cada unidade
+   - Se tipologia "Lote" (loteamento): todas vão pra `Lote`
+5. **Compor entries C_RAW**: 1 linha por (incorporadora, empreendimento, tipologia)
+   - Áreas min/max = min/max das áreas das unidades dessa tipologia
+   - Tickets min/max = min/max dos tickets
+   - R$/m² médio = `Σ(ticket_unidade) / Σ(área_unidade)` (média ponderada)
+6. **Registrar nas Observações** do empreendimento (col 25 do E_RAW): parser usado + data extração + confiança
+
+### 3.7.1 Catálogo de parsers por incorporadora
+
+Cada incorporadora tem layout próprio de tabela. Catálogo identificado em SLZ:
+
+| Incorporadora | Formato típico | Empreend. canônico | Notas |
+|---|---|---|---|
+| **Delman** | `APTO PREÇO ÁREA ...` (com ou sem R$) | The View, Wave, Sky, SD7P, Landscape, Quartier 22, Azimuth | Pattern: `^\s*(\d{3,4})\s+(?:R\$\s*)?[\d\.]+,\d{2}\s+[\d,]+` |
+| **Mota Machado** | `APTO VAGAS ÁREA ... VALOR_TOTAL` | Bossa, Entre Rios, Reserva SM, Al Mare | Último valor da linha = ticket total. Inclui parcelas intermediárias |
+| **Treviso Vernazza** | `UNIDADE POSIÇÃO ÁREA ATO ... VALOR_TOTAL` | Vernazza Norte, Vernazza Sul | Prefix `N-` ou `S-` antes do número |
+| **Treviso Altos** | `APTO VALOR SITUAÇÃO ÁREA VAGAS ATO` | Altos do São Francisco | Coluna SITUAÇÃO ("DISPONIVEL") em formato texto |
+| **Monteplan** | `<PREFIX> APTO L INVEST` (áreas em rodapé "Torre X = Ym²") | Renaissance Conceito, Sanpaolo | **Atenção: tabelas SFH+FDC duplicam aptos** — deduplicar |
+| **Castelucci** | `Casas X a Y / Casa N + TERRENO + R$ VALOR + ÁREA_CONSTRUÍDA` | Vila Coimbra | Range "Casas X a Y" expande pra (Y-X+1) unidades |
+| **Niágara** | `POSIÇÃO X - APTOS A, B, C, D - N VAGAS  ÁREA  VALOR_VENDA` | ORO Ponta d'Areia | **1 linha = N aptos**. Tabela NÃO permite inferir vendidas (formato agrupa) |
+| **Hiali** | `APTO ÁREA À VISTA SINAL ...` | Le Noir | Pattern simples |
+
+Quando aparecer empreendimento de incorporadora não catalogada acima, **adicionar parser nova ao catálogo** ao invés de improvisar.
+
+### C. Validações automáticas (gerar_planilha.py)
+
+Implementadas em v9.3 — rodam antes de salvar a xlsx:
+
+1. **Anti-duplicação:** se mesma `(incorporadora, empreendimento, tipologia)` aparece 2× em C_RAW → **ERROR** (não bloqueia geração mas registra alerta forte)
+2. **Heurística vs Tipologia declarada:** se empreend é mono-tipologia em E_RAW (ex: Tipologia="4D") mas C_RAW tem categoria diferente (ex: 3D) → **WARN** com sugestão
+3. **Cobertura:** se empreend tem pasta `/TABELA/*.pdf` arquivada mas **zero entries** em C_RAW → **WARN** ("processar este lote pra fechar gap")
+
+### D. Registro nas Observações
+
+Sempre que extrair Composição, anexar nas obs do empreend (col 25):
+- **Parser usado:** ex: "parser Delman", "parser Mota Machado"
+- **Data:** ex: "extração 02/05/2026"
+- **Tipo de fonte:** ex: "tabela 04/2026", "pdf imagem via visão", "book pág 15"
+- **Confiança:** alta / média / baixa
+
+Exemplo: `"Composição extraída via parser Delman da tabela 28/04 v3 — 93 unid em 4 tipologias. Confiança: alta."`
+
+### Checklist de aplicação ao popular Composição
+
+1. ☐ Identifiquei origem da composição seguindo §3.7.A?
+2. ☐ Escolhi parser correto do catálogo §3.7.1?
+3. ☐ Deduplicei por nº de apto (caso Monteplan SFH+FDC)?
+4. ☐ Apliquei heurística OU mono-tipologia conforme §3.7.B item 4?
+5. ☐ Calculei R$/m² médio como média ponderada?
+6. ☐ Registrei parser/data/confiança nas Observações?
+7. ☐ Rodei script e as 3 validações §3.7.C passaram?
 
 ---
 

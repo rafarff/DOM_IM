@@ -19,7 +19,7 @@ from openpyxl.drawing.image import Image as XLImage
 # ═══════════════════════════════════════════════════════════════
 # PARÂMETROS GLOBAIS
 # ═══════════════════════════════════════════════════════════════
-VERSION = "9.2"
+VERSION = "9.3"
 DATE_STR = "02/05/2026"
 # v5.0 — (25/04/2026): MUDANÇA ESTRUTURAL — adoção do PADRAO v2.0.
 # +Coluna Tipo (Vertical/Horizontal/Misto) inserida como col. 5. 24 → 25 colunas.
@@ -1266,11 +1266,12 @@ ft3.font = Font(name="Calibri", color=DOM_GRAY_MID, size=8, italic=True)
 ft3.alignment = Alignment(horizontal="right", vertical="center")
 
 # ═══════════════════════════════════════════════════════════════
-# VALIDAÇÃO AUTOMÁTICA v9.2 (PADRAO §3.6) — soma C_RAW vs total
-# quando origem=tabela_local_completa. Threshold: 5%.
+# VALIDAÇÕES AUTOMÁTICAS v9.3 (PADRAO §3.6 + §3.7)
 # ═══════════════════════════════════════════════════════════════
+
+# §3.6 — soma C_RAW vs total quando origem=tabela_local_completa (threshold 5%)
 THRESHOLD_PCT = 5.0
-warnings_validacao = []
+warnings_36 = []
 for entry in E_RAW:
     inc, emp = entry[0], entry[1]
     total = entry[6]
@@ -1282,19 +1283,72 @@ for entry in E_RAW:
         continue
     diff_pct = abs(total - soma_comp) / total * 100
     if diff_pct > THRESHOLD_PCT:
-        warnings_validacao.append(
+        warnings_36.append(
             f"  WARN {inc} | {emp}: total={total} mas Σ C_RAW={soma_comp} ({diff_pct:.1f}% diff)"
         )
 
-if warnings_validacao:
-    print(f"\n⚠ VALIDAÇÃO §3.6: {len(warnings_validacao)} divergência(s) > 5%:")
-    for w in warnings_validacao:
-        print(w)
-    print("  → Revisar: ou origem está errada, ou C_RAW incompleto, ou tabela tem unidades fora de oferta.\n")
-else:
-    has_completas = any(len(e) > 24 and e[24] == 'tabela_local_completa' for e in E_RAW)
-    if has_completas:
-        print("✓ Validação §3.6: todas entries tabela_local_completa batem com soma C_RAW (threshold 5%)")
+# §3.7.C.1 — Anti-duplicação: (inc, emp, tipologia) único em C_RAW
+from collections import Counter
+keys_comp = Counter((c[0], c[1], c[2]) for c in C_RAW)
+errors_dup = [f"  ERROR duplicado: {inc} | {emp} | {tipo} aparece {n}x"
+              for (inc, emp, tipo), n in keys_comp.items() if n > 1]
+
+# §3.7.C.2 — Heurística vs Tipologia declarada
+# Se empreend é mono-tipologia E_RAW (Tipologia tem 1 valor sem ;), comparar com C_RAW
+warnings_heur = []
+for entry in E_RAW:
+    inc, emp = entry[0], entry[1]
+    tipologia_decl = entry[12] if entry[12] else ""
+    # Mono se não tem ; e não é "—"
+    if ';' not in tipologia_decl and tipologia_decl not in ('', '—', 'Lote'):
+        # Achar entries C_RAW desse empreend
+        comp_tipos = set(c[2] for c in C_RAW if c[0] == inc and c[1] == emp)
+        if comp_tipos and tipologia_decl not in comp_tipos:
+            warnings_heur.append(
+                f"  WARN {inc} | {emp}: E_RAW.Tipologia='{tipologia_decl}' mas C_RAW tem {sorted(comp_tipos)}"
+            )
+
+# §3.7.C.3 — Cobertura: empreend com tabela arquivada mas 0 entries C_RAW
+import re as _re_cov
+warnings_cov = []
+emps_com_comp = set((c[0], c[1]) for c in C_RAW)
+script_dir = pathlib.Path(__file__).resolve().parent.parent.parent
+if script_dir.exists():
+    for inc_dir in script_dir.iterdir():
+        if not inc_dir.is_dir() or not _re_cov.match(r'^\d+_', inc_dir.name):
+            continue
+        for emp_dir in inc_dir.iterdir():
+            if not emp_dir.is_dir() or emp_dir.name.startswith('_'):
+                continue
+            tab_dir = emp_dir / 'TABELA'
+            if tab_dir.exists() and any(tab_dir.glob('*.pdf')):
+                # Tem tabela. Verificar se algum empreend de E_RAW desta inc_dir está no C_RAW
+                # Heurística: nome empreend = pasta sem sufixo _MMAAAA
+                emp_name = _re_cov.sub(r'_\d{6}$', '', emp_dir.name).replace('_', ' ')
+                # Procurar match em E_RAW
+                for entry in E_RAW:
+                    e_inc, e_emp = entry[0], entry[1]
+                    e_emp_norm = e_emp.lower().replace('í', 'i').replace('ã', 'a').replace('ç', 'c').replace('é', 'e').replace('ó', 'o').replace('ô', 'o').replace('á', 'a').replace("'", '').replace(' ', '')
+                    p_emp_norm = emp_name.lower().replace("'", '').replace(' ', '')
+                    if e_emp_norm.startswith(p_emp_norm) or p_emp_norm.startswith(e_emp_norm):
+                        if (e_inc, e_emp) not in emps_com_comp:
+                            warnings_cov.append(f"  WARN {e_inc} | {e_emp}: tem tabela em /{emp_dir.name}/ mas zero entries em C_RAW")
+                        break
+
+# Imprimir resumo
+def _print_section(title, items, prefix='⚠'):
+    if items:
+        print(f"\n{prefix} {title}: {len(items)}")
+        for w in items:
+            print(w)
+
+_print_section("VALIDAÇÃO §3.6 — soma C_RAW vs total (>5%)", warnings_36)
+_print_section("VALIDAÇÃO §3.7.C.1 — duplicação em C_RAW", errors_dup, prefix='✗ ERROR')
+_print_section("VALIDAÇÃO §3.7.C.2 — heurística vs Tipologia declarada", warnings_heur)
+_print_section("VALIDAÇÃO §3.7.C.3 — cobertura (tabela arquivada sem C_RAW)", warnings_cov)
+
+if not (warnings_36 or errors_dup or warnings_heur or warnings_cov):
+    print("✓ Validações §3.6 + §3.7: todas passaram")
 
 # ═══════════════════════════════════════════════════════════════
 # SALVAR — usa a pasta NFD (a real do usuário, com .DS_Store) para
