@@ -1,5 +1,5 @@
 # PADRÃO FASE 1 — Inteligência de Mercado DOM
-**Versão:** 3.5 (atualizada em 28/04/2026)
+**Versão:** 4.0 (atualizada em 02/05/2026)
 **Status:** 🟢 APROVADO pelo Rafael
 
 > **ATENÇÃO — Claude:** este documento é um CONTRATO. Toda vez que o Rafael
@@ -14,7 +14,9 @@
 ## Sumário
 0. Invariantes operacionais (5 regras invioláveis)
 1. Dicionário de dados — aba Empreendimentos (24 colunas)
-2. Dicionário de dados — aba Incorporadoras (15 colunas)
+2. Aba Empreendimentos vs Aba Composição — relação canônica
+2.1. Dicionário de dados — aba Composição (10 colunas, v8.0+)
+2bis. Dicionário de dados — aba Incorporadoras (15 colunas)
 3. Regras de cálculo (fórmulas congeladas)
 4. Enumerações fixas
 5. Comandos padronizados (5 gatilhos)
@@ -116,7 +118,45 @@ Exceções (não exigem pre-flight): leitura de arquivos, criação no `outputs/
 
 > **v2.1 (27/04/2026) — Convenção de área em Horizontais:** quando `Tipo=Horizontal` (casas/sobrados/lotes), as colunas **Área mín/máx (m²)** referem-se SEMPRE à **área CONSTRUÍDA** da unidade. Terreno (geralmente variável por lote) vai para **Observações**, no formato `terreno N–M m²`. Motivo: o cálculo de R$/m² em §3.1 só faz sentido contra a área construída — misturar com terreno distorce a média. Regra detectada com Dom Lucas em 27/04/2026: área máx estava 145,78 (terreno) quando a casa é 100,35 m² construída uniforme.
 
-## 2. Aba Incorporadoras — 15 colunas
+## 2. Aba Empreendimentos vs Aba Composição — relação canônica
+
+**v4.0 (02/05/2026)** — a Planilha Mestre ganhou uma terceira aba: **Composição**. As três abas têm papéis distintos e devem ser alimentadas em conjunto:
+
+| Aba | Granularidade | Papel |
+|---|---|---|
+| Empreendimentos | 1 linha por empreend. | Visão por empreend. (KPIs, VGV, % vendido agregado, tipologia como string concatenada) |
+| Composição (v8.0+) | 1 linha por empreend × tipologia | Visão analítica (preço médio por tipologia REAL, não inferido) |
+| Incorporadoras | 1 linha por incorp. | Agregados por incorp. |
+
+A aba Empreendimentos é a fonte primária. A aba Composição enriquece com detalhe quando a tabela do empreendimento foi processada. Nem todo empreend. tem entry em Composição (gap esperado é parte do roadmap, não inconsistência).
+
+## 2.1. Aba Composição — 10 colunas (v8.0+)
+
+| # | Campo | Tipo | Regra |
+|---|---|---|---|
+| 1 | Incorporadora | Enum §4.1 | Mesmo nome usado na aba Empreendimentos |
+| 2 | Empreendimento | Texto | Mesmo nome usado na aba Empreendimentos |
+| 3 | Tipologia | Enum §4.6 | Studio / 1D / 2D / 3D / 4D / Lote |
+| 4 | Nº Unidades | Inteiro | Quantidade de unidades disponíveis dessa tipologia |
+| 5 | Área mín (m²) | Decimal | |
+| 6 | Área máx (m²) | Decimal | |
+| 7 | Ticket mín (R$) | Moeda | |
+| 8 | Ticket máx (R$) | Moeda | |
+| 9 | R$/m² médio | Calculado | Σ(ticket_unidade) / Σ(área_unidade) das unidades dessa tipologia |
+| 10 | Origem | Enum §4.4 | Como foi obtida a info |
+
+**Regra de inferência tipologia × área (SLZ-padrão):** quando tabela não declara explicitamente a tipologia por unidade, usar:
+- < 40m² → Studio
+- 40-55m² → 1D
+- 55-75m² → 2D
+- 75-95m² → 3D
+- ≥ 95m² → 4D
+
+Em casos especiais (mono-tipologia declarada, áreas em fronteira), classificação manual prevalece.
+
+**O que muda no dashboard com a aba Composição:** a Seção 3 (Análise por Tipologia) deixa de mostrar agregados "mono-tipologia only" e passa a mostrar dados precisos por tipologia. Limitação: cobertura depende de quais empreend. tiveram tabela processada (roadmap dos Lotes).
+
+## 2bis. Aba Incorporadoras — 15 colunas
 
 | # | Campo | Tipo |
 |---|---|---|

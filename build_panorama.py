@@ -318,6 +318,33 @@ def read_planilha(path: Path) -> list[dict]:
     return rows
 
 
+def read_composicao(path: Path) -> list[dict]:
+    """v8.0+: lê aba Composição (1 linha por empreendimento × tipologia).
+    Retorna lista vazia se a aba não existir (compatibilidade pré-v8.0)."""
+    wb = openpyxl.load_workbook(path, data_only=True)
+    if "Composição" not in wb.sheetnames:
+        return []
+    ws = wb["Composição"]
+    headers = [c.value for c in ws[5]]
+    rows: list[dict] = []
+    for r in range(6, ws.max_row + 1):
+        row = {headers[i]: c.value for i, c in enumerate(ws[r]) if i < len(headers)}
+        if row.get("Incorporadora") and row.get("Empreendimento") and row.get("Tipologia"):
+            rows.append({
+                "incorporadora": row.get("Incorporadora"),
+                "empreendimento": row.get("Empreendimento"),
+                "tipologia": row.get("Tipologia"),
+                "unidades": row.get("Nº Unidades"),
+                "area_min": row.get("Área mín (m²)"),
+                "area_max": row.get("Área máx (m²)"),
+                "ticket_min": row.get("Ticket mín (R$)"),
+                "ticket_max": row.get("Ticket máx (R$)"),
+                "rsm2": row.get("R$/m² médio"),
+                "origem": row.get("Origem"),
+            })
+    return rows
+
+
 def enrich(rows: list[dict], include_all: bool = False) -> list[dict]:
     """
     Retorna TODAS as linhas enriquecidas, com flag `is_active` indicando
@@ -727,17 +754,15 @@ if (sessionStorage.getItem("dom-auth") === "1") {
       <div class="dash-table-wrap">
         <table class="dash-table">
           <thead><tr>
-            <th>Tipologia</th><th># Empreend.</th>
+            <th>Tipologia</th><th># Empreend.</th><th>Total Unid.</th>
             <th>R$/m² mín</th><th>R$/m² médio</th><th>R$/m² máx</th>
             <th>Área mín</th><th>Área média</th><th>Área máx</th>
             <th>Ticket médio</th>
-            <th title="Apenas empreend. mono-tipologia">Unid. mono</th>
-            <th title="Apenas mono">% Abs. mono</th>
           </tr></thead>
           <tbody id="tbl-tipologias-body"></tbody>
         </table>
       </div>
-      <p class="dash-note">⚠ Empreend. multi-tipologia (ex: "Studio; 2D; 3D") contam em todas as linhas correspondentes. Colunas "Unid. mono" e "% Abs. mono" usam apenas mono-tipologia. Distribuição por tipologia em multi-tipologia é pendência de enriquecimento (roadmap v7.1+).</p>
+      <p class="dash-note">v8.0: dados precisos por tipologia (aba Composição da xlsx). Cobertura atual: empreendimentos com tabela detalhada arquivada. Roadmap (Lote 2/3): processar tabelas restantes para fechar cobertura.</p>
     </section>
 
     <section class="dash-section">
@@ -841,6 +866,7 @@ if (sessionStorage.getItem("dom-auth") === "1") {
 </main>
 <script>
 const ALL_DATA = __DATA_PLACEHOLDER__;
+const COMP_DATA = __COMP_PLACEHOLDER__;  // v8.0: aba Composição (por tipologia)
 const DATA = ALL_DATA.filter(e => e.is_active);  // Panorama = apenas ativos no ciclo
 const INC_COLORS = __INC_COLORS_PLACEHOLDER__;
 function getColor(inc) { return INC_COLORS[inc] || "#8C8C8C"; }
@@ -1360,40 +1386,53 @@ function renderDashBairros(data) {
 }
 
 function renderDashTipologias(data) {
-  const expanded = expandTipologia(data).filter(e => e._tipologia !== '—');
+  // v8.0: dados precisos da aba Composição
+  const empAtivos = new Set(data.map(e => e.empreendimento));
+  const compFiltrada = COMP_DATA.filter(c => empAtivos.has(c.empreendimento));
+
   const groups = {};
-  expanded.forEach(e => {
-    const t = e._tipologia;
-    if (!groups[t]) groups[t] = { items: [], mono: [] };
-    groups[t].items.push(e);
-    if (e._is_mono) groups[t].mono.push(e);
+  TIPO_ORDER_ENUM.forEach(t => groups[t] = []);
+  compFiltrada.forEach(c => {
+    if (groups[c.tipologia] !== undefined) groups[c.tipologia].push(c);
   });
 
-  const rows = TIPO_ORDER_ENUM.filter(t => groups[t]).map(t => {
-    const items = groups[t].items, mono = groups[t].mono;
-    const monoTotalUnid = mono.reduce((a,e) => a + (e.unidades || 0), 0);
-    const monoAbsorcao = avgSimple(mono.filter(e => e.vendido != null), e => e.vendido);
-    const rsm2 = rangeStats(items, e => e.rsm2);
-    const area = rangeStats(items, e => e.area_med);
-    const ticket = rangeStats(items, e => (e.ticket_min && e.ticket_max) ? (e.ticket_min + e.ticket_max)/2 : null);
-    return { t, nTotal: items.length, nMono: mono.length, monoTotalUnid, monoAbsorcao, rsm2, area, ticket };
+  const rows = TIPO_ORDER_ENUM.filter(t => groups[t].length > 0).map(t => {
+    const items = groups[t];
+    const totalUnid = items.reduce((a,c) => a + (c.unidades || 0), 0);
+    const nEmpreend = new Set(items.map(c => c.empreendimento)).size;
+    const rsm2_vals = items.map(c => c.rsm2).filter(v => v != null);
+    const rsm2 = rsm2_vals.length ? { min: Math.min(...rsm2_vals), max: Math.max(...rsm2_vals), avg: rsm2_vals.reduce((a,b)=>a+b,0)/rsm2_vals.length } : null;
+    const area_mins = items.map(c => c.area_min).filter(v => v != null);
+    const area_maxs = items.map(c => c.area_max).filter(v => v != null);
+    const area = {
+      min: area_mins.length ? Math.min(...area_mins) : null,
+      max: area_maxs.length ? Math.max(...area_maxs) : null,
+      avg: avgSimple(items, c => c.area_min && c.area_max ? (c.area_min + c.area_max)/2 : null),
+    };
+    const ticket_mins = items.map(c => c.ticket_min).filter(v => v != null);
+    const ticket_maxs = items.map(c => c.ticket_max).filter(v => v != null);
+    const ticket = {
+      min: ticket_mins.length ? Math.min(...ticket_mins) : null,
+      max: ticket_maxs.length ? Math.max(...ticket_maxs) : null,
+      avg: avgSimple(items, c => c.ticket_min && c.ticket_max ? (c.ticket_min + c.ticket_max)/2 : null),
+    };
+    return { t, nEmpreend, totalUnid, rsm2, area, ticket };
   });
 
   const tbody = rows.map(r =>
     '<tr><td><strong>' + r.t + '</strong></td>' +
-    '<td class="num">' + r.nTotal + '</td>' +
+    '<td class="num">' + r.nEmpreend + '</td>' +
+    '<td class="num"><strong>' + r.totalUnid + '</strong></td>' +
     '<td class="num">' + (r.rsm2 ? 'R$ '+formatBRL(r.rsm2.min) : '—') + '</td>' +
     '<td class="num"><strong>' + (r.rsm2 ? 'R$ '+formatBRL(r.rsm2.avg) : '—') + '</strong></td>' +
     '<td class="num">' + (r.rsm2 ? 'R$ '+formatBRL(r.rsm2.max) : '—') + '</td>' +
-    '<td class="num">' + (r.area ? r.area.min.toFixed(0)+'m²' : '—') + '</td>' +
-    '<td class="num"><strong>' + (r.area ? r.area.avg.toFixed(0)+'m²' : '—') + '</strong></td>' +
-    '<td class="num">' + (r.area ? r.area.max.toFixed(0)+'m²' : '—') + '</td>' +
-    '<td class="num">' + (r.ticket ? 'R$ '+formatBRL(r.ticket.avg, true) : '—') + '</td>' +
-    '<td class="num">' + (r.nMono > 0 ? r.monoTotalUnid : '—') + '</td>' +
-    '<td class="num">' + (r.monoAbsorcao != null ? Math.round(r.monoAbsorcao*100)+'%' : '—') + '</td>' +
+    '<td class="num">' + (r.area.min != null ? r.area.min.toFixed(0)+'m²' : '—') + '</td>' +
+    '<td class="num"><strong>' + (r.area.avg ? r.area.avg.toFixed(0)+'m²' : '—') + '</strong></td>' +
+    '<td class="num">' + (r.area.max != null ? r.area.max.toFixed(0)+'m²' : '—') + '</td>' +
+    '<td class="num">' + (r.ticket.avg ? 'R$ '+formatBRL(r.ticket.avg, true) : '—') + '</td>' +
     '</tr>'
   ).join('');
-  document.getElementById('tbl-tipologias-body').innerHTML = tbody || '<tr><td colspan="11" style="text-align:center;color:var(--dom-gray-mid);padding:20px">Sem dados</td></tr>';
+  document.getElementById('tbl-tipologias-body').innerHTML = tbody || '<tr><td colspan="10" style="text-align:center;color:var(--dom-gray-mid);padding:20px">Sem dados de composição. Empreendimentos sem tabela detalhada extraível ainda — Lote 2/3 do roadmap.</td></tr>';
 
   destroyDashChart('ch-tipo-rsm2');
   if (rows.length > 0) {
@@ -1661,6 +1700,13 @@ def build(include_all: bool = False) -> None:
     rows = read_planilha(planilha)
     print(f"📋 Linhas lidas: {len(rows)}")
 
+    composicao = read_composicao(planilha)
+    if composicao:
+        total_unid_comp = sum(c.get("unidades") or 0 for c in composicao)
+        print(f"📊 Composição: {len(composicao)} linhas / {total_unid_comp} unidades por tipologia")
+    else:
+        print("📊 Composição: aba ausente (planilha pré-v8.0)")
+
     enriched = enrich(rows, include_all=include_all)
     active = [e for e in enriched if e.get("is_active")]
     print(f"📐 Total enriquecido: {len(enriched)} (aba Dados Completos)")
@@ -1675,6 +1721,7 @@ def build(include_all: bool = False) -> None:
 
     # Gera HTML
     data_json = json.dumps(enriched, ensure_ascii=False, separators=(",", ":"), default=str)
+    comp_json = json.dumps(composicao, ensure_ascii=False, separators=(",", ":"), default=str)
     inc_colors_json = json.dumps(INC_COLORS, ensure_ascii=False)
     version_match = re.search(r"v([\d.]+)", planilha.stem)
     version = "v" + version_match.group(1) if version_match else "v?"
@@ -1690,6 +1737,7 @@ def build(include_all: bool = False) -> None:
 
     html = (HTML_TEMPLATE
             .replace("__DATA_PLACEHOLDER__", data_json)
+            .replace("__COMP_PLACEHOLDER__", comp_json)
             .replace("__INC_COLORS_PLACEHOLDER__", inc_colors_json)
             .replace("__VERSAO__", version)
             .replace("__DATA_UPDATE__", hoje)

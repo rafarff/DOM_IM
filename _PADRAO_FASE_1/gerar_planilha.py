@@ -19,7 +19,7 @@ from openpyxl.drawing.image import Image as XLImage
 # ═══════════════════════════════════════════════════════════════
 # PARÂMETROS GLOBAIS
 # ═══════════════════════════════════════════════════════════════
-VERSION = "7.0.1"
+VERSION = "8.0"
 DATE_STR = "02/05/2026"
 # v5.0 — (25/04/2026): MUDANÇA ESTRUTURAL — adoção do PADRAO v2.0.
 # +Coluna Tipo (Vertical/Horizontal/Misto) inserida como col. 5. 24 → 25 colunas.
@@ -144,6 +144,17 @@ DATE_STR = "02/05/2026"
 # (populateFilters / buildLegend / applyFilters). Resultado: KPIs e tabelas A/B da
 # aba Panorama ficavam vazios após carregar o site. Restauradas. Schema da .xlsx
 # inalterado vs v7.0 (gera xlsx idêntica em conteúdo, só muda o number da versão).
+# v8.0 — (02/05/2026): MUDANÇA ESTRUTURAL — nova aba "Composição" na Planilha Mestre,
+# 1 linha por (empreendimento, tipologia). Schema da aba: 10 colunas (Incorporadora,
+# Empreendimento, Tipologia, Nº Unidades, Área min/max, Ticket min/max, R$/m² médio,
+# Origem). Lote 1 entregue: 8 empreendimentos / 15 linhas / 322 unidades extraídas
+# de tabelas locais (The View, Landscape, Studio Design 7 Pen., Wave, Bossa,
+# Altos São Francisco, Renaissance Conceito, Vila Coimbra). Heurística tipologia ×
+# área SLZ-padrão: <40 Studio, 40-55 1D, 55-75 2D, 75-95 3D, >95 4D.
+# Aba Empreendimentos (24 colunas) NÃO mudou — fica como visão por empreend.
+# Aba Composição é a 'visão por tipologia' (precisão analítica). Build_panorama.py
+# atualizado para ler ambas as abas. Roadmap próximo: Lote 2 (10 empreend. com
+# tabela texto) e Lote 3 (Dom Lucas/Dom José/Zion via visão multimodal Claude).
 
 # ═══════════════════════════════════════════════════════════════
 # IDENTIDADE VISUAL DOM
@@ -717,6 +728,43 @@ I_META = {
 }
 
 # ═══════════════════════════════════════════════════════════════
+# C_RAW — Composição por tipologia (v8.0+)
+# ═══════════════════════════════════════════════════════════════
+# 1 entry por (empreendimento, tipologia) extraída de tabelas locais.
+# Schema (10 colunas): Incorporadora, Empreendimento, Tipologia, Nº Unidades,
+# Área min, Área max, Ticket min, Ticket max, R$/m² médio, Origem.
+#
+# Lote 1 (entregue v8.0): 15 linhas / 322 unidades / 8 empreend. processados.
+# Heurística tipologia × área (SLZ-padrão): <40 Studio, 40-55 1D, 55-75 2D,
+# 75-95 3D, >95 4D. Em casos especiais (mono-tipologia declarada, áreas em
+# fronteira), classificação manual prevalece.
+C_RAW = [
+    # The View (Delman) — 93 unid: tabela 28/04/2026 v3
+    ("Delman", "The View", "Studio", 28, 36.05, 36.45, 539969, 640469, 16763, "tabela_local"),
+    ("Delman", "The View", "1D", 26, 42.45, 54.06, 630255, 959721, 16006, "tabela_local"),
+    ("Delman", "The View", "2D", 15, 68.91, 74.92, 1062210, 1355300, 16577, "tabela_local"),
+    ("Delman", "The View", "3D", 24, 80.72, 85.87, 1354011, 1504011, 16637, "tabela_local"),
+    # Landscape (Delman) — 51 unid: tabela 04/2026
+    ("Delman", "Landscape", "3D", 17, 88.07, 88.07, 1206282, 1400282, 14755, "tabela_local"),
+    ("Delman", "Landscape", "4D", 34, 103.60, 143.64, 1428516, 2328766, 14716, "tabela_local"),
+    # Studio Design 7 Península (Delman) — 31 unid: tabela 04/2026
+    ("Delman", "Studio Design 7 Península", "1D", 13, 42.40, 43.50, 710160, 740727, 16813, "tabela_local"),
+    ("Delman", "Studio Design 7 Península", "2D", 17, 61.08, 65.80, 1004013, 1146600, 16264, "tabela_local"),
+    ("Delman", "Studio Design 7 Península", "3D", 1, 88.78, 88.78, 1553650, 1553650, 17500, "tabela_local"),
+    # Wave Residence (Delman) — 5 unid: penthouses 293m² Ponta do Farol
+    ("Delman", "Wave Residence", "4D", 5, 293.69, 293.69, 5581808, 5828289, 19360, "tabela_local"),
+    # Edifício Bossa (Mota Machado) — 36 unid: tabela 04/2026
+    ("Mota Machado", "Edifício Bossa", "4D", 36, 191.02, 196.04, 2850507, 3708342, 16663, "tabela_local"),
+    # Altos do São Francisco (Treviso) — 26 unid: imóvel pronto, ago/2025
+    ("Treviso", "Altos do São Francisco", "2D", 26, 57.93, 67.15, 495809, 761677, 10024, "tabela_local"),
+    # Renaissance Conceito (Monteplan) — 44 unid: 2 torres Botticelli 82m² (3D) + Leonardo 110m² (4D)
+    ("Monteplan", "Renaissance Conceito", "3D", 30, 82.00, 82.00, 1038621, 1177759, 13686, "tabela_local"),
+    ("Monteplan", "Renaissance Conceito", "4D", 14, 110.00, 110.00, 1359410, 1565192, 13168, "tabela_local"),
+    # Vila Coimbra (Castelucci) — 36 casas horizontais Araçagy, área construída uniforme
+    ("Castelucci", "Vila Coimbra", "4D", 36, 124.63, 124.63, 1019834, 1081967, 8367, "tabela_local"),
+]
+
+# ═══════════════════════════════════════════════════════════════
 # CÁLCULOS AUTOMÁTICOS (ver §3 do PADRAO.md)
 # ═══════════════════════════════════════════════════════════════
 def calc_preco_m2(tmin,tmax,amin,amax):
@@ -1021,6 +1069,81 @@ ft2.font = Font(name="Calibri",color=DOM_GRAY_MID,size=8,italic=True)
 ft2.alignment = Alignment(horizontal="right",vertical="center")
 
 # ═══════════════════════════════════════════════════════════════
+# ABA 3 — COMPOSIÇÃO (v8.0+) — 1 linha por (empreendimento, tipologia)
+# ═══════════════════════════════════════════════════════════════
+ws3 = wb.create_sheet("Composição")
+N_COLS_C = 10
+HEADERS_C = ["Incorporadora", "Empreendimento", "Tipologia", "Nº Unidades",
+             "Área mín (m²)", "Área máx (m²)",
+             "Ticket mín (R$)", "Ticket máx (R$)",
+             "R$/m² médio", "Origem"]
+
+insert_logo(ws3, LOGO_TRANSP, "A1", 55)
+ws3.merge_cells(start_row=2, start_column=1, end_row=2, end_column=N_COLS_C)
+title_c = ws3.cell(row=2, column=1, value="Composição por Tipologia")
+title_c.font = Font(name="Calibri", color=DOM_GOLD_DARK, size=14, bold=True)
+title_c.alignment = Alignment(horizontal="center", vertical="center")
+ws3.row_dimensions[2].height = 22
+
+ws3.merge_cells(start_row=3, start_column=1, end_row=3, end_column=N_COLS_C)
+sub_c = ws3.cell(row=3, column=1,
+    value=f"1 linha por (empreendimento, tipologia)  •  Visão analítica derivada de tabelas locais  •  v{VERSION}")
+sub_c.font = Font(name="Calibri", color=DOM_GRAY_MID, size=10, italic=True)
+sub_c.alignment = Alignment(horizontal="center", vertical="center")
+ws3.row_dimensions[3].height = 18
+
+for j, h in enumerate(HEADERS_C):
+    c = ws3.cell(row=5, column=1+j, value=h)
+    c.font = font(DOM_WHITE, 10, bold=True)
+    c.fill = fill(DOM_GRAY_DARK)
+    c.alignment = center()
+    c.border = border_thin()
+ws3.row_dimensions[5].height = 28
+
+TIPO_ORDER_C = ["Studio", "1D", "2D", "3D", "4D", "Lote"]
+C_RAW_SORTED = sorted(C_RAW, key=lambda r: (r[0], r[1], TIPO_ORDER_C.index(r[2]) if r[2] in TIPO_ORDER_C else 99))
+
+formats_c = [None]*N_COLS_C
+formats_c[3] = '0'
+formats_c[4] = formats_c[5] = '0.00" m²"'
+formats_c[6] = formats_c[7] = formats_c[8] = 'R$ #,##0'
+
+for i, row_data in enumerate(C_RAW_SORTED):
+    row_idx = 6+i
+    ws3.row_dimensions[row_idx].height = 22
+    row_fill = DOM_WHITE if row_idx%2==0 else DOM_GRAY_LIGHT
+    for j, v in enumerate(row_data):
+        c = ws3.cell(row=row_idx, column=1+j, value=v)
+        c.font = font(DOM_GRAY_DARK, 10)
+        c.fill = fill(row_fill)
+        c.alignment = center() if j not in (0,1,9) else left()
+        c.border = border_thin()
+        if formats_c[j]:
+            c.number_format = formats_c[j]
+    ws3.cell(row=row_idx, column=2).font = font(DOM_GRAY_DARK, 10, bold=True)
+    ws3.cell(row=row_idx, column=3).font = font(DOM_GOLD_DARK, 10, bold=True)
+
+total_row_c = 6 + len(C_RAW_SORTED)
+widths_c = [18, 28, 12, 11, 13, 13, 16, 16, 14, 18]
+set_column_widths(ws3, widths_c)
+ws3.freeze_panes = "C6"
+ws3.auto_filter.ref = f"A5:{get_column_letter(N_COLS_C)}{total_row_c-1}"
+
+ws3.merge_cells(start_row=total_row_c, start_column=1, end_row=total_row_c, end_column=N_COLS_C)
+leg3 = ws3.cell(row=total_row_c, column=1,
+    value=f"Aba alimentada de tabelas locais arquivadas. Heurística tipologia x área (<40 Studio, 40-55 1D, 55-75 2D, 75-95 3D, >95 4D). "
+          f"Empreendimentos sem entry aqui = ainda sem tabela detalhada extraível (roadmap: Lote 2 e 3). v{VERSION}.")
+leg3.font = font(DOM_GRAY_DARK, 9, italic=True); leg3.fill = fill(DOM_GRAY_LIGHT)
+leg3.alignment = Alignment(horizontal="left", vertical="center", wrap_text=True)
+ws3.row_dimensions[total_row_c].height = 36
+
+ws3.merge_cells(start_row=total_row_c+1, start_column=1, end_row=total_row_c+1, end_column=N_COLS_C)
+ft3 = ws3.cell(row=total_row_c+1, column=1,
+    value=f"DOM Incorporação  •  Inteligência de Mercado  •  Composição v{VERSION} (Fase 1)")
+ft3.font = Font(name="Calibri", color=DOM_GRAY_MID, size=8, italic=True)
+ft3.alignment = Alignment(horizontal="right", vertical="center")
+
+# ═══════════════════════════════════════════════════════════════
 # SALVAR — usa a pasta NFD (a real do usuário, com .DS_Store) para
 # evitar criar pasta fantasma NFC por causa do Unicode do nome.
 # ═══════════════════════════════════════════════════════════════
@@ -1040,5 +1163,6 @@ wb.save(OUT)
 print(f"✓ Salvo: {OUT}")
 print(f"  Empreendimentos: {len(E_PROCESSED)}")
 print(f"  Incorporadoras:  {len(I_ROWS)} (ativas: {sum(1 for r in I_ROWS if r[1]>0)}, sem material: {sum(1 for r in I_ROWS if r[1]==0)})")
+print(f"  Composição:      {len(C_RAW)} linhas / {sum(r[3] for r in C_RAW)} unidades extraídas")
 print(f"  VGV total mapeado: R$ {sum(r[16] for r in E_PROCESSED if r[16]):,.0f}")
 print(f"  Preço médio calculado para: {sum(1 for r in E_PROCESSED if r[15])} de {len(E_PROCESSED)} empreend.")

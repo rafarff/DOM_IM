@@ -3,9 +3,9 @@
 > **Para Claude (toda sessão):** este é o **primeiro arquivo a ler** antes de qualquer ação. Confirma a base de trabalho. Se a invariante 0.3 do PADRAO falhar contra os números aqui, **PARAR**.
 
 **Última atualização:** 02/05/2026
-**Versão Planilha vigente:** v7.0.1
-**Versão PADRAO vigente:** v3.5
-**Versão script `gerar_planilha.py`:** 7.0.1 (DATE_STR: 02/05/2026)
+**Versão Planilha vigente:** v8.0
+**Versão PADRAO vigente:** v4.0
+**Versão script `gerar_planilha.py`:** 8.0 (DATE_STR: 02/05/2026)
 
 ---
 
@@ -13,16 +13,14 @@
 
 | Métrica | Valor |
 |---|---:|
-| Total de empreendimentos no E_RAW | **46** |
-| Total de empreendimentos na v7.0.1.xlsx | **46** |
+| Aba Empreendimentos | **46 linhas** (sem mudança) |
+| Aba Incorporadoras | **16 linhas** |
+| Aba Composição (NOVA, v8.0) | **15 linhas / 322 unidades** |
 | Drift script ↔ planilha | **0** ✅ |
-| Incorporadoras monitoradas (lista fechada) | **16** |
-| Schema aba Empreendimentos | **24 colunas** (sem mudança desde v6.0) |
-| Schema aba Incorporadoras | **15 colunas** |
 | VGV total mapeado | **R$ 1,45 bi** |
-| Preço calculável | 27/46 |
+| Empreend. com R$/m² calculável | 27/46 |
 
-### Distribuição por incorporadora (v7.0)
+### Distribuição por incorporadora (v8.0, aba Empreendimentos)
 
 | Incorporadora | # Empreend. |
 |---|---:|
@@ -43,6 +41,22 @@
 | Hiali | 1 |
 | Franere | 1 |
 
+### Cobertura da Aba Composição (v8.0)
+
+| Empreendimento | Tipologias | Unidades |
+|---|---|---:|
+| The View (Delman) | Studio, 1D, 2D, 3D | 93 |
+| Landscape (Delman) | 3D, 4D | 51 |
+| Studio Design 7 Pen. (Delman) | 1D, 2D, 3D | 31 |
+| Wave Residence (Delman) | 4D | 5 |
+| Edifício Bossa (Mota Machado) | 4D | 36 |
+| Altos São Francisco (Treviso) | 2D | 26 |
+| Renaissance Conceito (Monteplan) | 3D, 4D | 44 |
+| Vila Coimbra (Castelucci) | 4D | 36 |
+| **Total Lote 1** | | **322** |
+
+**Empreend. ainda sem entry em Composição:** 38 (cobertura atual: 8/46 = 17%).
+
 ---
 
 ## Comando one-liner (versão vigente)
@@ -55,45 +69,44 @@ cd 00_ESTUDO_CONSOLIDADO/ && ls -1 Planilha_Mestre_Panorama_v*.xlsx | sort -V | 
 
 ## Mudanças estruturais recentes
 
-- **v6.0–v6.5** (27-28/04/2026) — limpezas de schema, fixes estruturais, PADRAO §0.4/§0.5.
-- **v6.6** (29/04/2026) — UI: logo 90px + col % Vendido com tooltip. Dados: 3 dos 4 gaps preenchidos (Renaissance, Sanpaolo, Reserva SM). Zion pendente.
-- **v7.0.1** (02/05/2026) — FIX: restaurada inicialização da aba Panorama (KPIs e tabelas A/B estavam vazios na v7.0 — substituição do JS removeu chamadas `populateFilters/buildLegend/applyFilters` por engano).
-- **v7.0** (02/05/2026) — **MUDANÇA ESTRUTURAL: aba Dashboard do HTML completamente redesenhada.** 6 seções (KPIs, Bairro, Tipologia, Incorporadora, Segmento, Heatmaps) + filtros globais (default últimos 24 meses). Inspirado no estudo BRAIN/Piacentini (em `_REFERENCIAS_EXTERNAS/`). Schema da .xlsx **não mudou** — v7.0 é redesenho do HTML, dados idênticos à v6.6.
+- **v6.0–v6.6** — limpezas de schema, redesign HTML, fixes.
+- **v7.0** (02/05/2026) — Dashboard redesenhado em 6 seções + filtros globais.
+- **v7.0.1** (02/05/2026) — Fix init Panorama.
+- **v8.0** (02/05/2026) — **MUDANÇA ESTRUTURAL: nova aba "Composição" na .xlsx** (1 linha por empreend × tipologia, 10 colunas). Lote 1 entregue (8 empreend., 322 unidades). Build_panorama lê 2 abas; Seção 3 do dashboard usa dados precisos. PADRAO bumpado v3.5 → v4.0 com §2.1 nova.
 
 ---
 
-## Pasta de referências externas (nova em v7.0)
+## Roadmap dos próximos lotes
 
-`/_REFERENCIAS_EXTERNAS/` — guarda estudos e materiais que não pertencem às 16 incorporadoras monitoradas, mas servem como referência metodológica:
-- `Estudo_BRAIN_Piacentini_Curitiba_2020.pdf` — base do redesenho do dashboard.
+### Lote 2 — empreend. com tabela texto extraível (~10 empreend.)
 
-Distinto do `_INBOX/` (entrada de material das concorrentes).
+| Empreend. | Inc. | Status |
+|---|---|---|
+| Vernazza Norte e Sul | Treviso | Texto OK, formato AGR |
+| Quartier 22 | Delman | Texto OK |
+| Sky Residence | Delman | Texto OK |
+| Azimuth | Delman | Texto OK |
+| Al Mare Tirreno | Mota Machado | Texto OK |
+| Le Noir | Hiali | Parser parcial (PAR) |
+| ORO Ponta d'Areia | Niágara | Texto OK |
+| Edifício Sanpaolo | Monteplan | Texto OK (1 unid livre) |
+| Reserva São Marcos | Mota Machado | Texto OK (sem áreas inline) |
+| Entre Rios | Mota Machado | Texto OK |
+| Vernazza Torre Norte/Sul | Treviso | Texto OK |
+
+### Lote 3 — visão multimodal (PDFs imagem)
+
+- **Dom Lucas, Dom José** (DOM Incorporação) — tabelas em imagem
+- **Zion Ponta d'Areia** (Ergus, item D pendente) — tabelas em imagem
+
+Estratégia: converter páginas em PNG e usar visão multimodal de Claude para ler. Comando do Rafael necessário pra atacar.
 
 ---
 
 ## Bugs latentes / pendências
 
-### 🟡 Zion Ponta d'Areia (Ergus) — tabela em imagem
-9 PDFs, todos baseados em imagem. OCR ilegível.
-**Próximas ações (em ordem de custo):**
-1. Pedir ao corretor da Ergus tabela em formato texto/Excel
-2. OCR mais robusto (Google Vision, Adobe)
-3. Manual: ler em PDF e digitar (~10 min)
-
-### 🟡 13 empreend. com gap só de % Vendido
-Têm tickets/áreas, faltam contar unidades disponíveis em tabelas já arquivadas.
-
-### 🟡 Roadmap de enriquecimento (v7.x – v8.0): breakdown de unidades por tipologia
-**Hoje:** o E_RAW tem total agregado de unidades por empreend., sem distribuição por tipologia. Para empreend. mono-tipologia (ex: Bossa = 60 unid 4D), o dado é bom. Para multi-tipologia (ex: The View = Studio+1D+2D+3D), não sabemos quantas de cada.
-
-**Impacto:** colunas "Unid. mono" e "% Abs. mono" da Seção 3 (Tipologia) do dashboard agregam só os mono-tipologia, com nota explicativa.
-
-**Solução:** abrir as 26 tabelas arquivadas e contar linha-a-linha. A maioria das tabelas (The View, Renaissance, Bossa) já tem o detalhe linha-a-linha visível em `pdftotext`. É trabalho braçal mas direto.
-
-**Quando fazer:** próxima rodada de enriquecimento. Pode evoluir o schema do E_RAW pra incluir uma coluna nova "Distribuição tipologias" (ex: `Studio:32; 1D:48; 2D:80; 3D:22`).
-
-### 🟢 Lançamentos DOM em estudo (Fase 2 do dashboard)
-Rafael vai preparar essa info em paralelo. Quando ele tiver hipóteses (terreno + produto candidato), virá a "Aba de Análise Específica" — comparação dirigida entre o produto DOM hipotético e a concorrência.
+### 🟡 Lote 2 e 3 da composição — incompletos
+Cobertura atual 17%. Aumentar via processamento das tabelas restantes.
 
 ---
 
@@ -104,9 +117,10 @@ Rafael vai preparar essa info em paralelo. Quando ele tiver hipóteses (terreno 
 3. `v4.5` aparece depois de `v4.16` em ordem lexicográfica — sempre `sort -V`.
 4. NFD vs NFC em paths macOS — `pathlib.Path(__file__).resolve()` herda forma correta.
 5. Bossa e The View são vizinhos (Quadra 02, Av. dos Holandeses, Calhau).
-6. Tabelas em PDF imagem (Zion) não são triviais — precisa OCR robusto ou solicitação ao corretor.
+6. Tabelas em PDF imagem (Zion, Dom Lucas/José) não dão extração via pdftotext — Lote 3.
 7. `p.write_text` precisa ser explícito.
-8. **Multi-tipologia em "Studio; 2D; 3D"** — não temos breakdown por tipologia, então agregações de unidades/absorção por tipologia usam apenas mono-tipologia (com nota no UI).
+8. **F-string com backslash escape causa SyntaxError no Python** — não usar `f"...{x \"y\"...}"`. Usar variável intermediária ou aspas simples.
+9. **Substituição de blocos grandes de JS exige reverificação das chamadas de inicialização** (caso v7.0.1).
 
 ---
 
