@@ -3,9 +3,9 @@
 > **Para Claude (toda sessão):** este é o **primeiro arquivo a ler** antes de qualquer ação. Confirma a base de trabalho. Se a invariante 0.3 do PADRAO falhar contra os números aqui, **PARAR**.
 
 **Última atualização:** 02/05/2026
-**Versão Planilha vigente:** v8.0
+**Versão Planilha vigente:** v8.1
 **Versão PADRAO vigente:** v4.0
-**Versão script `gerar_planilha.py`:** 8.0 (DATE_STR: 02/05/2026)
+**Versão script `gerar_planilha.py`:** 8.1 (DATE_STR: 02/05/2026)
 
 ---
 
@@ -13,49 +13,44 @@
 
 | Métrica | Valor |
 |---|---:|
-| Aba Empreendimentos | **46 linhas** (sem mudança) |
+| Aba Empreendimentos | **46 linhas** |
 | Aba Incorporadoras | **16 linhas** |
-| Aba Composição (NOVA, v8.0) | **15 linhas / 322 unidades** |
+| Aba Composição | **29 linhas / 527 unidades** ✅ Lote 1+2 |
 | Drift script ↔ planilha | **0** ✅ |
 | VGV total mapeado | **R$ 1,45 bi** |
-| Empreend. com R$/m² calculável | 27/46 |
+| Cobertura Composição | **18/46 empreend. = 39%** |
 
-### Distribuição por incorporadora (v8.0, aba Empreendimentos)
+### Cobertura por incorporadora (% empreend. com composição detalhada)
 
-| Incorporadora | # Empreend. |
-|---|---:|
-| Delman | 7 |
-| Alfa Engenharia | 5 |
-| Mota Machado | 4 |
-| DOM Incorporação | 4 |
-| Treviso | 4 |
-| Lua Nova | 3 |
-| Castelucci | 3 |
-| Canopus | 3 |
-| Monteplan | 3 |
-| Berg Engenharia | 2 |
-| Ergus | 2 |
-| Sá Cavalcante | 2 |
-| MB Engenharia | 1 |
-| Niágara | 1 |
-| Hiali | 1 |
-| Franere | 1 |
+| Incorporadora | Empreend. total | Em Composição | % |
+|---|---:|---:|---:|
+| Delman | 7 | 7 | **100%** ✅ |
+| Mota Machado | 4 | 4 | **100%** ✅ |
+| Treviso | 4 | 3 | 75% |
+| Monteplan | 3 | 3 | **100%** ✅ |
+| Hiali | 1 | 1 | **100%** ✅ |
+| Niágara | 1 | 1 | **100%** ✅ |
+| Castelucci | 3 | 1 | 33% |
+| Demais (10 inc.) | 26 | 0 | 0% |
 
-### Cobertura da Aba Composição (v8.0)
+### Lote 2 (v8.1, 02/05/2026) — 13 linhas / 209 unidades
 
-| Empreendimento | Tipologias | Unidades |
-|---|---|---:|
-| The View (Delman) | Studio, 1D, 2D, 3D | 93 |
-| Landscape (Delman) | 3D, 4D | 51 |
-| Studio Design 7 Pen. (Delman) | 1D, 2D, 3D | 31 |
-| Wave Residence (Delman) | 4D | 5 |
-| Edifício Bossa (Mota Machado) | 4D | 36 |
-| Altos São Francisco (Treviso) | 2D | 26 |
-| Renaissance Conceito (Monteplan) | 3D, 4D | 44 |
-| Vila Coimbra (Castelucci) | 4D | 36 |
-| **Total Lote 1** | | **322** |
+| Empreend. | Tipologias | Unid. | R$/m² médio |
+|---|---|---:|---:|
+| Vernazza Torre Norte (Treviso) | 4D | 37 | R$ 15.219 |
+| Vernazza Torre Sul (Treviso) | 3D | 26 | R$ 15.599 |
+| ORO Ponta d'Areia (Niágara) | 3D (88) + 4D (8) | 96 | R$ 15-16k |
+| Entre Rios (Mota Machado) | 4D | 30 | R$ 14.679 |
+| Reserva São Marcos (Mota Machado) | 2D + 4D | 6 | R$ 17k / 16k |
+| Le Noir (Hiali) | 1D + 2D | 4 | R$ 14k / 13k |
+| Quartier 22 (Delman) | 4D | 1 | R$ 18.182 |
+| Sky Residence (Delman) | 4D | 1 | R$ 19.052 |
+| Azimuth (Delman) | 4D | 1 | R$ 18.309 |
+| Al Mare Tirreno (Mota Machado) | 4D | 1 | R$ 14.074 |
+| Edifício Sanpaolo (Monteplan) | 1D | 2 | R$ 5.648 |
 
-**Empreend. ainda sem entry em Composição:** 38 (cobertura atual: 8/46 = 17%).
+### Lote 1 (v8.0) — 15 linhas / 322 unidades
+The View (Delman, 4 tipologias), Landscape (Delman, 2), Studio Design 7 Pen. (Delman, 3), Wave (Delman, 1), Edifício Bossa (Mota Machado, 1), Altos São Francisco (Treviso, 1), Renaissance Conceito (Monteplan, 2), Vila Coimbra (Castelucci, 1).
 
 ---
 
@@ -69,44 +64,39 @@ cd 00_ESTUDO_CONSOLIDADO/ && ls -1 Planilha_Mestre_Panorama_v*.xlsx | sort -V | 
 
 ## Mudanças estruturais recentes
 
-- **v6.0–v6.6** — limpezas de schema, redesign HTML, fixes.
-- **v7.0** (02/05/2026) — Dashboard redesenhado em 6 seções + filtros globais.
-- **v7.0.1** (02/05/2026) — Fix init Panorama.
-- **v8.0** (02/05/2026) — **MUDANÇA ESTRUTURAL: nova aba "Composição" na .xlsx** (1 linha por empreend × tipologia, 10 colunas). Lote 1 entregue (8 empreend., 322 unidades). Build_panorama lê 2 abas; Seção 3 do dashboard usa dados precisos. PADRAO bumpado v3.5 → v4.0 com §2.1 nova.
+- **v6.0–v7.0.1** — limpezas, dashboard redesenhado, fix init.
+- **v8.0** (02/05/2026) — Aba Composição introduzida. Lote 1: 15 linhas / 322 unid.
+- **v8.1** (02/05/2026) — **Lote 2 entregue.** +13 linhas / +209 unid. Cobertura sobe de 17% → 39%. PADRAO inalterado (v4.0).
 
 ---
 
-## Roadmap dos próximos lotes
+## Roadmap próximos lotes
 
-### Lote 2 — empreend. com tabela texto extraível (~10 empreend.)
+### Lote 3 — visão multimodal (aguarda comando do Rafael)
+
+PDFs de tabela em formato imagem (não extraível por pdftotext). Estratégia: converter páginas em PNG e usar visão multimodal de Claude para ler.
 
 | Empreend. | Inc. | Status |
 |---|---|---|
-| Vernazza Norte e Sul | Treviso | Texto OK, formato AGR |
-| Quartier 22 | Delman | Texto OK |
-| Sky Residence | Delman | Texto OK |
-| Azimuth | Delman | Texto OK |
-| Al Mare Tirreno | Mota Machado | Texto OK |
-| Le Noir | Hiali | Parser parcial (PAR) |
-| ORO Ponta d'Areia | Niágara | Texto OK |
-| Edifício Sanpaolo | Monteplan | Texto OK (1 unid livre) |
-| Reserva São Marcos | Mota Machado | Texto OK (sem áreas inline) |
-| Entre Rios | Mota Machado | Texto OK |
-| Vernazza Torre Norte/Sul | Treviso | Texto OK |
+| Dom Lucas | DOM Incorporação | 10 PDFs imagem |
+| Dom José | DOM Incorporação | 1 PDF imagem |
+| Zion Ponta d'Areia | Ergus | 9 PDFs imagem (item D pendente) |
 
-### Lote 3 — visão multimodal (PDFs imagem)
+**Cobertura projetada após Lote 3:** 21/46 = ~46%.
 
-- **Dom Lucas, Dom José** (DOM Incorporação) — tabelas em imagem
-- **Zion Ponta d'Areia** (Ergus, item D pendente) — tabelas em imagem
+### Empreend. ainda sem tabela arquivada (~20 empreend.)
 
-Estratégia: converter páginas em PNG e usar visão multimodal de Claude para ler. Comando do Rafael necessário pra atacar.
+Restante depende de captura de tabela junto às incorporadoras (corretor / site / book). São incorporadoras menos ativas no monitoramento atual.
 
 ---
 
 ## Bugs latentes / pendências
 
-### 🟡 Lote 2 e 3 da composição — incompletos
-Cobertura atual 17%. Aumentar via processamento das tabelas restantes.
+### 🟡 Lote 3 da composição — aguarda comando
+Visão multimodal Claude.
+
+### 🟡 % Vendido por tipologia
+Composição hoje só tem **# unidades disponíveis** por tipologia. Para calcular % vendido por tipologia, precisamos do **total original** por tipologia (memorial de incorporação ou book). Roadmap: Lote 4.
 
 ---
 
@@ -117,10 +107,12 @@ Cobertura atual 17%. Aumentar via processamento das tabelas restantes.
 3. `v4.5` aparece depois de `v4.16` em ordem lexicográfica — sempre `sort -V`.
 4. NFD vs NFC em paths macOS — `pathlib.Path(__file__).resolve()` herda forma correta.
 5. Bossa e The View são vizinhos (Quadra 02, Av. dos Holandeses, Calhau).
-6. Tabelas em PDF imagem (Zion, Dom Lucas/José) não dão extração via pdftotext — Lote 3.
+6. Tabelas em PDF imagem (Zion, Dom Lucas/José) — Lote 3.
 7. `p.write_text` precisa ser explícito.
-8. **F-string com backslash escape causa SyntaxError no Python** — não usar `f"...{x \"y\"...}"`. Usar variável intermediária ou aspas simples.
-9. **Substituição de blocos grandes de JS exige reverificação das chamadas de inicialização** (caso v7.0.1).
+8. F-string com backslash escape causa SyntaxError no Python.
+9. Substituição de blocos grandes de JS exige reverificação das chamadas de inicialização.
+10. **Heurística tipologia × área é pragmática:** 80m² na fronteira 2D-3D pode classificar errado. Mono-tipologia declarada do empreendimento prevalece quando explícita.
+11. **Parser Sanpaolo duplicava entries** (par de unidades unidas L-L) — necessário inspeção pós-extração para entries com múltiplos aptos numa linha só.
 
 ---
 

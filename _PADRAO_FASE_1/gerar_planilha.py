@@ -19,7 +19,7 @@ from openpyxl.drawing.image import Image as XLImage
 # ═══════════════════════════════════════════════════════════════
 # PARÂMETROS GLOBAIS
 # ═══════════════════════════════════════════════════════════════
-VERSION = "8.0"
+VERSION = "8.1"
 DATE_STR = "02/05/2026"
 # v5.0 — (25/04/2026): MUDANÇA ESTRUTURAL — adoção do PADRAO v2.0.
 # +Coluna Tipo (Vertical/Horizontal/Misto) inserida como col. 5. 24 → 25 colunas.
@@ -155,6 +155,15 @@ DATE_STR = "02/05/2026"
 # Aba Composição é a 'visão por tipologia' (precisão analítica). Build_panorama.py
 # atualizado para ler ambas as abas. Roadmap próximo: Lote 2 (10 empreend. com
 # tabela texto) e Lote 3 (Dom Lucas/Dom José/Zion via visão multimodal Claude).
+# v8.1 — (02/05/2026): LOTE 2 ENTREGUE — +13 linhas / +209 unidades de composição.
+# Empreend. processados: Vernazza Torre Norte (Treviso, 37 unid 4D), Vernazza Torre
+# Sul (Treviso, 26 unid 3D), Quartier 22 (Delman, 1 unid 4D), Sky Residence (Delman,
+# 1 unid 4D 247m²), Azimuth (Delman, 1 unid 4D 197m²), Al Mare Tirreno (Mota Machado,
+# 1 unid 4D 215m²), Entre Rios (Mota Machado, 30 unid 4D 147m²), Reserva São Marcos
+# (Mota Machado, 6 unid: 3 2D + 3 4D), Le Noir (Hiali, 4 unid: 1 1D + 3 2D), ORO
+# Ponta d'Areia (Niágara, 96 unid: 88 3D 80m² + 8 4D 160m²), Edifício Sanpaolo
+# (Monteplan, 2 unid 1D 54m²). Cobertura geral sobe para 18/46 = 39% empreend. com
+# composição detalhada. Próximo: Lote 3 (Dom Lucas/Dom José/Zion via visão Claude).
 
 # ═══════════════════════════════════════════════════════════════
 # IDENTIDADE VISUAL DOM
@@ -762,6 +771,35 @@ C_RAW = [
     ("Monteplan", "Renaissance Conceito", "4D", 14, 110.00, 110.00, 1359410, 1565192, 13168, "tabela_local"),
     # Vila Coimbra (Castelucci) — 36 casas horizontais Araçagy, área construída uniforme
     ("Castelucci", "Vila Coimbra", "4D", 36, 124.63, 124.63, 1019834, 1081967, 8367, "tabela_local"),
+
+    # ─── Lote 2 (v8.1) ──────────────────────────────────────────
+    # Vernazza Torre Norte (Treviso) — 37 unid 130-130,5m² Renascença
+    ("Treviso", "Vernazza Torre Norte", "4D", 37, 130.00, 130.49, 1784821, 2191902, 15219, "tabela_local"),
+    # Vernazza Torre Sul (Treviso) — 26 unid 88-90m²
+    ("Treviso", "Vernazza Torre Sul", "3D", 26, 87.98, 90.10, 1277584, 1586363, 15599, "tabela_local"),
+    # Quartier 22 (Delman) — 1 unid Ponta d'Areia, 165m² (apto 601)
+    ("Delman", "Quartier 22", "4D", 1, 165.00, 165.00, 3000000, 3000000, 18182, "tabela_local"),
+    # Sky Residence (Delman) — 1 unid Ponta d'Areia, 247m² (apto 200)
+    ("Delman", "Sky Residence", "4D", 1, 246.69, 246.69, 4700000, 4700000, 19052, "tabela_local"),
+    # Azimuth (Delman) — 1 unid Ponta d'Areia, 197m² (apto 901)
+    ("Delman", "Azimuth", "4D", 1, 196.62, 196.62, 3600000, 3600000, 18309, "tabela_local"),
+    # Al Mare Tirreno (Mota Machado) — 1 unid 215m² Av. dos Holandeses Q9 L9
+    ("Mota Machado", "Al Mare Tirreno", "4D", 1, 215.00, 215.00, 3025856, 3025856, 14074, "tabela_local"),
+    # Entre Rios (Mota Machado) — 30 unid (Torre Douro + Tejo) 146,82m² Renascença
+    ("Mota Machado", "Entre Rios", "4D", 30, 146.82, 146.82, 1732638, 2719860, 14679, "tabela_local"),
+    # Reserva São Marcos (Mota Machado) — 2 plantas, áreas do BOOK
+    # Planta 1 (2D) 67-69m² | Planta 2 (3D) 102-104m². Tickets agregados (~6 grupos).
+    ("Mota Machado", "Reserva São Marcos", "2D", 3, 67.48, 68.75, 977382, 1316965, 17535, "tabela_local"),
+    ("Mota Machado", "Reserva São Marcos", "4D", 3, 102.25, 104.05, 1467380, 1869461, 16590, "tabela_local"),
+    # Le Noir (Hiali) — 4 unid Renascença II, áreas 49-62m² compactos
+    ("Hiali", "Le Noir", "1D", 1, 49.74, 49.74, 710000, 710000, 14274, "tabela_local"),
+    ("Hiali", "Le Noir", "2D", 3, 58.91, 62.62, 800000, 870000, 13682, "tabela_local"),
+    # ORO Ponta d'Areia (Niágara) — 96 unid: 88 padrão 80m² + 8 cobertura duplex 160m²
+    ("Niágara", "ORO Ponta d'Areia", "3D", 88, 80.32, 80.32, 1003326, 1537396, 15952, "tabela_local"),
+    ("Niágara", "ORO Ponta d'Areia", "4D", 8, 160.65, 160.65, 2275000, 2575000, 15095, "tabela_local"),
+    # Edifício Sanpaolo (Monteplan) — 1 unid dupla restante (apto 204-205, R$610k 108m²)
+    # Tratada como 2 unidades 54m² R$305k cada. Posicionamento Cohama, ~99% vendido.
+    ("Monteplan", "Edifício Sanpaolo", "1D", 2, 54.00, 54.00, 305000, 305000, 5648, "tabela_local"),
 ]
 
 # ═══════════════════════════════════════════════════════════════
