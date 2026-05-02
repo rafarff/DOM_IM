@@ -19,7 +19,7 @@ from openpyxl.drawing.image import Image as XLImage
 # ═══════════════════════════════════════════════════════════════
 # PARÂMETROS GLOBAIS
 # ═══════════════════════════════════════════════════════════════
-VERSION = "9.1"
+VERSION = "9.2"
 DATE_STR = "02/05/2026"
 # v5.0 — (25/04/2026): MUDANÇA ESTRUTURAL — adoção do PADRAO v2.0.
 # +Coluna Tipo (Vertical/Horizontal/Misto) inserida como col. 5. 24 → 25 colunas.
@@ -217,6 +217,25 @@ DATE_STR = "02/05/2026"
 # Treviso fica None (sem material).
 # Cobertura total preenchido sobe de 16/46 para 28/46 = 61%.
 # Cobertura origem preenchida sobe de 20/46 para 32/46 = 70%.
+# v9.2 — (02/05/2026): FORMALIZAÇÃO DO PROCESSO DE TOTAL DE UNIDADES.
+# +PADRAO §3.6 (v5.1) declara hierarquia obrigatória de 7 níveis:
+# 1) memorial declarado, 2) book/site oficial explícito, 3) descrição arquitetônica,
+# 4) numeração dos aptos, 5) extração visual de imagens do book, 6) informado
+# manualmente, 7) None/N/A (não inventar).
+# +Enum §4.7 atualizado: REMOVIDO 'estimativa' (não inventar), ADICIONADO
+# 'informado_manualmente'.
+# +Al Mare Tirreno e Edifício Sanpaolo: total 45 e 64 (chutes do v9.1) revertidos
+# para None com origem N/A. Total real virá quando memorial/book chegar.
+# +Validação automática (threshold 5%): quando origem=tabela_local_completa,
+# script compara Σ C_RAW.unidades vs total declarado. Se diferir > 5%, log WARN.
+# Cobertura total: 25/46 → 23/46 = 50%. Origem: 25/46 = 54%.
+# +DESCOBERTA do uso da validação automática: Renaissance Conceito estava
+# marcado erroneamente como tabela_local_completa (105 total vs 44 C_RAW).
+# Causa: parser SFH+FDC duplicou unidades (Torre Leonardo 7×2=14, Botticelli
+# 15×2=30). Corrigido: 4D 14→7, 3D 30→15. Origem: tabela_local_completa →
+# tabela_local_parcial (tabela só lista 22 disponíveis; 105 vem da descrição
+# arquitetônica 'Torre Leonardo 45 + Torre Botticelli 60'). Validação a 5%
+# pagou pelo investimento na primeira execução.
 
 # ═══════════════════════════════════════════════════════════════
 # IDENTIDADE VISUAL DOM
@@ -469,11 +488,11 @@ E_RAW = [
     ("Mota Machado","Al Mare Tirreno",
      "Av. dos Holandeses, Qd 9 Lt 9, São Marcos, São Luís - MA","São Marcos",
      "Vertical",None,
-     45,"08/2024","Pronto", 215,215,None, "4D",
+     None,"08/2024","Pronto", 215,215,None, "4D",
      3025856,3120721, None,None, None,
      "tabela","tabela","book",
      "https://motamachado.com.br","23/04/2026",
-     "Tipologia detalhada: 4 suítes, 3 vagas. Torre A 'Tirreno' da Mota Machado Collection. Imóvel PRONTO. 215 m², 4 suítes, 3 vagas. Apts 102, 201, 202 listados. Ticket R$ 3,02-3,12M. R$/m² méd R$ 14.293. Av. dos Holandeses / São Marcos. [reconstituído da v4.16 em 25/04/2026]", "estimativa"),
+     "Tipologia detalhada: 4 suítes, 3 vagas. Torre A 'Tirreno' da Mota Machado Collection. Imóvel PRONTO. 215 m², 4 suítes, 3 vagas. Apts 102, 201, 202 listados. Ticket R$ 3,02-3,12M. R$/m² méd R$ 14.293. Av. dos Holandeses / São Marcos. [reconstituído da v4.16 em 25/04/2026]", "N/A"),
 
     # ═══ BERG ══════════════════════════════════════════════════════════
     ("Berg Engenharia","Monte Meru",
@@ -668,16 +687,16 @@ E_RAW = [
      1038621,1565192, None,None, 22/105,
      "tabela_local","tabela_local","site_oficial",
      "https://monteplanengenharia.com.br/empreendimentos/renaissance-conceito/","29/04/2026",
-     "Tipologia detalhada: 2 torres × 15 pav. tipo. **Torre Leonardo da Vinci** 45 unid (3 aptos/andar): 110m², 3 SUÍTES + lavabo, 2 ou 3 vagas (1º-5º andar 2 vagas / 6º-15º 3 vagas). **Torre Botticelli** 60 unid (4 aptos/andar): 82m², 3 quartos (2 suítes, sendo 1 reversível), 2 vagas. Total 105 unidades. Tabela 04/2026 lista 22 unidades LIVRES (15 Botticelli + 7 Leonardo) — assumindo que tabela só lista LIVRES, estimativa 79% vendido (margem: pode haver reservadas/contratadas não mostradas). Tickets R$ 1.038k (BO 101, menor) a R$ 1.565k (LE 1401, maior). Conclusão obra AGO/2027. Construtora Monteplan. Versão tabela 1.04.", "tabela_local_completa"),
+     "Tipologia detalhada: 2 torres × 15 pav. tipo. **Torre Leonardo da Vinci** 45 unid (3 aptos/andar): 110m², 3 SUÍTES + lavabo, 2 ou 3 vagas (1º-5º andar 2 vagas / 6º-15º 3 vagas). **Torre Botticelli** 60 unid (4 aptos/andar): 82m², 3 quartos (2 suítes, sendo 1 reversível), 2 vagas. Total 105 unidades. Tabela 04/2026 lista 22 unidades LIVRES (15 Botticelli + 7 Leonardo) — assumindo que tabela só lista LIVRES, estimativa 79% vendido (margem: pode haver reservadas/contratadas não mostradas). Tickets R$ 1.038k (BO 101, menor) a R$ 1.565k (LE 1401, maior). Conclusão obra AGO/2027. Construtora Monteplan. Versão tabela 1.04.", "tabela_local_parcial"),
 
     ("Monteplan","Edifício Sanpaolo",
      "Rua Boa Esperança, 125, Cohama, São Luís - MA","Cohama",
      "Vertical",None,
-     64,"12/2022","12/2025", 54.0,59.0,None, "2D; 3D",
+     None,"12/2022","12/2025", 54.0,59.0,None, "2D; 3D",
      610000,610000, None,None, 1 - 1/64,
      "tabela_local","tabela_local","site_oficial",
      "https://monteplanengenharia.com.br/empreendimentos/edificio-sanpaolo/","29/04/2026",
-     "Tipologia detalhada: 2 plantas. **Colunas 1,2,7,8** com 59m² — 3 quartos (1 suíte), 2 vagas. **Colunas 3,4,5,6** com 54m² — 2 quartos (2 suítes, sendo 1 reversível), 1 vaga. Tabela 04/2026 lista APENAS 1 unidade LIVRE (apto 204-205, R$ 610.000 — par de unidades unidas, situação L-L). Estimativa ≥98% vendido. Confirma 'todas as unidades vendidas' (Facebook out/2025) — restou só 1 unid. dupla. Endereço completo: Rua Boa Esperança, 125, Cohama (ao lado da Igreja Batista). Conclusão obra DEZ/2025.", "estimativa"),
+     "Tipologia detalhada: 2 plantas. **Colunas 1,2,7,8** com 59m² — 3 quartos (1 suíte), 2 vagas. **Colunas 3,4,5,6** com 54m² — 2 quartos (2 suítes, sendo 1 reversível), 1 vaga. Tabela 04/2026 lista APENAS 1 unidade LIVRE (apto 204-205, R$ 610.000 — par de unidades unidas, situação L-L). Estimativa ≥98% vendido. Confirma 'todas as unidades vendidas' (Facebook out/2025) — restou só 1 unid. dupla. Endereço completo: Rua Boa Esperança, 125, Cohama (ao lado da Igreja Batista). Conclusão obra DEZ/2025.", "N/A"),
 
     ("Monteplan","Residencial Novo Anil",
      "Rua Estevão Braga, Cohab Anil IV, São Luís - MA","Cohab Anil IV",
@@ -820,8 +839,8 @@ C_RAW = [
     # Altos do São Francisco (Treviso) — 26 unid: imóvel pronto, ago/2025
     ("Treviso", "Altos do São Francisco", "2D", 26, 57.93, 67.15, 495809, 761677, 10024, "tabela_local"),
     # Renaissance Conceito (Monteplan) — 44 unid: 2 torres Botticelli 82m² (3D) + Leonardo 110m² (4D)
-    ("Monteplan", "Renaissance Conceito", "3D", 30, 82.00, 82.00, 1038621, 1177759, 13686, "tabela_local"),
-    ("Monteplan", "Renaissance Conceito", "4D", 14, 110.00, 110.00, 1359410, 1565192, 13168, "tabela_local"),
+    ("Monteplan", "Renaissance Conceito", "3D", 15, 82.00, 82.00, 1038621, 1177759, 13686, "tabela_local"),  # v9.2: corrigido 30→15 (parser SFH+FDC duplicava)
+    ("Monteplan", "Renaissance Conceito", "4D", 7, 110.00, 110.00, 1359410, 1565192, 13168, "tabela_local"),  # v9.2: corrigido 14→7 (parser duplicava)
     # Vila Coimbra (Castelucci) — 36 casas horizontais Araçagy, área construída uniforme
     ("Castelucci", "Vila Coimbra", "4D", 36, 124.63, 124.63, 1019834, 1081967, 8367, "tabela_local"),
 
@@ -1245,6 +1264,37 @@ ft3 = ws3.cell(row=total_row_c+1, column=1,
     value=f"DOM Incorporação  •  Inteligência de Mercado  •  Composição v{VERSION} (Fase 1)")
 ft3.font = Font(name="Calibri", color=DOM_GRAY_MID, size=8, italic=True)
 ft3.alignment = Alignment(horizontal="right", vertical="center")
+
+# ═══════════════════════════════════════════════════════════════
+# VALIDAÇÃO AUTOMÁTICA v9.2 (PADRAO §3.6) — soma C_RAW vs total
+# quando origem=tabela_local_completa. Threshold: 5%.
+# ═══════════════════════════════════════════════════════════════
+THRESHOLD_PCT = 5.0
+warnings_validacao = []
+for entry in E_RAW:
+    inc, emp = entry[0], entry[1]
+    total = entry[6]
+    origem_total = entry[24] if len(entry) > 24 else None
+    if origem_total != 'tabela_local_completa' or total is None:
+        continue
+    soma_comp = sum(c[3] for c in C_RAW if c[0] == inc and c[1] == emp)
+    if soma_comp == 0:
+        continue
+    diff_pct = abs(total - soma_comp) / total * 100
+    if diff_pct > THRESHOLD_PCT:
+        warnings_validacao.append(
+            f"  WARN {inc} | {emp}: total={total} mas Σ C_RAW={soma_comp} ({diff_pct:.1f}% diff)"
+        )
+
+if warnings_validacao:
+    print(f"\n⚠ VALIDAÇÃO §3.6: {len(warnings_validacao)} divergência(s) > 5%:")
+    for w in warnings_validacao:
+        print(w)
+    print("  → Revisar: ou origem está errada, ou C_RAW incompleto, ou tabela tem unidades fora de oferta.\n")
+else:
+    has_completas = any(len(e) > 24 and e[24] == 'tabela_local_completa' for e in E_RAW)
+    if has_completas:
+        print("✓ Validação §3.6: todas entries tabela_local_completa batem com soma C_RAW (threshold 5%)")
 
 # ═══════════════════════════════════════════════════════════════
 # SALVAR — usa a pasta NFD (a real do usuário, com .DS_Store) para

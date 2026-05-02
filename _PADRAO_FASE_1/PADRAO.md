@@ -1,5 +1,5 @@
 # PADRÃO FASE 1 — Inteligência de Mercado DOM
-**Versão:** 5.0 (atualizada em 02/05/2026)
+**Versão:** 5.1 (atualizada em 02/05/2026)
 **Status:** 🟢 APROVADO pelo Rafael
 
 > **ATENÇÃO — Claude:** este documento é um CONTRATO. Toda vez que o Rafael
@@ -236,6 +236,63 @@ flag = "⚠ T-36"
 
 ---
 
+## 3.6 Determinação do Nº total de unidades (v5.1+)
+
+Toda vez que se atualiza ou cria entry no E_RAW (ou se processa tabela/book novo via comandos §5.1 ou §5.5), o "Nº total unidades" (col 7) e a "Origem total unid." (col 8) **devem** ser preenchidos seguindo a hierarquia abaixo. Aplicar do nível 1 até achar fonte; só descer ao próximo se o anterior não tem informação.
+
+### Hierarquia obrigatória (7 níveis)
+
+| # | Critério | Onde buscar | Origem (§4.7) |
+|---|---|---|---|
+| 1 | **Memorial registrado** | Rodapé legal de tabela / book técnico (matrícula + cartório) | `memorial` |
+| 2 | **Book ou site oficial** declarando explícito ("X apartamentos") | Material institucional, página do empreend. no site da incorporadora | `book` ou `site_oficial` |
+| 3 | **Descrição arquitetônica** (header/rodapé de tabela: "N torres × M pavtos × P aptos/andar") | Texto da própria tabela ou book técnico | `tabela_local_completa` ou `tabela_local_parcial` (ver detecção abaixo) |
+| 4 | **Numeração dos aptos** | Aptos na tabela: max do range (ex: 1414 ⇒ 14 pavtos × 14 aptos). Atenção a gaps significativos | `tabela_local_parcial` |
+| 5 | **Extração visual de imagens do book** | Plantas de implantação, mapas, fachadas com elevação completa | `book` (registrar nas obs: "extração visual da pág X") |
+| 6 | **Informado manualmente pelo Rafael** | WhatsApp, reunião, ligação, declaração direta | `informado_manualmente` |
+| 7 | **Nada se aplica** | Deixar `total = None`, origem = `N/A`. **NÃO INVENTAR.** | `N/A` |
+
+### Detecção tabela completa vs parcial (regra automática)
+
+- Se `# unidades listadas == total calculado pela descrição` → `tabela_local_completa` (típico pré-lançamento, todos disponíveis).
+- Se `# listadas < total calculado` → `tabela_local_parcial` (algumas vendidas não aparecem na tabela).
+- **Exceção Niágara:** formato agrupa N aptos por linha (ex: "POSIÇÃO LAGOA - APTOS 102, 104, 106 E 108"). **Não permite inferir vendidas.** Marcar `tabela_local_completa` + nota explícita nas observações sobre a limitação.
+
+### Registro obrigatório nas Observações (col 25)
+
+Sempre que origem ≠ `book` ou `memorial` (= total foi inferido por descrição/numeração/cross-check ou imagem), registrar **inline** nas observações:
+- **Método:** descrição arquitetônica / numeração / extração visual / cross-check
+- **Cálculo:** ex: `"192 = 13×14 + 14º pavto×10"`, ou `"41 inferido pela numeração max das casas (Casa 02 a Casa 41)"`
+- **Confiança:** alta / média / baixa
+
+Exemplo de registro: `"Total 192 = 13 pavtos×14 + 14º pavto×10 (extraído da descrição da tabela 28/04). Confiança: alta."`
+
+### Validação automática (gerar_planilha.py)
+
+Quando origem = `tabela_local_completa`, o script compara `Σ unidades em C_RAW` vs `total declarado`. Se diferir > **5%** (THRESHOLD_PCT), emite WARN no console:
+
+```
+⚠ VALIDAÇÃO §3.6: <empreend>: total=X mas Σ C_RAW=Y (Z% diff)
+```
+
+Não bloqueia geração. Operador deve revisar:
+- Origem está errada? Pode ser `tabela_local_parcial`.
+- C_RAW está incompleto? Faltam linhas.
+- Tabela tem unidades fora de oferta (ex: cobertura especial não listada)?
+
+### Checklist de aplicação ao processar tabela nova
+
+Antes de marcar a entry como atualizada:
+
+1. ☐ Identifiquei origem do total seguindo a hierarquia §3.6 (1→7)?
+2. ☐ Marquei a origem na col 8?
+3. ☐ Preenchi total na col 7 (ou deixei `None` se nível 7)?
+4. ☐ Detectei se tabela é completa ou parcial?
+5. ☐ Registrei método/cálculo/confiança nas Observações?
+6. ☐ Rodei o script e validação §3.6 passou (ou WARN justificado)?
+
+---
+
 ## 4. Enumerações fixas
 
 ### 4.1 Incorporadoras monitoradas (16 — lista fechada)
@@ -300,13 +357,15 @@ Coluna 8 da aba Empreendimentos. Indica a origem da informação do "Nº total u
 |---|---|
 | `tabela_local_completa` | Tabela mostra TODAS as unidades (vendidas + disponíveis). Soma da Composição **deve** bater com o total. |
 | `tabela_local_parcial` | Tabela mostra SÓ unidades disponíveis. Total veio de outra fonte. Diferença = unidades vendidas. |
-| `book` | Total declarado no material institucional/book |
+| `book` | Total declarado no material institucional/book (inclui extração visual de imagens — registrar nas obs) |
 | `memorial` | Memorial de incorporação |
 | `site_oficial` | Site da incorporadora |
 | `treinamento_corretor` | Corretor passou |
 | `imprensa` | Release ou notícia |
-| `estimativa` | Heurística (ex: 2 torres × 14 andares × 2 aptos) |
-| `N/A` | Sem dado |
+| `informado_manualmente` | **v9.2+**: total fornecido manualmente pelo Rafael (WhatsApp, reunião, ligação, etc) |
+| `N/A` | Sem dado — NÃO inventar |
+
+> **v9.2 (02/05/2026):** removido valor `estimativa` do enum. A política agora é **não inventar totais**: se nenhum nível da hierarquia §3.6 se aplica, marcar `N/A` com total `None`.
 
 **Validação automática:** quando origem = `tabela_local_completa`, o `gerar_planilha.py` compara `Nº total unidades` (col 7) com `Σ unidades em C_RAW` para o empreend. Se diferir > 5%, log WARN no stdout (não bloqueia).
 
