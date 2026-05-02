@@ -3,9 +3,9 @@
 > **Para Claude (toda sessão):** este é o **primeiro arquivo a ler** antes de qualquer ação. Confirma a base de trabalho. Se a invariante 0.3 do PADRAO falhar contra os números aqui, **PARAR**.
 
 **Última atualização:** 02/05/2026
-**Versão Planilha vigente:** v8.1
-**Versão PADRAO vigente:** v4.0
-**Versão script `gerar_planilha.py`:** 8.1 (DATE_STR: 02/05/2026)
+**Versão Planilha vigente:** v9.0
+**Versão PADRAO vigente:** v5.0
+**Versão script `gerar_planilha.py`:** 9.0 (DATE_STR: 02/05/2026)
 
 ---
 
@@ -15,10 +15,11 @@
 |---|---:|
 | Aba Empreendimentos | **46 linhas** |
 | Aba Incorporadoras | **16 linhas** |
-| Aba Composição | **29 linhas / 527 unidades** ✅ Lote 1+2 |
+| Aba Composição | **30 linhas / 537 unidades**
+| Aba Empreendimentos schema | **25 colunas (v9.0)** ← era 24 | ✅ Lote 1+2 |
 | Drift script ↔ planilha | **0** ✅ |
-| VGV total mapeado | **R$ 1,45 bi** |
-| Cobertura Composição | **18/46 empreend. = 39%** |
+| VGV total mapeado | **R$ 1,59 bi** |
+| Cobertura Composição | **19/46 empreend. = 41%** |
 
 ### Cobertura por incorporadora (% empreend. com composição detalhada)
 
@@ -30,6 +31,7 @@
 | Monteplan | 3 | 3 | **100%** ✅ |
 | Hiali | 1 | 1 | **100%** ✅ |
 | Niágara | 1 | 1 | **100%** ✅ |
+| Ergus | 2 | 1 | 50% (Zion via visão; Nexus pendente) |
 | Castelucci | 3 | 1 | 33% |
 | Demais (10 inc.) | 26 | 0 | 0% |
 
@@ -66,7 +68,9 @@ cd 00_ESTUDO_CONSOLIDADO/ && ls -1 Planilha_Mestre_Panorama_v*.xlsx | sort -V | 
 
 - **v6.0–v7.0.1** — limpezas, dashboard redesenhado, fix init.
 - **v8.0** (02/05/2026) — Aba Composição introduzida. Lote 1: 15 linhas / 322 unid.
-- **v8.1** (02/05/2026) — **Lote 2 entregue.** +13 linhas / +209 unid. Cobertura sobe de 17% → 39%. PADRAO inalterado (v4.0).
+- **v8.1** (02/05/2026) — **Lote 2 entregue.** +13 linhas / +209 unid. Cobertura 17% → 39%.
+- **v8.2** (02/05/2026) — **Lote 3 (parcial — Zion via visão multimodal).** +1 linha / +10 unid. Cobertura 39% → 41%.
+- **v9.0** (02/05/2026) — **MUDANÇA ESTRUTURAL: nova coluna 8 "Origem total unid."** no schema da aba Empreendimentos (24 → 25 col). Enum §4.7 com 9 valores (`tabela_local_completa`/`tabela_local_parcial`/`book`/`memorial`/etc). Validação automática: alerta se origem = completa mas soma C_RAW != total. Tabela A do Panorama ganha coluna "Total Unid." entre Tipologia e Área méd, com tooltip de origem + vendidas inferidas. PADRAO bumpa 4.0 → 5.0. Total Zion confirmado pelo Rafael via book = 60 unid. 20 entries com Composição preenchidas com origem do total.
 
 ---
 

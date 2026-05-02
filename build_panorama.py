@@ -395,6 +395,7 @@ def enrich(rows: list[dict], include_all: bool = False) -> list[dict]:
             "tipo":           r.get("Tipo") or "—",
             "segmento":       r.get("Segmento") or "—",
             "unidades":       r.get("Nº unid."),
+            "orig_total":     r.get("Origem total unid.") or "N/A",  # v9.0
             "lancamento":     data_fmt,
             "lancamento_origem": origem,
             "lancamento_raw": lancamento_raw,
@@ -676,6 +677,7 @@ if (sessionStorage.getItem("dom-auth") === "1") {
         <th data-col="segmento">Segmento</th>
         <th data-col="lancamento_sort">Lançamento</th>
         <th data-col="dorms">Tipologia</th>
+        <th data-col="unidades">Total Unid.</th>
         <th data-col="area_med">Área méd (m²)</th>
         <th data-col="ticket_med">Ticket (R$)</th>
         <th data-col="rsm2">R$/m²</th>
@@ -1016,6 +1018,7 @@ function renderTable(data) {
         <td><span class="chip ${segClass(e.segmento)}">${e.segmento}</span></td>
         <td class="price" style="font-weight:600">${e.lancamento}${e.lancamento_origem && e.lancamento_origem !== '—' ? ` <span class="info-icon" title="Origem da data: ${e.lancamento_origem}">ℹ</span>` : ''}</td>
         <td class="dim" style="font-size:11px">${e.dorms || '—'}${(() => { const d = tipologiaDetail(e.obs); return d ? ` <span class="info-icon" title="Tipologia detalhada: ${d.replace(/"/g, '&quot;')}">ℹ</span>` : ''; })()}</td>
+        <td class="price">${totalUnidCell(e)}</td>
         <td class="price">${area}</td>
         <td class="price">${ticket}${e.orig_precos && e.orig_precos !== '—' ? ` <span class="info-icon" title="Origem dos preços: ${e.orig_precos}">ℹ</span>` : ''}</td>
         <td class="price">R$ ${formatBRL(e.rsm2)}${e.orig_precos && e.orig_precos !== '—' ? ` <span class="info-icon" title="Origem dos preços: ${e.orig_precos}">ℹ</span>` : ''}</td>
@@ -1051,6 +1054,24 @@ function renderTable(data) {
     if (th.dataset.col === sortCol) { th.classList.add('sorted'); if (sortAsc) th.classList.add('asc'); }
   });
 }
+// v9.0: helper para célula Total Unidades com tooltip rico de origem
+function totalUnidCell(e) {
+  const total = e.unidades;
+  const orig = e.orig_total || 'N/A';
+  if (total == null) {
+    return `<span class="dim">—</span> <span class="info-icon" title="Origem: ${orig}. Total não declarado no E_RAW.">ℹ</span>`;
+  }
+  // Calcular vendidas inferidas se temos % vendido
+  let extra = '';
+  if (e.vendido != null && total > 0) {
+    const vendidas = Math.round(total * e.vendido);
+    const dispon = total - vendidas;
+    extra = ` Vendidas estimadas: ${vendidas}. Disponíveis estimadas: ${dispon}.`;
+  }
+  const titleAttr = `Origem: ${orig}.${extra}`.replace(/"/g, '&quot;');
+  return `<strong>${total}</strong> <span class="info-icon" title="${titleAttr}">ℹ</span>`;
+}
+
 // v6.6: helper para célula % Vendido com tooltip rico de origem (PADRAO §3.3)
 function vendidoCell(e) {
   if (e.vendido == null || isNaN(e.vendido)) return '<span class="dim">—</span>';

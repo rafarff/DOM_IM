@@ -1,5 +1,5 @@
 # PADRÃO FASE 1 — Inteligência de Mercado DOM
-**Versão:** 4.0 (atualizada em 02/05/2026)
+**Versão:** 5.0 (atualizada em 02/05/2026)
 **Status:** 🟢 APROVADO pelo Rafael
 
 > **ATENÇÃO — Claude:** este documento é um CONTRATO. Toda vez que o Rafael
@@ -81,7 +81,7 @@ Exceções (não exigem pre-flight): leitura de arquivos, criação no `outputs/
 
 ---
 
-## 1. Aba Empreendimentos — 24 colunas
+## 1. Aba Empreendimentos — 25 colunas (v5.0+)
 
 | # | Campo | Tipo | Formato / Regra | Obrig. |
 |---|---|---|---|---|
@@ -92,23 +92,24 @@ Exceções (não exigem pre-flight): leitura de arquivos, criação no `outputs/
 | 5 | **Tipo** | **Enum §4.5** | **Vertical / Horizontal / Misto** | ✅ |
 | 6 | Segmento | Enum §4.2 | Classificado por R$/m² calculado, não por ticket | ✅ |
 | 7 | Nº total unidades | Inteiro | Da memorial/book/web | ⚠️ |
-| 8 | Mês lançamento | Data MM/AAAA | Se estimado, sufixar `⚠ T-36` | ✅ |
-| 9 | Mês entrega | Data MM/AAAA | | ⚠️ |
-| 10 | Área mín (m²) | Decimal | | ⚠️ |
-| 11 | Área máx (m²) | Decimal | | ⚠️ |
-| 12 | Tipologia média (m²) | Calculado | `(área_min + área_max) / 2` | 🔄 |
-| 13 | Tipologia | Enum §4.6 | Combinação curta: `Studio`, `1D`, `2D`, `3D`, `4D`, `Lote` (separar por `;` se múltiplas). Ex: `Studio; 2D; 3D` | ✅ |
-| 14 | Ticket mín (R$) | Moeda | | ⚠️ |
-| 15 | Ticket máx (R$) | Moeda | | ⚠️ |
-| 16 | Preço médio R$/m² | Calculado | §3.1 | 🔄 |
-| 17 | VGV estimado (R$) | Calculado | §3.2 | 🔄 |
-| 18 | % Vendido | Calculado | §3.3. Inverso do estoque (1 − estoque%). Sem coloração condicional. | 🔄 |
-| 19 | Origem preços | Enum §4.4 | | ✅ |
-| 20 | Origem estoque | Enum §4.4 | | ✅ |
-| 21 | Origem lançamento | Enum §4.4 | | ✅ |
-| 22 | Link fonte principal | URL | Obrigatório se origem ≠ tabela_local | ⚠️ |
-| 23 | Data última verificação | Data DD/MM/AAAA | | ✅ |
-| 24 | Observações | Texto livre | Números absolutos do estoque, datas da tabela usada | opcional |
+| 8 | **Origem total unid.** | Enum §4.7 | **v9.0+:** indica de onde veio o total da col 7 | ✅ |
+| 9 | Mês lançamento | Data MM/AAAA | Se estimado, sufixar `⚠ T-36` | ✅ |
+| 10 | Mês entrega | Data MM/AAAA | | ⚠️ |
+| 11 | Área mín (m²) | Decimal | | ⚠️ |
+| 12 | Área máx (m²) | Decimal | | ⚠️ |
+| 13 | Tipologia média (m²) | Calculado | `(área_min + área_max) / 2` | 🔄 |
+| 14 | Tipologia | Enum §4.6 | Combinação curta: `Studio`, `1D`, `2D`, `3D`, `4D`, `Lote` (separar por `;` se múltiplas). Ex: `Studio; 2D; 3D` | ✅ |
+| 15 | Ticket mín (R$) | Moeda | | ⚠️ |
+| 16 | Ticket máx (R$) | Moeda | | ⚠️ |
+| 17 | Preço médio R$/m² | Calculado | §3.1 | 🔄 |
+| 18 | VGV estimado (R$) | Calculado | §3.2 | 🔄 |
+| 19 | % Vendido | Calculado | §3.3. Inverso do estoque (1 − estoque%). Sem coloração condicional. | 🔄 |
+| 20 | Origem preços | Enum §4.4 | | ✅ |
+| 21 | Origem estoque | Enum §4.4 | | ✅ |
+| 22 | Origem lançamento | Enum §4.4 | | ✅ |
+| 23 | Link fonte principal | URL | Obrigatório se origem ≠ tabela_local | ⚠️ |
+| 24 | Data última verificação | Data DD/MM/AAAA | | ✅ |
+| 25 | Observações | Texto livre | Números absolutos do estoque, datas da tabela usada | opcional |
 
 > **v3.0 (27/04/2026):** coluna **Status** removida (antes col 7). Motivo: classificação muito subjetiva e parcialmente derivada de outros campos (estoque, data). §4.3 (enum de Status) e função `reclassificar_status` no script foram removidas. 25 → 24 colunas. **Adicionalmente:** o filtro "ativo no ciclo" no HTML foi eliminado — o Panorama mostra TODOS os 45 empreendimentos mapeados, sem distinção de fase comercial.
 
@@ -290,6 +291,26 @@ Mota Machado, Berg Engenharia, Alfa Engenharia, Lua Nova, Delman, Treviso, Ergus
 - **HTML mostra o código curto** + ícone ℹ que abre tooltip com a descrição detalhada (extraída das Observações)
 
 ⚠️ **v3.1 (27/04/2026):** Antes da v3.1, col 13 era texto livre ("Tipologia (dorms)") com formato heterogêneo. Agora é enum estruturado. Valores antigos foram migrados para Observações com prefixo `Tipologia detalhada:` para preservar info qualitativa.
+
+### 4.7 Origem total unidades (v9.0+) — NOVO
+
+Coluna 8 da aba Empreendimentos. Indica a origem da informação do "Nº total unidades" (col 7).
+
+| Valor | Significado |
+|---|---|
+| `tabela_local_completa` | Tabela mostra TODAS as unidades (vendidas + disponíveis). Soma da Composição **deve** bater com o total. |
+| `tabela_local_parcial` | Tabela mostra SÓ unidades disponíveis. Total veio de outra fonte. Diferença = unidades vendidas. |
+| `book` | Total declarado no material institucional/book |
+| `memorial` | Memorial de incorporação |
+| `site_oficial` | Site da incorporadora |
+| `treinamento_corretor` | Corretor passou |
+| `imprensa` | Release ou notícia |
+| `estimativa` | Heurística (ex: 2 torres × 14 andares × 2 aptos) |
+| `N/A` | Sem dado |
+
+**Validação automática:** quando origem = `tabela_local_completa`, o `gerar_planilha.py` compara `Nº total unidades` (col 7) com `Σ unidades em C_RAW` para o empreend. Se diferir > 5%, log WARN no stdout (não bloqueia).
+
+**Por que existe:** quando a tabela da incorporadora lista 93 unidades disponíveis (caso The View), elas representam **só os disponíveis**, não o total. Sem essa coluna, a soma da Composição era ambígua. v9.0 formaliza isso. Empreendimentos com `tabela_local_parcial` requerem busca complementar (book/site/memorial) para fechar o total.
 
 ---
 
