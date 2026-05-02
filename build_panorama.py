@@ -1635,10 +1635,13 @@ function populateDashFilters() {
   document.getElementById('dash-f-inc').innerHTML = '<option value="">Todas</option>' + incs.map(i => '<option>' + i + '</option>').join('');
 }
 
+// v7.0 fix: inicializar aba Panorama (sem isso, KPIs e tabelas A/B ficam vazios)
+populateFilters(); buildLegend(); applyFilters();
+// v7.0: inicializar aba Dashboard
 populateDashFilters();
 setupDashFilters();
 renderDashboard();
-
+// Aba Dados Completos
 populateFullFilters(); applyFullFilters();
 </script>
 </body>

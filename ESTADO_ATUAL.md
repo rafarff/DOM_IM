@@ -3,9 +3,9 @@
 > **Para Claude (toda sessão):** este é o **primeiro arquivo a ler** antes de qualquer ação. Confirma a base de trabalho. Se a invariante 0.3 do PADRAO falhar contra os números aqui, **PARAR**.
 
 **Última atualização:** 02/05/2026
-**Versão Planilha vigente:** v7.0
+**Versão Planilha vigente:** v7.0.1
 **Versão PADRAO vigente:** v3.5
-**Versão script `gerar_planilha.py`:** 7.0 (DATE_STR: 02/05/2026)
+**Versão script `gerar_planilha.py`:** 7.0.1 (DATE_STR: 02/05/2026)
 
 ---
 
@@ -14,7 +14,7 @@
 | Métrica | Valor |
 |---|---:|
 | Total de empreendimentos no E_RAW | **46** |
-| Total de empreendimentos na v7.0.xlsx | **46** |
+| Total de empreendimentos na v7.0.1.xlsx | **46** |
 | Drift script ↔ planilha | **0** ✅ |
 | Incorporadoras monitoradas (lista fechada) | **16** |
 | Schema aba Empreendimentos | **24 colunas** (sem mudança desde v6.0) |
@@ -57,6 +57,7 @@ cd 00_ESTUDO_CONSOLIDADO/ && ls -1 Planilha_Mestre_Panorama_v*.xlsx | sort -V | 
 
 - **v6.0–v6.5** (27-28/04/2026) — limpezas de schema, fixes estruturais, PADRAO §0.4/§0.5.
 - **v6.6** (29/04/2026) — UI: logo 90px + col % Vendido com tooltip. Dados: 3 dos 4 gaps preenchidos (Renaissance, Sanpaolo, Reserva SM). Zion pendente.
+- **v7.0.1** (02/05/2026) — FIX: restaurada inicialização da aba Panorama (KPIs e tabelas A/B estavam vazios na v7.0 — substituição do JS removeu chamadas `populateFilters/buildLegend/applyFilters` por engano).
 - **v7.0** (02/05/2026) — **MUDANÇA ESTRUTURAL: aba Dashboard do HTML completamente redesenhada.** 6 seções (KPIs, Bairro, Tipologia, Incorporadora, Segmento, Heatmaps) + filtros globais (default últimos 24 meses). Inspirado no estudo BRAIN/Piacentini (em `_REFERENCIAS_EXTERNAS/`). Schema da .xlsx **não mudou** — v7.0 é redesenho do HTML, dados idênticos à v6.6.
 
 ---

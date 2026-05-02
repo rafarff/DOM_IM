@@ -19,7 +19,7 @@ from openpyxl.drawing.image import Image as XLImage
 # ═══════════════════════════════════════════════════════════════
 # PARÂMETROS GLOBAIS
 # ═══════════════════════════════════════════════════════════════
-VERSION = "7.0"
+VERSION = "7.0.1"
 DATE_STR = "02/05/2026"
 # v5.0 — (25/04/2026): MUDANÇA ESTRUTURAL — adoção do PADRAO v2.0.
 # +Coluna Tipo (Vertical/Horizontal/Misto) inserida como col. 5. 24 → 25 colunas.
@@ -139,6 +139,11 @@ DATE_STR = "02/05/2026"
 # Roadmap futuro: enriquecer breakdown de unidades por tipologia (hoje só temos
 # total agregado por empreend.), vai melhorar precisão das colunas "Unid. mono"
 # e "% Abs. mono" da Seção 3.
+# v7.0.1 — (02/05/2026): FIX no build_panorama.py — substituição do JS do dashboard
+# tinha removido por engano as chamadas de inicialização da aba Panorama
+# (populateFilters / buildLegend / applyFilters). Resultado: KPIs e tabelas A/B da
+# aba Panorama ficavam vazios após carregar o site. Restauradas. Schema da .xlsx
+# inalterado vs v7.0 (gera xlsx idêntica em conteúdo, só muda o number da versão).
 
 # ═══════════════════════════════════════════════════════════════
 # IDENTIDADE VISUAL DOM

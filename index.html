@@ -202,7 +202,7 @@ if (sessionStorage.getItem("dom-auth") === "1") {
     </div>
     <div class="meta">
       Atualizado em 02/05/2026<br>
-      <span style="color: var(--dom-gold);">v7.0 · Fase 2 — Dashboard Interativo</span>
+      <span style="color: var(--dom-gold);">v7.0.1 · Fase 2 — Dashboard Interativo</span>
     </div>
   </div>
 </header>
@@ -435,7 +435,7 @@ if (sessionStorage.getItem("dom-auth") === "1") {
 
   <div class="footer">
     <strong>DOM Incorporação</strong> · Inteligência de Mercado · São Luís/MA<br>
-    Fonte: books e tabelas oficiais das incorporadoras · Gerado de Planilha_Mestre_Panorama_v7.0.xlsx
+    Fonte: books e tabelas oficiais das incorporadoras · Gerado de Planilha_Mestre_Panorama_v7.0.1.xlsx
   </div>
 </main>
 <script>
@@ -1234,10 +1234,13 @@ function populateDashFilters() {
   document.getElementById('dash-f-inc').innerHTML = '<option value="">Todas</option>' + incs.map(i => '<option>' + i + '</option>').join('');
 }
 
+// v7.0 fix: inicializar aba Panorama (sem isso, KPIs e tabelas A/B ficam vazios)
+populateFilters(); buildLegend(); applyFilters();
+// v7.0: inicializar aba Dashboard
 populateDashFilters();
 setupDashFilters();
 renderDashboard();
-
+// Aba Dados Completos
 populateFullFilters(); applyFullFilters();
 </script>
 </body>
