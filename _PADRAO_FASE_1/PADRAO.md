@@ -1,5 +1,5 @@
 # PADRÃO FASE 1 — Inteligência de Mercado DOM
-**Versão:** 5.2 (atualizada em 02/05/2026)
+**Versão:** 5.3 (atualizada em 02/05/2026)
 **Status:** 🟢 APROVADO pelo Rafael
 
 > **ATENÇÃO — Claude:** este documento é um CONTRATO. Toda vez que o Rafael
@@ -366,6 +366,69 @@ Exemplo: `"Composição extraída via parser Delman da tabela 28/04 v3 — 93 un
 5. ☐ Calculei R$/m² médio como média ponderada?
 6. ☐ Registrei parser/data/confiança nas Observações?
 7. ☐ Rodei script e as 3 validações §3.7.C passaram?
+
+---
+
+## 3.8 Determinação de Unidades Vendidas / % Vendido (v5.3+)
+
+A col 19 da aba Empreendimentos (`% Vendido`) é calculada **automaticamente** pelo script combinando informações de §3.6 (Total) e §3.7 (Composição). Schema do E_RAW armazena internamente o ESTOQUE (% disponível, decimal 0-1); a xlsx mostra `1 - estoque` como `% Vendido`.
+
+### Fórmula
+
+```
+disponíveis_empreend = Σ unidades em C_RAW (mesmo inc, emp)
+estoque              = disponíveis / total
+% vendido (xlsx)     = 1 - estoque
+unidades_vendidas    = total - disponíveis
+```
+
+### Hierarquia de aplicação (cálculo automático §3.8)
+
+| Caso | Condição | Ação |
+|---|---|---|
+| 1 | `% Vendido` já preenchido manualmente | Manter, marcar origem `informado_manualmente`. Validar contra cálculo (WARN se diff > 5%) |
+| 2 | Empreend. é Niágara (formato agrupa) | Marcar origem `nao_determinavel`. Total fica `None` no xlsx (lista de busca) |
+| 3 | `Origem total = tabela_local_completa` AND soma C_RAW = total | estoque = 1.0 (pré-lançamento). Origem `tabela_local_completa_zero` |
+| 4 | `total > 0` AND `soma C_RAW > 0` | Calcular automaticamente (estoque = soma/total). Origem `calculado_automatico` |
+| 5 | Sem dados base | estoque = `None`. Origem `N/A`. **Vira lista de busca pra obter info.** |
+
+### Coluna 26 (E_RAW) "Origem % Vendido"
+
+Schema E_RAW cresce de 25 → 26 colunas. Visualmente na xlsx aparece como col 20 (após "% Vendido" col 19).
+
+Enum válido (subset do §4.7 com adições próprias):
+
+| Valor | Significado |
+|---|---|
+| `calculado_automatico` | Aplicado pelo script via fórmula §3.8 |
+| `informado_manualmente` | Valor passado pelo Rafael via WhatsApp/reunião |
+| `tabela_local_completa_zero` | Origem total = `tabela_local_completa` AND soma C_RAW = total → 0% vendido (pré-lançamento) |
+| `nao_determinavel` | Caso Niágara — formato da tabela não permite inferir vendidas |
+| `N/A` | Sem dado base (sem total OU sem composição) — **lista de busca de info** |
+
+### Validação automática (gerar_planilha.py)
+
+Quando há valor manual E é possível calcular (total + soma C_RAW), comparar:
+- Se `|estoque_manual - estoque_calc| > 0.05` (5%) → **WARN** no console.
+
+### Convenção interna vs visual
+
+**Atenção:** o E_RAW armazena `estoque` (% disponível), NÃO `% vendido`. A xlsx faz a inversão `1 - estoque`. Ao preencher manualmente, lembrar dessa convenção:
+
+| Valor no E_RAW | Significado | % Vendido na xlsx |
+|---:|---|---:|
+| 0.0 | Esgotado (0% disponível) | 100% |
+| 0.5 | Metade disponível | 50% |
+| 1.0 | Todos disponíveis (pré-lançamento) | 0% |
+
+Em 02/05/2026 detectamos 2 entries com inversão de convenção (Zion, Vernazza Norte) — corrigidas pela validação §3.8 ao rodar o cálculo pela primeira vez.
+
+### Checklist de aplicação ao popular % Vendido
+
+1. ☐ Identifiquei caso na hierarquia §3.8 (1 a 5)?
+2. ☐ Se manual, lembrei que E_RAW armazena estoque (não vendido)?
+3. ☐ Rodei o script — validação §3.8 passou (ou WARN justificado)?
+4. ☐ Empreend. com origem `N/A` foram listados no roadmap pra busca?
 
 ---
 
