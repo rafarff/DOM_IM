@@ -19,7 +19,7 @@ from openpyxl.drawing.image import Image as XLImage
 # ═══════════════════════════════════════════════════════════════
 # PARÂMETROS GLOBAIS
 # ═══════════════════════════════════════════════════════════════
-VERSION = "9.0"
+VERSION = "9.1"
 DATE_STR = "02/05/2026"
 # v5.0 — (25/04/2026): MUDANÇA ESTRUTURAL — adoção do PADRAO v2.0.
 # +Coluna Tipo (Vertical/Horizontal/Misto) inserida como col. 5. 24 → 25 colunas.
@@ -190,6 +190,33 @@ DATE_STR = "02/05/2026"
 # maioria como tabela_local_parcial (tabela só lista disponíveis); 4 marcados
 # como book/memorial onde temos info externa (Zion, Bossa, Wave Residence,
 # Quartier 22, Sky, Azimuth onde sabemos total via book/memorial/site).
+# v9.1 — (02/05/2026): TRABALHO DE TOTAL DE UNIDADES — aplicado padrão hierárquico
+# (Rafael 02/05/2026): 1) Memorial declarado, 2) Book/site oficial, 3) Descrição
+# arquitetônica, 4) Numeração, 5) Cross-check, 6) Estimativa.
+# Empreend. atualizados:
+#   - The View (Delman): total 182→192 (1º-13º × 14 + 14º × 10) — método
+#     descrição arquitetônica + numeração. Origem tabela_local_parcial.
+#   - Vernazza Torre Sul (Treviso): total 60 (cross-check Norte 120÷2 torres).
+#     Origem mudou para memorial (mesmo registro do Norte).
+#   - ORO Ponta d'Areia (Niágara): total 96 (12 pavtos × 8 aptos), origem
+#     tabela_local_parcial → tabela_local_completa (todos disponíveis).
+#     +Nota: tabela Niágara NÃO permite inferir vendidas (formato agrupa aptos).
+#   - Reserva São Marcos (Mota Machado): total 90 (2×15×3 numeração).
+#   - Entre Rios (Mota Machado): total 30 (2×15×1 header), origem mudou para
+#     tabela_local_completa.
+#   - Al Mare Tirreno (Mota Machado): total 45 estimado (padrão Mota Machado:
+#     15 pavtos × 3 aptos). Origem estimativa. Pendente memorial.
+#   - Vila Coimbra (Castelucci): total 41 (book, confirmado Rafael 02/05/2026).
+#     Origem mudou para book (alta confiança).
+#   - Edifício Sanpaolo (Monteplan): total 64 estimado (padrão Monteplan:
+#     8 colunas × 8 andares). Origem estimativa. Pendente memorial 7331.
+# +4 inconsistências corrigidas (origem total preenchida onde só faltava):
+#   Ilha Parque (Sá Cavalcante 120, site_oficial), Giardino Fiore (45, book),
+#   Giardino Luce (60, book), Condomínio Prime Cohama (22, site_oficial).
+# +Loteamentos: Golden Green Beach 42 lotes (book — numeração max), Villagio
+# Treviso fica None (sem material).
+# Cobertura total preenchido sobe de 16/46 para 28/46 = 61%.
+# Cobertura origem preenchida sobe de 20/46 para 32/46 = 70%.
 
 # ═══════════════════════════════════════════════════════════════
 # IDENTIDADE VISUAL DOM
@@ -348,7 +375,7 @@ E_RAW = [
     ("Delman","The View",
      "Avenida dos Holandeses, Qd. 02, Nº 08, Calhau, São Luís - MA","Calhau",
      "Vertical",None,
-     None,"04/2026","—", 36.05,85.87,None, "Studio; 1D; 2D; 3D",
+     192,"04/2026","—", 36.05,85.87,None, "Studio; 1D; 2D; 3D",
      539969,1504011, None,None,None,
      "tabela_local","tabela_local","tabela_local",
      "https://delman.com.br/maranhao/empreendimentos/proximos-lancamentos/edificio-the-view","28/04/2026",
@@ -386,11 +413,11 @@ E_RAW = [
     ("Treviso","Vernazza Torre Sul",
      "Ponta d'Areia, São Luís - MA","Ponta d'Areia",
      "Vertical",None,
-     None,"02/2025","12/2029", 87.98,90.1,None, "—",
+     60,"02/2025","12/2029", 87.98,90.1,None, "—",
      1277000,1586000, None,None, None,
      "tabela","tabela","informado",
      "—","23/04/2026",
-     "Tipologia detalhada: 87,98 e 90,10 m² (Norte/Sul). Lançamento 02/2025 informado pelo Rafael. 26 unid listadas, área 87,98/90,10 m². Ticket R$ 1,28-1,59M (méd R$ 1,40M). R$/m² pond R$ 15.600 (faixa R$ 14,2-17,6k). VGV listado R$ 36,3M. Entrega 12/2029. [reconstituído da v4.16 em 25/04/2026]", "tabela_local_parcial"),
+     "Tipologia detalhada: 87,98 e 90,10 m² (Norte/Sul). Lançamento 02/2025 informado pelo Rafael. 26 unid listadas, área 87,98/90,10 m². Ticket R$ 1,28-1,59M (méd R$ 1,40M). R$/m² pond R$ 15.600 (faixa R$ 14,2-17,6k). VGV listado R$ 36,3M. Entrega 12/2029. [reconstituído da v4.16 em 25/04/2026]", "memorial"),
 
     ("Treviso","Altos do São Francisco",
      "Bairro São Francisco, São Luís - MA","São Francisco",
@@ -405,11 +432,11 @@ E_RAW = [
     ("Niágara","ORO Ponta d'Areia",
      "Endereço não localizado, Ponta d'Areia, São Luís - MA","Ponta d'Areia",
      "Vertical",None,
-     None,"01/2026 ⚠ T-36","~2029", 80.32,160.64,None, "2D; 3D; 4D",
+     96,"01/2026 ⚠ T-36","~2029", 80.32,160.64,None, "2D; 3D; 4D",
      1000000,2600000, None,None,None,
      "tabela_local","N/A","estimativa_T-36",
      "https://www.niagara-imoveis.com.br","14/04/2026",
-     "Tipologia detalhada: 2-4 suítes. Tabela JAN/26 é matriz por posição (não espelha estoque). Duplex cobertura 160m². Parcelamento 48m pós-assinatura.", "tabela_local_parcial"),
+     "Tipologia detalhada: 2-4 suítes. Tabela JAN/26 é matriz por posição (não espelha estoque). Duplex cobertura 160m². Parcelamento 48m pós-assinatura.", "tabela_local_completa"),
 
     # ═══ MOTA MACHADO ═══════════════════════════════════════════════════
     ("Mota Machado","Edifício Bossa",
@@ -424,7 +451,7 @@ E_RAW = [
     ("Mota Machado","Reserva São Marcos",
      "Endereço não localizado, Calhau, São Luís - MA","Calhau",
      "Vertical",None,
-     None,"01/2025","02/2029", 67.48,104.05,None, "2D; 3D",
+     90,"01/2025","02/2029", 67.48,104.05,None, "2D; 3D",
      977382,1316965, None,None,None,
      "tabela_local","N/A","site_oficial",
      "https://www.motamachado.com.br","29/04/2026",
@@ -433,20 +460,20 @@ E_RAW = [
     ("Mota Machado","Entre Rios",
      "Rua dos Bicudos, S/N, Qd. XIV-A Lote 02, Renascença, São Luís - MA","Renascença",
      "Vertical",None,
-     None,"08/2024","—", 125,157,None, "3D",
+     30,"08/2024","—", 125,157,None, "3D",
      1732000,2720000, None,None, None,
      "tabela","tabela","book",
      "https://motamachado.com.br","23/04/2026",
-     "Tipologia detalhada: 3 suítes (1 master). 3 tipologias (125 / 146,82 / 156,94 m²). 2 torres x 15 pav. Tab ABR/26: 15 unid, VGV R$ 32,3M. Ticket R$ 1,73–2,72M (méd R$ 2,15M). R$/m² pond R$ 15.162 (faixa R$ 13,9k–17,3k). Rua dos Bicudos, Renascença. [reconstituído da v4.16 em 25/04/2026]", "tabela_local_parcial"),
+     "Tipologia detalhada: 3 suítes (1 master). 3 tipologias (125 / 146,82 / 156,94 m²). 2 torres x 15 pav. Tab ABR/26: 15 unid, VGV R$ 32,3M. Ticket R$ 1,73–2,72M (méd R$ 2,15M). R$/m² pond R$ 15.162 (faixa R$ 13,9k–17,3k). Rua dos Bicudos, Renascença. [reconstituído da v4.16 em 25/04/2026]", "tabela_local_completa"),
 
     ("Mota Machado","Al Mare Tirreno",
      "Av. dos Holandeses, Qd 9 Lt 9, São Marcos, São Luís - MA","São Marcos",
      "Vertical",None,
-     None,"08/2024","Pronto", 215,215,None, "4D",
+     45,"08/2024","Pronto", 215,215,None, "4D",
      3025856,3120721, None,None, None,
      "tabela","tabela","book",
      "https://motamachado.com.br","23/04/2026",
-     "Tipologia detalhada: 4 suítes, 3 vagas. Torre A 'Tirreno' da Mota Machado Collection. Imóvel PRONTO. 215 m², 4 suítes, 3 vagas. Apts 102, 201, 202 listados. Ticket R$ 3,02-3,12M. R$/m² méd R$ 14.293. Av. dos Holandeses / São Marcos. [reconstituído da v4.16 em 25/04/2026]", "tabela_local_parcial"),
+     "Tipologia detalhada: 4 suítes, 3 vagas. Torre A 'Tirreno' da Mota Machado Collection. Imóvel PRONTO. 215 m², 4 suítes, 3 vagas. Apts 102, 201, 202 listados. Ticket R$ 3,02-3,12M. R$/m² méd R$ 14.293. Av. dos Holandeses / São Marcos. [reconstituído da v4.16 em 25/04/2026]", "estimativa"),
 
     # ═══ BERG ══════════════════════════════════════════════════════════
     ("Berg Engenharia","Monte Meru",
@@ -475,7 +502,7 @@ E_RAW = [
      None,None, None,None,None,
      "N/A","N/A","site_oficial",
      "https://www.sacavalcante.com.br","14/04/2026",
-     "Tipologia detalhada: 2-3 quartos. 120 aptos (60 2Q + 60 3Q), 12/andar, 15 pavs. Pronto p/ morar. Ao lado do Shopping da Ilha.", None),
+     "Tipologia detalhada: 2-3 quartos. 120 aptos (60 2Q + 60 3Q), 12/andar, 15 pavs. Pronto p/ morar. Ao lado do Shopping da Ilha.", "site_oficial"),
 
     # ═══ v4.1 — NOVOS EMPREENDIMENTOS MAPEADOS VIA WEB (14/04/2026) ═══
 
@@ -490,7 +517,7 @@ E_RAW = [
      1838492,2032939, None,None, 6/45,
      "tabela_local","tabela_local","memorial",
      "https://www.instagram.com/alfaengenhariama/","27/04/2026",
-     "Tipologia detalhada: 2 suítes + 2 semi-suítes OU 3 suítes, varanda, lavabo, 3 vagas, depósito. Torre NORTE do Giardino. 15 pav × 3 un = 45 unidades. 3 tipologias: 127,30 / 128,37 / 110,77 m². Tabela MAR/2026: 6 unidades disponíveis (1001/701/201/101 da coluna 127m², 102 da coluna 128m², 1403 da coluna 110m²) = ~13% estoque, 87% VENDIDO → Últimas unidades. Entrega DEZ/29. Memorial R.06/56.931 - 1º RI SL. Endereço Alfa: Rua Peixe Pedra, Qd 12 lote 04, Calhau.", None),
+     "Tipologia detalhada: 2 suítes + 2 semi-suítes OU 3 suítes, varanda, lavabo, 3 vagas, depósito. Torre NORTE do Giardino. 15 pav × 3 un = 45 unidades. 3 tipologias: 127,30 / 128,37 / 110,77 m². Tabela MAR/2026: 6 unidades disponíveis (1001/701/201/101 da coluna 127m², 102 da coluna 128m², 1403 da coluna 110m²) = ~13% estoque, 87% VENDIDO → Últimas unidades. Entrega DEZ/29. Memorial R.06/56.931 - 1º RI SL. Endereço Alfa: Rua Peixe Pedra, Qd 12 lote 04, Calhau.", "book"),
 
     ("Alfa Engenharia","Giardino Residenza Torre Luce",
      "Ponta do Farol, São Luís - MA","Ponta do Farol",
@@ -499,7 +526,7 @@ E_RAW = [
      1442168,1595303, None,None, 5/60,
      "tabela_local","tabela_local","memorial",
      "https://www.instagram.com/alfaengenhariama/","27/04/2026",
-     "Tipologia detalhada: 3 suítes, varanda, lavabo, 2 vagas, depósito. Torre SUL do Giardino. 15 pav × 4 un = 60 unidades. 4 tipologias: 99,08 / 101,31 / 93,18 / 93,62 m². Tabela MAR/2026: 5 unidades disponíveis (701/101 col 99m², 1502/1402 col 101m², 104 col 93m²) = ~8% estoque, 92% VENDIDO → Últimas unidades. CORREÇÃO v5.1: dorms = 3 suítes (descrição da tabela MAR/26), antes constava '2 suítes/1 suíte' incorretamente. 2 vagas + 1 depósito. Mais acessível que Torre Fiore. Entrega DEZ/29. Memorial R.06/56.931 - 1º RI SL.", None),
+     "Tipologia detalhada: 3 suítes, varanda, lavabo, 2 vagas, depósito. Torre SUL do Giardino. 15 pav × 4 un = 60 unidades. 4 tipologias: 99,08 / 101,31 / 93,18 / 93,62 m². Tabela MAR/2026: 5 unidades disponíveis (701/101 col 99m², 1502/1402 col 101m², 104 col 93m²) = ~8% estoque, 92% VENDIDO → Últimas unidades. CORREÇÃO v5.1: dorms = 3 suítes (descrição da tabela MAR/26), antes constava '2 suítes/1 suíte' incorretamente. 2 vagas + 1 depósito. Mais acessível que Torre Fiore. Entrega DEZ/29. Memorial R.06/56.931 - 1º RI SL.", "book"),
 
     # ─── TREVISO — Villagio Treviso ───
     ("Treviso","Villagio Treviso",
@@ -543,11 +570,11 @@ E_RAW = [
     ("Castelucci","Vila Coimbra",
      "Endereço não localizado, Araçagi, São Luís - MA","Araçagi",
      "Horizontal",None,
-     None,"03/2026","03/2029", 124.63,124.63,None, "—",
+     41,"03/2026","03/2029", 124.63,124.63,None, "—",
      1019834,1081967, None,None,None,
      "tabela_local","N/A","book",
      "https://construtoracastelucci.com.br","27/04/2026",
-     "Tipologia detalhada: Casa 124,63 m² (terreno 164-204 m²). Tabela LANÇAMENTO 03/2026. Parceria Castelucci + Grupo Coimbra Alves. ~36-41 casas no Araçagi (numeração até casa 41, várias agrupadas: 02-17, 36-38, 39-40). Área construída UNIFORME 124,63 m². Terreno varia 164-204 m². Ticket à vista R$ 1.019.834 (casa 21) a R$ 1.081.967 (casa 41) — VARIAÇÃO POR TAMANHO DE TERRENO, não por área construída. Avaliação: R$ 915.000. Pagamento: 24m IPCA+0,49% / 36m IPCA+1,49% / Caixa. Lazer privativa não integrada ao preço. Paulo Castelucci (CEO) em entrevista à Mirante FM. Patrocínio Imob Summit 2026.", "tabela_local_parcial"),
+     "Tipologia detalhada: Casa 124,63 m² (terreno 164-204 m²). Tabela LANÇAMENTO 03/2026. Parceria Castelucci + Grupo Coimbra Alves. ~36-41 casas no Araçagi (numeração até casa 41, várias agrupadas: 02-17, 36-38, 39-40). Área construída UNIFORME 124,63 m². Terreno varia 164-204 m². Ticket à vista R$ 1.019.834 (casa 21) a R$ 1.081.967 (casa 41) — VARIAÇÃO POR TAMANHO DE TERRENO, não por área construída. Avaliação: R$ 915.000. Pagamento: 24m IPCA+0,49% / 36m IPCA+1,49% / Caixa. Lazer privativa não integrada ao preço. Paulo Castelucci (CEO) em entrevista à Mirante FM. Patrocínio Imob Summit 2026.", "book"),
 
     ("Castelucci","Villa di Carpi",
      "Endereço não localizado, Cohatrac, São Luís - MA","Cohatrac",
@@ -599,11 +626,11 @@ E_RAW = [
     ("Lua Nova","Golden Green Beach",
      "Acesso pela Avenida dos Holandeses, São Luís - MA","Calhau",
      "Loteamento",None,
-     None,"06/2025 ⚠ T-36","—", 453,682,None, "Lote",
+     42,"06/2025 ⚠ T-36","—", 453,682,None, "Lote",
      2650000,4400000, None,None,None,
      "book","N/A","book",
      "https://construtoraluanova.com.br","27/04/2026",
-     "LOTEAMENTO DE LUXO. Projeto Golden Green Beach (GGB) — bairro de luxo planejado, acesso pela Av. dos Holandeses. Lote 41: 453 m² R$ 2,65M (R$ 5.850/m² terreno). Lote 42: 682 m² R$ 4,40M (R$ 6.452/m² terreno). Em obra. Áreas comuns: piscina coberta aquecida, sauna a vapor, heliponto com acesso por escada e elevador, estacionamento 30 carros, área administrativa. Projeto arquitetônico das áreas comuns: Marcelo Franco. Urbanismo: SA Urbanismo. Referências de luxo (book): Porto Frade RJ, Fazenda Boa Vista SP, Quinta da Baroneza SP. Bairro a confirmar (Calhau ou São Marcos pela posição na Av. Holandeses). ATENÇÃO: R$/m² em loteamento é TERRENO, não construído — não compara diretamente com aptos.", None),
+     "LOTEAMENTO DE LUXO. Projeto Golden Green Beach (GGB) — bairro de luxo planejado, acesso pela Av. dos Holandeses. Lote 41: 453 m² R$ 2,65M (R$ 5.850/m² terreno). Lote 42: 682 m² R$ 4,40M (R$ 6.452/m² terreno). Em obra. Áreas comuns: piscina coberta aquecida, sauna a vapor, heliponto com acesso por escada e elevador, estacionamento 30 carros, área administrativa. Projeto arquitetônico das áreas comuns: Marcelo Franco. Urbanismo: SA Urbanismo. Referências de luxo (book): Porto Frade RJ, Fazenda Boa Vista SP, Quinta da Baroneza SP. Bairro a confirmar (Calhau ou São Marcos pela posição na Av. Holandeses). ATENÇÃO: R$/m² em loteamento é TERRENO, não construído — não compara diretamente com aptos.", "book"),
 
     # ─── MB ENGENHARIA — 3 empreend. ───
     ("DOM Incorporação","Edifício Dom Ricardo",
@@ -622,7 +649,7 @@ E_RAW = [
      None,None, None,None,None,
      "N/A","N/A","imprensa",
      "https://www.instagram.com/mbengenharia.br/","14/04/2026",
-     "Tipologia detalhada: Casas duplex. 22 casas duplex 140m² — produto horizontal diferenciado. Pré-lançamento anunciado 2023, hoje em comercialização.", None),
+     "Tipologia detalhada: Casas duplex. 22 casas duplex 140m² — produto horizontal diferenciado. Pré-lançamento anunciado 2023, hoje em comercialização.", "site_oficial"),
 
     ("DOM Incorporação","Dom Antônio",
      "Endereço não localizado, Jardim Eldorado (Turú), São Luís - MA","Jardim Eldorado",
@@ -646,11 +673,11 @@ E_RAW = [
     ("Monteplan","Edifício Sanpaolo",
      "Rua Boa Esperança, 125, Cohama, São Luís - MA","Cohama",
      "Vertical",None,
-     None,"12/2022","12/2025", 54.0,59.0,None, "2D; 3D",
+     64,"12/2022","12/2025", 54.0,59.0,None, "2D; 3D",
      610000,610000, None,None, 1 - 1/64,
      "tabela_local","tabela_local","site_oficial",
      "https://monteplanengenharia.com.br/empreendimentos/edificio-sanpaolo/","29/04/2026",
-     "Tipologia detalhada: 2 plantas. **Colunas 1,2,7,8** com 59m² — 3 quartos (1 suíte), 2 vagas. **Colunas 3,4,5,6** com 54m² — 2 quartos (2 suítes, sendo 1 reversível), 1 vaga. Tabela 04/2026 lista APENAS 1 unidade LIVRE (apto 204-205, R$ 610.000 — par de unidades unidas, situação L-L). Estimativa ≥98% vendido. Confirma 'todas as unidades vendidas' (Facebook out/2025) — restou só 1 unid. dupla. Endereço completo: Rua Boa Esperança, 125, Cohama (ao lado da Igreja Batista). Conclusão obra DEZ/2025.", "tabela_local_parcial"),
+     "Tipologia detalhada: 2 plantas. **Colunas 1,2,7,8** com 59m² — 3 quartos (1 suíte), 2 vagas. **Colunas 3,4,5,6** com 54m² — 2 quartos (2 suítes, sendo 1 reversível), 1 vaga. Tabela 04/2026 lista APENAS 1 unidade LIVRE (apto 204-205, R$ 610.000 — par de unidades unidas, situação L-L). Estimativa ≥98% vendido. Confirma 'todas as unidades vendidas' (Facebook out/2025) — restou só 1 unid. dupla. Endereço completo: Rua Boa Esperança, 125, Cohama (ao lado da Igreja Batista). Conclusão obra DEZ/2025.", "estimativa"),
 
     ("Monteplan","Residencial Novo Anil",
      "Rua Estevão Braga, Cohab Anil IV, São Luís - MA","Cohab Anil IV",
