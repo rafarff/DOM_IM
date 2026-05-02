@@ -19,8 +19,8 @@ from openpyxl.drawing.image import Image as XLImage
 # ═══════════════════════════════════════════════════════════════
 # PARÂMETROS GLOBAIS
 # ═══════════════════════════════════════════════════════════════
-VERSION = "6.6"
-DATE_STR = "29/04/2026"
+VERSION = "7.0"
+DATE_STR = "02/05/2026"
 # v5.0 — (25/04/2026): MUDANÇA ESTRUTURAL — adoção do PADRAO v2.0.
 # +Coluna Tipo (Vertical/Horizontal/Misto) inserida como col. 5. 24 → 25 colunas.
 # +Hiali e DOM Incorporação como incorporadoras monitoradas (14 → 16). Tracking da
@@ -124,6 +124,21 @@ DATE_STR = "29/04/2026"
 #     extraídas do BOOK (tabela RSM não traz áreas). Tipologias 2D+3D suítes.
 #   - Zion (Ergus) NÃO preenchido: 9 PDFs em arquivo, todos imagem (sem
 #     texto extraível). Pendente OCR robusto ou tabela texto via corretor.
+# v7.0 — (02/05/2026): MUDANÇA ESTRUTURAL — aba Dashboard do HTML completamente
+# redesenhada (build_panorama.py). Inspiração: estudo BRAIN/Piacentini Curitiba
+# 2020 (em _REFERENCIAS_EXTERNAS/). Estrutura nova, 6 seções:
+# (1) KPIs visão geral · (2) Análise por Bairro · (3) Análise por Tipologia ·
+# (4) Análise por Incorporadora · (5) Análise por Segmento · (6) Heatmaps de
+# cruzamento (Bairro×Tipologia, Bairro×Segmento).
+# +Filtros globais no topo: período de lançamento (default últimos 24 meses),
+# segmento, tipo, bairro, incorporadora — reagem em todas as seções juntas.
+# +Agregações: tabelas com mín/médio/máx de R$/m²/área/ticket, médias ponderadas
+# de % absorção, contagens com tratamento de multi-tipologia.
+# Schema da .xlsx (24 colunas) NÃO mudou — v7.0 é só redesenho do HTML, dados
+# permanecem. Esta versão da Planilha Mestre é gerada idêntica à v6.6 em conteúdo.
+# Roadmap futuro: enriquecer breakdown de unidades por tipologia (hoje só temos
+# total agregado por empreend.), vai melhorar precisão das colunas "Unid. mono"
+# e "% Abs. mono" da Seção 3.
 
 # ═══════════════════════════════════════════════════════════════
 # IDENTIDADE VISUAL DOM

@@ -517,6 +517,33 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
   .matrix-tbl th { background: var(--dom-gray-dark); color: var(--dom-white); font-size: 10px; text-transform: uppercase; letter-spacing: 1px; }
   .matrix-tbl td.row-label { text-align: left; font-weight: 600; color: var(--dom-gray-dark); background: var(--dom-gray-light); }
   .matrix-tbl td .cell-val { font-weight: 700; font-size: 14px; }
+  /* v7.0 dashboard redesenhado */
+  .dash-filters-bar { display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-end; padding: 14px 16px; background: var(--dom-white); border-left: 4px solid var(--dom-gold); margin-bottom: 18px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+  .dash-section { margin-bottom: 28px; }
+  .dash-section-h { font-size: 16px; font-weight: 700; color: var(--dom-black); border-bottom: 2px solid var(--dom-gold); padding-bottom: 6px; margin-bottom: 14px; letter-spacing: 0.5px; }
+  .dash-kpis-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; }
+  .kpi-gold { border-left-color: var(--dom-gold-dark) !important; }
+  .kpi-label { font-size: 11px; color: var(--dom-gray-mid); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+  .kpi-value { font-size: 22px; font-weight: 700; color: var(--dom-black); }
+  .dash-section-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+  .dash-grid-half { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media (max-width: 900px) { .dash-section-grid, .dash-grid-half { grid-template-columns: 1fr; } }
+  .dash-card-mini { background: var(--dom-white); border-left: 3px solid var(--dom-gold); padding: 14px 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+  .dash-card-mini h3 { font-size: 11px; font-weight: 700; color: var(--dom-gray-mid); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
+  .dash-card-mini .chart-wrap { position: relative; height: 280px; }
+  .dash-table-wrap { overflow-x: auto; background: var(--dom-white); border-left: 3px solid var(--dom-gold); padding: 14px 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); margin-top: 14px; }
+  .dash-table { width: 100%; font-size: 12px; border-collapse: collapse; }
+  .dash-table th { background: var(--dom-gray-light); color: var(--dom-gray-dark); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; padding: 8px 10px; text-align: left; border-bottom: 2px solid var(--dom-gold); white-space: nowrap; }
+  .dash-table td { padding: 7px 10px; border-bottom: 1px solid var(--dom-gray-light); }
+  .dash-table td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  .dash-table tbody tr:hover { background: var(--dom-gray-light); }
+  .dash-note { font-size: 11px; color: var(--dom-gray-mid); font-style: italic; margin-top: 8px; padding: 0 4px; }
+  .heatmap-host { overflow-x: auto; max-height: 500px; overflow-y: auto; }
+  .heatmap-tbl { width: 100%; border-collapse: collapse; font-size: 11px; }
+  .heatmap-tbl th, .heatmap-tbl td { padding: 8px 6px; text-align: center; border: 1px solid var(--dom-gray-light); }
+  .heatmap-tbl th { background: var(--dom-gray-light); color: var(--dom-gray-dark); font-weight: 700; text-transform: uppercase; font-size: 10px; letter-spacing: 0.5px; position: sticky; top: 0; }
+  .heatmap-tbl td.row-label { background: var(--dom-gray-light); font-weight: 600; text-align: left; padding-left: 10px; white-space: nowrap; }
+  .heatmap-tbl td .cell-val { font-weight: 600; color: var(--dom-black); font-size: 13px; }
   .insights { font-size: 13px; line-height: 1.7; color: var(--dom-gray-dark); }
   .insights strong { color: var(--dom-black); }
   .insights .insight { padding: 8px 0; border-bottom: 1px solid var(--dom-gray-light); }
@@ -651,18 +678,119 @@ if (sessionStorage.getItem("dom-auth") === "1") {
   </section>
   </div><!-- /tab-panorama -->
 
-  <!-- TAB: DASHBOARD -->
+  <!-- TAB: DASHBOARD v7.0 — análise de mercado por dimensão -->
   <div class="tab-panel" id="tab-dashboard">
-    <section class="dash-grid">
-      <div class="dash-card"><h3>📈 VGV por Ano de Lançamento</h3><div class="chart-wrap"><canvas id="ch-vgv-ano"></canvas></div></div>
-      <div class="dash-card"><h3>🥧 Distribuição por Segmento</h3><div class="chart-wrap"><canvas id="ch-segmento"></canvas></div></div>
-      <div class="dash-card"><h3>🏘️ Top 8 Bairros por VGV</h3><div class="chart-wrap"><canvas id="ch-bairros"></canvas></div></div>
-      <div class="dash-card"><h3>🎯 Posicionamento das Incorporadoras</h3><div class="chart-wrap"><canvas id="ch-posic"></canvas></div></div>
-      <div class="dash-card"><h3>⚡ Velocidade de Absorção</h3><div class="chart-wrap"><canvas id="ch-veloc"></canvas></div></div>
-      <div class="dash-card dash-card-wide"><h3>📊 Matriz Tipo × Segmento</h3><div id="matrix-host"></div></div>
-      <div class="dash-card dash-card-wide"><h3>💡 Insights Automáticos</h3><div class="insights" id="insights-host"></div></div>
+
+    <section class="dash-filters-bar">
+      <div class="filter-group"><label>Período de lançamento</label>
+        <select id="dash-f-periodo">
+          <option value="12">Último ano</option>
+          <option value="24" selected>Últimos 2 anos</option>
+          <option value="36">Últimos 3 anos</option>
+          <option value="0">Todos</option>
+        </select>
+      </div>
+      <div class="filter-group"><label>Segmento</label><select id="dash-f-seg"></select></div>
+      <div class="filter-group"><label>Tipo</label><select id="dash-f-tipo"></select></div>
+      <div class="filter-group"><label>Bairro</label><select id="dash-f-bairro"></select></div>
+      <div class="filter-group"><label>Incorporadora</label><select id="dash-f-inc"></select></div>
+      <button class="reset-btn" onclick="resetDashFilters()">Limpar</button>
+      <div class="results-count"><strong id="dash-res-count">0</strong> empreend. analisados</div>
     </section>
+
+    <section class="dash-section">
+      <h2 class="dash-section-h">Visão Geral</h2>
+      <div class="kpis dash-kpis-grid" id="dash-kpis"></div>
+    </section>
+
+    <section class="dash-section">
+      <h2 class="dash-section-h">Análise por Bairro</h2>
+      <div class="dash-section-grid">
+        <div class="dash-card-mini"><div class="chart-wrap"><canvas id="ch-bairro-vgv"></canvas></div></div>
+        <div class="dash-card-mini"><div class="chart-wrap"><canvas id="ch-bairro-rsm2"></canvas></div></div>
+      </div>
+      <div class="dash-table-wrap">
+        <table class="dash-table">
+          <thead><tr>
+            <th>Bairro</th><th># Emp.</th><th>Total Unid.</th><th>Disponíveis</th>
+            <th>% Absorção</th><th>Ticket méd.</th><th>R$/m² méd.</th>
+            <th>VGV</th><th>Segmentos</th>
+          </tr></thead>
+          <tbody id="tbl-bairros-body"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="dash-section">
+      <h2 class="dash-section-h">Análise por Tipologia</h2>
+      <div class="dash-card-mini"><div class="chart-wrap"><canvas id="ch-tipo-rsm2"></canvas></div></div>
+      <div class="dash-table-wrap">
+        <table class="dash-table">
+          <thead><tr>
+            <th>Tipologia</th><th># Empreend.</th>
+            <th>R$/m² mín</th><th>R$/m² médio</th><th>R$/m² máx</th>
+            <th>Área mín</th><th>Área média</th><th>Área máx</th>
+            <th>Ticket médio</th>
+            <th title="Apenas empreend. mono-tipologia">Unid. mono</th>
+            <th title="Apenas mono">% Abs. mono</th>
+          </tr></thead>
+          <tbody id="tbl-tipologias-body"></tbody>
+        </table>
+      </div>
+      <p class="dash-note">⚠ Empreend. multi-tipologia (ex: "Studio; 2D; 3D") contam em todas as linhas correspondentes. Colunas "Unid. mono" e "% Abs. mono" usam apenas mono-tipologia. Distribuição por tipologia em multi-tipologia é pendência de enriquecimento (roadmap v7.1+).</p>
+    </section>
+
+    <section class="dash-section">
+      <h2 class="dash-section-h">Análise por Incorporadora</h2>
+      <div class="dash-section-grid">
+        <div class="dash-card-mini"><div class="chart-wrap"><canvas id="ch-inc-vgv"></canvas></div></div>
+        <div class="dash-card-mini"><div class="chart-wrap" style="height:340px"><canvas id="ch-inc-scatter"></canvas></div></div>
+      </div>
+      <div class="dash-table-wrap">
+        <table class="dash-table">
+          <thead><tr>
+            <th>Incorporadora</th><th># Emp.</th><th>VGV</th>
+            <th>Ticket méd.</th><th>R$/m² méd.</th><th>% Abs.</th>
+            <th>Segmentos</th><th>Bairros</th>
+          </tr></thead>
+          <tbody id="tbl-incorps-body"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="dash-section">
+      <h2 class="dash-section-h">Análise por Segmento</h2>
+      <div class="dash-card-mini"><div class="chart-wrap"><canvas id="ch-seg-pie"></canvas></div></div>
+      <div class="dash-table-wrap">
+        <table class="dash-table">
+          <thead><tr>
+            <th>Segmento</th><th># Emp.</th><th>Total Unid.</th><th>Disponíveis</th>
+            <th>% Abs.</th><th>Ticket méd.</th><th>R$/m² méd.</th><th>Área méd.</th>
+            <th>VGV</th><th>Bairros</th>
+          </tr></thead>
+          <tbody id="tbl-segmentos-body"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="dash-section">
+      <h2 class="dash-section-h">Mapas de Calor (cruzamentos)</h2>
+      <div class="dash-grid-half">
+        <div class="dash-card-mini">
+          <h3>Bairro × Tipologia</h3>
+          <div id="heatmap-bt" class="heatmap-host"></div>
+          <p class="dash-note">Nº de empreendimentos por cruzamento. Branco = vácuo de oferta. Hover mostra empreend.</p>
+        </div>
+        <div class="dash-card-mini">
+          <h3>Bairro × Segmento</h3>
+          <div id="heatmap-bs" class="heatmap-host"></div>
+          <p class="dash-note">Onde cada faixa de mercado se concentra.</p>
+        </div>
+      </div>
+    </section>
+
   </div><!-- /tab-dashboard -->
+
 
   <!-- TAB: DADOS COMPLETOS -->
   <div class="tab-panel" id="tab-dados">
@@ -1048,210 +1176,469 @@ const SEG_COLORS = {
 };
 const TIPO_ORDER = ['Vertical', 'Horizontal', 'Loteamento'];
 
+// ═══════════════════════════════════════════════════════════════
+// DASHBOARD v7.0 — análise de mercado por dimensão
+// ═══════════════════════════════════════════════════════════════
+let DASH_FILTER = { periodo_meses: 24, seg: '', tipo: '', bairro: '', inc: '' };
+const DASH_CHARTS = {};
+const TIPO_ORDER_ENUM = ['Studio', '1D', '2D', '3D', '4D', 'Lote'];
+
+function destroyDashChart(id) {
+  if (DASH_CHARTS[id]) { DASH_CHARTS[id].destroy(); delete DASH_CHARTS[id]; }
+}
+
+function applyDashFilters() {
+  let data = ALL_DATA.slice();
+  if (DASH_FILTER.periodo_meses > 0) {
+    const cutoff = new Date();
+    cutoff.setMonth(cutoff.getMonth() - DASH_FILTER.periodo_meses);
+    data = data.filter(e => {
+      const m = String(e.lancamento || '').match(/(\d{1,2})\/(\d{4})/);
+      if (!m) return false;
+      const date = new Date(parseInt(m[2]), parseInt(m[1]) - 1, 1);
+      return date >= cutoff;
+    });
+  }
+  if (DASH_FILTER.seg) data = data.filter(e => e.segmento === DASH_FILTER.seg);
+  if (DASH_FILTER.tipo) data = data.filter(e => e.tipo === DASH_FILTER.tipo);
+  if (DASH_FILTER.bairro) data = data.filter(e => e.bairro === DASH_FILTER.bairro);
+  if (DASH_FILTER.inc) data = data.filter(e => e.incorporadora === DASH_FILTER.inc);
+  return data;
+}
+
+function expandTipologia(data) {
+  const out = [];
+  data.forEach(e => {
+    const dorms = (e.dorms || '').split(';').map(s => s.trim()).filter(s => s && s !== '—');
+    if (dorms.length === 0) {
+      out.push({...e, _tipologia: '—', _is_mono: false});
+    } else if (dorms.length === 1) {
+      out.push({...e, _tipologia: dorms[0], _is_mono: true});
+    } else {
+      dorms.forEach(d => out.push({...e, _tipologia: d, _is_mono: false}));
+    }
+  });
+  return out;
+}
+
+function avgSimple(items, value) {
+  const vals = items.map(value).filter(v => v != null && !isNaN(v));
+  return vals.length ? vals.reduce((a,b) => a+b, 0) / vals.length : null;
+}
+
+function median(items, value) {
+  const vals = items.map(value).filter(v => v != null && !isNaN(v)).sort((a,b) => a-b);
+  if (!vals.length) return null;
+  const m = Math.floor(vals.length / 2);
+  return vals.length % 2 ? vals[m] : (vals[m-1] + vals[m]) / 2;
+}
+
+function rangeStats(items, value) {
+  const vals = items.map(value).filter(v => v != null && !isNaN(v));
+  if (!vals.length) return null;
+  return {
+    min: Math.min(...vals),
+    max: Math.max(...vals),
+    avg: vals.reduce((a,b) => a+b, 0) / vals.length,
+    n: vals.length
+  };
+}
+
 function renderDashboard() {
   if (typeof Chart === 'undefined') return;
   Chart.defaults.font.family = "Calibri, Arial, sans-serif";
   Chart.defaults.color = '#4D4D4D';
-
-  // (a) VGV por ano de lançamento
-  const byYear = {};
-  ALL_DATA.forEach(e => {
-    if (!e.vgv) return;
-    const m = String(e.lancamento || '').match(/(\d{4})/);
-    if (!m) return;
-    const y = m[1];
-    byYear[y] = (byYear[y] || 0) + e.vgv;
-  });
-  const years = Object.keys(byYear).sort();
-  new Chart(document.getElementById('ch-vgv-ano'), {
-    type: 'line',
-    data: {
-      labels: years,
-      datasets: [{
-        label: 'VGV (R$ M)',
-        data: years.map(y => byYear[y] / 1e6),
-        borderColor: '#C9A84C', backgroundColor: 'rgba(201,168,76,0.15)',
-        fill: true, tension: 0.25, pointRadius: 5, pointBackgroundColor: '#000'
-      }]
-    },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      plugins: { legend: { display: false } },
-      scales: { y: { ticks: { callback: v => 'R$ ' + v + 'M' } } }
-    }
-  });
-
-  // (b) Distribuição por Segmento
-  const segCount = {};
-  SEG_ORDER.forEach(s => segCount[s] = 0);
-  ALL_DATA.forEach(e => {
-    const seg = e.segmento && e.segmento !== '—' ? e.segmento : null;
-    if (seg && segCount[seg] !== undefined) segCount[seg]++;
-  });
-  const segLabels = SEG_ORDER.filter(s => segCount[s] > 0);
-  new Chart(document.getElementById('ch-segmento'), {
-    type: 'doughnut',
-    data: {
-      labels: segLabels,
-      datasets: [{
-        data: segLabels.map(s => segCount[s]),
-        backgroundColor: segLabels.map(s => SEG_COLORS[s]),
-        borderColor: '#fff', borderWidth: 2
-      }]
-    },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      plugins: { legend: { position: 'right', labels: { boxWidth: 14, font: { size: 11 } } } }
-    }
-  });
-
-  // (c) Top 8 bairros por VGV
-  const byBairro = {};
-  ALL_DATA.forEach(e => {
-    if (!e.vgv || !e.bairro || e.bairro === 'Não identificado') return;
-    byBairro[e.bairro] = (byBairro[e.bairro] || 0) + e.vgv;
-  });
-  const topB = Object.entries(byBairro).sort((a,b) => b[1] - a[1]).slice(0, 8);
-  new Chart(document.getElementById('ch-bairros'), {
-    type: 'bar',
-    data: {
-      labels: topB.map(x => x[0]),
-      datasets: [{
-        label: 'VGV (R$ M)',
-        data: topB.map(x => x[1] / 1e6),
-        backgroundColor: '#C9A84C', borderColor: '#8B6914', borderWidth: 1
-      }]
-    },
-    options: {
-      indexAxis: 'y', responsive: true, maintainAspectRatio: false,
-      plugins: { legend: { display: false } },
-      scales: { x: { ticks: { callback: v => 'R$ ' + v + 'M' } } }
-    }
-  });
-
-  // (d) Posicionamento das incorporadoras (scatter: R$/m² x nº empreend, tamanho = VGV)
-  const byInc = {};
-  ALL_DATA.forEach(e => {
-    if (!byInc[e.incorporadora]) byInc[e.incorporadora] = { count: 0, vgv: 0, rsm2_sum: 0, rsm2_n: 0 };
-    byInc[e.incorporadora].count++;
-    if (e.vgv) byInc[e.incorporadora].vgv += e.vgv;
-    if (e.rsm2) { byInc[e.incorporadora].rsm2_sum += e.rsm2; byInc[e.incorporadora].rsm2_n++; }
-  });
-  const posicData = Object.entries(byInc)
-    .filter(([_, v]) => v.rsm2_n > 0)
-    .map(([nome, v]) => ({
-      x: v.rsm2_sum / v.rsm2_n,
-      y: v.count,
-      r: Math.max(6, Math.min(28, Math.sqrt((v.vgv || 0) / 5e6))),
-      label: nome
-    }));
-  new Chart(document.getElementById('ch-posic'), {
-    type: 'bubble',
-    data: {
-      datasets: [{
-        data: posicData,
-        backgroundColor: 'rgba(201,168,76,0.55)',
-        borderColor: '#000', borderWidth: 1.5
-      }]
-    },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      plugins: {
-        legend: { display: false },
-        tooltip: {
-          callbacks: {
-            label: ctx => {
-              const d = ctx.raw;
-              return `${d.label}: ${d.y} empreend., R$/m² ${d.x.toFixed(0)}`;
-            }
-          }
-        }
-      },
-      scales: {
-        x: { title: { display: true, text: 'R$/m² médio' }, ticks: { callback: v => 'R$ ' + (v/1000).toFixed(0) + 'k' } },
-        y: { title: { display: true, text: 'Nº empreendimentos' }, beginAtZero: true }
-      }
-    }
-  });
-
-  // (e) Velocidade de absorção (top 12 com % vendido conhecido)
-  const veloc = ALL_DATA
-    .filter(e => e.vendido != null)
-    .sort((a,b) => b.vendido - a.vendido)
-    .slice(0, 12);
-  new Chart(document.getElementById('ch-veloc'), {
-    type: 'bar',
-    data: {
-      labels: veloc.map(e => e.empreendimento),
-      datasets: [{
-        label: '% Vendido',
-        data: veloc.map(e => Math.round(e.vendido * 100)),
-        backgroundColor: veloc.map(e => {
-          const v = e.vendido * 100;
-          if (v >= 85) return '#0F7B6C';
-          if (v >= 60) return '#C9A84C';
-          return '#8C8C8C';
-        })
-      }]
-    },
-    options: {
-      indexAxis: 'y', responsive: true, maintainAspectRatio: false,
-      plugins: { legend: { display: false } },
-      scales: { x: { max: 100, ticks: { callback: v => v + '%' } } }
-    }
-  });
-
-  // (f) Matriz Tipo × Segmento (HTML table)
-  const matrix = {};
-  TIPO_ORDER.forEach(t => { matrix[t] = {}; SEG_ORDER.forEach(s => matrix[t][s] = 0); });
-  ALL_DATA.forEach(e => {
-    const t = e.tipo, sg = e.segmento;
-    if (matrix[t] && matrix[t][sg] !== undefined) matrix[t][sg]++;
-  });
-  let mhtml = '<table class="matrix-tbl"><thead><tr><th></th>';
-  SEG_ORDER.forEach(s => mhtml += `<th>${s}</th>`);
-  mhtml += '<th>Total</th></tr></thead><tbody>';
-  TIPO_ORDER.forEach(t => {
-    let rowTotal = 0;
-    mhtml += `<tr><td class="row-label">${t}</td>`;
-    SEG_ORDER.forEach(s => {
-      const n = matrix[t][s]; rowTotal += n;
-      const intensity = Math.min(0.85, n * 0.18);
-      const bg = n > 0 ? `rgba(201,168,76,${intensity})` : 'transparent';
-      mhtml += `<td style="background:${bg}"><span class="cell-val">${n || '—'}</span></td>`;
-    });
-    mhtml += `<td><span class="cell-val">${rowTotal}</span></td></tr>`;
-  });
-  mhtml += '</tbody></table>';
-  document.getElementById('matrix-host').innerHTML = mhtml;
-
-  // (g) Insights automáticos
-  const total = ALL_DATA.length;
-  const totalVgv = ALL_DATA.reduce((a, e) => a + (e.vgv || 0), 0);
-  const topInc = Object.entries(byInc).sort((a,b) => b[1].vgv - a[1].vgv)[0];
-  const topBairroData = topB[0];
-  const topBairroPct = topBairroData ? (topBairroData[1] / totalVgv * 100).toFixed(0) : 0;
-  const luxoCount = segCount['Luxo'] || 0;
-  const altoCount = segCount['Alto'] || 0;
-  const ultimasUnid = ALL_DATA.filter(e => e.vendido != null && e.vendido >= 0.85).length;
-  const semDados = ALL_DATA.filter(e => e.vgv == null).length;
-  const loteCount = ALL_DATA.filter(e => e.tipo === 'Loteamento').length;
-  const verticalCount = ALL_DATA.filter(e => e.tipo === 'Vertical').length;
-  const horizCount = ALL_DATA.filter(e => e.tipo === 'Horizontal').length;
-
-  const insights = [
-    `📍 <strong>${topBairroData ? topBairroData[0] : 'N/A'}</strong> concentra <strong>${topBairroPct}%</strong> do VGV mapeado (R$ ${topBairroData ? (topBairroData[1]/1e6).toFixed(0) : 0}M).`,
-    `🏗️ Mercado SLZ: <strong>${verticalCount}</strong> verticais, <strong>${horizCount}</strong> horizontais e <strong>${loteCount}</strong> loteamentos.`,
-    `💎 <strong>${luxoCount}</strong> empreendimentos no segmento Luxo e <strong>${altoCount}</strong> no Alto — juntos somam ${((luxoCount+altoCount)/total*100).toFixed(0)}% da carteira mapeada.`,
-    `🏆 Maior incorporadora por VGV: <strong>${topInc ? topInc[0] : 'N/A'}</strong> com R$ ${topInc ? (topInc[1].vgv/1e6).toFixed(0) : 0}M em ${topInc ? topInc[1].count : 0} empreendimento(s).`,
-    `⚡ <strong>${ultimasUnid}</strong> empreendimentos em "Últimas unidades" (≥85% vendido) — janela curta para aprender com a competição.`,
-    `📋 <strong>${semDados}</strong> empreendimentos sem ticket/VGV mapeados — priorizar busca de tabelas com corretores.`,
-  ];
-  document.getElementById('insights-host').innerHTML = insights.map(i => `<div class="insight">${i}</div>`).join('');
+  const data = applyDashFilters();
+  document.getElementById('dash-res-count').textContent = data.length;
+  renderDashKPIs(data);
+  renderDashBairros(data);
+  renderDashTipologias(data);
+  renderDashIncorporadoras(data);
+  renderDashSegmentos(data);
+  renderDashHeatmaps(data);
 }
 
-populateFilters(); buildLegend(); applyFilters();
+function renderDashKPIs(data) {
+  const total = data.length;
+  const vgvTotal = data.reduce((a,e) => a + (e.vgv || 0), 0);
+  const ticketMed = median(data, e => (e.ticket_min && e.ticket_max) ? (e.ticket_min + e.ticket_max)/2 : null);
+  const rsm2Med = median(data, e => e.rsm2);
+  const incs = new Set(data.map(e => e.incorporadora));
+  const bairros = new Set(data.map(e => e.bairro).filter(b => b && b !== 'São Luís' && b !== 'Não identificado'));
+  const absorcaoMed = avgSimple(data.filter(e => e.vendido != null), e => e.vendido);
+
+  const tipoCount = {};
+  expandTipologia(data).forEach(e => {
+    if (e._tipologia !== '—') tipoCount[e._tipologia] = (tipoCount[e._tipologia] || 0) + 1;
+  });
+  const topTipo = Object.entries(tipoCount).sort((a,b) => b[1]-a[1])[0];
+
+  const kpis = [
+    {label: 'VGV mapeado', value: 'R$ ' + formatBRL(vgvTotal, true), gold: true},
+    {label: 'Empreendimentos', value: total, gold: false},
+    {label: 'Incorporadoras', value: incs.size, gold: false},
+    {label: 'Bairros', value: bairros.size, gold: false},
+    {label: 'Ticket mediano', value: ticketMed ? 'R$ ' + formatBRL(ticketMed, true) : '—', gold: false},
+    {label: 'R$/m² mediano', value: rsm2Med ? 'R$ ' + formatBRL(rsm2Med) : '—', gold: false},
+    {label: '% Absorção médio', value: absorcaoMed != null ? Math.round(absorcaoMed*100) + '%' : '—', gold: false},
+    {label: 'Tipologia top', value: topTipo ? topTipo[0] + ' (' + topTipo[1] + ')' : '—', gold: false},
+  ];
+
+  document.getElementById('dash-kpis').innerHTML = kpis.map(k =>
+    '<div class="kpi ' + (k.gold ? 'kpi-gold' : '') + '"><div class="kpi-label">' + k.label + '</div><div class="kpi-value">' + k.value + '</div></div>'
+  ).join('');
+}
+
+function renderDashBairros(data) {
+  const groups = {};
+  data.forEach(e => {
+    const b = e.bairro;
+    if (!b || b === 'São Luís' || b === 'Não identificado') return;
+    if (!groups[b]) groups[b] = [];
+    groups[b].push(e);
+  });
+
+  const rows = Object.entries(groups).map(([bairro, items]) => {
+    const totalUnid = items.reduce((a,e) => a + (e.unidades || 0), 0);
+    const dispon = items.reduce((a,e) => {
+      if (e.unidades && e.vendido != null) return a + Math.round(e.unidades * (1 - e.vendido));
+      return a;
+    }, 0);
+    const absorcao = avgSimple(items.filter(e => e.vendido != null), e => e.vendido);
+    const ticketMed = avgSimple(items.filter(e => e.ticket_min && e.ticket_max), e => (e.ticket_min + e.ticket_max)/2);
+    const rsm2Med = avgSimple(items, e => e.rsm2);
+    const vgvTotal = items.reduce((a,e) => a + (e.vgv || 0), 0);
+    const segs = [...new Set(items.map(e => e.segmento).filter(s => s && s !== '—'))];
+    return { bairro, n: items.length, totalUnid, dispon, absorcao, ticketMed, rsm2Med, vgvTotal, segs };
+  }).sort((a,b) => b.vgvTotal - a.vgvTotal);
+
+  const tbody = rows.map(r =>
+    '<tr><td><strong>' + r.bairro + '</strong></td>' +
+    '<td class="num">' + r.n + '</td>' +
+    '<td class="num">' + (r.totalUnid || '—') + '</td>' +
+    '<td class="num">' + (r.dispon || '—') + '</td>' +
+    '<td class="num">' + (r.absorcao != null ? Math.round(r.absorcao*100)+'%' : '—') + '</td>' +
+    '<td class="num">' + (r.ticketMed ? 'R$ '+formatBRL(r.ticketMed, true) : '—') + '</td>' +
+    '<td class="num">' + (r.rsm2Med ? 'R$ '+formatBRL(r.rsm2Med) : '—') + '</td>' +
+    '<td class="num"><strong>R$ ' + formatBRL(r.vgvTotal, true) + '</strong></td>' +
+    '<td>' + r.segs.map(s => '<span class="chip ' + segClass(s) + '" style="font-size:10px">' + s + '</span>').join(' ') + '</td>' +
+    '</tr>'
+  ).join('');
+  document.getElementById('tbl-bairros-body').innerHTML = tbody || '<tr><td colspan="9" style="text-align:center;color:var(--dom-gray-mid);padding:20px">Nenhum bairro com filtros aplicados</td></tr>';
+
+  const top10 = rows.slice(0, 10);
+  destroyDashChart('ch-bairro-vgv');
+  if (top10.length > 0) {
+    DASH_CHARTS['ch-bairro-vgv'] = new Chart(document.getElementById('ch-bairro-vgv'), {
+      type: 'bar',
+      data: {
+        labels: top10.map(r => r.bairro),
+        datasets: [{ label: 'VGV (R$ M)', data: top10.map(r => r.vgvTotal / 1e6),
+          backgroundColor: '#C9A84C', borderColor: '#8B6914', borderWidth: 1 }]
+      },
+      options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { display: false }, title: { display: true, text: 'Top 10 bairros por VGV (R$ Milhões)' } },
+        scales: { x: { ticks: { callback: v => 'R$ ' + v + 'M' } } } }
+    });
+  }
+
+  const sortedR = rows.filter(r => r.rsm2Med).sort((a,b) => b.rsm2Med - a.rsm2Med).slice(0, 10);
+  destroyDashChart('ch-bairro-rsm2');
+  if (sortedR.length > 0) {
+    DASH_CHARTS['ch-bairro-rsm2'] = new Chart(document.getElementById('ch-bairro-rsm2'), {
+      type: 'bar',
+      data: {
+        labels: sortedR.map(r => r.bairro),
+        datasets: [{ label: 'R$/m² médio', data: sortedR.map(r => r.rsm2Med),
+          backgroundColor: '#0F7B6C', borderColor: '#000', borderWidth: 1 }]
+      },
+      options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { display: false }, title: { display: true, text: 'R$/m² médio por bairro (top 10)' } },
+        scales: { x: { ticks: { callback: v => 'R$ ' + (v/1000).toFixed(0) + 'k' } } } }
+    });
+  }
+}
+
+function renderDashTipologias(data) {
+  const expanded = expandTipologia(data).filter(e => e._tipologia !== '—');
+  const groups = {};
+  expanded.forEach(e => {
+    const t = e._tipologia;
+    if (!groups[t]) groups[t] = { items: [], mono: [] };
+    groups[t].items.push(e);
+    if (e._is_mono) groups[t].mono.push(e);
+  });
+
+  const rows = TIPO_ORDER_ENUM.filter(t => groups[t]).map(t => {
+    const items = groups[t].items, mono = groups[t].mono;
+    const monoTotalUnid = mono.reduce((a,e) => a + (e.unidades || 0), 0);
+    const monoAbsorcao = avgSimple(mono.filter(e => e.vendido != null), e => e.vendido);
+    const rsm2 = rangeStats(items, e => e.rsm2);
+    const area = rangeStats(items, e => e.area_med);
+    const ticket = rangeStats(items, e => (e.ticket_min && e.ticket_max) ? (e.ticket_min + e.ticket_max)/2 : null);
+    return { t, nTotal: items.length, nMono: mono.length, monoTotalUnid, monoAbsorcao, rsm2, area, ticket };
+  });
+
+  const tbody = rows.map(r =>
+    '<tr><td><strong>' + r.t + '</strong></td>' +
+    '<td class="num">' + r.nTotal + '</td>' +
+    '<td class="num">' + (r.rsm2 ? 'R$ '+formatBRL(r.rsm2.min) : '—') + '</td>' +
+    '<td class="num"><strong>' + (r.rsm2 ? 'R$ '+formatBRL(r.rsm2.avg) : '—') + '</strong></td>' +
+    '<td class="num">' + (r.rsm2 ? 'R$ '+formatBRL(r.rsm2.max) : '—') + '</td>' +
+    '<td class="num">' + (r.area ? r.area.min.toFixed(0)+'m²' : '—') + '</td>' +
+    '<td class="num"><strong>' + (r.area ? r.area.avg.toFixed(0)+'m²' : '—') + '</strong></td>' +
+    '<td class="num">' + (r.area ? r.area.max.toFixed(0)+'m²' : '—') + '</td>' +
+    '<td class="num">' + (r.ticket ? 'R$ '+formatBRL(r.ticket.avg, true) : '—') + '</td>' +
+    '<td class="num">' + (r.nMono > 0 ? r.monoTotalUnid : '—') + '</td>' +
+    '<td class="num">' + (r.monoAbsorcao != null ? Math.round(r.monoAbsorcao*100)+'%' : '—') + '</td>' +
+    '</tr>'
+  ).join('');
+  document.getElementById('tbl-tipologias-body').innerHTML = tbody || '<tr><td colspan="11" style="text-align:center;color:var(--dom-gray-mid);padding:20px">Sem dados</td></tr>';
+
+  destroyDashChart('ch-tipo-rsm2');
+  if (rows.length > 0) {
+    DASH_CHARTS['ch-tipo-rsm2'] = new Chart(document.getElementById('ch-tipo-rsm2'), {
+      type: 'bar',
+      data: {
+        labels: rows.map(r => r.t),
+        datasets: [
+          { label: 'Mín', data: rows.map(r => r.rsm2 ? r.rsm2.min : 0), backgroundColor: '#E8D5A3' },
+          { label: 'Médio', data: rows.map(r => r.rsm2 ? r.rsm2.avg : 0), backgroundColor: '#C9A84C' },
+          { label: 'Máx', data: rows.map(r => r.rsm2 ? r.rsm2.max : 0), backgroundColor: '#8B6914' },
+        ]
+      },
+      options: { responsive: true, maintainAspectRatio: false,
+        plugins: { title: { display: true, text: 'R$/m² por tipologia (mín / médio / máx)' } },
+        scales: { y: { ticks: { callback: v => 'R$ '+(v/1000).toFixed(0)+'k' } } } }
+    });
+  }
+}
+
+function renderDashIncorporadoras(data) {
+  const groups = {};
+  data.forEach(e => {
+    if (!groups[e.incorporadora]) groups[e.incorporadora] = [];
+    groups[e.incorporadora].push(e);
+  });
+
+  const rows = Object.entries(groups).map(([inc, items]) => {
+    const vgvTotal = items.reduce((a,e) => a + (e.vgv || 0), 0);
+    const bairros = [...new Set(items.map(e => e.bairro).filter(b => b && b !== 'São Luís'))];
+    const segs = [...new Set(items.map(e => e.segmento).filter(s => s && s !== '—'))];
+    const rsm2Med = avgSimple(items, e => e.rsm2);
+    const ticketMed = avgSimple(items.filter(e => e.ticket_min && e.ticket_max), e => (e.ticket_min + e.ticket_max)/2);
+    const absorcao = avgSimple(items.filter(e => e.vendido != null), e => e.vendido);
+    return { inc, n: items.length, vgvTotal, bairros, segs, rsm2Med, ticketMed, absorcao };
+  }).sort((a,b) => b.vgvTotal - a.vgvTotal);
+
+  const tbody = rows.map(r =>
+    '<tr><td><span class="inc-name" style="color:' + getColor(r.inc) + '">●</span> <strong>' + r.inc + '</strong></td>' +
+    '<td class="num">' + r.n + '</td>' +
+    '<td class="num"><strong>R$ ' + formatBRL(r.vgvTotal, true) + '</strong></td>' +
+    '<td class="num">' + (r.ticketMed ? 'R$ '+formatBRL(r.ticketMed, true) : '—') + '</td>' +
+    '<td class="num">' + (r.rsm2Med ? 'R$ '+formatBRL(r.rsm2Med) : '—') + '</td>' +
+    '<td class="num">' + (r.absorcao != null ? Math.round(r.absorcao*100)+'%' : '—') + '</td>' +
+    '<td>' + r.segs.map(s => '<span class="chip ' + segClass(s) + '" style="font-size:10px">' + s + '</span>').join(' ') + '</td>' +
+    '<td>' + r.bairros.slice(0,3).join(', ') + (r.bairros.length > 3 ? '...' : '') + '</td>' +
+    '</tr>'
+  ).join('');
+  document.getElementById('tbl-incorps-body').innerHTML = tbody || '<tr><td colspan="8" style="text-align:center;color:var(--dom-gray-mid);padding:20px">Sem dados</td></tr>';
+
+  destroyDashChart('ch-inc-vgv');
+  const incsComVgv = rows.filter(r => r.vgvTotal > 0);
+  if (incsComVgv.length > 0) {
+    DASH_CHARTS['ch-inc-vgv'] = new Chart(document.getElementById('ch-inc-vgv'), {
+      type: 'bar',
+      data: { labels: incsComVgv.map(r => r.inc),
+        datasets: [{ label: 'VGV (R$ M)', data: incsComVgv.map(r => r.vgvTotal / 1e6),
+          backgroundColor: incsComVgv.map(r => getColor(r.inc)) }] },
+      options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { display: false }, title: { display: true, text: 'VGV total por incorporadora (R$ Milhões)' } },
+        scales: { x: { ticks: { callback: v => 'R$ ' + v + 'M' } } } }
+    });
+  }
+
+  const points = data.filter(e => e.rsm2 && e.ticket_min && e.ticket_max).map(e => ({
+    x: e.rsm2, y: (e.ticket_min + e.ticket_max) / 2,
+    r: e.unidades ? Math.max(5, Math.min(20, Math.sqrt(e.unidades / 2))) : 8,
+    label: e.empreendimento + ' (' + e.incorporadora + ')', inc: e.incorporadora
+  }));
+  destroyDashChart('ch-inc-scatter');
+  if (points.length > 0) {
+    const incsList = [...new Set(points.map(p => p.inc))];
+    DASH_CHARTS['ch-inc-scatter'] = new Chart(document.getElementById('ch-inc-scatter'), {
+      type: 'bubble',
+      data: { datasets: incsList.map(inc => ({
+        label: inc, data: points.filter(p => p.inc === inc),
+        backgroundColor: getColor(inc) + 'CC', borderColor: '#000', borderWidth: 1 })) },
+      options: { responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { position: 'right', labels: { boxWidth: 12, font: {size: 10} } },
+          title: { display: true, text: 'Posicionamento: Ticket × R$/m² (cada bolha = 1 empreend.)' },
+          tooltip: { callbacks: { label: ctx => {
+            const d = ctx.raw;
+            return d.label + ': R$/m² ' + formatBRL(d.x) + ' · Ticket ' + formatBRL(d.y, true);
+          }}} },
+        scales: {
+          x: { title: { display: true, text: 'R$/m²' }, ticks: { callback: v => 'R$ ' + (v/1000).toFixed(0) + 'k' } },
+          y: { title: { display: true, text: 'Ticket' }, ticks: { callback: v => 'R$ ' + (v/1000).toFixed(0) + 'k' } } } }
+    });
+  }
+}
+
+function renderDashSegmentos(data) {
+  const groups = {};
+  SEG_ORDER.forEach(s => groups[s] = []);
+  data.forEach(e => { if (e.segmento && groups[e.segmento]) groups[e.segmento].push(e); });
+
+  const rows = SEG_ORDER.filter(s => groups[s].length > 0).map(s => {
+    const items = groups[s];
+    const totalUnid = items.reduce((a,e) => a + (e.unidades || 0), 0);
+    const dispon = items.reduce((a,e) => {
+      if (e.unidades && e.vendido != null) return a + Math.round(e.unidades * (1 - e.vendido));
+      return a;
+    }, 0);
+    const absorcao = avgSimple(items.filter(e => e.vendido != null), e => e.vendido);
+    const ticket = rangeStats(items.filter(e => e.ticket_min && e.ticket_max), e => (e.ticket_min + e.ticket_max)/2);
+    const rsm2 = rangeStats(items, e => e.rsm2);
+    const area = rangeStats(items, e => e.area_med);
+    const vgvTotal = items.reduce((a,e) => a + (e.vgv || 0), 0);
+    const bairros = [...new Set(items.map(e => e.bairro).filter(b => b && b !== 'São Luís'))];
+    return { s, n: items.length, totalUnid, dispon, absorcao, ticket, rsm2, area, vgvTotal, bairros };
+  });
+
+  const tbody = rows.map(r =>
+    '<tr><td><span class="chip ' + segClass(r.s) + '">' + r.s + '</span></td>' +
+    '<td class="num">' + r.n + '</td>' +
+    '<td class="num">' + (r.totalUnid || '—') + '</td>' +
+    '<td class="num">' + (r.dispon || '—') + '</td>' +
+    '<td class="num">' + (r.absorcao != null ? Math.round(r.absorcao*100)+'%' : '—') + '</td>' +
+    '<td class="num">' + (r.ticket ? 'R$ '+formatBRL(r.ticket.avg, true) : '—') + '</td>' +
+    '<td class="num">' + (r.rsm2 ? 'R$ '+formatBRL(r.rsm2.avg) : '—') + '</td>' +
+    '<td class="num">' + (r.area ? r.area.avg.toFixed(0)+'m²' : '—') + '</td>' +
+    '<td class="num"><strong>R$ ' + formatBRL(r.vgvTotal, true) + '</strong></td>' +
+    '<td>' + r.bairros.slice(0,3).join(', ') + (r.bairros.length > 3 ? '...' : '') + '</td>' +
+    '</tr>'
+  ).join('');
+  document.getElementById('tbl-segmentos-body').innerHTML = tbody || '<tr><td colspan="10" style="text-align:center;color:var(--dom-gray-mid);padding:20px">Sem dados</td></tr>';
+
+  destroyDashChart('ch-seg-pie');
+  const segsAtivos = rows.filter(r => r.vgvTotal > 0);
+  if (segsAtivos.length > 0) {
+    DASH_CHARTS['ch-seg-pie'] = new Chart(document.getElementById('ch-seg-pie'), {
+      type: 'doughnut',
+      data: { labels: segsAtivos.map(r => r.s),
+        datasets: [{ data: segsAtivos.map(r => r.vgvTotal),
+          backgroundColor: segsAtivos.map(r => SEG_COLORS[r.s]),
+          borderColor: '#fff', borderWidth: 2 }] },
+      options: { responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { position: 'right', labels: { boxWidth: 14, font: { size: 11 } } },
+          title: { display: true, text: 'VGV por segmento' },
+          tooltip: { callbacks: { label: ctx => ctx.label + ': R$ ' + formatBRL(ctx.raw, true) } } } }
+    });
+  }
+}
+
+function renderDashHeatmaps(data) {
+  // 6a. Bairro × Tipologia
+  const expanded = expandTipologia(data).filter(e => e._tipologia !== '—');
+  const bairros = [...new Set(expanded.map(e => e.bairro).filter(b => b && b !== 'São Luís' && b !== 'Não identificado'))].sort();
+  const matrixBT = {};
+  bairros.forEach(b => { matrixBT[b] = {}; TIPO_ORDER_ENUM.forEach(t => matrixBT[b][t] = []); });
+  expanded.forEach(e => {
+    if (matrixBT[e.bairro] && matrixBT[e.bairro][e._tipologia] !== undefined) matrixBT[e.bairro][e._tipologia].push(e);
+  });
+  const allCounts = bairros.flatMap(b => TIPO_ORDER_ENUM.map(t => matrixBT[b][t].length));
+  const maxBT = allCounts.length > 0 ? Math.max(...allCounts, 1) : 1;
+
+  let html = '<table class="heatmap-tbl"><thead><tr><th></th>';
+  TIPO_ORDER_ENUM.forEach(t => html += '<th>' + t + '</th>');
+  html += '</tr></thead><tbody>';
+  bairros.forEach(b => {
+    html += '<tr><td class="row-label">' + b + '</td>';
+    TIPO_ORDER_ENUM.forEach(t => {
+      const cell = matrixBT[b][t];
+      const n = cell.length;
+      const intensity = n > 0 ? Math.min(0.9, (n / maxBT) * 0.85 + 0.15) : 0;
+      const bg = n > 0 ? 'rgba(201,168,76,' + intensity + ')' : '#fafafa';
+      const tip = n > 0 ? cell.map(e => e.empreendimento + ' (' + e.incorporadora + ')').join(', ') : 'Sem oferta — possível vácuo';
+      const safe = tip.replace(/"/g, '&quot;');
+      html += '<td style="background:' + bg + '" title="' + safe + '"><span class="cell-val">' + (n || '') + '</span></td>';
+    });
+    html += '</tr>';
+  });
+  html += '</tbody></table>';
+  document.getElementById('heatmap-bt').innerHTML = bairros.length ? html : '<p style="color:var(--dom-gray-mid);font-size:12px;padding:20px">Sem dados nos filtros aplicados</p>';
+
+  // 6b. Bairro × Segmento
+  const matrixBS = {};
+  const allBairros = [...new Set(data.map(e => e.bairro).filter(b => b && b !== 'São Luís' && b !== 'Não identificado'))].sort();
+  allBairros.forEach(b => { matrixBS[b] = {}; SEG_ORDER.forEach(s => matrixBS[b][s] = []); });
+  data.forEach(e => {
+    if (matrixBS[e.bairro] && matrixBS[e.bairro][e.segmento]) matrixBS[e.bairro][e.segmento].push(e);
+  });
+  const counts2 = allBairros.flatMap(b => SEG_ORDER.map(s => matrixBS[b][s].length));
+  const maxBS = counts2.length > 0 ? Math.max(...counts2, 1) : 1;
+
+  let html2 = '<table class="heatmap-tbl"><thead><tr><th></th>';
+  SEG_ORDER.forEach(s => html2 += '<th>' + s + '</th>');
+  html2 += '</tr></thead><tbody>';
+  allBairros.forEach(b => {
+    html2 += '<tr><td class="row-label">' + b + '</td>';
+    SEG_ORDER.forEach(s => {
+      const cell = matrixBS[b][s];
+      const n = cell.length;
+      const intensity = n > 0 ? Math.min(0.9, (n / maxBS) * 0.85 + 0.15) : 0;
+      const bg = n > 0 ? 'rgba(201,168,76,' + intensity + ')' : '#fafafa';
+      const tip = n > 0 ? cell.map(e => e.empreendimento + ' (' + e.incorporadora + ')').join(', ') : 'Sem oferta';
+      const safe = tip.replace(/"/g, '&quot;');
+      html2 += '<td style="background:' + bg + '" title="' + safe + '"><span class="cell-val">' + (n || '') + '</span></td>';
+    });
+    html2 += '</tr>';
+  });
+  html2 += '</tbody></table>';
+  document.getElementById('heatmap-bs').innerHTML = allBairros.length ? html2 : '<p style="color:var(--dom-gray-mid);font-size:12px;padding:20px">Sem dados nos filtros aplicados</p>';
+}
+
+function setupDashFilters() {
+  ['dash-f-periodo', 'dash-f-seg', 'dash-f-tipo', 'dash-f-bairro', 'dash-f-inc'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('change', () => {
+      DASH_FILTER.periodo_meses = parseInt(document.getElementById('dash-f-periodo').value);
+      DASH_FILTER.seg = document.getElementById('dash-f-seg').value;
+      DASH_FILTER.tipo = document.getElementById('dash-f-tipo').value;
+      DASH_FILTER.bairro = document.getElementById('dash-f-bairro').value;
+      DASH_FILTER.inc = document.getElementById('dash-f-inc').value;
+      renderDashboard();
+    });
+  });
+}
+
+function resetDashFilters() {
+  DASH_FILTER = { periodo_meses: 24, seg: '', tipo: '', bairro: '', inc: '' };
+  document.getElementById('dash-f-periodo').value = '24';
+  document.getElementById('dash-f-seg').value = '';
+  document.getElementById('dash-f-tipo').value = '';
+  document.getElementById('dash-f-bairro').value = '';
+  document.getElementById('dash-f-inc').value = '';
+  renderDashboard();
+}
+
+function populateDashFilters() {
+  const segs = SEG_ORDER.filter(s => ALL_DATA.some(e => e.segmento === s));
+  const tipos = [...new Set(ALL_DATA.map(e => e.tipo).filter(t => t))].sort();
+  const bairrs = [...new Set(ALL_DATA.map(e => e.bairro).filter(b => b))].sort();
+  const incs = [...new Set(ALL_DATA.map(e => e.incorporadora))].sort();
+
+  document.getElementById('dash-f-seg').innerHTML = '<option value="">Todos</option>' + segs.map(s => '<option>' + s + '</option>').join('');
+  document.getElementById('dash-f-tipo').innerHTML = '<option value="">Todos</option>' + tipos.map(t => '<option>' + t + '</option>').join('');
+  document.getElementById('dash-f-bairro').innerHTML = '<option value="">Todos</option>' + bairrs.map(b => '<option>' + b + '</option>').join('');
+  document.getElementById('dash-f-inc').innerHTML = '<option value="">Todas</option>' + incs.map(i => '<option>' + i + '</option>').join('');
+}
+
+populateDashFilters();
+setupDashFilters();
 renderDashboard();
+
 populateFullFilters(); applyFullFilters();
 </script>
 </body>
