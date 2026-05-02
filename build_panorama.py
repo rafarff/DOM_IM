@@ -410,6 +410,7 @@ def enrich(rows: list[dict], include_all: bool = False) -> list[dict]:
             "rsm2":           r.get("R$/m²"),
             "vgv":            r.get("VGV (R$)"),
             "vendido":        r.get("% Vendido"),
+            "orig_pct_vendido": r.get("Origem % Vendido") or "N/A",  # v9.4: PADRAO §3.8
             "orig_precos":    r.get("Orig. preços") or "—",
             "orig_estoque":   r.get("Orig. estoque") or "—",
             "orig_lancamento": r.get("Orig. lançamento") or "—",
@@ -1072,15 +1073,30 @@ function totalUnidCell(e) {
   return `<strong>${total}</strong> <span class="info-icon" title="${titleAttr}">ℹ</span>`;
 }
 
-// v6.6: helper para célula % Vendido com tooltip rico de origem (PADRAO §3.3)
+// v9.4: descrição amigável das origens §3.8 (PADRAO v5.3)
+function descreveOrigemVendido(o) {
+  const map = {
+    'calculado_automatico': 'estoque = Σ disponíveis (Composição) / total. Cálculo direto pela fórmula §3.8.',
+    'informado_manualmente': 'valor passado manualmente (Rafael/corretor/reunião).',
+    'tabela_local_completa_zero': 'origem total=tabela_local_completa AND soma C_RAW=total → 0% vendido (pré-lançamento).',
+    'nao_determinavel': 'tabela da incorporadora agrupa unidades por linha (caso Niágara). Fórmula §3.8 não aplicável.',
+    'N/A': 'sem dado base (sem total OU sem composição). Vira lista de busca de info.'
+  };
+  return map[o] || ('origem: ' + o);
+}
+
+// v9.4: célula % Vendido — usa origem §3.8 (cálculo automático ou manual)
 function vendidoCell(e) {
-  if (e.vendido == null || isNaN(e.vendido)) return '<span class="dim">—</span>';
+  const orig = e.orig_pct_vendido || 'N/A';
+  if (e.vendido == null || isNaN(e.vendido)) {
+    const tip = `Origem: ${orig}. ${descreveOrigemVendido(orig)}`.replace(/"/g, '&quot;');
+    return `<span class="dim">—</span> <span class="info-icon" title="${tip}">ℹ</span>`;
+  }
   const pct = Math.round(e.vendido * 100);
   const partes = [];
-  if (e.orig_estoque && e.orig_estoque !== '—') partes.push(`Origem do estoque: ${e.orig_estoque}`);
-  if (e.orig_precos && e.orig_precos !== '—') partes.push(`Origem dos preços: ${e.orig_precos}`);
+  partes.push(`Origem: ${orig}`);
+  partes.push(`Método PADRAO §3.8: ${descreveOrigemVendido(orig)}`);
   if (e.data_verif && e.data_verif !== '—') partes.push(`Última verificação: ${e.data_verif}`);
-  partes.push('Método: hierarquia §3.3 do PADRAO (1º tabela local, 2º site oficial, 3º agregador, 4º corretor, 5º estimativa). Detalhes em "Observações" na aba Dados Completos.');
   const titleAttr = partes.join(' · ').replace(/"/g, '&quot;');
   let style = '';
   if (pct >= 85) style = 'color:#8B6914;font-weight:600';
