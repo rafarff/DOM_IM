@@ -1,5 +1,5 @@
 # PADRÃO FASE 1 — Inteligência de Mercado DOM
-**Versão:** 5.3 (atualizada em 02/05/2026)
+**Versão:** 5.4 (atualizada em 02/05/2026)
 **Status:** 🟢 APROVADO pelo Rafael
 
 > **ATENÇÃO — Claude:** este documento é um CONTRATO. Toda vez que o Rafael
@@ -432,6 +432,68 @@ Em 02/05/2026 detectamos 2 entries com inversão de convenção (Zion, Vernazza 
 
 ---
 
+## 3.9 Determinação do Mês de Lançamento (v5.4+)
+
+A col 9 da aba Empreendimentos (`Mês lançamento`) precisa formato `MM/AAAA` (PADRAO §1) e origem (col 22 `Origem lançamento`). A regra T-36 (§3.5) calcula estimativa quando temos a entrega; §3.9 formaliza a hierarquia completa de fontes.
+
+### Hierarquia de fontes (8 níveis)
+
+| # | Fonte | Origem (§4.4) |
+|---|---|---|
+| 1 | **Release oficial / imprensa datada** (Imirante, Diego Emir, etc, com data explícita) | `imprensa` |
+| 2 | **Tabela arquivada datada** (rodapé legal: "TABELA/MÊS: ABRIL/2026", validade) | `tabela_local` |
+| 3 | **Book com data de lançamento** declarada explícita | `book` |
+| 4 | **Site oficial** com página do empreendimento e data de lançamento | `site_oficial` |
+| 5 | **Instagram oficial** — post de lançamento (data do post = data) | `instagram_oficial` |
+| 6 | **Treinamento de corretor** (corretor passou data confirmada de lançamento comercial) | `treinamento_corretor` |
+| 7 | **Informado manualmente** (Rafael, sem documento) | `informado_manualmente` |
+| 8 | **Estimativa T-36** (`mês_lançamento = mês_entrega - 36 meses`) — só quando temos entrega declarada e nada nas posições 1-7 | `estimativa_T-36` |
+| 9 | **Nada se aplica** | `Mês lançamento = None`. Origem `N/A`. **NÃO INVENTAR.** |
+
+### Regra T-36 (§3.5, mantida)
+
+Quando origem = `estimativa_T-36`:
+- `mês_lançamento_estimado = mês_entrega - 36 meses`
+- Sufixo obrigatório no campo: `MM/AAAA ⚠ T-36` (ex: `06/2025 ⚠ T-36`)
+- Substituir assim que: tabela datada, data no book, release/imprensa, post de Instagram marcando lançamento, treinamento de corretor (forte sinal), campanha de teaser.
+
+### Validação automática (gerar_planilha.py)
+
+Quando origem = `estimativa_T-36` E `data_verif > 180 dias` atrás → **WARN** no console:
+
+```
+⚠ §3.9: <empreend>: origem=estimativa_T-36 há X dias — buscar fonte real
+```
+
+Não bloqueia, mas força revisão periódica das estimativas T-36 antigas.
+
+### Coluna 22 (E_RAW) "Origem lançamento" — enum atualizado v5.4
+
+Valores válidos:
+
+| Valor | Significado |
+|---|---|
+| `imprensa` | Release/notícia datada |
+| `tabela_local` | Rodapé/header de tabela arquivada |
+| `book` | Book/material institucional |
+| `site_oficial` | Site da incorporadora |
+| `instagram_oficial` | Post de lançamento no @ oficial |
+| `treinamento_corretor` | Corretor passou |
+| `informado_manualmente` | Rafael declarou sem documento |
+| `estimativa_T-36` | Calculado por entrega-36m (deve evoluir pra fonte real) |
+| `N/A` | Sem dado base |
+
+### Checklist de aplicação
+
+1. ☐ Identifiquei origem mais alta possível na hierarquia §3.9?
+2. ☐ Mês está em formato `MM/AAAA` (PADRAO §1)?
+3. ☐ Se T-36, sufixei `⚠ T-36` no valor?
+4. ☐ Origem preenchida na col 22?
+5. ☐ Rodei script — validação §3.9 passou ou WARN justificado?
+6. ☐ Empreend. com `T-36` antigos foram revisitados?
+
+---
+
 ## 4. Enumerações fixas
 
 ### 4.1 Incorporadoras monitoradas (16 — lista fechada)
@@ -457,7 +519,7 @@ Mota Machado, Berg Engenharia, Alfa Engenharia, Lua Nova, Delman, Treviso, Ergus
 ### 4.4 Origens (valores permitidos)
 **Origem preços:** `tabela_local` | `site_oficial` | `agregador` | `imprensa` | `estimativa`
 **Origem estoque:** `tabela_local` | `site_oficial` | `agregador` | `corretor` | `estimativa`
-**Origem lançamento:** `book` | `release` | `treinamento_corretor` | `site_oficial` | `imprensa` | `estimativa_T-36`
+**Origem lançamento:** `imprensa` | `tabela_local` | `book` | `site_oficial` | `instagram_oficial` | `treinamento_corretor` | `informado_manualmente` | `estimativa_T-36` | `N/A` (v5.4: hierarquia §3.9)
 
 ### 4.5 Tipo (3 categorias)
 | Tipo | Definição | Exemplos |

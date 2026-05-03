@@ -3,9 +3,9 @@
 > **Para Claude (toda sessão):** este é o **primeiro arquivo a ler** antes de qualquer ação. Confirma a base de trabalho. Se a invariante 0.3 do PADRAO falhar contra os números aqui, **PARAR**.
 
 **Última atualização:** 02/05/2026
-**Versão Planilha vigente:** v9.4
-**Versão PADRAO vigente:** v5.3
-**Versão script `gerar_planilha.py`:** 9.4 (DATE_STR: 02/05/2026)
+**Versão Planilha vigente:** v9.5
+**Versão PADRAO vigente:** v5.4
+**Versão script `gerar_planilha.py`:** 9.5 (DATE_STR: 02/05/2026)
 
 ---
 
@@ -70,6 +70,7 @@ cd 00_ESTUDO_CONSOLIDADO/ && ls -1 Planilha_Mestre_Panorama_v*.xlsx | sort -V | 
 - **v8.0** (02/05/2026) — Aba Composição introduzida. Lote 1: 15 linhas / 322 unid.
 - **v8.1** (02/05/2026) — **Lote 2 entregue.** +13 linhas / +209 unid. Cobertura 17% → 39%.
 - **v8.2** (02/05/2026) — **Lote 3 (parcial — Zion via visão multimodal).** +1 linha / +10 unid. Cobertura 39% → 41%.
+- **v9.5** (02/05/2026) — **FORMALIZAÇÃO DO 4º E ÚLTIMO PROCESSO: Mês de Lançamento** (PADRAO §3.9). Hierarquia 8 níveis (`imprensa` → `tabela_local` → `book` → `site_oficial` → `instagram_oficial` → `treinamento_corretor` → `informado_manualmente` → `estimativa_T-36` → `N/A`). Regra T-36 (§3.5) preservada. Validação automática: `estimativa_T-36` há > 180 dias → WARN. Memória `feedback_mes_lancamento_processo.md`. PADRAO bumpa v5.3 → v5.4. **Os 4 dados centrais do estudo (Total + Composição + % Vendido + Mês Lançamento) agora têm processo formal completo.**
 - **v9.4** (02/05/2026) — **FORMALIZAÇÃO DO PROCESSO DE % VENDIDO** (PADRAO §3.8). Cálculo automático no script: `estoque = disponíveis/total`. Schema E_RAW 25→26 col (nova "Origem % Vendido"). 5 origens: `calculado_automatico`/`informado_manualmente`/`tabela_local_completa_zero`/`nao_determinavel` (Niágara)/`N/A` (lista de busca). Validação automática 5% manual vs calc. **2 bugs corrigidos pela validação na 1ª execução:** Zion (estoque 0.83→0.17) e Vernazza Norte (0.47→0.31). Em seguida (mesma sessão): **reset completo de TODOS os manuais** (3 explícitos + 11 expressões aritméticas) — % Vendido agora é 100% calculado pela fórmula §3.8. Tooltip da Tabela A no Panorama também atualizado pra referenciar §3.8 (era §3.3 antiga) — convenção invertida (E_RAW armazena estoque, não % vendido). PADRAO bumpa v5.2→v5.3. **Cobertura final v9.4 (após reset total): 16 calculados | 0 manuais | 1 zero | 1 não-det | 28 N/A** (lista automática de busca pra obter info).
 - **v9.3** (02/05/2026) — **FORMALIZAÇÃO DO PROCESSO DE COMPOSIÇÃO** (PADRAO §3.7). 5 níveis de fonte (`tabela_local` → `tabela_local_imagem` → `book` → `informado_manualmente` → não preencher). Catálogo de 8 parsers por incorporadora (Delman, Mota Machado, Treviso N/V, Treviso Altos, Monteplan, Castelucci, Niágara, Hiali). 3 validações automáticas no script: anti-duplicação, heurística-vs-Tipologia-declarada, cobertura (tabela arquivada sem C_RAW). 1ª execução detectou 9 alertas (3 inconsistências mono-tipologia E_RAW vs heurística C_RAW + 6 empreend. com tabela arquivada mas sem C_RAW — entram no roadmap futuro). Memória `feedback_composicao_processo.md` registrada. PADRAO bumpa v5.1→v5.2.
 - **v9.2** (02/05/2026) — **FORMALIZAÇÃO DO PROCESSO** de Total de Unidades como PADRAO §3.6 (7 níveis hierárquicos), enum §4.7 atualizado (removido `estimativa`, adicionado `informado_manualmente`), validação automática 5% no script, memória persistente nova (`feedback_total_unidades_processo.md`). Al Mare e Sanpaolo voltaram pra `None`/`N/A`. Validação pegou bug real: Renaissance Conceito C_RAW duplicado (parser SFH+FDC) — corrigido 44→22 unid, origem `tabela_local_completa`→`tabela_local_parcial`. PADRAO bumpa v5.0→v5.1.

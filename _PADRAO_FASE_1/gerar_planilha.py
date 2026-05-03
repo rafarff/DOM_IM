@@ -19,7 +19,7 @@ from openpyxl.drawing.image import Image as XLImage
 # ═══════════════════════════════════════════════════════════════
 # PARÂMETROS GLOBAIS
 # ═══════════════════════════════════════════════════════════════
-VERSION = "9.4"
+VERSION = "9.5"
 DATE_STR = "02/05/2026"
 # v5.0 — (25/04/2026): MUDANÇA ESTRUTURAL — adoção do PADRAO v2.0.
 # +Coluna Tipo (Vertical/Horizontal/Misto) inserida como col. 5. 24 → 25 colunas.
@@ -1418,8 +1418,29 @@ _print_section("VALIDAÇÃO §3.7.C.1 — duplicação em C_RAW", errors_dup, pr
 _print_section("VALIDAÇÃO §3.7.C.2 — heurística vs Tipologia declarada", warnings_heur)
 _print_section("VALIDAÇÃO §3.7.C.3 — cobertura (tabela arquivada sem C_RAW)", warnings_cov)
 
-if not (warnings_36 or errors_dup or warnings_heur or warnings_cov):
-    print("✓ Validações §3.6 + §3.7: todas passaram")
+# §3.9 — Validação Mês de Lançamento: estimativa_T-36 desatualizada (v9.5+)
+warnings_39 = []
+from datetime import datetime as _dt
+hoje = _dt.now()
+for entry in E_RAW:
+    inc, emp = entry[0], entry[1]
+    origem_lanc = entry[20] if len(entry) > 20 else None
+    data_verif_str = entry[22] if len(entry) > 22 else None
+    if origem_lanc == 'estimativa_T-36' and data_verif_str:
+        try:
+            data_verif = _dt.strptime(data_verif_str, '%d/%m/%Y')
+            dias = (hoje - data_verif).days
+            if dias > 180:
+                warnings_39.append(
+                    f"  WARN {inc} | {emp}: origem=estimativa_T-36 há {dias} dias (verif {data_verif_str}) — buscar fonte real"
+                )
+        except Exception:
+            pass
+
+_print_section("VALIDAÇÃO §3.9 — Mês Lançamento (estimativa_T-36 > 180d)", warnings_39)
+
+if not (warnings_36 or errors_dup or warnings_heur or warnings_cov or warnings_39):
+    print("✓ Validações §3.6 + §3.7 + §3.9: todas passaram")
 
 # ═══════════════════════════════════════════════════════════════
 # SALVAR — usa a pasta NFD (a real do usuário, com .DS_Store) para
