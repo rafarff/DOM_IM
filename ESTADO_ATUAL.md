@@ -3,23 +3,26 @@
 > **Para Claude (toda sessão):** este é o **primeiro arquivo a ler** antes de qualquer ação. Confirma a base de trabalho. Se a invariante 0.3 do PADRAO falhar contra os números aqui, **PARAR**.
 
 **Última atualização:** 03/05/2026
-**Versão Planilha vigente:** v10.5
-**Versão PADRAO vigente:** v6.1
-**Versão script `gerar_planilha.py`:** 10.5 (DATE_STR: 03/05/2026)
+**Versão Planilha vigente:** v10.6
+**Versão PADRAO vigente:** v6.2
+**Versão script `gerar_planilha.py`:** 10.6 (DATE_STR: 03/05/2026)
 
 ---
 
-## Snapshot da carteira
+## Snapshot da carteira (v10.6)
 
 | Métrica | Valor |
 |---|---:|
-| Aba Empreendimentos | **46 linhas** |
+| Aba Empreendimentos | **44 linhas** ← 46→44 após consolidação multi-torre §3.7.D-A |
 | Aba Incorporadoras | **16 linhas** |
-| Aba Composição | **36 linhas / 570 unidades**
-| Aba Empreendimentos schema | **27 colunas (v10.0)** ← +Origem total (v9.0) + Origem % Vendido (v9.4) + Origem Bairro (v10.0) | ✅ Lote 1+2 |
+| Aba Composição | **39 linhas / 754 unidades** ← +3 estimativas nível 5 |
+| Aba Empreendimentos schema | **27 colunas** (sem mudança v10.6) |
+| Aba Composição schema | **11 colunas (v6.2)** ← +"Total tipologia" entre "Tipologia" e "Disponíveis" |
 | Drift script ↔ planilha | **0** ✅ |
-| VGV total mapeado | **R$ 2,48 bi** |
-| Cobertura Composição | **25/46 empreend. = 54%** |
+| VGV total mapeado | **R$ 2,47 bi** |
+| Cobertura Composição | **27/44 empreend. = 61%** ← +1 (Ilha Parque, Golden Green Beach, Cond. Prime Cohama via 5.x) |
+| **Invariante v6.2 Σ Total tip = E_RAW.Total** | **23/23 fechado exato** ✅ |
+| Bloqueados sem Total | **17 empreend.** → `pendencias_TOTAL.md` |
 
 ### Cobertura por incorporadora (% empreend. com composição detalhada)
 
@@ -70,6 +73,16 @@ cd 00_ESTUDO_CONSOLIDADO/ && ls -1 Planilha_Mestre_Panorama_v*.xlsx | sort -V | 
 - **v8.0** (02/05/2026) — Aba Composição introduzida. Lote 1: 15 linhas / 322 unid.
 - **v8.1** (02/05/2026) — **Lote 2 entregue.** +13 linhas / +209 unid. Cobertura 17% → 39%.
 - **v8.2** (02/05/2026) — **Lote 3 (parcial — Zion via visão multimodal).** +1 linha / +10 unid. Cobertura 39% → 41%.
+- **v10.6** (03/05/2026) — **VIRADA ESTRUTURAL §3.7 v2 (PADRAO v6.2).** Tema: composição obrigatória + análises por unidades.
+   - **(1) Consolidação multi-torre regra A (§3.7.D):** Vernazza Torre Norte (120) + Torre Sul (60) → "Vernazza Residenza" (180); Giardino Residenza Torre Fiore (45) + Luce (60) → "Giardino Residenza" (105). Carteira **46 → 44 empreendimentos**.
+   - **(2) Aba Composição schema 10 → 11 col**: nova coluna "Total tipologia" entre "Tipologia" e "Disponíveis" (renomeada de "Nº Unidades"). Total tipologia computado em runtime (mono em C_RAW: Total empreend.; multi origem completa: Σ disp já bate; multi parcial: pro-rata com sufixo origem `_pro_rata`).
+   - **(3) Hierarquia §3.7.A ganha NÍVEL 5 `estimativa_distribuição`** com 4 sub-regras: 5.1 mono / 5.2 multi+área / 5.3 multi sem área / 5.4 sem tipologia. Aplicada automaticamente em runtime aos empreend. com Total mas sem C_RAW. Marcação visual itálico+cinza na xlsx.
+   - **(4) Invariante v6.2: Σ Total tipologia = E_RAW.Total** para todo empreend. com Total apurado. Validação §3.7.C.4 nova. Reconciliação automática de estimativas nível 5; fontes fortes (1-4) que não fechem geram WARN sem alterar Total. **Resultado 1ª execução: 23/23 fechado exato.**
+   - **(5) Aplicação automática 5.x nos 3 destraváveis:** Ilha Parque (5.2 multi+área 60u 2D 64m² + 60u 3D 85m²); Golden Green Beach (5.1 mono 42u Lote); Cond. Prime Cohama (5.4 sem tipologia 22u "—"). Cobertura 26/46 → 27/44 = 61%.
+   - **(6) `pendencias_TOTAL.md` criado** com os 17 empreend. bloqueados na fase Total. Tier 1 (8 com tipologia conhecida — destravam direto via 5.x assim que Total chegar): Dom Antônio, Edifício Dom Ricardo, LIV Residence, Legacy Residence, Ana Vitória, Villa di Carpi, Nexus Renascença, Villagio Treviso. Tier 2 (9 sem tipologia em E_RAW): Connect Península, Mount Solaro, Reserva Península, 3 Canopus Village, Varandas Grand Park, Villa Adagio, Lagoon Residence.
+   - **(7) `build_panorama.py` `read_composicao()` atualizado** pra ler schema 11-col e expor `unidades` (= Total tipologia, p/ análise de oferta) e `disponiveis` (= estoque, p/ análise de absorção) — base pra próxima frente: migração das análises do dashboard de "nº empreend." pra "nº unidades" (combinada com Rafael nesta sessão, próximo passo).
+   - **PADRAO bumpa v6.1 → v6.2** com §3.7 v2 reescrita: invariante explícita, princípio inviolável (§3.6 vs §3.7 ortogonais, Total é âncora), nova validação C.4, regra D consolidação multi-torre, enum §4.4 ampliado.
+
 - **build_panorama v7.2.0** (03/05/2026) — **Análise por Bairro enxuta — foco em decisão.** Sem mudança de schema/planilha. Layout final: (1) bubble posicionamento (existente, ticket × R$/m²) → (2) **NOVO bubble de oferta** (cada bolha = par bairro × tipologia, X = área média m², Y = unidades disponíveis, cor = bairro top 7 + Outros, tamanho = nº empreendimentos competindo) → (3) tabela resumo (movida pro final). **Removidos:** timeline semestral + 3 heatmaps (Bairro × Incorporadora/Tipologia/Segmento). Função `renderDashHeatmaps` virou stub safe (early-return) caso heatmaps voltem ao DOM. O bubble novo responde diretamente: (a) onde está concentrada cada faixa de tamanho? (Ponta d'Areia 3D ~84m² 117 unid em 4 emp = mercado disputado), (b) quem é mono-oferta? (Araçagi 4D, Cohab Anil IV 2D, São Francisco 2D, Cohama 1D), (c) onde há diversidade? (Calhau cobre 5 tipologias).
 
 - **v10.5** (03/05/2026) — **+3 overrides manuais §3.10** (Rafael 03/05): Al Mare Tirreno (Mota Machado) São Marcos→Calhau · Dom José (DOM) Jardim Eldorado→Turu · Residencial Ana Vitória (Castelucci) Araçagy→Araçagi (normalização ortográfica). Origem Bairro = `informado_manualmente` em todos. §3.10 warnings 41→39 (−2: Dom José já tinha origem `book` na v10.4, agora corrigida pra `informado_manualmente` mas continua fora do warning). Bonus em build_panorama.py: COORDS_BAIRRO ganha alias "Turu"=("Turú") pra geocoding case-sem-acento. Distribuição atualizada: Calhau passou de 4→5 emp.; Araçagi 2→3; Turu 1→2; São Marcos saiu da lista (Al Mare era o único); Jardim Eldorado 3→2.

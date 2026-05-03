@@ -19,8 +19,24 @@ from openpyxl.drawing.image import Image as XLImage
 # ═══════════════════════════════════════════════════════════════
 # PARÂMETROS GLOBAIS
 # ═══════════════════════════════════════════════════════════════
-VERSION = "10.5"
+VERSION = "10.6"
 DATE_STR = "03/05/2026"
+# v10.6 — (03/05/2026): VIRADA ESTRUTURAL §3.7 v2 (PADRAO v6.2)
+#   1. Consolidação multi-torre (regra A): Vernazza N+S → "Vernazza Residenza";
+#      Giardino Fiore+Luce → "Giardino Residenza". Carteira 46→44.
+#   2. Composição obrigatória — invariante Σ Total tipologia = E_RAW.Total.
+#      Aba Composição expandida 10→11 col (+ "Total tipologia" entre Tipologia e
+#      Disponíveis). Total tipologia computado em runtime:
+#        - Mono-tipologia E_RAW: Total tipologia = E_RAW.Total (trivial)
+#        - Multi-tipologia origem `tabela_local_completa`: Σ disp já = Total
+#        - Multi-tipologia origem `tabela_local_parcial`: pro-rata (sufixo _pro_rata)
+#   3. Hierarquia §3.7.A ganha NÍVEL 5 `estimativa_distribuição` (sub-regras
+#      5.1-5.4). Aplicado automaticamente a empreend. com Total mas sem C_RAW.
+#      Sub-regras: 5.1 mono / 5.2 multi+área / 5.3 multi sem área / 5.4 sem tipologia.
+#   4. Total é a âncora: estimativas auto-fecham com Total; fontes fortes
+#      (níveis 1-4) que não fechem geram WARN sem alterar Total.
+#   5. Empreend. sem Total apurado → `pendencias_TOTAL.md`, NÃO recebem
+#      estimativa de Composição.
 # v5.0 — (25/04/2026): MUDANÇA ESTRUTURAL — adoção do PADRAO v2.0.
 # +Coluna Tipo (Vertical/Horizontal/Misto) inserida como col. 5. 24 → 25 colunas.
 # +Hiali e DOM Incorporação como incorporadoras monitoradas (14 → 16). Tracking da
@@ -931,6 +947,326 @@ C_RAW = [
 ]
 
 # ═══════════════════════════════════════════════════════════════
+# v10.6 — VIRADA §3.7 v2 (PADRAO v6.2)
+#   Funções: consolidação multi-torre, estimativa nível 5, total por tipologia
+# ═══════════════════════════════════════════════════════════════
+
+def consolidate_multi_torre(E_RAW, C_RAW):
+    """§3.7.D regra A: torres da mesma marca/lançamento viram entry única.
+
+    Consolida os 2 pares confirmados em audit (v10.6):
+      - Treviso: Vernazza Norte (120) + Sul (60) → "Vernazza Residenza" (180)
+      - Alfa: Giardino Fiore (45) + Luce (60) → "Giardino Residenza" (105)
+    """
+    pairs = [
+        # (incorporadora, [nomes_torres], nome_consolidado)
+        ("Treviso",
+         ["Vernazza Torre Norte", "Vernazza Torre Sul"],
+         "Vernazza Residenza"),
+        ("Alfa Engenharia",
+         ["Giardino Residenza Torre Fiore", "Giardino Residenza Torre Luce"],
+         "Giardino Residenza"),
+    ]
+    log = []
+
+    for inc, torres, novo in pairs:
+        idx_torres = [i for i, e in enumerate(E_RAW) if e[0] == inc and e[1] in torres]
+        if len(idx_torres) < 2:
+            log.append(f"  [skip] {inc}/{novo}: encontrou apenas {len(idx_torres)} torre(s)")
+            continue
+        torres_entries = [E_RAW[i] for i in idx_torres]
+
+        # Sanity: bairro/tipo/segmento iguais
+        bairros = set(e[3] for e in torres_entries)
+        tipos = set(e[4] for e in torres_entries)
+        if len(bairros) > 1 or len(tipos) > 1:
+            log.append(f"  [skip] {inc}/{novo}: bairro/tipo divergente entre torres ({bairros}/{tipos})")
+            continue
+
+        # Construir entry consolidada como lista mutável (E_RAW tem 27 col)
+        base = list(torres_entries[0])
+        base[1] = novo  # nome consolidado
+
+        # Total = soma
+        totais = [e[6] for e in torres_entries if e[6]]
+        base[6] = sum(totais) if totais else None
+
+        # Mês lançamento = mais antigo (formato MM/YYYY)
+        def lanc_key(s):
+            if not s or s == '—': return (9999, 12)
+            import re as _r
+            m = _r.match(r'^(\d{1,2})/(\d{4})$', str(s))
+            if m: return (int(m.group(2)), int(m.group(1)))
+            return (9999, 12)
+        lanc = min(torres_entries, key=lambda e: lanc_key(e[7]))[7]
+        base[7] = lanc
+
+        # Mês entrega = mais tardio
+        def ent_key(s):
+            if not s or s in ('—', 'Pronto'): return (0, 0)
+            import re as _r
+            m = _r.match(r'^(\d{1,2})/(\d{4})$', str(s))
+            if m: return (int(m.group(2)), int(m.group(1)))
+            return (0, 0)
+        ent = max(torres_entries, key=lambda e: ent_key(e[8]))[8]
+        base[8] = ent
+
+        # Áreas/tickets: min/max combinado
+        def safe_min(vals): vs = [v for v in vals if v is not None]; return min(vs) if vs else None
+        def safe_max(vals): vs = [v for v in vals if v is not None]; return max(vs) if vs else None
+        base[9] = safe_min([e[9] for e in torres_entries])   # area_min
+        base[10] = safe_max([e[10] for e in torres_entries]) # area_max
+        base[13] = safe_min([e[13] for e in torres_entries]) # ticket_min
+        base[14] = safe_max([e[14] for e in torres_entries]) # ticket_max
+        # R$/m² recalculado depois pelo script
+        base[15] = None
+        base[16] = None  # VGV recalculado
+
+        # Tipologia: união
+        tips = set()
+        for e in torres_entries:
+            if e[12]:
+                for t in str(e[12]).split(';'):
+                    t = t.strip()
+                    if t: tips.add(t)
+        TIP_ORDER = ['Studio', '1D', '2D', '3D', '4D', 'Lote']
+        tips_sorted = sorted(tips, key=lambda t: TIP_ORDER.index(t) if t in TIP_ORDER else 99)
+        base[12] = '; '.join(tips_sorted) if tips_sorted else (torres_entries[0][12] or None)
+
+        # Observações: registrar consolidação
+        obs_old = base[23] or ''
+        base[23] = (f"[v10.6 consolidado §3.7.D-A — torres originais: {' + '.join(torres)} "
+                    f"(totais {' + '.join(str(e[6]) for e in torres_entries)} = {base[6]})] " + obs_old)
+
+        # Origem total: revisar — se ambas torres tinham origem completa, mantém; senão, marca como inferido
+        origens_total = set(e[24] for e in torres_entries)
+        if 'tabela_local_completa' in origens_total and len(origens_total) == 1:
+            base[24] = 'tabela_local_completa'
+        elif 'memorial' in origens_total:
+            base[24] = 'memorial'
+        else:
+            base[24] = list(origens_total)[0] if origens_total else None
+
+        # Substituir entries de torres pela consolidada
+        # Remove em ordem reversa pra não bagunçar índices
+        for i in sorted(idx_torres, reverse=True):
+            del E_RAW[i]
+        E_RAW.append(tuple(base))
+
+        # Consolidar C_RAW: trocar nome da torre pelo consolidado, agregar mesmas tipologias
+        crows_torres = [c for c in C_RAW if c[0] == inc and c[1] in torres]
+        crows_outras = [c for c in C_RAW if not (c[0] == inc and c[1] in torres)]
+        agg_by_tip = {}
+        for c in crows_torres:
+            tip = c[2]
+            if tip not in agg_by_tip:
+                agg_by_tip[tip] = list(c)
+                agg_by_tip[tip][1] = novo  # rename
+                continue
+            cur = agg_by_tip[tip]
+            cur[3] = (cur[3] or 0) + (c[3] or 0)  # disp
+            cur[4] = safe_min([cur[4], c[4]])     # area_min
+            cur[5] = safe_max([cur[5], c[5]])     # area_max
+            cur[6] = safe_min([cur[6], c[6]])     # ticket_min
+            cur[7] = safe_max([cur[7], c[7]])     # ticket_max
+            # R$/m² médio: recalcular se possível
+            if cur[6] and cur[7] and cur[4] and cur[5]:
+                cur[8] = round(((cur[6] + cur[7]) / 2) / ((cur[4] + cur[5]) / 2))
+        C_RAW.clear()
+        C_RAW.extend(crows_outras)
+        for tip in sorted(agg_by_tip.keys()):
+            C_RAW.append(tuple(agg_by_tip[tip]))
+
+        log.append(f"  [ok] {inc}/{novo}: {len(idx_torres)} torres → 1 entry, total={base[6]}, "
+                   f"{len(crows_torres)} C_RAW → {len(agg_by_tip)} tipologias agregadas")
+
+    if log:
+        print("§3.7.D — Consolidação multi-torre (v10.6):")
+        for l in log: print(l)
+    return E_RAW, C_RAW
+
+
+def compute_total_per_tipologia(E_RAW, C_RAW):
+    """§3.7 v6.2: calcula Total por tipologia em runtime, retorna dict.
+
+    Regras (já documentadas em PADRAO §3.7):
+      - Mono-tipologia em E_RAW: Total tipologia = E_RAW.Total
+      - Multi-tip + origem `tabela_local_completa`: Σ disp já = Total → Total tip = disp
+      - Multi-tip + origem `tabela_local_parcial`: pro-rata pelo % do disp_emp,
+        origem ganha sufixo `_pro_rata`
+      - Origens estimativa_*: Total tip = disp (já é o total por construção)
+      - Total empreend. ausente → Total tip = None
+    """
+    # Lookup empreend. → entry
+    emp_lookup = {(e[0], e[1]): e for e in E_RAW}
+    # Soma disp por empreend.
+    disp_by_emp = {}
+    for c in C_RAW:
+        key = (c[0], c[1])
+        disp_by_emp[key] = disp_by_emp.get(key, 0) + (c[3] or 0)
+
+    # Conta n entries C_RAW por empreend. (chave: mono-em-C_RAW vs multi-em-C_RAW)
+    n_tips_c_raw = {}
+    for c in C_RAW:
+        n_tips_c_raw[(c[0], c[1])] = n_tips_c_raw.get((c[0], c[1]), 0) + 1
+
+    result = {}  # (inc, emp, tip) → (total_tip, origem_revisada)
+    # Pré-cálculo p/ pro-rata: se ∆ entre soma e total é não-zero, ajustar último entry pra fechar
+    pending_pro_rata = {}  # (inc, emp) → list of (key, raw_value)
+
+    for c in C_RAW:
+        inc, emp, tip, disp = c[0], c[1], c[2], c[3]
+        origem = c[9]
+        emp_entry = emp_lookup.get((inc, emp))
+        if not emp_entry:
+            result[(inc, emp, tip)] = (None, origem)
+            continue
+        total_emp = emp_entry[6]
+
+        # Origens estimativa_*: total tip = disp (estimativa já é total por construção)
+        if origem and origem.startswith('estimativa_distribuição'):
+            result[(inc, emp, tip)] = (disp, origem)
+            continue
+
+        if not total_emp:
+            result[(inc, emp, tip)] = (None, origem)
+            continue
+
+        # Mono-tipologia em C_RAW (única entry pro empreend.) → toda composição é dessa tipologia
+        if n_tips_c_raw.get((inc, emp), 0) == 1:
+            result[(inc, emp, tip)] = (total_emp, origem)
+            continue
+
+        # Multi-tip + origem completa: Σ disp já = Total (por construção)
+        if origem == 'tabela_local_completa':
+            result[(inc, emp, tip)] = (disp, origem)
+            continue
+
+        # Multi-tip + origem parcial (incl. tabela_local, tabela_local_imagem, tabela_local_parcial):
+        # pro-rata pelo % do disp_emp. Ajuste de off-by-one feito num passo final.
+        soma_disp = disp_by_emp.get((inc, emp), 0)
+        if soma_disp > 0:
+            total_tip = round((disp or 0) * total_emp / soma_disp)
+            ori_marcada = (origem + '_pro_rata') if (origem and not origem.endswith('_pro_rata')) else (origem or 'pro_rata')
+            result[(inc, emp, tip)] = (total_tip, ori_marcada)
+            pending_pro_rata.setdefault((inc, emp), []).append((inc, emp, tip))
+        else:
+            result[(inc, emp, tip)] = (None, origem)
+
+    # Ajuste de arredondamento: pra cada empreend. com pro-rata, força Σ = Total
+    for (inc, emp), keys in pending_pro_rata.items():
+        total_emp = emp_lookup[(inc, emp)][6]
+        if not total_emp: continue
+        soma = sum(result[k][0] for k in keys if result[k][0] is not None)
+        diff = total_emp - soma
+        if diff != 0 and keys:
+            # Ajusta no entry com maior Total tip
+            keys_sorted = sorted(keys, key=lambda k: -(result[k][0] or 0))
+            k_maior = keys_sorted[0]
+            tt, ori = result[k_maior]
+            result[k_maior] = (tt + diff, ori)
+
+    return result
+
+
+def apply_estimativa_distribuicao(E_RAW, C_RAW):
+    """§3.7.A.1 nível 5: aplica sub-regras 5.1-5.4 nos empreend. com Total mas sem C_RAW."""
+    from statistics import median
+    from collections import defaultdict as _dd
+
+    # Medianas de área por tipologia (calculadas runtime de C_RAW existente, fontes fortes apenas)
+    areas_por_tip = _dd(list)
+    for c in C_RAW:
+        origem = c[9] or ''
+        if origem.startswith('estimativa_distribuição'):
+            continue
+        a_min, a_max = c[4], c[5]
+        if a_min and a_max:
+            areas_por_tip[c[2]].append((a_min + a_max) / 2)
+    median_area = {t: median(vs) for t, vs in areas_por_tip.items() if vs}
+
+    emps_com_comp = set((c[0], c[1]) for c in C_RAW)
+    new_entries = []
+    log = []
+    bloqueados = []
+
+    TIP_ORDER = ['Studio', '1D', '2D', '3D', '4D', 'Lote']
+
+    for entry in E_RAW:
+        inc, emp = entry[0], entry[1]
+        if (inc, emp) in emps_com_comp: continue
+        total = entry[6]
+        if not total:
+            bloqueados.append((inc, emp, entry[12] or '—'))
+            continue
+        tip_decl = (entry[12] or '—').strip()
+        a_min = entry[9]; a_max = entry[10]
+        tip_list = [t.strip() for t in str(tip_decl).split(';') if t.strip() and t.strip() != '—']
+
+        if not tip_list:
+            # 5.4: sem tipologia
+            new_entries.append((inc, emp, '—', total, None, None, None, None, None,
+                                'estimativa_distribuição_sem_tipologia'))
+            log.append(f"  [5.4] {inc} | {emp}: 1 entry '—' Total={total}")
+        elif len(tip_list) == 1:
+            # 5.1: mono-tipologia
+            t = tip_list[0]
+            if a_min and a_max:
+                am, ax = a_min, a_max
+            else:
+                med = median_area.get(t)
+                am = ax = med
+            new_entries.append((inc, emp, t, total, am, ax, None, None, None,
+                                'estimativa_distribuição_mono'))
+            log.append(f"  [5.1] {inc} | {emp}: 1 entry {t} Total={total} área={am}-{ax}")
+        else:
+            # 5.2 ou 5.3
+            tip_sorted = sorted(tip_list, key=lambda t: TIP_ORDER.index(t) if t in TIP_ORDER else 99)
+            n = len(tip_sorted)
+            base = total // n
+            sobra = total % n
+            unids = [base + (1 if i < sobra else 0) for i in range(n)]
+
+            tem_area = a_min is not None and a_max is not None
+            if tem_area and n >= 2:
+                # 5.2 com área: menor → tip menor, maior → tip maior, intermediárias = mediana
+                area_per_tip = {}
+                for i, t in enumerate(tip_sorted):
+                    if i == 0: area_per_tip[t] = a_min
+                    elif i == n - 1: area_per_tip[t] = a_max
+                    else: area_per_tip[t] = median_area.get(t, (a_min + a_max) / 2)
+                origem = 'estimativa_distribuição_multi_com_area'
+            else:
+                # 5.3 sem área
+                area_per_tip = {t: median_area.get(t) for t in tip_sorted}
+                origem = 'estimativa_distribuição_multi_sem_area'
+
+            for t, u in zip(tip_sorted, unids):
+                a = area_per_tip.get(t)
+                new_entries.append((inc, emp, t, u, a, a, None, None, None, origem))
+            log.append(f"  [{'5.2' if tem_area else '5.3'}] {inc} | {emp}: {n} tipologias "
+                       f"({'+'.join(f'{u}{t}' for u,t in zip(unids,tip_sorted))}) origem={origem}")
+
+    C_RAW.extend(new_entries)
+    if log:
+        print(f"§3.7.A.1 — Estimativa nível 5 aplicada ({len(new_entries)} entries em "
+              f"{len(set((e[0],e[1]) for e in new_entries))} empreend.):")
+        for l in log: print(l)
+    if bloqueados:
+        print(f"§3.7 — BLOQUEADOS sem Total ({len(bloqueados)} empreend., entram em pendencias_TOTAL.md):")
+        for inc, emp, tip in bloqueados:
+            print(f"  - {inc} | {emp} | tip={tip}")
+    return new_entries, bloqueados
+
+
+# Aplicar (ordem importa: consolidação primeiro, depois estimativa)
+E_RAW = list(E_RAW)  # tornar mutável
+C_RAW = list(C_RAW)
+E_RAW, C_RAW = consolidate_multi_torre(E_RAW, C_RAW)
+EST_NEW, BLOQUEADOS = apply_estimativa_distribuicao(E_RAW, C_RAW)
+TOTAL_TIP_DICT = compute_total_per_tipologia(E_RAW, C_RAW)
+
+# ═══════════════════════════════════════════════════════════════
 # CÁLCULOS AUTOMÁTICOS (ver §3 do PADRAO.md)
 # ═══════════════════════════════════════════════════════════════
 def calc_preco_m2(tmin,tmax,amin,amax):
@@ -1316,8 +1652,9 @@ ft2.alignment = Alignment(horizontal="right",vertical="center")
 # ABA 3 — COMPOSIÇÃO (v8.0+) — 1 linha por (empreendimento, tipologia)
 # ═══════════════════════════════════════════════════════════════
 ws3 = wb.create_sheet("Composição")
-N_COLS_C = 10
-HEADERS_C = ["Incorporadora", "Empreendimento", "Tipologia", "Nº Unidades",
+N_COLS_C = 11  # v6.2: +Total tipologia
+HEADERS_C = ["Incorporadora", "Empreendimento", "Tipologia",
+             "Total tipologia", "Disponíveis",  # v6.2: schema 10→11 col
              "Área mín (m²)", "Área máx (m²)",
              "Ticket mín (R$)", "Ticket máx (R$)",
              "R$/m² médio", "Origem"]
@@ -1348,11 +1685,21 @@ TIPO_ORDER_C = ["Studio", "1D", "2D", "3D", "4D", "Lote"]
 C_RAW_SORTED = sorted(C_RAW, key=lambda r: (r[0], r[1], TIPO_ORDER_C.index(r[2]) if r[2] in TIPO_ORDER_C else 99))
 
 formats_c = [None]*N_COLS_C
-formats_c[3] = '0'
-formats_c[4] = formats_c[5] = '0.00" m²"'
-formats_c[6] = formats_c[7] = formats_c[8] = 'R$ #,##0'
+formats_c[3] = formats_c[4] = '0'  # Total tipologia + Disponíveis
+formats_c[5] = formats_c[6] = '0.00" m²"'
+formats_c[7] = formats_c[8] = formats_c[9] = 'R$ #,##0'
 
-for i, row_data in enumerate(C_RAW_SORTED):
+# v6.2: rebuild C_RAW_SORTED com 11 col: insere Total tipologia entre Tipologia (idx 2) e Disponíveis (idx 3 antigo)
+def expand_c_row_v62(row):
+    inc, emp, tip = row[0], row[1], row[2]
+    disp = row[3]
+    rest = row[4:]  # area_min, area_max, ticket_min, ticket_max, rsm2, origem
+    total_tip, origem_revisada = TOTAL_TIP_DICT.get((inc, emp, tip), (None, row[9]))
+    return (inc, emp, tip, total_tip, disp) + rest[:-1] + (origem_revisada,)
+
+C_RAW_EXPANDED = [expand_c_row_v62(r) for r in C_RAW_SORTED]
+
+for i, row_data in enumerate(C_RAW_EXPANDED):
     row_idx = 6+i
     ws3.row_dimensions[row_idx].height = 22
     row_fill = DOM_WHITE if row_idx%2==0 else DOM_GRAY_LIGHT
@@ -1360,12 +1707,18 @@ for i, row_data in enumerate(C_RAW_SORTED):
         c = ws3.cell(row=row_idx, column=1+j, value=v)
         c.font = font(DOM_GRAY_DARK, 10)
         c.fill = fill(row_fill)
-        c.alignment = center() if j not in (0,1,9) else left()
+        c.alignment = center() if j not in (0,1,10) else left()
         c.border = border_thin()
         if formats_c[j]:
             c.number_format = formats_c[j]
     ws3.cell(row=row_idx, column=2).font = font(DOM_GRAY_DARK, 10, bold=True)
     ws3.cell(row=row_idx, column=3).font = font(DOM_GOLD_DARK, 10, bold=True)
+    ws3.cell(row=row_idx, column=4).font = font(DOM_GOLD_DARK, 10, bold=True)  # Total tipologia destaque
+    # Marca visualmente entries de origem estimativa_*
+    origem_val = row_data[10] or ''
+    if origem_val.startswith('estimativa_distribuição') or origem_val.endswith('_pro_rata'):
+        for j in range(N_COLS_C):
+            ws3.cell(row=row_idx, column=1+j).font = font(DOM_GRAY_MID, 10, italic=True)
 
 total_row_c = 6 + len(C_RAW_SORTED)
 widths_c = [18, 28, 12, 11, 13, 13, 16, 16, 14, 18]
@@ -1468,6 +1821,65 @@ _print_section("VALIDAÇÃO §3.6 — soma C_RAW vs total (>5%)", warnings_36)
 _print_section("VALIDAÇÃO §3.7.C.1 — duplicação em C_RAW", errors_dup, prefix='✗ ERROR')
 _print_section("VALIDAÇÃO §3.7.C.2 — heurística vs Tipologia declarada", warnings_heur)
 _print_section("VALIDAÇÃO §3.7.C.3 — cobertura (tabela arquivada sem C_RAW)", warnings_cov)
+
+# §3.7.C.4 — INVARIANTE v6.2: Σ Total tipologia = E_RAW.Total para todo empreend. com Total apurado
+warnings_374_forte = []  # fontes 1-4 não fechando (precisa buscar mais)
+warnings_374_estimativa = []  # estimativas não fechando (auto-ajustadas, info)
+ok_374 = []  # fechados ✓
+sum_total_tip_emp = {}
+for (inc, emp, tip), (total_tip, origem_rev) in TOTAL_TIP_DICT.items():
+    if total_tip is None: continue
+    sum_total_tip_emp[(inc, emp)] = sum_total_tip_emp.get((inc, emp), 0) + total_tip
+
+for entry in E_RAW:
+    inc, emp = entry[0], entry[1]
+    total_emp = entry[6]
+    if total_emp is None: continue
+    soma = sum_total_tip_emp.get((inc, emp))
+    if soma is None: continue
+    diff = total_emp - soma
+    if diff == 0:
+        ok_374.append((inc, emp))
+    else:
+        # Verificar origem dominante das entries
+        origens_emp = set()
+        for (i_, e_, t_), (tt, ori) in TOTAL_TIP_DICT.items():
+            if i_ == inc and e_ == emp:
+                origens_emp.add(ori or '')
+        is_estimativa = all(o.startswith('estimativa_distribuição') for o in origens_emp if o)
+        msg = f"  {inc} | {emp}: Total={total_emp} mas Σ Total tipologia={soma} (∆={diff:+d}) origens={origens_emp}"
+        if is_estimativa:
+            warnings_374_estimativa.append(msg + " — estimativa será reconciliada")
+        else:
+            warnings_374_forte.append(msg + " — buscar mais Composição (Total não muda)")
+
+# Reconciliação automática de estimativas: ajusta Total tipologia majoritária pra fechar
+for entry in E_RAW:
+    inc, emp = entry[0], entry[1]
+    total_emp = entry[6]
+    if total_emp is None: continue
+    keys_emp = [(k, v) for k, v in TOTAL_TIP_DICT.items() if k[0] == inc and k[1] == emp]
+    if not keys_emp: continue
+    # Aplica só se TODAS as entries são estimativa_*
+    all_est = all((v[1] or '').startswith('estimativa_distribuição') for _, v in keys_emp)
+    if not all_est: continue
+    soma = sum(v[0] for _, v in keys_emp if v[0] is not None)
+    if soma == total_emp: continue
+    diff = total_emp - soma
+    # Pegar a tipologia majoritária (maior Total tip)
+    keys_emp_valid = [(k, v) for k, v in keys_emp if v[0] is not None]
+    if not keys_emp_valid: continue
+    keys_emp_valid.sort(key=lambda x: -x[1][0])
+    k_maior, (tt_maior, ori_maior) = keys_emp_valid[0]
+    TOTAL_TIP_DICT[k_maior] = (tt_maior + diff, ori_maior)
+
+_print_section("VALIDAÇÃO §3.7.C.4 — invariante v6.2: fontes fortes (1-4) não fechando com Total",
+               warnings_374_forte, prefix='⚠ WARN')
+if warnings_374_estimativa:
+    print(f"\nℹ §3.7.C.4 — estimativas reconciliadas automaticamente: {len(warnings_374_estimativa)}")
+    for w in warnings_374_estimativa:
+        print(w)
+print(f"\n✓ §3.7.C.4 — invariante Σ=Total fechada exato: {len(ok_374)}/{len(set(sum_total_tip_emp.keys()))} empreend.")
 
 # §3.9 — Validação Mês de Lançamento: estimativa_T-36 desatualizada (v9.5+)
 warnings_39 = []

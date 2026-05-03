@@ -1,6 +1,8 @@
 # PADRÃO FASE 1 — Inteligência de Mercado DOM
-**Versão:** 6.1 (atualizada em 02/05/2026)
+**Versão:** 6.2 (atualizada em 03/05/2026)
 **Status:** 🟢 APROVADO pelo Rafael
+
+> **v6.2 — virada estrutural §3.7:** Composição vira **obrigatória** com **invariante Σ C_RAW = E_RAW.Total** pra todo empreend. com Total apurado. Hierarquia §3.7 ganha **nível 5 estimativa_distribuição** (sub-regras 5.1–5.4). Princípio inviolável: §3.6 (Total) e §3.7 (Composição) são **processos ortogonais e sequenciais** — Total é a âncora; Composição se conforma ao Total, **nunca o contrário**. Reconciliação automática: estimativas (nível 5) se ajustam pro Total fechar; fontes fortes (níveis 1–4) que não fechem com Total geram WARN orientando a continuar buscando Composição (Total não muda). Multi-torre: regra (A) consolidação — torres viram entries únicas (Vernazza, Giardino).
 
 > **ATENÇÃO — Claude:** este documento é um CONTRATO. Toda vez que o Rafael
 > disser qualquer um dos 5 comandos (§5), LEIA ESTE ARQUIVO E O SCRIPT
@@ -293,11 +295,21 @@ Antes de marcar a entry como atualizada:
 
 ---
 
-## 3.7 Determinação da Composição por Tipologia (v5.2+)
+## 3.7 Determinação da Composição por Tipologia (v6.2 — versão forte)
 
-Quando se processa tabela/book novo de empreendimento (comandos §5.1, §5.5), além de preencher `Nº total unidades` (§3.6), deve-se popular a **aba Composição** (1 linha por empreend × tipologia) seguindo este processo.
+> **Princípio inviolável:** §3.6 (Total) e §3.7 (Composição) são processos **ortogonais e sequenciais**. Total é a âncora. Composição se conforma ao Total, **nunca o contrário**. Empreendimentos sem Total apurado por §3.6 entram em `pendencias_TOTAL.md` antes de qualquer processamento de Composição.
 
-### A. Hierarquia de fontes (5 níveis)
+### Invariante (v6.2 — obrigatória)
+
+> Para todo empreendimento com `Total Unidades` preenchido em E_RAW: **Σ C_RAW.unidades = E_RAW.Total**.
+> Reconciliação automática:
+> - Se Composição estiver em **níveis 1–4** (fonte real) e Σ ≠ Total → **WARN** orientando "continuar buscando Composição" (Total não se mexe).
+> - Se Composição estiver em **nível 5** (estimativa) e Σ ≠ Total → estimativa **se ajusta automaticamente** pra fechar com Total (sobra/déficit é redistribuído na tipologia "majoritária").
+> - Total nunca é alterado por reconciliação. Se Total estiver errado, isso é problema de §3.6, não de §3.7.
+
+Quando se processa empreendimento (comandos §5.1, §5.5), depois de preencher `Total Unidades` (§3.6), deve-se popular a **aba Composição** (1 linha por empreend × tipologia) seguindo este processo.
+
+### A. Hierarquia de fontes (5 níveis — v6.2)
 
 | # | Fonte | Origem (col 10 da aba Composição) |
 |---|---|---|
@@ -305,22 +317,54 @@ Quando se processa tabela/book novo de empreendimento (comandos §5.1, §5.5), a
 | 2 | **Tabela em PDF imagem** → leitura via visão multimodal Claude (`pdftoppm` + Read tool) | `tabela_local_imagem` |
 | 3 | **Book** com plantas/contagens declarando unidades por tipologia | `book` |
 | 4 | **Informado manualmente** (Rafael, corretor, reunião) | `informado_manualmente` |
-| 5 | **Nada se aplica** | NÃO criar entry em C_RAW. Empreend. fica sem composição (gap explícito do roadmap). |
+| 5 | **Estimativa por distribuição** — quando temos Total+Tipologia em E_RAW mas nenhuma fonte detalhada (sub-regras 5.1–5.4) | `estimativa_distribuição` (com sufixo de sub-regra) |
+
+**v6.2:** o nível 5 substitui o antigo "nada se aplica". Composição vira **obrigatória** sempre que Total estiver apurado. A estimativa carrega **flag visual** no dashboard (alpha reduzido / borda tracejada) — você nunca confunde com dado real.
+
+### A.1 Sub-regras do nível 5 (estimativa_distribuição) — v6.2
+
+**5.1 — Mono-tipologia declarada** (Tipologia em E_RAW tem 1 valor único)
+- 1 entry C_RAW: tipologia única, unidades = Total
+- Área = média declarada em E_RAW (`(area_min+area_max)/2`); se vazia, usar **mediana da carteira** pra essa tipologia (calculada em runtime de C_RAW existente)
+- Origem: `estimativa_distribuição_mono`
+- Ex: Quartier 22 (Tipologia="3D", Total=30) → 1 entry: 30 unid 3D, área 99m²
+
+**5.2 — Multi-tipologia COM áreas declaradas** (Tipologia="2D; 3D" e área min/max preenchidos em E_RAW)
+- Distribuição: **uniforme entre tipologias** (50/50 se 2 tipologias, 33/33/33 se 3, etc. — sobra cai na 1ª)
+- Áreas: **menor área declarada** → tipologia menor; **maior área declarada** → tipologia maior; intermediárias = mediana da carteira
+- Origem: `estimativa_distribuição_multi_com_area`
+- Ex: Ilha Parque (Tipologia="2D; 3D", Total=120, área 64–85) → 60u 2D 64m² + 60u 3D 85m²
+
+**5.3 — Multi-tipologia SEM áreas** (Tipologia="Studio; 1D; 2D" e área não declarada)
+- Distribuição: **uniforme**
+- Áreas: **mediana da carteira** por tipologia (calculada em runtime — NUNCA hardcoded; ver tabela em runtime no log do script)
+- Origem: `estimativa_distribuição_multi_sem_area`
+
+**5.4 — Sem tipologia** (Tipologia="—" mas Total preenchido)
+- 1 entry C_RAW com tipologia="—", unidades = Total, área = não preenchida
+- Análises por tipologia **ignoram** entries "—"; análises agregadas (Total, VGV, % vendido) usam normalmente
+- Origem: `estimativa_distribuição_sem_tipologia`
+- Ex: Cond. Prime Cohama (Total=22, Tipologia="—") → 22 unid "—"
+
+**Bloqueado** (não cabe em nenhuma sub-regra): empreend. **sem Total apurado** entram em `pendencias_TOTAL.md`. NÃO criar C_RAW especulativo.
 
 ### B. Workflow obrigatório de extração
 
-1. **Identificar formato** da tabela/book → escolher parser correto (catálogo §3.7.1)
-2. **Rodar parser** → lista de tuplas `(apto, area, ticket)`
-3. **Validar não-duplicação** — algumas tabelas listam aptos em múltiplos planos de pagamento (ex: Renaissance Conceito tem SFH e FDC, ambas listam mesmas unidades). Deduplicar por nº do apto.
-4. **Aplicar regras de tipologia:**
+1. **Verificar Total apurado** (§3.6 já aplicado) — se não, parar e ir pra §3.6 primeiro
+2. **Tentar fonte primária** (níveis 1–4): identificar formato da tabela/book → escolher parser correto (catálogo §3.7.1)
+3. **Rodar parser** → lista de tuplas `(apto, area, ticket)`
+4. **Validar não-duplicação** — algumas tabelas listam aptos em múltiplos planos de pagamento (ex: Renaissance Conceito tem SFH e FDC, ambas listam mesmas unidades). Deduplicar por nº do apto.
+5. **Aplicar regras de tipologia:**
    - Se mono-tipologia (E_RAW col 14 tem 1 valor único): todas unidades vão pra essa categoria, ignora heurística por área
    - Se multi-tipologia (col 14 tem `;`): aplicar heurística §2.1 por área de cada unidade
    - Se tipologia "Lote" (loteamento): todas vão pra `Lote`
-5. **Compor entries C_RAW**: 1 linha por (incorporadora, empreendimento, tipologia)
+6. **Compor entries C_RAW**: 1 linha por (incorporadora, empreendimento, tipologia)
    - Áreas min/max = min/max das áreas das unidades dessa tipologia
    - Tickets min/max = min/max dos tickets
    - R$/m² médio = `Σ(ticket_unidade) / Σ(área_unidade)` (média ponderada)
-6. **Registrar nas Observações** do empreendimento (col 25 do E_RAW): parser usado + data extração + confiança
+7. **Reconciliação invariante:** verificar Σ C_RAW = Total. Se não bater e fonte é nível 1–4, WARN "buscar mais Composição"; **não cria entry estimativa em paralelo**.
+8. **Fallback nível 5** (apenas se nenhuma fonte 1–4 está disponível): aplicar sub-regra 5.1/5.2/5.3/5.4 conforme árvore de decisão. A estimativa **automaticamente fecha com Total** (invariante).
+9. **Registrar nas Observações** do empreendimento (col 25 do E_RAW): origem usada (nível e sub-regra) + data extração + confiança
 
 ### 3.7.1 Catálogo de parsers por incorporadora
 
@@ -342,13 +386,43 @@ Cada incorporadora tem layout próprio de tabela. Catálogo identificado em SLZ:
 
 Quando aparecer empreendimento de incorporadora não catalogada acima, **adicionar parser nova ao catálogo** ao invés de improvisar.
 
-### C. Validações automáticas (gerar_planilha.py)
+### C. Validações automáticas (gerar_planilha.py) — v6.2 reforçadas
 
-Implementadas em v9.3 — rodam antes de salvar a xlsx:
+Rodam antes de salvar a xlsx:
 
 1. **Anti-duplicação:** se mesma `(incorporadora, empreendimento, tipologia)` aparece 2× em C_RAW → **ERROR** (não bloqueia geração mas registra alerta forte)
 2. **Heurística vs Tipologia declarada:** se empreend é mono-tipologia em E_RAW (ex: Tipologia="4D") mas C_RAW tem categoria diferente (ex: 3D) → **WARN** com sugestão
 3. **Cobertura:** se empreend tem pasta `/TABELA/*.pdf` arquivada mas **zero entries** em C_RAW → **WARN** ("processar este lote pra fechar gap")
+4. **(NOVA v6.2) Invariante Σ=Total:** para todo empreend. com Total apurado, verificar `Σ C_RAW.unidades == E_RAW.Total`. Resultado:
+   - Σ = Total exato → ✓ fechado
+   - Σ ≠ Total e origem **forte** (níveis 1–4) → **WARN**: "Composição incompleta. Buscar mais fonte (book/tabela). Total NÃO se ajusta."
+   - Σ ≠ Total e origem **estimativa** (nível 5) → ajuste automático: redistribuição na tipologia majoritária pra fechar
+   - Σ ≠ Total e origens **mistas** (ex: parte tabela_local + parte estimativa) → trata estimativa como buffer pra fechar; fontes fortes ficam intactas
+5. **(NOVA v6.2) Cobertura obrigatória:** todo empreend. com Total apurado **deve** ter C_RAW (mínimo 1 entry, mesmo "—"). Se faltar → **ERROR** "Composição obrigatória v6.2".
+
+### D. Multi-torre (consolidação — v6.2 regra A)
+
+Empreendimentos lançados como **múltiplas torres da mesma marca/lançamento comercial** (ex: Vernazza Torre Norte + Sul, Giardino Residenza Torre Fiore + Luce) são consolidados em **1 entry única** em E_RAW e C_RAW.
+
+**Critérios de consolidação:**
+- Mesma incorporadora
+- Mesmo bairro / mesmo endereço / mesmo segmento
+- Nome compartilha "stem" (ex: "Vernazza", "Giardino Residenza")
+- Lançamento comercial percebido como unitário (não 2 lançamentos distintos)
+
+**Procedimento:**
+- Empreendimento (nome): usar o stem (ex: "Vernazza Residenza" no lugar de "Vernazza Torre Norte")
+- Total: soma das torres
+- Composição: união (mesma tipologia entre torres → soma; tipologias distintas → entries separadas)
+- Endereço, Bairro, Segmento, Tipo: idênticos entre torres (validar). Se divergem, NÃO consolidar.
+- Mês lançamento: o **mais antigo** das torres
+- Mês entrega: o **mais tardio** das torres
+- Áreas/tickets: min/max combinado
+- Observações: registrar consolidação ("Consolidado de Torre Norte 120u + Torre Sul 60u — v6.2")
+
+**O que NÃO consolidar:**
+- Empreend. distintos da mesma incorporadora em bairros diferentes (ex: Berg "Mount Solaro" + "Monte Meru" são lançamentos separados)
+- Empreend. com mesmo nome-base mas marcas comerciais diferentes (ex: Renaissance Conceito SFH + FDC eram **planos de pagamento** da mesma torre, não torres distintas — esses já foram tratados em v9.2 como entry única)
 
 ### D. Registro nas Observações
 
@@ -571,6 +645,7 @@ Mota Machado, Berg Engenharia, Alfa Engenharia, Lua Nova, Delman, Treviso, Ergus
 **Origem preços:** `tabela_local` | `site_oficial` | `agregador` | `imprensa` | `estimativa`
 **Origem estoque:** `tabela_local` | `site_oficial` | `agregador` | `corretor` | `estimativa`
 **Origem lançamento:** `imprensa` | `tabela_local` | `book` | `site_oficial` | `instagram_oficial` | `treinamento_corretor` | `informado_manualmente` | `estimativa_T-36` | `N/A` (v5.4: hierarquia §3.9)
+**Origem Composição (v6.2):** `tabela_local` | `tabela_local_imagem` | `book` | `informado_manualmente` | `estimativa_distribuição_mono` | `estimativa_distribuição_multi_com_area` | `estimativa_distribuição_multi_sem_area` | `estimativa_distribuição_sem_tipologia` (hierarquia §3.7.A)
 
 ### 4.5 Tipo (3 categorias)
 | Tipo | Definição | Exemplos |

@@ -321,6 +321,8 @@ def read_planilha(path: Path) -> list[dict]:
 
 def read_composicao(path: Path) -> list[dict]:
     """v8.0+: lê aba Composição (1 linha por empreendimento × tipologia).
+    v6.2 (xlsx v10.6+): schema 11 col com 'Total tipologia' separado de 'Disponíveis'.
+    Compatibilidade: se header tem 'Nº Unidades' (v8.0–v10.5), lê como disponíveis.
     Retorna lista vazia se a aba não existir (compatibilidade pré-v8.0)."""
     wb = openpyxl.load_workbook(path, data_only=True)
     if "Composição" not in wb.sheetnames:
@@ -331,11 +333,16 @@ def read_composicao(path: Path) -> list[dict]:
     for r in range(6, ws.max_row + 1):
         row = {headers[i]: c.value for i, c in enumerate(ws[r]) if i < len(headers)}
         if row.get("Incorporadora") and row.get("Empreendimento") and row.get("Tipologia"):
+            # v6.2: prioriza 'Total tipologia' (novo) — chave para análises de OFERTA
+            # 'Disponíveis' (ou 'Nº Unidades' legado) é para análise de ESTOQUE
+            total_tip = row.get("Total tipologia") or row.get("Nº Unidades")
+            disp = row.get("Disponíveis") if "Disponíveis" in row else row.get("Nº Unidades")
             rows.append({
                 "incorporadora": row.get("Incorporadora"),
                 "empreendimento": row.get("Empreendimento"),
                 "tipologia": row.get("Tipologia"),
-                "unidades": row.get("Nº Unidades"),
+                "unidades": total_tip,        # v6.2: agora é Total tipologia (Σ=Total) — análise de oferta
+                "disponiveis": disp,           # v6.2: estoque (Σ Disponíveis ≤ Total) — análise de absorção
                 "area_min": row.get("Área mín (m²)"),
                 "area_max": row.get("Área máx (m²)"),
                 "ticket_min": row.get("Ticket mín (R$)"),
