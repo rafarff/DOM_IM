@@ -3,9 +3,9 @@
 > **Para Claude (toda sessão):** este é o **primeiro arquivo a ler** antes de qualquer ação. Confirma a base de trabalho. Se a invariante 0.3 do PADRAO falhar contra os números aqui, **PARAR**.
 
 **Última atualização:** 03/05/2026
-**Versão Planilha vigente:** v10.2
+**Versão Planilha vigente:** v10.3
 **Versão PADRAO vigente:** v6.1
-**Versão script `gerar_planilha.py`:** 10.2 (DATE_STR: 03/05/2026)
+**Versão script `gerar_planilha.py`:** 10.3 (DATE_STR: 03/05/2026)
 
 ---
 
@@ -70,6 +70,8 @@ cd 00_ESTUDO_CONSOLIDADO/ && ls -1 Planilha_Mestre_Panorama_v*.xlsx | sort -V | 
 - **v8.0** (02/05/2026) — Aba Composição introduzida. Lote 1: 15 linhas / 322 unid.
 - **v8.1** (02/05/2026) — **Lote 2 entregue.** +13 linhas / +209 unid. Cobertura 17% → 39%.
 - **v8.2** (02/05/2026) — **Lote 3 (parcial — Zion via visão multimodal).** +1 linha / +10 unid. Cobertura 39% → 41%.
+- **v10.3** (03/05/2026) — **Correção manual de bairros (Rafael, 03/05)**: 8 empreend. tiveram bairros normalizados pra "região senso comum" (§3.10): Dom Lucas Cantinho do Céu→Turu; Zion Ponta d'Areia→Península; Golden Green Beach Calhau→Araçagi; Entre Rios Renascença→Renascença II; Studio Design 7 Península, Connect Península, Azimuth, Sky Residence: todos Ponta d'Areia→Península. Origem Bairro = `informado_manualmente` em todos. §3.10 warnings 49→42 (7 a menos). Aplicação direta da hierarquia §3.10 nível 5 (Rafael forneceu manualmente). 
+
 - **v10.2** (03/05/2026) — **Lote 5 Composição entregue (DOM via visão multimodal) + enriquecimento Dom Ricardo**. Rafael colocou no INBOX 03/05 os books DOM (Dom Ricardo + Dom José) + tabela Dom José ABR/2026 + xlsx interno Dom Ricardo. Processadas 4 fontes: (1) Book Dom Ricardo (texto OK) → enriquecimento de tipologia (3 colunas: 2× 3D 85m² + 1× 2D 71,92m²), bairro Renascença II (book diz "Pracinha da Lagoa" microregião), parceria DOM+MB Engenharia, memorial R.14/28.859, entrega DEZ/2026; xlsx interno mostra 19 contratos VENDIDOS (DR101-DR901, ticket R$ 690k-1.194k). (2) Book Dom José + (3) Tabela Dom José ABR/2026 (PDFs imagem → pdftoppm + visão Claude): TOTAL = 22 (implantação numerada 01-22), 3 disp + 19 vend = 86% vendido, tickets R$ 1.403k-1.420k, mês entrega 06/2027 → 07/2027 (correção pela tabela). (4) Tabela Dom Lucas ABR/2026 (PDF imagem → visão): TOTAL = 46 (UH 1-46), 9 disp + 1 res + 36 vend = 80% vendido, tickets R$ 835.894-850.937, mês entrega 01/2029 → 12/2028 (correção). +2 entries em C_RAW (Lote 5: Dom Lucas 3D 9 unid + Dom José 4D 3 unid, ambas `tabela_local_imagem`). Cobertura Composição: 50% → 54% (25/46 empreend.). VGV mapeado: R$ 2,40 bi → R$ 2,48 bi. §3.7.C.3 cobertura zerada para Dom Lucas e Dom José. Origem Bairro preenchida nos 3 (book). 
 
 - **v10.1** (02/05/2026) — **Lote 4 Composição entregue + 3 inconsistências corrigidas**. +4 entries de Composição (não-DOM, tabelas texto): Monte Meru (Berg, 2 unid 3D), Residencial Novo Anil (Monteplan, 30 unid 2D), Giardino Fiore (Alfa, 6 unid 3D), Giardino Luce (Alfa, 5 unid 3D). 3 parsers novos no catálogo §3.7.1 (Alfa, Berg, Monteplan-Anil). Inconsistências §3.7.C.2 zeradas: Azimuth, Quartier 22, Entre Rios passaram de 4D→3D (declaração mono-tipologia prevalece sobre heurística por área). Cobertura Composição: 41% → 50% (23/46 empreend.). Restam 2 empreend. com tabela mas sem C_RAW (Dom Lucas, Dom José — aguardando info no INBOX). PADRAO bumpa v6.0→v6.1.

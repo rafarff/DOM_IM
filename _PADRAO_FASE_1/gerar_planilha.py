@@ -19,7 +19,7 @@ from openpyxl.drawing.image import Image as XLImage
 # ═══════════════════════════════════════════════════════════════
 # PARÂMETROS GLOBAIS
 # ═══════════════════════════════════════════════════════════════
-VERSION = "10.2"
+VERSION = "10.3"
 DATE_STR = "03/05/2026"
 # v5.0 — (25/04/2026): MUDANÇA ESTRUTURAL — adoção do PADRAO v2.0.
 # +Coluna Tipo (Vertical/Horizontal/Misto) inserida como col. 5. 24 → 25 colunas.
@@ -342,13 +342,13 @@ def classificar_segmento_por_m2(preco_m2):
 E_RAW = [
     # ═══ ALFA ENGENHARIA ═════════════════════════════════════════════════
     ("Alfa Engenharia","Connect Península",
-     "Endereço não localizado, Ponta d'Areia, São Luís - MA","Ponta d'Areia",
+     "Endereço não localizado, Ponta d'Areia, São Luís - MA","Península",
      "Vertical","Alto",
      None,"07/2024","—", None,None,None, "—",
      None,None, None,None,None,
      "N/A","N/A","site_oficial",
      "https://www.alfaengenharia.com.br","14/04/2026",
-     "Tipologia a confirmar em book/site/Instagram. Tecnologia Housi (gestão de locação) NÃO determina tipologia — descrição anterior corrigida. Sem tabela comercial pública.", None, None, None),
+     "Tipologia a confirmar em book/site/Instagram. Tecnologia Housi (gestão de locação) NÃO determina tipologia — descrição anterior corrigida. Sem tabela comercial pública.", None, None, "informado_manualmente"),
 
     ("Alfa Engenharia","Legacy Residence",
      "Endereço não localizado, Ponta d'Areia, São Luís - MA","Ponta d'Areia",
@@ -370,13 +370,13 @@ E_RAW = [
 
     # ═══ DELMAN ═════════════════════════════════════════════════════════
     ("Delman","Azimuth",
-     "Endereço não localizado, Ponta d'Areia, São Luís - MA","Ponta d'Areia",
+     "Endereço não localizado, Ponta d'Areia, São Luís - MA","Península",
      "Vertical",None,
      30,"07/2023","10/2026", 196.62,196.62,None, "3D",
      3600000,3600000, None,None, None,
      "tabela_local","tabela_local","imprensa",
      "https://www.delman.com.br","14/04/2026",
-     "Tipologia detalhada: 3 suítes. Tabela 04/2026: 1 apto (901) de 30. ≈97% vendido. Lançamento confirmado 2023 pela imprensa.", "memorial", None, None),
+     "Tipologia detalhada: 3 suítes. Tabela 04/2026: 1 apto (901) de 30. ≈97% vendido. Lançamento confirmado 2023 pela imprensa.", "memorial", None, "informado_manualmente"),
 
     ("Delman","Landscape",
      "Avenida dos Holandeses, S/N, Calhau, São Luís - MA","Calhau",
@@ -397,22 +397,22 @@ E_RAW = [
      "Tipologia detalhada: 3 suítes. Entrega iminente. 1 apto (601) de 30 à venda. ≈97% vendido.", "memorial", None, None),
 
     ("Delman","Sky Residence",
-     "Endereço não localizado, Ponta d'Areia, São Luís - MA","Ponta d'Areia",
+     "Endereço não localizado, Ponta d'Areia, São Luís - MA","Península",
      "Vertical",None,
      12,"09/2024 ⚠ T-36","09/2027", 246.69,246.69,None, "4D",
      4700000,4700000, None,None, None,
      "tabela_local","tabela_local","estimativa_T-36",
      "https://www.delman.com.br","14/04/2026",
-     "Tipologia detalhada: 4 suítes. Prédio pequeno (12 aptos). 1 à venda. ≈92% vendido.", "memorial", None, None),
+     "Tipologia detalhada: 4 suítes. Prédio pequeno (12 aptos). 1 à venda. ≈92% vendido.", "memorial", None, "informado_manualmente"),
 
     ("Delman","Studio Design 7 Península",
-     "Endereço não localizado, Ponta d'Areia, São Luís - MA","Ponta d'Areia",
+     "Endereço não localizado, Ponta d'Areia, São Luís - MA","Península",
      "Vertical",None,
      125,"04/2025 ⚠ T-36","04/2028", 43,64,None, "Studio; 1D",
      710000,1000000, None,None, None,
      "tabela_local","tabela_local","estimativa_T-36",
      "https://www.delman.com.br","14/04/2026",
-     "Tipologia detalhada: Studio / 1Q. 33 de 125 aptos à venda. ≈74% vendido em ~18 meses. Forte velocidade em compactos.", "tabela_local_parcial", None, None),
+     "Tipologia detalhada: Studio / 1Q. 33 de 125 aptos à venda. ≈74% vendido em ~18 meses. Forte velocidade em compactos.", "tabela_local_parcial", None, "informado_manualmente"),
 
     ("Delman","Wave Residence",
      "Endereço não localizado, Ponta do Farol, São Luís - MA","Ponta do Farol",
@@ -434,13 +434,13 @@ E_RAW = [
 
     # ═══ ERGUS ═════════════════════════════════════════════════════════
     ("Ergus","Zion Ponta d'Areia",
-     "Rua Aziz Heluy, 34, Lotes 8/10/12/14/16, Quadra 28, Ponta d'Areia, São Luís - MA","Ponta d'Areia",
+     "Rua Aziz Heluy, 34, Lotes 8/10/12/14/16, Quadra 28, Ponta d'Areia, São Luís - MA","Península",
      "Vertical","Alto",
      60,"09/2025","12/2026", 148.55,148.55,None, "4D",
      2170378,2556972, None,None, None,  # v9.4: corrigido (estoque, não vendido); calc 10/60
      "tabela_local","tabela_local","treinamento_corretor",
      "https://www.ergus.com.br","02/05/2026",
-     "Tipologia detalhada: 4 suítes + 3 vagas. 2 torres × 14 pavtos tipo × 2 aptos/andar (Coluna 1 + Coluna 2) = 56 aptos no edifício. **TABELA 04/2026 EXTRAÍDA VIA VISÃO MULTIMODAL (v8.2 — 02/05/2026)** a partir do PDF imagem (pdftoppm + Claude visão). Tabela mostra 10 unidades disponíveis: Torre 1 col 1: aptos 202, 1101, 1201, 1202, 1301, 1501 (R$2.170k-2.557k); Torre 2 col 1: aptos 302, 1102, 1202 (R$2.192k-2.445k). Todas 148,55m² (4D suítes uniforme). R$/m² 14.610-17.212 (média ~R$15.500). Estimativa total ~60 unid. % Vendido estimado 83%. Memorial Reg. nº 02, Matrícula 130.345, 1º Cartório SL. Nota da tabela: obra entregue DEZ/26 mas unidades vendidas após ABRIL/26 serão entregues JUN/27 — sinal de tração tardia.", "book", None, None),
+     "Tipologia detalhada: 4 suítes + 3 vagas. 2 torres × 14 pavtos tipo × 2 aptos/andar (Coluna 1 + Coluna 2) = 56 aptos no edifício. **TABELA 04/2026 EXTRAÍDA VIA VISÃO MULTIMODAL (v8.2 — 02/05/2026)** a partir do PDF imagem (pdftoppm + Claude visão). Tabela mostra 10 unidades disponíveis: Torre 1 col 1: aptos 202, 1101, 1201, 1202, 1301, 1501 (R$2.170k-2.557k); Torre 2 col 1: aptos 302, 1102, 1202 (R$2.192k-2.445k). Todas 148,55m² (4D suítes uniforme). R$/m² 14.610-17.212 (média ~R$15.500). Estimativa total ~60 unid. % Vendido estimado 83%. Memorial Reg. nº 02, Matrícula 130.345, 1º Cartório SL. Nota da tabela: obra entregue DEZ/26 mas unidades vendidas após ABRIL/26 serão entregues JUN/27 — sinal de tração tardia.", "book", None, "informado_manualmente"),
 
     ("Ergus","Nexus Renascença",
      "Endereço não localizado, Renascença, São Luís - MA","Renascença",
@@ -509,13 +509,13 @@ E_RAW = [
      "Tipologia detalhada: 2 torres (Litorânea + Lagoa). **Planta 1** (67,48-68,75m²) — 2D: 1 quarto + 1 suíte de casal, varanda gourmet, 1-2 vagas. **Planta 2** (102,25-104,05m²) — 3D: 2 suítes + suíte de casal, varanda gourmet, 1 vaga. Tabela 04/2026 PRÉ-LANÇAMENTO mostra preços por andar (plano 60% mensal): R$977k (Lagoa 301-303) a R$1.317k (Litorânea 1701-1703). Plano 100% mensais (com juros embutidos) chega a R$1,87M. Áreas extraídas do BOOK — tabela em si não traz m². Projeto IDEA (Fabián Salles), paisagismo Beth Miyazaki, interiores Sobre Arquitetura. Entrega 28/02/2029 (T-49 desde lançamento 01/2025). % Vendido não calculado: tabela é PRÉ-LANÇAMENTO, sem total de unidades visível. Mota Machado (Fortaleza/CE) — Empresa expandindo no Nordeste.", "tabela_local_parcial", None, None),
 
     ("Mota Machado","Entre Rios",
-     "Rua dos Bicudos, S/N, Qd. XIV-A Lote 02, Renascença, São Luís - MA","Renascença",
+     "Rua dos Bicudos, S/N, Qd. XIV-A Lote 02, Renascença, São Luís - MA","Renascença II",
      "Vertical",None,
      30,"08/2024","—", 125,157,None, "3D",
      1732000,2720000, None,None, None,
      "tabela","tabela","book",
      "https://motamachado.com.br","23/04/2026",
-     "Tipologia detalhada: 3 suítes (1 master). 3 tipologias (125 / 146,82 / 156,94 m²). 2 torres x 15 pav. Tab ABR/26: 15 unid, VGV R$ 32,3M. Ticket R$ 1,73–2,72M (méd R$ 2,15M). R$/m² pond R$ 15.162 (faixa R$ 13,9k–17,3k). Rua dos Bicudos, Renascença. [reconstituído da v4.16 em 25/04/2026]", "tabela_local_completa", None, None),
+     "Tipologia detalhada: 3 suítes (1 master). 3 tipologias (125 / 146,82 / 156,94 m²). 2 torres x 15 pav. Tab ABR/26: 15 unid, VGV R$ 32,3M. Ticket R$ 1,73–2,72M (méd R$ 2,15M). R$/m² pond R$ 15.162 (faixa R$ 13,9k–17,3k). Rua dos Bicudos, Renascença. [reconstituído da v4.16 em 25/04/2026]", "tabela_local_completa", None, "informado_manualmente"),
 
     ("Mota Machado","Al Mare Tirreno",
      "Av. dos Holandeses, Qd 9 Lt 9, São Marcos, São Luís - MA","São Marcos",
@@ -675,13 +675,13 @@ E_RAW = [
      "Residência no Santo Amaro — região com oferta crescente de médio padrão.", None, None, None),
 
     ("Lua Nova","Golden Green Beach",
-     "Acesso pela Avenida dos Holandeses, São Luís - MA","Calhau",
+     "Acesso pela Avenida dos Holandeses, São Luís - MA","Araçagi",
      "Loteamento",None,
      42,"06/2025 ⚠ T-36","—", 453,682,None, "Lote",
      2650000,4400000, None,None,None,
      "book","N/A","book",
      "https://construtoraluanova.com.br","27/04/2026",
-     "LOTEAMENTO DE LUXO. Projeto Golden Green Beach (GGB) — bairro de luxo planejado, acesso pela Av. dos Holandeses. Lote 41: 453 m² R$ 2,65M (R$ 5.850/m² terreno). Lote 42: 682 m² R$ 4,40M (R$ 6.452/m² terreno). Em obra. Áreas comuns: piscina coberta aquecida, sauna a vapor, heliponto com acesso por escada e elevador, estacionamento 30 carros, área administrativa. Projeto arquitetônico das áreas comuns: Marcelo Franco. Urbanismo: SA Urbanismo. Referências de luxo (book): Porto Frade RJ, Fazenda Boa Vista SP, Quinta da Baroneza SP. Bairro a confirmar (Calhau ou São Marcos pela posição na Av. Holandeses). ATENÇÃO: R$/m² em loteamento é TERRENO, não construído — não compara diretamente com aptos.", "book", None, None),
+     "LOTEAMENTO DE LUXO. Projeto Golden Green Beach (GGB) — bairro de luxo planejado, acesso pela Av. dos Holandeses. Lote 41: 453 m² R$ 2,65M (R$ 5.850/m² terreno). Lote 42: 682 m² R$ 4,40M (R$ 6.452/m² terreno). Em obra. Áreas comuns: piscina coberta aquecida, sauna a vapor, heliponto com acesso por escada e elevador, estacionamento 30 carros, área administrativa. Projeto arquitetônico das áreas comuns: Marcelo Franco. Urbanismo: SA Urbanismo. Referências de luxo (book): Porto Frade RJ, Fazenda Boa Vista SP, Quinta da Baroneza SP. Bairro a confirmar (Calhau ou São Marcos pela posição na Av. Holandeses). ATENÇÃO: R$/m² em loteamento é TERRENO, não construído — não compara diretamente com aptos.", "book", None, "informado_manualmente"),
 
     # ─── MB ENGENHARIA — 3 empreend. ───
     ("DOM Incorporação","Edifício Dom Ricardo",
@@ -761,13 +761,13 @@ E_RAW = [
 
     # ═══ DOM INCORPORAÇÃO (própria, None, None) ═════════════════════════════════════
     ("DOM Incorporação","Dom Lucas",
-     "Tv. Boa Esperança, 101 - Cantinho do Céu, São Luís - MA, 65074-030","Cantinho do Céu",
+     "Tv. Boa Esperança, 101 - Cantinho do Céu, São Luís - MA, 65074-030","Turu",
      "Horizontal",None,
      46,"02/2026","12/2028", 100.35,100.35,None, "3D",
      835894,850937, None,None, None,
      "tabela_local","tabela_local","interno",
      "","03/05/2026",
-     "Tipologia detalhada: Casa 3 dorm (1 suíte) + 2 vagas. Condomínio horizontal (sobrados). 1 ÚNICA tipologia: casa 100,35 m² construída (área usada para R$/m²). Terreno varia 136,00-145,79 m² conforme posição. **TOTAL = 46 unidades** (UH 1 a 46, tabela ABR/2026 lista todas com status). Lazer: campo society, piscina, deck, salão, gourmet, petplay, playground. Status ABR/2026: **9 disponíveis** (UH 2, 4, 9, 17, 19, 21, 23, 24, 30) + 1 RESERVADA + 36 VENDIDAS = ~80% vendido. Entrega DEZ/2028 (atualizado da tabela 04/2026 — antes 01/2029). Ticket à vista R$ 835.894-850.937 → R$/m² construção R$ 8.330-8.481. Construção: DOM Incorporação + Agrasty Construções LTDA. Vendas: André Leite Imóveis. CORREÇÃO v5.2: Área máx era 145,78 (terreno) — corrigida para 100,35 (construída). Convenção PADRAO §1: Tipo=Horizontal usa área construída. Extraído via visão multimodal (PDFs imagem) v10.2. NB: origem total = `tabela_local_parcial` mesmo a tabela listando TODAS as 46 (com status), pois C_RAW guarda apenas DISPONÍVEIS — convenção §3.7 (mesma do Renaissance Conceito v9.2).", "tabela_local_parcial", None, "book"),
+     "Tipologia detalhada: Casa 3 dorm (1 suíte) + 2 vagas. Condomínio horizontal (sobrados). 1 ÚNICA tipologia: casa 100,35 m² construída (área usada para R$/m²). Terreno varia 136,00-145,79 m² conforme posição. **TOTAL = 46 unidades** (UH 1 a 46, tabela ABR/2026 lista todas com status). Lazer: campo society, piscina, deck, salão, gourmet, petplay, playground. Status ABR/2026: **9 disponíveis** (UH 2, 4, 9, 17, 19, 21, 23, 24, 30) + 1 RESERVADA + 36 VENDIDAS = ~80% vendido. Entrega DEZ/2028 (atualizado da tabela 04/2026 — antes 01/2029). Ticket à vista R$ 835.894-850.937 → R$/m² construção R$ 8.330-8.481. Construção: DOM Incorporação + Agrasty Construções LTDA. Vendas: André Leite Imóveis. CORREÇÃO v5.2: Área máx era 145,78 (terreno) — corrigida para 100,35 (construída). Convenção PADRAO §1: Tipo=Horizontal usa área construída. Extraído via visão multimodal (PDFs imagem) v10.2. NB: origem total = `tabela_local_parcial` mesmo a tabela listando TODAS as 46 (com status), pois C_RAW guarda apenas DISPONÍVEIS — convenção §3.7 (mesma do Renaissance Conceito v9.2).", "tabela_local_parcial", None, "informado_manualmente"),
 
     ("DOM Incorporação","Dom José",
      "FQV9+JJ Jardim Eldorado, São Luís - MA","Jardim Eldorado",
