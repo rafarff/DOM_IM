@@ -3,26 +3,26 @@
 > **Para Claude (toda sessão):** este é o **primeiro arquivo a ler** antes de qualquer ação. Confirma a base de trabalho. Se a invariante 0.3 do PADRAO falhar contra os números aqui, **PARAR**.
 
 **Última atualização:** 03/05/2026
-**Versão Planilha vigente:** v10.8
+**Versão Planilha vigente:** v10.9
 **Versão PADRAO vigente:** v6.2
-**Versão script `gerar_planilha.py`:** 10.8 (DATE_STR: 03/05/2026)
+**Versão script `gerar_planilha.py`:** 10.9 (DATE_STR: 03/05/2026)
 
 ---
 
-## Snapshot da carteira (v10.8)
+## Snapshot da carteira (v10.9)
 
 | Métrica | Valor |
 |---|---:|
 | Aba Empreendimentos | **44 linhas** ← 46→44 após consolidação multi-torre §3.7.D-A v10.6 |
 | Aba Incorporadoras | **16 linhas** |
-| Aba Composição | **48 linhas / 1.321 unidades** ← +6 vs v10.7 (Mount Solaro 2D+3D + 2 estimativas Ana Vitória + outros) |
-| Aba Empreendimentos schema | **27 colunas** (sem mudança v10.8) |
+| Aba Composição | **49 linhas / 1.351 unidades** ← +1 vs v10.8 (Legacy 30u 4D 175-185m²) |
+| Aba Empreendimentos schema | **27 colunas** (sem mudança v10.9) |
 | Aba Composição schema | **11 colunas (v6.2)** |
 | Drift script ↔ planilha | **0** ✅ |
-| VGV total mapeado | **R$ 2,52 bi** ← +R$ 50M vs v10.7 (LIV 75u + Ana Vitória 30u + Mount Solaro 50u + Prime Eldorado 400u entraram com VGV calculável) |
-| Cobertura Composição | **33/44 empreend. = 75%** ← +6 vs v10.6 (Dom Antônio, Dom Ricardo, LIV, Ana Vitória, Mount Solaro, Village Prime Eldorado) |
-| **Invariante v6.2 Σ Total tip = E_RAW.Total** | **29/29 fechado exato** ✅ |
-| Bloqueados sem Total | **11 empreend.** → `pendencias_TOTAL.md` (-6 vs v10.6) |
+| VGV total mapeado | **R$ 2,52 bi** (sem mudança vs v10.8 — Legacy entrou sem ticket calculável; aguarda tabela comercial Alfa) |
+| Cobertura Composição | **34/44 empreend. = 77%** ← +1 vs v10.8 (Legacy Residence) |
+| **Invariante v6.2 Σ Total tip = E_RAW.Total** | **30/30 fechado exato** ✅ |
+| Bloqueados sem Total | **10 empreend.** → `pendencias_TOTAL.md` (-1 vs v10.8) |
 
 ### Cobertura por incorporadora (% empreend. com composição detalhada)
 
@@ -73,6 +73,8 @@ cd 00_ESTUDO_CONSOLIDADO/ && ls -1 Planilha_Mestre_Panorama_v*.xlsx | sort -V | 
 - **v8.0** (02/05/2026) — Aba Composição introduzida. Lote 1: 15 linhas / 322 unid.
 - **v8.1** (02/05/2026) — **Lote 2 entregue.** +13 linhas / +209 unid. Cobertura 17% → 39%.
 - **v8.2** (02/05/2026) — **Lote 3 (parcial — Zion via visão multimodal).** +1 linha / +10 unid. Cobertura 39% → 41%.
+- **v10.9** (03/05/2026) — **+1 destravado manual (Rafael 03/05).** Legacy Residence (Alfa, Península): Total = 30 (2 apto/andar × 15 andares), mono-tipologia 4D em 2 plantas (15u 175m² + 15u 185m²). Áreas E_RAW atualizadas (175-180 → 175-185), origem total = `informado_manualmente`. C_RAW agregada §3.7: 4D 30 unid 175-185m², origem `informado_manualmente`. Convenção Mount Solaro: disp=Total como placeholder (Rafael forneceu apenas product specs, sem info de vendas — Observações flagam isso, lançamento 07/2024 sugere venda parcial). §3.7 nível 5.1 deixa de aplicar a Legacy. Cobertura Composição 33→34/44 = 77%. Invariante 30/30 fechada exato. Bloqueados 11→10. VGV mantido R$ 2,52 bi (tickets Legacy ainda pendentes — entrarão como calculáveis quando tabela comercial chegar). **Pendentes Tier A2 Alfa: restou Connect Península.** Tier A1 Canopus 2 / Tier B 6 / Tier C 1.
+
 - **v10.8** (03/05/2026) — **WEB RESEARCH BATCH (15 bloqueados pesquisados).** +4 destravados completos via web/site oficial: **LIV Residence** (Alfa, 75u mono 3D 90,83-100,23m², site Alfa); **Residencial Ana Vitória** (Castelucci, 30 casas 83m² 2D;3D, site Castelucci); **Mount Solaro** (Berg+Gonçalves, 50u = 20+10+20 multi 2D+3D, site Gonçalves); **Village Prime Eldorado** (Canopus, 400u mono 2D 43,5m² em 5 torres, Imirante 31/10). +7 enriquecidos parciais (tipologia/área obtidas, total ainda falta): Legacy Residence (4D 175-180m²), Reserva Península (4D 127-171m²), Varandas Grand Park (3D 74-87m²), Villa Adagio (2D 48,9m²), Village Reserva II (2D 41m²), Village Del Ville II (2D 42-43m²), Villa di Carpi (3 plantas 2D 49-52m²). +3 correções de bairro: Mount Solaro→Península, Varandas→Calhau, Villa Adagio→Iguaíba. **Achado fora-do-escopo:** Lagoon Residence (Lua Nova) é Santo Amaro do Maranhão (cidade satélite, NÃO Grande SLZ) — flag pra Rafael decidir manter/tirar. Cobertura 27→33/44 = 75%, bloqueados 17→11.
 
 - **v10.7** (03/05/2026) — **+2 destravados manuais (Rafael 03/05).** Dom Antônio: 12 casas 136,2m² mono 3D (origem informado_manualmente, §3.7 nível 5.1 aplica auto). Edifício Dom Ricardo: 30 unid (10 andares × 3 col) com book DOM 12/2023: 10u 2D 71,92m² + 20u 3D 84,96-85,75m² (origem book; book diz "100% vendido" → estoque manual 0.0). Função `compute_total_per_tipologia` ganha `BOOK_TOTAL_OVERRIDE` para casos onde origem `book` declara totais e c[3]=disp não basta. Cobertura 27→29/44 = 66%, invariante 25/25 fechada, VGV R$ 2,48→2,51 bi. Bloqueados 17→15.

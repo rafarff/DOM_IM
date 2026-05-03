@@ -19,8 +19,18 @@ from openpyxl.drawing.image import Image as XLImage
 # ═══════════════════════════════════════════════════════════════
 # PARÂMETROS GLOBAIS
 # ═══════════════════════════════════════════════════════════════
-VERSION = "10.8"
+VERSION = "10.9"
 DATE_STR = "03/05/2026"
+# v10.9 — (03/05/2026): +1 destravado manual (Rafael 03/05). Legacy Residence (Alfa
+#   Engenharia, Península): Total = 30 (2 apto/andar × 15 andares), mono-tipologia 4D
+#   em 2 plantas (15u 175m² + 15u 185m²). Áreas E_RAW atualizadas (175-180 → 175-185).
+#   Origem total = `informado_manualmente`. C_RAW agregada §3.7: 4D 30 unid 175-185m²,
+#   origem `informado_manualmente`. Convenção Mount Solaro: disp=Total (placeholder —
+#   Rafael forneceu apenas product specs, sem info de vendas). Observações flagam isso
+#   p/ evitar leitura "100% disp" como real (lançamento 07/2024 sugere venda parcial).
+#   §3.7 nível 5.1 deixa de aplicar a Legacy (passa a ter C_RAW de fonte forte).
+# Cobertura Composição: 33/44 → 34/44 = 77%. Bloqueados: 11 → 10.
+# Pendentes Tier A2 Alfa: restou Connect Península. Tier A1 Canopus 2 / Tier B 6 / Tier C 1.
 # v10.8 — (03/05/2026): WEB RESEARCH BATCH (Rafael 03/05). +4 destravados de Total
 # via fontes oficiais e imprensa, +7 enriquecidos parciais, +3 correções de bairro:
 #   Destravados (Total apurado por web/site_oficial):
@@ -397,11 +407,11 @@ E_RAW = [
     ("Alfa Engenharia","Legacy Residence",
      "Endereço não localizado, Península da Ponta D'Areia, São Luís - MA","Península",
      "Vertical","Luxo",
-     None,"07/2024","10/2027", 175,180,None, "4D",
+     30,"07/2024","10/2027", 175,185,None, "4D",
      None,None, None,None,None,
      "N/A","N/A","imprensa",
      "https://alfaengenhariama.com.br/portfolio/legacy/","03/05/2026",
-     "Tipologia detalhada (site Alfa + Adhemar Carlos + Habittare 03/05/2026): 4 SUÍTES, 175m² e 180m² priv (mono-tipologia 4D), 3 vagas. Elevador com hall privativo, varanda gourmet. Até 14 opções de lazer (quadra multi-esportes, piscinas adulto+infantil, sauna, spa, salão de eventos, gourmet, churrasqueira, jogos, mini market, fitness, crossfit, pet area, playground, kids). Localização Península próxima a restaurantes, escolas, spas. **TOTAL ainda não confirmado** — aguarda book completo (375MB local) ou tabela comercial.", None, None, "informado_manualmente"),
+     "Tipologia detalhada (site Alfa + Adhemar Carlos + Habittare 03/05/2026; Total + plantas informados Rafael 03/05/2026): 2 aptos por andar × 15 andares = 30 unid. 2 plantas, ambas 4 SUÍTES (mono-tipologia 4D, 3 vagas): 15 unid 175m² + 15 unid 185m². Elevador com hall privativo, varanda gourmet. Até 14 opções de lazer (quadra multi-esportes, piscinas adulto+infantil, sauna, spa, salão de eventos, gourmet, churrasqueira, jogos, mini market, fitness, crossfit, pet area, playground, kids). Localização Península próxima a restaurantes, escolas, spas. **% Vendido não confirmado** — disp=30 é placeholder (lançamento 07/2024 → certamente já vendeu parte; aguarda tabela comercial Alfa).", "informado_manualmente", None, "informado_manualmente"),
 
     ("Alfa Engenharia","LIV Residence",
      "Rua Aziz Heluy, S/N, Ponta d'Areia, São Luís - MA","Ponta d'Areia",
@@ -987,6 +997,12 @@ C_RAW = [
     # Pré-lançamento (06/2025 T-36) → todos disponíveis (estoque 100%)
     ("Berg Engenharia", "Mount Solaro", "2D", 30, 68.00, 72.00, 907200, 1100000, 13750, "site_oficial"),
     ("Berg Engenharia", "Mount Solaro", "3D", 20, 104.00, 104.00, 1500000, 1700000, 15384, "site_oficial"),
+
+    # ─── Legacy Residence (Lote 8 v10.9) — informado Rafael 03/05/2026 ───
+    # 30 unid = 2 aptos/andar × 15 andares. Mono-tipologia 4D em 2 plantas:
+    # 15u 175m² + 15u 185m². Tickets ainda não confirmados (sem tabela comercial).
+    # disp=30 é placeholder (Rafael deu apenas product specs, não info de vendas).
+    ("Alfa Engenharia", "Legacy Residence", "4D", 30, 175.00, 185.00, None, None, None, "informado_manualmente"),
 ]
 
 # ═══════════════════════════════════════════════════════════════
