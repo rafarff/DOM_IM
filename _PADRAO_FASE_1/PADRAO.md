@@ -1,5 +1,5 @@
 # PADRÃO FASE 1 — Inteligência de Mercado DOM
-**Versão:** 5.4 (atualizada em 02/05/2026)
+**Versão:** 6.0 (atualizada em 02/05/2026)
 **Status:** 🟢 APROVADO pelo Rafael
 
 > **ATENÇÃO — Claude:** este documento é um CONTRATO. Toda vez que o Rafael
@@ -491,6 +491,54 @@ Valores válidos:
 4. ☐ Origem preenchida na col 22?
 5. ☐ Rodei script — validação §3.9 passou ou WARN justificado?
 6. ☐ Empreend. com `T-36` antigos foram revisitados?
+
+---
+
+## 3.10 Determinação do Bairro / Região (v6.0+)
+
+A col 4 da aba Empreendimentos (`Bairro`) representa a **REGIÃO SENSO COMUM** (como o mercado se refere ao local), não necessariamente o bairro oficial do CEP. Bairro oficial fica implícito no campo `Endereço` (col 3, formato completo "Rua, Nº, Bairro, São Luís - MA").
+
+### Por que essa escolha
+
+Em SLZ, alguns empreendimentos têm **divergência** entre bairro oficial (escritura/CEP) e a região comercializada no marketing. Para análise competitiva (heatmaps, % vendido por região, R$/m² por área), o que importa é a **região de mercado** — onde o público-alvo busca o imóvel. O book/material de marketing reflete essa região.
+
+### Hierarquia de fontes
+
+| # | Fonte | Origem (col 5 nova) |
+|---|---|---|
+| 1 | **Book / material de marketing** declarando explícito | `book` |
+| 2 | **Site oficial / página do empreendimento** | `site_oficial` |
+| 3 | **Imprensa / release** mencionando localização de mercado | `imprensa` |
+| 4 | **Treinamento de corretor** | `treinamento_corretor` |
+| 5 | **Informado manualmente** (Rafael) | `informado_manualmente` |
+| 6 | **Endereço oficial** (do CEP/escritura — fallback) | `endereco_oficial` |
+| 7 | **Sem dado** | Bairro = `None` (raro). Origem = `N/A`. |
+
+### Coluna 5 (xlsx) "Origem Bairro" — nova v10.0
+
+Schema E_RAW cresce 26 → 27 colunas. Visualmente na xlsx aparece logo após "Bairro" (pos 5).
+
+### Quando o material de marketing não declara região explícita
+
+Usar o bairro oficial do CEP (origem `endereco_oficial`). Não é demérito — é o caso comum quando não há divergência.
+
+### Validação automática (gerar_planilha.py)
+
+- Se `Bairro` tem valor mas `Origem Bairro = None` → WARN ("preencher origem por §3.10")
+- Se `Bairro = "São Luís"` ou `"Não identificado"` → WARN ("bairro genérico, refinar")
+
+### Checklist de aplicação
+
+1. ☐ Identifiquei o bairro/região no nível mais alto possível da hierarquia §3.10?
+2. ☐ Preenchi origem na col 5 (xlsx) / col 27 (E_RAW)?
+3. ☐ Endereço completo (col 3) tem o bairro oficial pra referência?
+4. ☐ Quando book diz "Calhau" mas endereço diz "Loteamento Calhau", priorizei book?
+
+### Cenários canônicos
+
+- **The View**: book = "Calhau", endereço = "Calhau" → Bairro `Calhau`, origem `book`.
+- **Bossa**: book = "Calhau", endereço = "Loteamento Calhau" → Bairro `Calhau`, origem `book` (book prevalece).
+- **Empreend. apenas com endereço, sem material de marketing** → Bairro do CEP, origem `endereco_oficial`.
 
 ---
 

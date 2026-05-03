@@ -19,7 +19,7 @@ from openpyxl.drawing.image import Image as XLImage
 # ═══════════════════════════════════════════════════════════════
 # PARÂMETROS GLOBAIS
 # ═══════════════════════════════════════════════════════════════
-VERSION = "9.5"
+VERSION = "10.0"
 DATE_STR = "02/05/2026"
 # v5.0 — (25/04/2026): MUDANÇA ESTRUTURAL — adoção do PADRAO v2.0.
 # +Coluna Tipo (Vertical/Horizontal/Misto) inserida como col. 5. 24 → 25 colunas.
@@ -316,7 +316,7 @@ E_RAW = [
      None,None, None,None,None,
      "N/A","N/A","site_oficial",
      "https://www.alfaengenharia.com.br","14/04/2026",
-     "Tipologia a confirmar em book/site/Instagram. Tecnologia Housi (gestão de locação) NÃO determina tipologia — descrição anterior corrigida. Sem tabela comercial pública.", None, None),
+     "Tipologia a confirmar em book/site/Instagram. Tecnologia Housi (gestão de locação) NÃO determina tipologia — descrição anterior corrigida. Sem tabela comercial pública.", None, None, None),
 
     ("Alfa Engenharia","Legacy Residence",
      "Endereço não localizado, Ponta d'Areia, São Luís - MA","Ponta d'Areia",
@@ -325,7 +325,7 @@ E_RAW = [
      None,None, None,None,None,
      "N/A","N/A","imprensa",
      "https://www.alfaengenharia.com.br","14/04/2026",
-     "Tipologia detalhada: 4 suítes. 13 opções de lazer, elevador privativo. Book local (375MB) + site oficial. Sem ticket público.", None, None),
+     "Tipologia detalhada: 4 suítes. 13 opções de lazer, elevador privativo. Book local (375MB) + site oficial. Sem ticket público.", None, None, None),
 
     ("Alfa Engenharia","LIV Residence",
      "Rua Aziz Heluy, S/N, Ponta d'Areia, São Luís - MA","Ponta d'Areia",
@@ -334,7 +334,7 @@ E_RAW = [
      None,None, None,None,None,
      "N/A","N/A","site_oficial",
      "https://www.alfaengenharia.com.br","14/04/2026",
-     "Tipologia detalhada: 3 suítes. 1º Housi do MA. Book local + site Alfa. Sem tabela comercial.", None, None),
+     "Tipologia detalhada: 3 suítes. 1º Housi do MA. Book local + site Alfa. Sem tabela comercial.", None, None, None),
 
     # ═══ DELMAN ═════════════════════════════════════════════════════════
     ("Delman","Azimuth",
@@ -344,7 +344,7 @@ E_RAW = [
      3600000,3600000, None,None, None,
      "tabela_local","tabela_local","imprensa",
      "https://www.delman.com.br","14/04/2026",
-     "Tipologia detalhada: 3 suítes. Tabela 04/2026: 1 apto (901) de 30. ≈97% vendido. Lançamento confirmado 2023 pela imprensa.", "memorial", None),
+     "Tipologia detalhada: 3 suítes. Tabela 04/2026: 1 apto (901) de 30. ≈97% vendido. Lançamento confirmado 2023 pela imprensa.", "memorial", None, None),
 
     ("Delman","Landscape",
      "Avenida dos Holandeses, S/N, Calhau, São Luís - MA","Calhau",
@@ -353,7 +353,7 @@ E_RAW = [
      1200000,1500000, None,None, None,
      "tabela_local","tabela_local","imprensa",
      "https://www.delman.com.br","14/04/2026",
-     "Tipologia detalhada: 3 suítes. Tabela 04/2026 marcada 'pré-lançamento'. Fonte web confirma lançamento 2026. Duplex cobertura 123-143m².", "tabela_local_parcial", None),
+     "Tipologia detalhada: 3 suítes. Tabela 04/2026 marcada 'pré-lançamento'. Fonte web confirma lançamento 2026. Duplex cobertura 123-143m².", "tabela_local_parcial", None, None),
 
     ("Delman","Quartier 22",
      "Endereço não localizado, Ponta d'Areia, São Luís - MA","Ponta d'Areia",
@@ -362,7 +362,7 @@ E_RAW = [
      3000000,3000000, None,None, None,
      "tabela_local","tabela_local","estimativa_T-36",
      "https://www.delman.com.br","14/04/2026",
-     "Tipologia detalhada: 3 suítes. Entrega iminente. 1 apto (601) de 30 à venda. ≈97% vendido.", "memorial", None),
+     "Tipologia detalhada: 3 suítes. Entrega iminente. 1 apto (601) de 30 à venda. ≈97% vendido.", "memorial", None, None),
 
     ("Delman","Sky Residence",
      "Endereço não localizado, Ponta d'Areia, São Luís - MA","Ponta d'Areia",
@@ -371,7 +371,7 @@ E_RAW = [
      4700000,4700000, None,None, None,
      "tabela_local","tabela_local","estimativa_T-36",
      "https://www.delman.com.br","14/04/2026",
-     "Tipologia detalhada: 4 suítes. Prédio pequeno (12 aptos). 1 à venda. ≈92% vendido.", "memorial", None),
+     "Tipologia detalhada: 4 suítes. Prédio pequeno (12 aptos). 1 à venda. ≈92% vendido.", "memorial", None, None),
 
     ("Delman","Studio Design 7 Península",
      "Endereço não localizado, Ponta d'Areia, São Luís - MA","Ponta d'Areia",
@@ -380,7 +380,7 @@ E_RAW = [
      710000,1000000, None,None, None,
      "tabela_local","tabela_local","estimativa_T-36",
      "https://www.delman.com.br","14/04/2026",
-     "Tipologia detalhada: Studio / 1Q. 33 de 125 aptos à venda. ≈74% vendido em ~18 meses. Forte velocidade em compactos.", "tabela_local_parcial", None),
+     "Tipologia detalhada: Studio / 1Q. 33 de 125 aptos à venda. ≈74% vendido em ~18 meses. Forte velocidade em compactos.", "tabela_local_parcial", None, None),
 
     ("Delman","Wave Residence",
      "Endereço não localizado, Ponta do Farol, São Luís - MA","Ponta do Farol",
@@ -389,7 +389,7 @@ E_RAW = [
      5500000,5800000, None,None, None,
      "tabela_local","tabela_local","imprensa",
      "https://www.delman.com.br","14/04/2026",
-     "Tipologia detalhada: 4 suítes. Evento de apresentação oficial 2024. 5 de 30 à venda. ≈83% vendido. Piscina privativa na varanda.", "book", None),
+     "Tipologia detalhada: 4 suítes. Evento de apresentação oficial 2024. 5 de 30 à venda. ≈83% vendido. Piscina privativa na varanda.", "book", None, None),
 
     ("Delman","The View",
      "Avenida dos Holandeses, Qd. 02, Nº 08, Calhau, São Luís - MA","Calhau",
@@ -398,7 +398,7 @@ E_RAW = [
      539969,1504011, None,None,None,
      "tabela_local","tabela_local","tabela_local",
      "https://delman.com.br/maranhao/empreendimentos/proximos-lancamentos/edificio-the-view","28/04/2026",
-     "Tipologia detalhada: Studio a 3Q (1Q/2Q dominantes). PRÉ-LANÇAMENTO. Tabela atualizada 28/04/2026 (v3, versão 0000001 - 1.1). 13 pavtos tipo úteis (4º a 17º, exceto 10º — andar técnico/lazer). 93 aptos residenciais disponíveis + 1 loja (LOJA 21, 48,02m², R$890k). Tipologias 36,05–85,87 m² + cobertura 17º (5 aptos diferenciados 54-80m²). Estimativa ~49% vendido (assumindo ~182 unidades totais = 13 andares × 14 aptos). Ticket_min CAI para R$540k (apto 414, 36,45m²) — vs R$559k em 27/04 (apto que era min vendido OU apto 414 voltou ao mercado). Histórico tabelas: v1 24/04 (~110 disp.) → v2 27/04 (90 disp.) → v3 28/04 (93 disp. — leve recuperação, possível desistência de reserva). Parcelamento 100m + INCC/IGP-M+1%. Vista mar Calhau. VIZINHO ao Edifício Bossa (Mota Machado, mesma quadra 02 da Av. dos Holandeses).", "tabela_local_parcial", None),
+     "Tipologia detalhada: Studio a 3Q (1Q/2Q dominantes). PRÉ-LANÇAMENTO. Tabela atualizada 28/04/2026 (v3, versão 0000001 - 1.1). 13 pavtos tipo úteis (4º a 17º, exceto 10º — andar técnico/lazer). 93 aptos residenciais disponíveis + 1 loja (LOJA 21, 48,02m², R$890k). Tipologias 36,05–85,87 m² + cobertura 17º (5 aptos diferenciados 54-80m²). Estimativa ~49% vendido (assumindo ~182 unidades totais = 13 andares × 14 aptos). Ticket_min CAI para R$540k (apto 414, 36,45m²) — vs R$559k em 27/04 (apto que era min vendido OU apto 414 voltou ao mercado). Histórico tabelas: v1 24/04 (~110 disp.) → v2 27/04 (90 disp.) → v3 28/04 (93 disp. — leve recuperação, possível desistência de reserva). Parcelamento 100m + INCC/IGP-M+1%. Vista mar Calhau. VIZINHO ao Edifício Bossa (Mota Machado, mesma quadra 02 da Av. dos Holandeses).", "tabela_local_parcial", None, None),
 
     # ═══ ERGUS ═════════════════════════════════════════════════════════
     ("Ergus","Zion Ponta d'Areia",
@@ -408,7 +408,7 @@ E_RAW = [
      2170378,2556972, None,None, None,  # v9.4: corrigido (estoque, não vendido); calc 10/60
      "tabela_local","tabela_local","treinamento_corretor",
      "https://www.ergus.com.br","02/05/2026",
-     "Tipologia detalhada: 4 suítes + 3 vagas. 2 torres × 14 pavtos tipo × 2 aptos/andar (Coluna 1 + Coluna 2) = 56 aptos no edifício. **TABELA 04/2026 EXTRAÍDA VIA VISÃO MULTIMODAL (v8.2 — 02/05/2026)** a partir do PDF imagem (pdftoppm + Claude visão). Tabela mostra 10 unidades disponíveis: Torre 1 col 1: aptos 202, 1101, 1201, 1202, 1301, 1501 (R$2.170k-2.557k); Torre 2 col 1: aptos 302, 1102, 1202 (R$2.192k-2.445k). Todas 148,55m² (4D suítes uniforme). R$/m² 14.610-17.212 (média ~R$15.500). Estimativa total ~60 unid. % Vendido estimado 83%. Memorial Reg. nº 02, Matrícula 130.345, 1º Cartório SL. Nota da tabela: obra entregue DEZ/26 mas unidades vendidas após ABRIL/26 serão entregues JUN/27 — sinal de tração tardia.", "book", None),
+     "Tipologia detalhada: 4 suítes + 3 vagas. 2 torres × 14 pavtos tipo × 2 aptos/andar (Coluna 1 + Coluna 2) = 56 aptos no edifício. **TABELA 04/2026 EXTRAÍDA VIA VISÃO MULTIMODAL (v8.2 — 02/05/2026)** a partir do PDF imagem (pdftoppm + Claude visão). Tabela mostra 10 unidades disponíveis: Torre 1 col 1: aptos 202, 1101, 1201, 1202, 1301, 1501 (R$2.170k-2.557k); Torre 2 col 1: aptos 302, 1102, 1202 (R$2.192k-2.445k). Todas 148,55m² (4D suítes uniforme). R$/m² 14.610-17.212 (média ~R$15.500). Estimativa total ~60 unid. % Vendido estimado 83%. Memorial Reg. nº 02, Matrícula 130.345, 1º Cartório SL. Nota da tabela: obra entregue DEZ/26 mas unidades vendidas após ABRIL/26 serão entregues JUN/27 — sinal de tração tardia.", "book", None, None),
 
     ("Ergus","Nexus Renascença",
      "Endereço não localizado, Renascença, São Luís - MA","Renascença",
@@ -417,7 +417,7 @@ E_RAW = [
      None,None, None,None,None,
      "site_oficial","N/A","imprensa",
      "https://www.ergus.com.br","14/04/2026",
-     "Tipologia detalhada: Studio a 2Q. Complexo 10mil m² multi-produto (residencial + comercial + Open Mall). Book local + site oficial.", None, None),
+     "Tipologia detalhada: Studio a 2Q. Complexo 10mil m² multi-produto (residencial + comercial + Open Mall). Book local + site oficial.", None, None, None),
 
     # ═══ TREVISO ═══════════════════════════════════════════════════════
     ("Treviso","Vernazza Torre Norte",
@@ -427,7 +427,7 @@ E_RAW = [
      1820000,2235000, None,None, None,
      "tabela_local","tabela_local","informado",
      "https://www.treviso.com.br","23/04/2026",
-     "Tipologia detalhada: Aptos 130 m² — Leste/Sul/Norte. Lançamento 02/2025 informado pelo Rafael (fonte externa confiável). Tabela de 02/2026 arquivada confirma vendas ativas naquela data, mas não é data de lançamento — aguarda book ou memorial para data confiável. Torre Norte: 37 unid, área 130 m², ticket R$ 1,82-2,24M (méd R$ 2,02M). R$/m² méd R$ 15.524. VGV listado R$ 74,8M. Entrega 12/2029. [reconstituído da v4.16 em 25/04/2026]", "tabela_local_parcial", None),
+     "Tipologia detalhada: Aptos 130 m² — Leste/Sul/Norte. Lançamento 02/2025 informado pelo Rafael (fonte externa confiável). Tabela de 02/2026 arquivada confirma vendas ativas naquela data, mas não é data de lançamento — aguarda book ou memorial para data confiável. Torre Norte: 37 unid, área 130 m², ticket R$ 1,82-2,24M (méd R$ 2,02M). R$/m² méd R$ 15.524. VGV listado R$ 74,8M. Entrega 12/2029. [reconstituído da v4.16 em 25/04/2026]", "tabela_local_parcial", None, None),
 
     ("Treviso","Vernazza Torre Sul",
      "Ponta d'Areia, São Luís - MA","Ponta d'Areia",
@@ -436,7 +436,7 @@ E_RAW = [
      1277000,1586000, None,None, None,
      "tabela","tabela","informado",
      "—","23/04/2026",
-     "Tipologia detalhada: 87,98 e 90,10 m² (Norte/Sul). Lançamento 02/2025 informado pelo Rafael. 26 unid listadas, área 87,98/90,10 m². Ticket R$ 1,28-1,59M (méd R$ 1,40M). R$/m² pond R$ 15.600 (faixa R$ 14,2-17,6k). VGV listado R$ 36,3M. Entrega 12/2029. [reconstituído da v4.16 em 25/04/2026]", "memorial", None),
+     "Tipologia detalhada: 87,98 e 90,10 m² (Norte/Sul). Lançamento 02/2025 informado pelo Rafael. 26 unid listadas, área 87,98/90,10 m². Ticket R$ 1,28-1,59M (méd R$ 1,40M). R$/m² pond R$ 15.600 (faixa R$ 14,2-17,6k). VGV listado R$ 36,3M. Entrega 12/2029. [reconstituído da v4.16 em 25/04/2026]", "memorial", None, None),
 
     ("Treviso","Altos do São Francisco",
      "Bairro São Francisco, São Luís - MA","São Francisco",
@@ -445,7 +445,7 @@ E_RAW = [
      495800,761700, None,None, None,
      "tabela","tabela","pendente",
      "https://trevisoengenharia.com.br","23/04/2026",
-     "Tipologia detalhada: 2-3Q (1 ou 2 vagas). IMÓVEL PRONTO. 26+ unid na tab ABR/26 (VGV R$ 15,8M). Tipos: 57,93 m² (1 vaga) e 67,15 m² (2 vagas). Ticket R$ 495k–762k (méd R$ 607k). R$/m² pond R$ 10.042. Estoque amplo. [reconstituído da v4.16 em 25/04/2026]", "tabela_local_parcial", None),
+     "Tipologia detalhada: 2-3Q (1 ou 2 vagas). IMÓVEL PRONTO. 26+ unid na tab ABR/26 (VGV R$ 15,8M). Tipos: 57,93 m² (1 vaga) e 67,15 m² (2 vagas). Ticket R$ 495k–762k (méd R$ 607k). R$/m² pond R$ 10.042. Estoque amplo. [reconstituído da v4.16 em 25/04/2026]", "tabela_local_parcial", None, None),
 
     # ═══ NIÁGARA ═══════════════════════════════════════════════════════
     ("Niágara","ORO Ponta d'Areia",
@@ -455,7 +455,7 @@ E_RAW = [
      1000000,2600000, None,None,None,
      "tabela_local","N/A","estimativa_T-36",
      "https://www.niagara-imoveis.com.br","14/04/2026",
-     "Tipologia detalhada: 2-4 suítes. Tabela JAN/26 é matriz por posição (não espelha estoque). Duplex cobertura 160m². Parcelamento 48m pós-assinatura.", "tabela_local_completa", None),
+     "Tipologia detalhada: 2-4 suítes. Tabela JAN/26 é matriz por posição (não espelha estoque). Duplex cobertura 160m². Parcelamento 48m pós-assinatura.", "tabela_local_completa", None, None),
 
     # ═══ MOTA MACHADO ═══════════════════════════════════════════════════
     ("Mota Machado","Edifício Bossa",
@@ -465,7 +465,7 @@ E_RAW = [
      2850507,3708342, None,None, None,
      "tabela_local","tabela_local","tabela_local",
      "https://motamachado.com.br","28/04/2026",
-     "Tipologia detalhada: 4 suítes (1 master c/ varanda, closet, banheiro duplo) + lavabo + varanda gourmet + qto/WC serviço. LANÇAMENTO 04/2026 — evento oficial 09/04/2026 (Frisson, MaHoje, Portal IN). 2 torres (Harmonia + Sintonia) × 15 pavtos tipo × 2 aptos/andar = 60 aptos. 6 elevadores. 3 tipologias: 191,02 / 192,64 / 196,04 m². 3 vagas (até 12º andar) ou 4 vagas (13º+ premium). Tabela 04/2026: 36 aptos disponíveis (24 vendidos = 40%). Tickets R$ 2,85-3,71M. R$/m² médio R$ 16.663 (faixa 14,9-19,2k — andares altos finais 01/02 tocam Luxo). Entrega 09/2030 (T-53). Memorial R 01, Matrícula 134.922 - 1º RI SL. **Projeto Arquitetônico: Nasser Hissa Arquitetos Associados** (parceiro recorrente em alto padrão). Lazer: brinquedoteca, salão festas, academia, pista funcional, quadra, lounge champanheira, piscina, pet wash, minimercado, estação carro elétrico. Mota Machado (CE) expandindo no NE, VGV 2025 R$350M. **VIZINHO ao The View (Delman, Lote 08 da mesma Quadra 02 — ambos na Av. dos Holandeses, Calhau)** — competição direta lado-a-lado, ambos lançados em 04/2026 mas com posicionamentos distintos: Bossa 4-suítes 191m² alto-padrão luxo vs The View Studio-3D 36-86m² médio-alto/alto.", "book", None),
+     "Tipologia detalhada: 4 suítes (1 master c/ varanda, closet, banheiro duplo) + lavabo + varanda gourmet + qto/WC serviço. LANÇAMENTO 04/2026 — evento oficial 09/04/2026 (Frisson, MaHoje, Portal IN). 2 torres (Harmonia + Sintonia) × 15 pavtos tipo × 2 aptos/andar = 60 aptos. 6 elevadores. 3 tipologias: 191,02 / 192,64 / 196,04 m². 3 vagas (até 12º andar) ou 4 vagas (13º+ premium). Tabela 04/2026: 36 aptos disponíveis (24 vendidos = 40%). Tickets R$ 2,85-3,71M. R$/m² médio R$ 16.663 (faixa 14,9-19,2k — andares altos finais 01/02 tocam Luxo). Entrega 09/2030 (T-53). Memorial R 01, Matrícula 134.922 - 1º RI SL. **Projeto Arquitetônico: Nasser Hissa Arquitetos Associados** (parceiro recorrente em alto padrão). Lazer: brinquedoteca, salão festas, academia, pista funcional, quadra, lounge champanheira, piscina, pet wash, minimercado, estação carro elétrico. Mota Machado (CE) expandindo no NE, VGV 2025 R$350M. **VIZINHO ao The View (Delman, Lote 08 da mesma Quadra 02 — ambos na Av. dos Holandeses, Calhau)** — competição direta lado-a-lado, ambos lançados em 04/2026 mas com posicionamentos distintos: Bossa 4-suítes 191m² alto-padrão luxo vs The View Studio-3D 36-86m² médio-alto/alto.", "book", None, None),
 
     ("Mota Machado","Reserva São Marcos",
      "Endereço não localizado, Calhau, São Luís - MA","Calhau",
@@ -474,7 +474,7 @@ E_RAW = [
      977382,1316965, None,None,None,
      "tabela_local","N/A","site_oficial",
      "https://www.motamachado.com.br","29/04/2026",
-     "Tipologia detalhada: 2 torres (Litorânea + Lagoa). **Planta 1** (67,48-68,75m²) — 2D: 1 quarto + 1 suíte de casal, varanda gourmet, 1-2 vagas. **Planta 2** (102,25-104,05m²) — 3D: 2 suítes + suíte de casal, varanda gourmet, 1 vaga. Tabela 04/2026 PRÉ-LANÇAMENTO mostra preços por andar (plano 60% mensal): R$977k (Lagoa 301-303) a R$1.317k (Litorânea 1701-1703). Plano 100% mensais (com juros embutidos) chega a R$1,87M. Áreas extraídas do BOOK — tabela em si não traz m². Projeto IDEA (Fabián Salles), paisagismo Beth Miyazaki, interiores Sobre Arquitetura. Entrega 28/02/2029 (T-49 desde lançamento 01/2025). % Vendido não calculado: tabela é PRÉ-LANÇAMENTO, sem total de unidades visível. Mota Machado (Fortaleza/CE) — Empresa expandindo no Nordeste.", "tabela_local_parcial", None),
+     "Tipologia detalhada: 2 torres (Litorânea + Lagoa). **Planta 1** (67,48-68,75m²) — 2D: 1 quarto + 1 suíte de casal, varanda gourmet, 1-2 vagas. **Planta 2** (102,25-104,05m²) — 3D: 2 suítes + suíte de casal, varanda gourmet, 1 vaga. Tabela 04/2026 PRÉ-LANÇAMENTO mostra preços por andar (plano 60% mensal): R$977k (Lagoa 301-303) a R$1.317k (Litorânea 1701-1703). Plano 100% mensais (com juros embutidos) chega a R$1,87M. Áreas extraídas do BOOK — tabela em si não traz m². Projeto IDEA (Fabián Salles), paisagismo Beth Miyazaki, interiores Sobre Arquitetura. Entrega 28/02/2029 (T-49 desde lançamento 01/2025). % Vendido não calculado: tabela é PRÉ-LANÇAMENTO, sem total de unidades visível. Mota Machado (Fortaleza/CE) — Empresa expandindo no Nordeste.", "tabela_local_parcial", None, None),
 
     ("Mota Machado","Entre Rios",
      "Rua dos Bicudos, S/N, Qd. XIV-A Lote 02, Renascença, São Luís - MA","Renascença",
@@ -483,7 +483,7 @@ E_RAW = [
      1732000,2720000, None,None, None,
      "tabela","tabela","book",
      "https://motamachado.com.br","23/04/2026",
-     "Tipologia detalhada: 3 suítes (1 master). 3 tipologias (125 / 146,82 / 156,94 m²). 2 torres x 15 pav. Tab ABR/26: 15 unid, VGV R$ 32,3M. Ticket R$ 1,73–2,72M (méd R$ 2,15M). R$/m² pond R$ 15.162 (faixa R$ 13,9k–17,3k). Rua dos Bicudos, Renascença. [reconstituído da v4.16 em 25/04/2026]", "tabela_local_completa", None),
+     "Tipologia detalhada: 3 suítes (1 master). 3 tipologias (125 / 146,82 / 156,94 m²). 2 torres x 15 pav. Tab ABR/26: 15 unid, VGV R$ 32,3M. Ticket R$ 1,73–2,72M (méd R$ 2,15M). R$/m² pond R$ 15.162 (faixa R$ 13,9k–17,3k). Rua dos Bicudos, Renascença. [reconstituído da v4.16 em 25/04/2026]", "tabela_local_completa", None, None),
 
     ("Mota Machado","Al Mare Tirreno",
      "Av. dos Holandeses, Qd 9 Lt 9, São Marcos, São Luís - MA","São Marcos",
@@ -492,7 +492,7 @@ E_RAW = [
      3025856,3120721, None,None, None,
      "tabela","tabela","book",
      "https://motamachado.com.br","23/04/2026",
-     "Tipologia detalhada: 4 suítes, 3 vagas. Torre A 'Tirreno' da Mota Machado Collection. Imóvel PRONTO. 215 m², 4 suítes, 3 vagas. Apts 102, 201, 202 listados. Ticket R$ 3,02-3,12M. R$/m² méd R$ 14.293. Av. dos Holandeses / São Marcos. [reconstituído da v4.16 em 25/04/2026]", "N/A", None),
+     "Tipologia detalhada: 4 suítes, 3 vagas. Torre A 'Tirreno' da Mota Machado Collection. Imóvel PRONTO. 215 m², 4 suítes, 3 vagas. Apts 102, 201, 202 listados. Ticket R$ 3,02-3,12M. R$/m² méd R$ 14.293. Av. dos Holandeses / São Marcos. [reconstituído da v4.16 em 25/04/2026]", "N/A", None, None),
 
     # ═══ BERG ══════════════════════════════════════════════════════════
     ("Berg Engenharia","Monte Meru",
@@ -502,7 +502,7 @@ E_RAW = [
      1932400,1944500, None,None,None,
      "tabela_local","tabela_local","imprensa",
      "https://www.bergengenharia.com.br","27/04/2026",
-     "Tipologia detalhada: Aptos 135 m², 2-3 vagas. Tabela ABR/2026 (Berg Engenharia). 4 tipologias (1-4) com áreas similares 135,32 / 135,83 m². Lançamento 04/2024 estimado pela pasta. Conclusão: 30/04/2027 (T-36 perfeito). Tipo 3 (135,32m²): apto 103 disponível R$ 1.932.400. Tipo 4 (135,83m²): apto 104 disponível R$ 1.944.500, demais (204-1004) VENDIDOS = 9 vendidos no Tipo 4 → estoque concentrado em 1 unidade visível. Apto 704 tem 3 vagas (diferencial). Correção INCC. Histórico Berg: Montparnasse, Golden Tower, Peninsula Mall, Monte Olimpo, Monte Fuji.", None, None),
+     "Tipologia detalhada: Aptos 135 m², 2-3 vagas. Tabela ABR/2026 (Berg Engenharia). 4 tipologias (1-4) com áreas similares 135,32 / 135,83 m². Lançamento 04/2024 estimado pela pasta. Conclusão: 30/04/2027 (T-36 perfeito). Tipo 3 (135,32m²): apto 103 disponível R$ 1.932.400. Tipo 4 (135,83m²): apto 104 disponível R$ 1.944.500, demais (204-1004) VENDIDOS = 9 vendidos no Tipo 4 → estoque concentrado em 1 unidade visível. Apto 704 tem 3 vagas (diferencial). Correção INCC. Histórico Berg: Montparnasse, Golden Tower, Peninsula Mall, Monte Olimpo, Monte Fuji.", None, None, None),
 
     ("Berg Engenharia","Mount Solaro",
      "Endereço não localizado, São Luís - MA","São Luís",
@@ -511,7 +511,7 @@ E_RAW = [
      None,None, None,None,None,
      "N/A","N/A","imprensa",
      "https://www.bergengenharia.com.br","14/04/2026",
-     "SPE Berg + Gonçalves requereu Licença de Instalação (Diário Oficial SL).", None, None),
+     "SPE Berg + Gonçalves requereu Licença de Instalação (Diário Oficial SL).", None, None, None),
 
     # ═══ SÁ CAVALCANTE ══════════════════════════════════════════════════
     ("Sá Cavalcante","Ilha Parque Residence",
@@ -521,14 +521,14 @@ E_RAW = [
      None,None, None,None,None,
      "N/A","N/A","site_oficial",
      "https://www.sacavalcante.com.br","14/04/2026",
-     "Tipologia detalhada: 2-3 quartos. 120 aptos (60 2Q + 60 3Q), 12/andar, 15 pavs. Pronto p/ morar. Ao lado do Shopping da Ilha.", "site_oficial", None),
+     "Tipologia detalhada: 2-3 quartos. 120 aptos (60 2Q + 60 3Q), 12/andar, 15 pavs. Pronto p/ morar. Ao lado do Shopping da Ilha.", "site_oficial", None, None),
 
-    # ═══ v4.1 — NOVOS EMPREENDIMENTOS MAPEADOS VIA WEB (14/04/2026, None) ═══
+    # ═══ v4.1 — NOVOS EMPREENDIMENTOS MAPEADOS VIA WEB (14/04/2026, None, None) ═══
 
-    # ─── MOTA MACHADO (atualização Bossa com dados de imprensa, None) ───
-    # (mantém linha Bossa anterior e adiciona nada; obs complementar abaixo só para referência, None)
+    # ─── MOTA MACHADO (atualização Bossa com dados de imprensa, None, None) ───
+    # (mantém linha Bossa anterior e adiciona nada; obs complementar abaixo só para referência, None, None)
 
-    # ─── ALFA ENGENHARIA — Giardino Residenza split (Torre Fiore Norte + Torre Luce Sul, None) ───
+    # ─── ALFA ENGENHARIA — Giardino Residenza split (Torre Fiore Norte + Torre Luce Sul, None, None) ───
     ("Alfa Engenharia","Giardino Residenza Torre Fiore",
      "Ponta do Farol, São Luís - MA","Ponta do Farol",
      "Vertical",None,
@@ -536,7 +536,7 @@ E_RAW = [
      1838492,2032939, None,None, None,
      "tabela_local","tabela_local","memorial",
      "https://www.instagram.com/alfaengenhariama/","27/04/2026",
-     "Tipologia detalhada: 2 suítes + 2 semi-suítes OU 3 suítes, varanda, lavabo, 3 vagas, depósito. Torre NORTE do Giardino. 15 pav × 3 un = 45 unidades. 3 tipologias: 127,30 / 128,37 / 110,77 m². Tabela MAR/2026: 6 unidades disponíveis (1001/701/201/101 da coluna 127m², 102 da coluna 128m², 1403 da coluna 110m²) = ~13% estoque, 87% VENDIDO → Últimas unidades. Entrega DEZ/29. Memorial R.06/56.931 - 1º RI SL. Endereço Alfa: Rua Peixe Pedra, Qd 12 lote 04, Calhau.", "book", None),
+     "Tipologia detalhada: 2 suítes + 2 semi-suítes OU 3 suítes, varanda, lavabo, 3 vagas, depósito. Torre NORTE do Giardino. 15 pav × 3 un = 45 unidades. 3 tipologias: 127,30 / 128,37 / 110,77 m². Tabela MAR/2026: 6 unidades disponíveis (1001/701/201/101 da coluna 127m², 102 da coluna 128m², 1403 da coluna 110m²) = ~13% estoque, 87% VENDIDO → Últimas unidades. Entrega DEZ/29. Memorial R.06/56.931 - 1º RI SL. Endereço Alfa: Rua Peixe Pedra, Qd 12 lote 04, Calhau.", "book", None, None),
 
     ("Alfa Engenharia","Giardino Residenza Torre Luce",
      "Ponta do Farol, São Luís - MA","Ponta do Farol",
@@ -545,7 +545,7 @@ E_RAW = [
      1442168,1595303, None,None, None,
      "tabela_local","tabela_local","memorial",
      "https://www.instagram.com/alfaengenhariama/","27/04/2026",
-     "Tipologia detalhada: 3 suítes, varanda, lavabo, 2 vagas, depósito. Torre SUL do Giardino. 15 pav × 4 un = 60 unidades. 4 tipologias: 99,08 / 101,31 / 93,18 / 93,62 m². Tabela MAR/2026: 5 unidades disponíveis (701/101 col 99m², 1502/1402 col 101m², 104 col 93m²) = ~8% estoque, 92% VENDIDO → Últimas unidades. CORREÇÃO v5.1: dorms = 3 suítes (descrição da tabela MAR/26), antes constava '2 suítes/1 suíte' incorretamente. 2 vagas + 1 depósito. Mais acessível que Torre Fiore. Entrega DEZ/29. Memorial R.06/56.931 - 1º RI SL.", "book", None),
+     "Tipologia detalhada: 3 suítes, varanda, lavabo, 2 vagas, depósito. Torre SUL do Giardino. 15 pav × 4 un = 60 unidades. 4 tipologias: 99,08 / 101,31 / 93,18 / 93,62 m². Tabela MAR/2026: 5 unidades disponíveis (701/101 col 99m², 1502/1402 col 101m², 104 col 93m²) = ~8% estoque, 92% VENDIDO → Últimas unidades. CORREÇÃO v5.1: dorms = 3 suítes (descrição da tabela MAR/26), antes constava '2 suítes/1 suíte' incorretamente. 2 vagas + 1 depósito. Mais acessível que Torre Fiore. Entrega DEZ/29. Memorial R.06/56.931 - 1º RI SL.", "book", None, None),
 
     # ─── TREVISO — Villagio Treviso ───
     ("Treviso","Villagio Treviso",
@@ -555,9 +555,9 @@ E_RAW = [
      None,None, None,None,None,
      "N/A","N/A","site_oficial",
      "https://trevisoengenharia.com.br","14/04/2026",
-     "Tipologia detalhada: Terrenos em condomínio. Condomínio de terrenos (loteamento fechado). Divulgação ativa abr/2026. Sem tabela pública mapeada.", None, None),
+     "Tipologia detalhada: Terrenos em condomínio. Condomínio de terrenos (loteamento fechado). Divulgação ativa abr/2026. Sem tabela pública mapeada.", None, None, None),
 
-    # ─── CANOPUS — 3 lançamentos out/2025 (Imirante, None) ───
+    # ─── CANOPUS — 3 lançamentos out/2025 (Imirante, None, None) ───
     ("Canopus","Village Reserva II",
      "Endereço não localizado, São Luís - MA","São Luís",
      "Horizontal",None,
@@ -565,7 +565,7 @@ E_RAW = [
      None,None, None,None,None,
      "N/A","N/A","imprensa",
      "https://canopusconstrucoes.com.br","14/04/2026",
-     "1 dos 3 novos lançamentos Canopus anunciados em 31/10/2025 (Imirante). SEM tabela ou book mapeado.", None, None),
+     "1 dos 3 novos lançamentos Canopus anunciados em 31/10/2025 (Imirante). SEM tabela ou book mapeado.", None, None, None),
 
     ("Canopus","Village Prime Eldorado",
      "Endereço não localizado, Jardim Eldorado, São Luís - MA","Jardim Eldorado",
@@ -574,7 +574,7 @@ E_RAW = [
      None,None, None,None,None,
      "N/A","N/A","imprensa",
      "https://canopusconstrucoes.com.br","14/04/2026",
-     "Canopus em movimento forte no Eldorado. Fonte: Imirante 31/10/2025.", None, None),
+     "Canopus em movimento forte no Eldorado. Fonte: Imirante 31/10/2025.", None, None, None),
 
     ("Canopus","Village Del Ville II",
      "Endereço não localizado, São Luís - MA","São Luís",
@@ -583,9 +583,9 @@ E_RAW = [
      None,None, None,None,None,
      "N/A","N/A","imprensa",
      "https://canopusconstrucoes.com.br","14/04/2026",
-     "Série Village (estratégia de marca clara). Imirante 31/10/2025. Confirmar tipologia/ticket via site+IG.", None, None),
+     "Série Village (estratégia de marca clara). Imirante 31/10/2025. Confirmar tipologia/ticket via site+IG.", None, None, None),
 
-    # ─── CASTELUCCI — 3 empreend. mapeados (site + Instagram + agregador, None) ───
+    # ─── CASTELUCCI — 3 empreend. mapeados (site + Instagram + agregador, None, None) ───
     ("Castelucci","Vila Coimbra",
      "Endereço não localizado, Araçagi, São Luís - MA","Araçagi",
      "Horizontal",None,
@@ -593,7 +593,7 @@ E_RAW = [
      1019834,1081967, None,None,None,
      "tabela_local","N/A","book",
      "https://construtoracastelucci.com.br","27/04/2026",
-     "Tipologia detalhada: Casa 124,63 m² (terreno 164-204 m²). Tabela LANÇAMENTO 03/2026. Parceria Castelucci + Grupo Coimbra Alves. ~36-41 casas no Araçagi (numeração até casa 41, várias agrupadas: 02-17, 36-38, 39-40). Área construída UNIFORME 124,63 m². Terreno varia 164-204 m². Ticket à vista R$ 1.019.834 (casa 21) a R$ 1.081.967 (casa 41) — VARIAÇÃO POR TAMANHO DE TERRENO, não por área construída. Avaliação: R$ 915.000. Pagamento: 24m IPCA+0,49% / 36m IPCA+1,49% / Caixa. Lazer privativa não integrada ao preço. Paulo Castelucci (CEO) em entrevista à Mirante FM. Patrocínio Imob Summit 2026.", "book", None),
+     "Tipologia detalhada: Casa 124,63 m² (terreno 164-204 m²). Tabela LANÇAMENTO 03/2026. Parceria Castelucci + Grupo Coimbra Alves. ~36-41 casas no Araçagi (numeração até casa 41, várias agrupadas: 02-17, 36-38, 39-40). Área construída UNIFORME 124,63 m². Terreno varia 164-204 m². Ticket à vista R$ 1.019.834 (casa 21) a R$ 1.081.967 (casa 41) — VARIAÇÃO POR TAMANHO DE TERRENO, não por área construída. Avaliação: R$ 915.000. Pagamento: 24m IPCA+0,49% / 36m IPCA+1,49% / Caixa. Lazer privativa não integrada ao preço. Paulo Castelucci (CEO) em entrevista à Mirante FM. Patrocínio Imob Summit 2026.", "book", None, None),
 
     ("Castelucci","Villa di Carpi",
      "Endereço não localizado, Cohatrac, São Luís - MA","Cohatrac",
@@ -602,7 +602,7 @@ E_RAW = [
      None,None, None,None,None,
      "agregador","N/A","site_oficial",
      "https://construtoracastelucci.com.br","14/04/2026",
-     "Tipologia detalhada: 2Q. Compactos 49-52m², 2Q. Público Cohatrac/médio. Instagram @construtoracastelucci anunciou como lançamento; preço não divulgado.", None, None),
+     "Tipologia detalhada: 2Q. Compactos 49-52m², 2Q. Público Cohatrac/médio. Instagram @construtoracastelucci anunciou como lançamento; preço não divulgado.", None, None, None),
 
     ("Castelucci","Residencial Ana Vitória",
      "Endereço não localizado, Araçagy, São Luís - MA","Araçagy",
@@ -611,7 +611,7 @@ E_RAW = [
      None,None, None,None,None,
      "site_oficial","N/A","site_oficial",
      "https://construtoracastelucci.com.br","14/04/2026",
-     "Tipologia detalhada: 2-3Q. Apartamentos 2-3Q Araçagy. Site oficial Castelucci.", None, None),
+     "Tipologia detalhada: 2-3Q. Apartamentos 2-3Q Araçagy. Site oficial Castelucci.", None, None, None),
 
     # ─── FRANERE — série Gran Park ───
     ("Franere","Varandas Grand Park",
@@ -621,7 +621,7 @@ E_RAW = [
      None,None, None,None,None,
      "site_oficial","N/A","site_oficial",
      "https://franere.com.br","14/04/2026",
-     "Franere ('Maior construtora do Maranhão', 40 anos). Série 'Gran Park' tem múltiplos módulos. IG @franereoficial_.", None, None),
+     "Franere ('Maior construtora do Maranhão', 40 anos). Série 'Gran Park' tem múltiplos módulos. IG @franereoficial_.", None, None, None),
 
     # ─── LUA NOVA — 2 empreend. ───
     ("Lua Nova","Villa Adagio",
@@ -631,7 +631,7 @@ E_RAW = [
      None,None, None,None,None,
      "site_oficial","N/A","site_oficial",
      "https://construtoraluanova.com.br","14/04/2026",
-     "Construtora Lua Nova desde 1985. IG @construtoraluanova. Detalhes tipologia/ticket a coletar via book.", None, None),
+     "Construtora Lua Nova desde 1985. IG @construtoraluanova. Detalhes tipologia/ticket a coletar via book.", None, None, None),
 
     ("Lua Nova","Lagoon Residence",
      "Endereço não localizado, Santo Amaro, São Luís - MA","Santo Amaro",
@@ -640,7 +640,7 @@ E_RAW = [
      None,None, None,None,None,
      "site_oficial","N/A","site_oficial",
      "https://construtoraluanova.com.br","14/04/2026",
-     "Residência no Santo Amaro — região com oferta crescente de médio padrão.", None, None),
+     "Residência no Santo Amaro — região com oferta crescente de médio padrão.", None, None, None),
 
     ("Lua Nova","Golden Green Beach",
      "Acesso pela Avenida dos Holandeses, São Luís - MA","Calhau",
@@ -649,7 +649,7 @@ E_RAW = [
      2650000,4400000, None,None,None,
      "book","N/A","book",
      "https://construtoraluanova.com.br","27/04/2026",
-     "LOTEAMENTO DE LUXO. Projeto Golden Green Beach (GGB) — bairro de luxo planejado, acesso pela Av. dos Holandeses. Lote 41: 453 m² R$ 2,65M (R$ 5.850/m² terreno). Lote 42: 682 m² R$ 4,40M (R$ 6.452/m² terreno). Em obra. Áreas comuns: piscina coberta aquecida, sauna a vapor, heliponto com acesso por escada e elevador, estacionamento 30 carros, área administrativa. Projeto arquitetônico das áreas comuns: Marcelo Franco. Urbanismo: SA Urbanismo. Referências de luxo (book): Porto Frade RJ, Fazenda Boa Vista SP, Quinta da Baroneza SP. Bairro a confirmar (Calhau ou São Marcos pela posição na Av. Holandeses). ATENÇÃO: R$/m² em loteamento é TERRENO, não construído — não compara diretamente com aptos.", "book", None),
+     "LOTEAMENTO DE LUXO. Projeto Golden Green Beach (GGB) — bairro de luxo planejado, acesso pela Av. dos Holandeses. Lote 41: 453 m² R$ 2,65M (R$ 5.850/m² terreno). Lote 42: 682 m² R$ 4,40M (R$ 6.452/m² terreno). Em obra. Áreas comuns: piscina coberta aquecida, sauna a vapor, heliponto com acesso por escada e elevador, estacionamento 30 carros, área administrativa. Projeto arquitetônico das áreas comuns: Marcelo Franco. Urbanismo: SA Urbanismo. Referências de luxo (book): Porto Frade RJ, Fazenda Boa Vista SP, Quinta da Baroneza SP. Bairro a confirmar (Calhau ou São Marcos pela posição na Av. Holandeses). ATENÇÃO: R$/m² em loteamento é TERRENO, não construído — não compara diretamente com aptos.", "book", None, None),
 
     # ─── MB ENGENHARIA — 3 empreend. ───
     ("DOM Incorporação","Edifício Dom Ricardo",
@@ -659,7 +659,7 @@ E_RAW = [
      None,None, None,None, None,
      "agregador","agregador","interno",
      "https://www.imeu.com.br/empreendimento/dom-ricardo-apartamentos-sao-luis-2-a-3-quartos-71-a-85-m/19044585-MIM","23/04/2026",
-     "Tipologia detalhada: 2-3Q. DOM Incorporação com MB Engenharia como sócia (empreendimento conjunto). Lançamento 12/2023 confirmado internamente. Próximo à Praça da Lagoa (Foguete). 'Sucesso de vendas, 6 unidades disponíveis' (IG jan/2025). Estoque estimado ≤6%. [reconstituído da v4.16 em 25/04/2026]", None, None),
+     "Tipologia detalhada: 2-3Q. DOM Incorporação com MB Engenharia como sócia (empreendimento conjunto). Lançamento 12/2023 confirmado internamente. Próximo à Praça da Lagoa (Foguete). 'Sucesso de vendas, 6 unidades disponíveis' (IG jan/2025). Estoque estimado ≤6%. [reconstituído da v4.16 em 25/04/2026]", None, None, None),
 
     ("MB Engenharia","Condomínio Prime Cohama",
      "Endereço não localizado, Cohama, São Luís - MA","Cohama",
@@ -668,7 +668,7 @@ E_RAW = [
      None,None, None,None,None,
      "N/A","N/A","imprensa",
      "https://www.instagram.com/mbengenharia.br/","14/04/2026",
-     "Tipologia detalhada: Casas duplex. 22 casas duplex 140m² — produto horizontal diferenciado. Pré-lançamento anunciado 2023, hoje em comercialização.", "site_oficial", None),
+     "Tipologia detalhada: Casas duplex. 22 casas duplex 140m² — produto horizontal diferenciado. Pré-lançamento anunciado 2023, hoje em comercialização.", "site_oficial", None, None),
 
     ("DOM Incorporação","Dom Antônio",
      "Endereço não localizado, Jardim Eldorado (Turú), São Luís - MA","Jardim Eldorado",
@@ -677,7 +677,7 @@ E_RAW = [
      906870,906870, None,None,None,
      "agregador","N/A","interno",
      "https://www.imovelnacidade.com/destaque/mb-construtora/","23/04/2026",
-     "Tipologia detalhada: 3Q casas duplex. DOM Incorporação com MB Engenharia como sócia (empreendimento conjunto). Lançamento 06/2023 confirmado internamente. Casa duplex 3Q, 136m², R$906.870. Produto horizontal Eldorado/Turú. [reconstituído da v4.16 em 25/04/2026]", None, None),
+     "Tipologia detalhada: 3Q casas duplex. DOM Incorporação com MB Engenharia como sócia (empreendimento conjunto). Lançamento 06/2023 confirmado internamente. Casa duplex 3Q, 136m², R$906.870. Produto horizontal Eldorado/Turú. [reconstituído da v4.16 em 25/04/2026]", None, None, None),
 
     # ─── MONTEPLAN — 2 empreend. ativos ───
     ("Monteplan","Renaissance Conceito",
@@ -687,7 +687,7 @@ E_RAW = [
      1038621,1565192, None,None, None,
      "tabela_local","tabela_local","site_oficial",
      "https://monteplanengenharia.com.br/empreendimentos/renaissance-conceito/","29/04/2026",
-     "Tipologia detalhada: 2 torres × 15 pav. tipo. **Torre Leonardo da Vinci** 45 unid (3 aptos/andar): 110m², 3 SUÍTES + lavabo, 2 ou 3 vagas (1º-5º andar 2 vagas / 6º-15º 3 vagas). **Torre Botticelli** 60 unid (4 aptos/andar): 82m², 3 quartos (2 suítes, sendo 1 reversível), 2 vagas. Total 105 unidades. Tabela 04/2026 lista 22 unidades LIVRES (15 Botticelli + 7 Leonardo) — assumindo que tabela só lista LIVRES, estimativa 79% vendido (margem: pode haver reservadas/contratadas não mostradas). Tickets R$ 1.038k (BO 101, menor) a R$ 1.565k (LE 1401, maior). Conclusão obra AGO/2027. Construtora Monteplan. Versão tabela 1.04.", "tabela_local_parcial", None),
+     "Tipologia detalhada: 2 torres × 15 pav. tipo. **Torre Leonardo da Vinci** 45 unid (3 aptos/andar): 110m², 3 SUÍTES + lavabo, 2 ou 3 vagas (1º-5º andar 2 vagas / 6º-15º 3 vagas). **Torre Botticelli** 60 unid (4 aptos/andar): 82m², 3 quartos (2 suítes, sendo 1 reversível), 2 vagas. Total 105 unidades. Tabela 04/2026 lista 22 unidades LIVRES (15 Botticelli + 7 Leonardo) — assumindo que tabela só lista LIVRES, estimativa 79% vendido (margem: pode haver reservadas/contratadas não mostradas). Tickets R$ 1.038k (BO 101, menor) a R$ 1.565k (LE 1401, maior). Conclusão obra AGO/2027. Construtora Monteplan. Versão tabela 1.04.", "tabela_local_parcial", None, None),
 
     ("Monteplan","Edifício Sanpaolo",
      "Rua Boa Esperança, 125, Cohama, São Luís - MA","Cohama",
@@ -696,7 +696,7 @@ E_RAW = [
      610000,610000, None,None, None,
      "tabela_local","tabela_local","site_oficial",
      "https://monteplanengenharia.com.br/empreendimentos/edificio-sanpaolo/","29/04/2026",
-     "Tipologia detalhada: 2 plantas. **Colunas 1,2,7,8** com 59m² — 3 quartos (1 suíte), 2 vagas. **Colunas 3,4,5,6** com 54m² — 2 quartos (2 suítes, sendo 1 reversível), 1 vaga. Tabela 04/2026 lista APENAS 1 unidade LIVRE (apto 204-205, R$ 610.000 — par de unidades unidas, situação L-L). Estimativa ≥98% vendido. Confirma 'todas as unidades vendidas' (Facebook out/2025) — restou só 1 unid. dupla. Endereço completo: Rua Boa Esperança, 125, Cohama (ao lado da Igreja Batista). Conclusão obra DEZ/2025.", "N/A", None),
+     "Tipologia detalhada: 2 plantas. **Colunas 1,2,7,8** com 59m² — 3 quartos (1 suíte), 2 vagas. **Colunas 3,4,5,6** com 54m² — 2 quartos (2 suítes, sendo 1 reversível), 1 vaga. Tabela 04/2026 lista APENAS 1 unidade LIVRE (apto 204-205, R$ 610.000 — par de unidades unidas, situação L-L). Estimativa ≥98% vendido. Confirma 'todas as unidades vendidas' (Facebook out/2025) — restou só 1 unid. dupla. Endereço completo: Rua Boa Esperança, 125, Cohama (ao lado da Igreja Batista). Conclusão obra DEZ/2025.", "N/A", None, None),
 
     ("Monteplan","Residencial Novo Anil",
      "Rua Estevão Braga, Cohab Anil IV, São Luís - MA","Cohab Anil IV",
@@ -705,9 +705,9 @@ E_RAW = [
      324142,324142, None,None, None,
      "tabela","tabela","memorial",
      "https://monteplanengenharia.com.br","23/04/2026",
-     "OBRA CONCLUÍDA (Monteplan, Cohab Anil IV). 32 unid listadas, todas ~R$ 324.142 (área 53,94 m²). R$/m² uniforme R$ 6.009. Padrão popular. SFH 60%. VGV residual listado R$ 10,4M. [reconstituído da v4.16 em 25/04/2026]", None, None),
+     "OBRA CONCLUÍDA (Monteplan, Cohab Anil IV). 32 unid listadas, todas ~R$ 324.142 (área 53,94 m²). R$/m² uniforme R$ 6.009. Padrão popular. SFH 60%. VGV residual listado R$ 10,4M. [reconstituído da v4.16 em 25/04/2026]", None, None, None),
 
-    # ─── SÁ CAVALCANTE — Reserva Península (novo, None) ───
+    # ─── SÁ CAVALCANTE — Reserva Península (novo, None, None) ───
     ("Sá Cavalcante","Reserva Península",
      "Endereço não localizado, Ponta d'Areia (Península), São Luís - MA","Ponta d'Areia",
      "Vertical","Alto",
@@ -715,7 +715,7 @@ E_RAW = [
      None,None, None,None,None,
      "site_oficial","N/A","site_oficial",
      "https://www.instagram.com/sacavalcantema/","14/04/2026",
-     "Lançamento Sá Cavalcante out/2025. Estande 'Casa Sal' na Península. 'Os espaços conversam...' — narrativa de estilo de vida.", None, None),
+     "Lançamento Sá Cavalcante out/2025. Estande 'Casa Sal' na Península. 'Os espaços conversam...' — narrativa de estilo de vida.", None, None, None),
 
     # ═══ HIALI ═════════════════════════════════════════════════════════
     ("Hiali","Le Noir",
@@ -725,9 +725,9 @@ E_RAW = [
      710000,870000, None,None, None,
      "tabela","tabela","memorial",
      "","23/04/2026",
-     "Tipologia detalhada: Studios e 1-2 dorm (compactos premium). Parceria Hiali + Silveira Inc. Compactos premium: 49,74 / 58,91 / 62,62 m². 5 pavimentos tipo × 5 aptos/andar = ~25 unidades. Entrega DEZ/2027. Ticket R$ 710-870k. R$/m² méd R$ 13.810. Memorial R.09/25.101 registrado 17/04/2025 no 1º RI São Luís. Foco em mercado jovem / investidor. [reconstituído da v4.16 em 25/04/2026]", "tabela_local_parcial", None),
+     "Tipologia detalhada: Studios e 1-2 dorm (compactos premium). Parceria Hiali + Silveira Inc. Compactos premium: 49,74 / 58,91 / 62,62 m². 5 pavimentos tipo × 5 aptos/andar = ~25 unidades. Entrega DEZ/2027. Ticket R$ 710-870k. R$/m² méd R$ 13.810. Memorial R.09/25.101 registrado 17/04/2025 no 1º RI São Luís. Foco em mercado jovem / investidor. [reconstituído da v4.16 em 25/04/2026]", "tabela_local_parcial", None, None),
 
-    # ═══ DOM INCORPORAÇÃO (própria, None) ═════════════════════════════════════
+    # ═══ DOM INCORPORAÇÃO (própria, None, None) ═════════════════════════════════════
     ("DOM Incorporação","Dom Lucas",
      "Tv. Boa Esperança, 101 - Cantinho do Céu, São Luís - MA, 65074-030","Cantinho do Céu",
      "Horizontal",None,
@@ -735,7 +735,7 @@ E_RAW = [
      835000,851000, None,None, None,
      "tabela","tabela","interno",
      "","27/04/2026",
-     "Tipologia detalhada: Casa 3 dorm (1 suíte) + 2 vagas. Condomínio horizontal (sobrados). 1 ÚNICA tipologia: casa 100,35 m² construída (área usada para R$/m²). Terreno varia 136-146 m² conforme posição. ~38 casas. Lazer: campo society, piscina, deck, salão, gourmet, petplay, playground. Muitas unidades VENDIDAS. Entrega 01/2029. Ticket R$ 835-851k → R$/m² construção ~R$ 8.400. CORREÇÃO v5.2: Área máx era 145,78 (terreno) — corrigida para 100,35 (construída). Convenção PADRAO §1: Tipo=Horizontal usa área construída.", None, None),
+     "Tipologia detalhada: Casa 3 dorm (1 suíte) + 2 vagas. Condomínio horizontal (sobrados). 1 ÚNICA tipologia: casa 100,35 m² construída (área usada para R$/m²). Terreno varia 136-146 m² conforme posição. ~38 casas. Lazer: campo society, piscina, deck, salão, gourmet, petplay, playground. Muitas unidades VENDIDAS. Entrega 01/2029. Ticket R$ 835-851k → R$/m² construção ~R$ 8.400. CORREÇÃO v5.2: Área máx era 145,78 (terreno) — corrigida para 100,35 (construída). Convenção PADRAO §1: Tipo=Horizontal usa área construída.", None, None, None),
 
     ("DOM Incorporação","Dom José",
      "FQV9+JJ Jardim Eldorado, São Luís - MA","Jardim Eldorado",
@@ -744,7 +744,7 @@ E_RAW = [
      1400000,1415000, None,None, None,
      "tabela","tabela","interno",
      "","27/04/2026",
-     "Tipologia detalhada: Casa 4+ dorm, alto padrão. Condomínio horizontal alto padrão. 1 ÚNICA tipologia: casa 154,64 m² construída. Terreno varia 170-181 m² conforme posição. Maioria das unidades VENDIDAS (14+ marcadas VENDIDA na tabela ABR/2026). Entrega 06/2027. Ticket ~R$ 1,4M → R$/m² construção ~R$ 9.150. CORREÇÃO v5.2: Área máx era 180,98 (terreno) — corrigida para 154,64 (construída). Convenção PADRAO §1: Tipo=Horizontal usa área construída.", None, None),
+     "Tipologia detalhada: Casa 4+ dorm, alto padrão. Condomínio horizontal alto padrão. 1 ÚNICA tipologia: casa 154,64 m² construída. Terreno varia 170-181 m² conforme posição. Maioria das unidades VENDIDAS (14+ marcadas VENDIDA na tabela ABR/2026). Entrega 06/2027. Ticket ~R$ 1,4M → R$/m² construção ~R$ 9.150. CORREÇÃO v5.2: Área máx era 180,98 (terreno) — corrigida para 154,64 (construída). Convenção PADRAO §1: Tipo=Horizontal usa área construída.", None, None, None),
 ]
 
 # ═══════════════════════════════════════════════════════════════
@@ -1043,7 +1043,7 @@ wb = Workbook()
 
 # ── ABA 1: EMPREENDIMENTOS ─────────────────────────────────────
 ws1 = wb.active; ws1.title = "Empreendimentos"
-N_COLS_E = 26  # v9.4: +1 (Origem % Vendido)
+N_COLS_E = 27  # v10.0: +1 (Origem Bairro)
 ws1.row_dimensions[1].height=22; ws1.row_dimensions[2].height=28; ws1.row_dimensions[3].height=18
 for r in (1,2,3):
     for c in range(1,N_COLS_E+1):
@@ -1058,7 +1058,7 @@ s=ws1.cell(row=3,column=4,
 s.font=font(DOM_GOLD,10,italic=True); s.alignment=Alignment(horizontal="left",vertical="center")
 
 headers_e = [
-    "Incorporadora","Empreendimento","Endereço","Bairro","Tipo","Segmento",
+    "Incorporadora","Empreendimento","Endereço","Bairro","Origem Bairro","Tipo","Segmento",
     "Nº unid.","Origem total unid.","Mês lançamento","Mês entrega",
     "Área mín (m²)","Área máx (m²)","Tipologia média (m²)","Tipologia",
     "Ticket mín (R$)","Ticket máx (R$)","R$/m²","VGV (R$)","% Vendido","Origem % Vendido",
@@ -1068,13 +1068,14 @@ headers_e = [
 apply_header_row(ws1,5,headers_e)
 
 formats_e = [None]*N_COLS_E
-# v9.0: índices shiftados +1 a partir do 9 (nova col 8 inserida)
-# v9.4: nova col 20 (Origem % Vendido) é texto — sem format
-formats_e[10] = formats_e[11] = formats_e[12] = '0.0'  # Áreas
-formats_e[14] = formats_e[15] = 'R$ #,##0'  # Tickets
-formats_e[16] = 'R$ #,##0'  # R$/m²
-formats_e[17] = 'R$ #,##0'  # VGV
-formats_e[18] = '0.0%'  # % Vendido
+# v9.0: +1 col 8 (Origem total unid)
+# v9.4: +1 col 20 (Origem % Vendido)
+# v10.0: +1 col 5 (Origem Bairro) — todos índices ≥5 deslocaram +1
+formats_e[11] = formats_e[12] = formats_e[13] = '0.0'  # Áreas
+formats_e[15] = formats_e[16] = 'R$ #,##0'  # Tickets
+formats_e[17] = 'R$ #,##0'  # R$/m²
+formats_e[18] = 'R$ #,##0'  # VGV
+formats_e[19] = '0.0%'  # % Vendido
 
 # §7 PADRAO.md: ordenar por Mês Lançamento DESCENDENTE (mais recente 1º),
 # depois Incorporadora A-Z, depois Empreendimento A-Z
@@ -1092,12 +1093,11 @@ empreend_sorted = sorted(
 # Schema E_RAW (Python): [0..6, 7=Mês_lanc, ..., 23=Obs, 24=OrigTotal]
 # Schema xlsx desejado:  [0..6, 7=OrigTotal, 8=Mês_lanc, ..., 24=Obs]
 def reorder_for_xlsx(row):
-    # v9.4: schema E_RAW (Python) = 26 cols
-    # Posições no E_RAW: 0..6 fixos, 7..17 (= até estoque/Vendido), 18..23 (origens, link, data, obs),
-    #                    24 (Origem total), 25 (Origem % Vendido)
+    # v10.0: schema E_RAW (Python) = 27 cols
     # Layout visual da xlsx:
-    #   [0..6, 24=OrigTotal, 7..17, 25=OrigPctVend, 18..23]
-    return list(row[:7]) + [row[24]] + list(row[7:18]) + [row[25]] + list(row[18:24])
+    #   [0..3, 26=OrigBairro, 4..6, 24=OrigTotal, 7..17, 25=OrigPctVend, 18..23]
+    return (list(row[:4]) + [row[26]] + list(row[4:7]) + [row[24]] +
+            list(row[7:18]) + [row[25]] + list(row[18:24]))
 
 for i, row_data in enumerate(empreend_sorted):
     row_idx = 6+i
@@ -1105,13 +1105,13 @@ for i, row_data in enumerate(empreend_sorted):
     row_fill = DOM_WHITE if row_idx%2==0 else DOM_GRAY_LIGHT
     row_values = reorder_for_xlsx(row_data)
     # v9.0: %Vendido agora é pos 18 (era 17) por causa do shift
-    if isinstance(row_values[18], (int, float)):
-        row_values[18] = 1 - row_values[18]
+    if isinstance(row_values[19], (int, float)):
+        row_values[19] = 1 - row_values[19]  # v10.0: estoque agora em pos 19
     for j, v in enumerate(row_values):
         cel = ws1.cell(row=row_idx, column=1+j, value=v)
         cel.font = font(DOM_GRAY_DARK, 9)
         cel.fill = fill(row_fill)
-        cel.alignment = left() if j in (2, 13, 25) else center()  # v9.4: Observações agora em pos 25
+        cel.alignment = left() if j in (2, 14, 26) else center()  # v10.0: Tipologia=14, Observações=26
         cel.border = border_thin()
         if formats_e[j]:
             cel.number_format = formats_e[j]
@@ -1121,8 +1121,8 @@ for i, row_data in enumerate(empreend_sorted):
 
 total_row_e = 6+len(empreend_sorted)
 
-widths_e = [15,22,30,14, 11, 11, 7,18,14,11, 10,10,11,20, 13,13,11,14,10, 16,
-            14,14,18, 28,10,50]  # v9.4: +16 na pos 19 (Origem % Vendido)
+widths_e = [15,22,30,14, 16, 11, 11, 7,18,14,11, 10,10,11,20, 13,13,11,14,10, 16,
+            14,14,18, 28,10,50]  # v10.0: +16 na pos 4 (Origem Bairro)
 set_column_widths(ws1, widths_e)
 ws1.freeze_panes = "C6"
 ws1.auto_filter.ref = f"A5:{get_column_letter(N_COLS_E)}{total_row_e-1}"
@@ -1439,8 +1439,21 @@ for entry in E_RAW:
 
 _print_section("VALIDAÇÃO §3.9 — Mês Lançamento (estimativa_T-36 > 180d)", warnings_39)
 
-if not (warnings_36 or errors_dup or warnings_heur or warnings_cov or warnings_39):
-    print("✓ Validações §3.6 + §3.7 + §3.9: todas passaram")
+# §3.10 — Validação Bairro/Região (v10.0+)
+warnings_310 = []
+for entry in E_RAW:
+    inc, emp = entry[0], entry[1]
+    bairro = entry[3]
+    origem_bairro = entry[26] if len(entry) > 26 else None
+    if bairro and origem_bairro is None:
+        warnings_310.append(f"  WARN {inc} | {emp}: Bairro='{bairro}' mas Origem Bairro=None — preencher por §3.10")
+    if bairro in ('São Luís', 'Não identificado'):
+        warnings_310.append(f"  WARN {inc} | {emp}: Bairro='{bairro}' é genérico — refinar com book/site")
+
+_print_section("VALIDAÇÃO §3.10 — Bairro/Região", warnings_310)
+
+if not (warnings_36 or errors_dup or warnings_heur or warnings_cov or warnings_39 or warnings_310):
+    print("✓ Validações §3.6 + §3.7 + §3.9 + §3.10: todas passaram")
 
 # ═══════════════════════════════════════════════════════════════
 # SALVAR — usa a pasta NFD (a real do usuário, com .DS_Store) para
