@@ -19,7 +19,7 @@ from openpyxl.drawing.image import Image as XLImage
 # ═══════════════════════════════════════════════════════════════
 # PARÂMETROS GLOBAIS
 # ═══════════════════════════════════════════════════════════════
-VERSION = "10.3"
+VERSION = "10.4"
 DATE_STR = "03/05/2026"
 # v5.0 — (25/04/2026): MUDANÇA ESTRUTURAL — adoção do PADRAO v2.0.
 # +Coluna Tipo (Vertical/Horizontal/Misto) inserida como col. 5. 24 → 25 colunas.
@@ -351,13 +351,13 @@ E_RAW = [
      "Tipologia a confirmar em book/site/Instagram. Tecnologia Housi (gestão de locação) NÃO determina tipologia — descrição anterior corrigida. Sem tabela comercial pública.", None, None, "informado_manualmente"),
 
     ("Alfa Engenharia","Legacy Residence",
-     "Endereço não localizado, Ponta d'Areia, São Luís - MA","Ponta d'Areia",
+     "Endereço não localizado, Ponta d'Areia, São Luís - MA","Península",
      "Vertical","Luxo",
      None,"07/2024","10/2027", None,None,None, "4D",
      None,None, None,None,None,
      "N/A","N/A","imprensa",
      "https://www.alfaengenharia.com.br","14/04/2026",
-     "Tipologia detalhada: 4 suítes. 13 opções de lazer, elevador privativo. Book local (375MB) + site oficial. Sem ticket público.", None, None, None),
+     "Tipologia detalhada: 4 suítes. 13 opções de lazer, elevador privativo. Book local (375MB) + site oficial. Sem ticket público.", None, None, "informado_manualmente"),
 
     ("Alfa Engenharia","LIV Residence",
      "Rua Aziz Heluy, S/N, Ponta d'Areia, São Luís - MA","Ponta d'Areia",
