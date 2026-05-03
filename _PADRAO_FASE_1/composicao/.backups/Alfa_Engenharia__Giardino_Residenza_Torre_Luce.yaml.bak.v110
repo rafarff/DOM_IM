@@ -1,0 +1,6 @@
+incorporadora: Alfa Engenharia
+empreendimento: Giardino Residenza Torre Luce
+fonte: {origem_principal: tabela_local}
+plantas:
+- {tip: 3D, planta: '', area: 97.46, total: 5, disp: 5, t_min: 1442168, t_max: 1595303,
+  rs_m2: 15299, origem: tabela_local}

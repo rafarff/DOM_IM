@@ -1,0 +1,6 @@
+incorporadora: Monteplan
+empreendimento: Residencial Novo Anil
+fonte: {origem_principal: tabela_local}
+plantas:
+- {tip: 2D, planta: '', area: 53.94, total: 30, disp: 30, t_min: 324142, t_max: 324143,
+  rs_m2: 6009, origem: tabela_local}

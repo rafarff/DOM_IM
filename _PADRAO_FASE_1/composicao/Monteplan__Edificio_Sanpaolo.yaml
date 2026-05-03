@@ -1,0 +1,6 @@
+incorporadora: Monteplan
+empreendimento: Edifício Sanpaolo
+fonte: {origem_principal: tabela_local}
+plantas:
+- {tip: 1D, planta: '', area: 54.0, total: 2, disp: 2, t_min: 305000, t_max: 305000,
+  rs_m2: 5648, origem: tabela_local}

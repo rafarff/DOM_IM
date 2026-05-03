@@ -1,0 +1,6 @@
+incorporadora: DOM Incorporação
+empreendimento: Dom José
+fonte: {origem_principal: tabela_local_imagem}
+plantas:
+- {tip: 4D, planta: '', area: 154.64, total: 3, disp: 3, t_min: 1403358, t_max: 1420196,
+  rs_m2: 9130, origem: tabela_local_imagem}

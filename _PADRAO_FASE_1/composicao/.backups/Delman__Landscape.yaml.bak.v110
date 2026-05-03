@@ -1,0 +1,8 @@
+incorporadora: Delman
+empreendimento: Landscape
+fonte: {origem_principal: tabela_local}
+plantas:
+- {tip: 3D, planta: '', area: 88.07, total: 17, disp: 17, t_min: 1206282, t_max: 1400282,
+  rs_m2: 14755, origem: tabela_local}
+- {tip: 4D, planta: '', area: 123.62, total: 34, disp: 34, t_min: 1428516, t_max: 2328766,
+  rs_m2: 14716, origem: tabela_local}

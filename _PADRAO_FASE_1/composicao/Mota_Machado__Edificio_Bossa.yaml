@@ -1,0 +1,6 @@
+incorporadora: Mota Machado
+empreendimento: Edifício Bossa
+fonte: {origem_principal: tabela_local}
+plantas:
+- {tip: 4D, planta: '', area: 193.53, total: 36, disp: 36, t_min: 2850507, t_max: 3708342,
+  rs_m2: 16663, origem: tabela_local}

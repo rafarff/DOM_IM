@@ -1,0 +1,6 @@
+incorporadora: Castelucci
+empreendimento: Vila Coimbra
+fonte: {origem_principal: tabela_local}
+plantas:
+- {tip: 4D, planta: '', area: 124.63, total: 36, disp: 36, t_min: 1019834, t_max: 1081967,
+  rs_m2: 8367, origem: tabela_local}

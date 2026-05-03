@@ -1,0 +1,12 @@
+incorporadora: Alfa Engenharia
+empreendimento: Giardino Residenza Torre Fiore
+fonte: {origem_principal: tabela_local}
+plantas:
+- {tip: 3D, planta: '', area: 110.8, total: 1, disp: 1, t_min: 1868169.12, t_max: 1868169.12,
+  rs_m2: 16865, origem: tabela_local}
+- {tip: 3D, planta: '', area: 127.3, total: 4, disp: 4, t_min: 1838491.63, t_max: 2032938.42,
+  rs_m2: 15181, origem: tabela_local}
+- {tip: 3D, planta: '', area: 128.4, total: 1, disp: 1, t_min: 1880620.5, t_max: 1880620.5,
+  rs_m2: 14650, origem: tabela_local}
+notas: 'Re-parsed v11.1 (R1/2026-05-03): 6 unid extraídas → 3 plantas (bucketização
+  §3.7 v7.0)'

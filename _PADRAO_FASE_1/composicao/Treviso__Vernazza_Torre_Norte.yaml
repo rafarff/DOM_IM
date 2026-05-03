@@ -1,0 +1,6 @@
+incorporadora: Treviso
+empreendimento: Vernazza Torre Norte
+fonte: {origem_principal: tabela_local}
+plantas:
+- {tip: 4D, planta: '', area: 130.25, total: 37, disp: 37, t_min: 1784821, t_max: 2191902,
+  rs_m2: 15219, origem: tabela_local}

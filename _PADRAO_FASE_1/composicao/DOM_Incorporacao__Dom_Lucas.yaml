@@ -1,0 +1,6 @@
+incorporadora: DOM Incorporação
+empreendimento: Dom Lucas
+fonte: {origem_principal: tabela_local_imagem}
+plantas:
+- {tip: 3D, planta: '', area: 100.35, total: 9, disp: 9, t_min: 835894, t_max: 850937,
+  rs_m2: 8406, origem: tabela_local_imagem}

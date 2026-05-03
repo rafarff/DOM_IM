@@ -320,19 +320,10 @@ def read_planilha(path: Path) -> list[dict]:
 
 
 def read_composicao(path: Path) -> list[dict]:
-    """v7.0+: lê aba Composição com 12 colunas (1 linha por empreend × tipologia × planta).
-
-    Schema v7.0 (xlsx v11.0+): adiciona colunas 'Planta' e 'Área (m²)' (única, não mais range).
-    Backward-compat: lê v6.2 (11 col com Área mín/máx) se for xlsx legacy.
-
-    Output dict (estável):
-      - tipologia: agrupador
-      - planta: label da planta (vazio = identifica por área)
-      - area: valor único (calculado da média min/max se vier de v6.2)
-      - total_planta: NOVO v7.0 — quantidade total de unidades dessa planta
-      - unidades: Total tipologia (mantido pra compat — análise de oferta)
-      - disponiveis: estoque (análise de absorção)
-    """
+    """v8.0+: lê aba Composição (1 linha por empreendimento × tipologia).
+    v6.2 (xlsx v10.6+): schema 11 col com 'Total tipologia' separado de 'Disponíveis'.
+    Compatibilidade: se header tem 'Nº Unidades' (v8.0–v10.5), lê como disponíveis.
+    Retorna lista vazia se a aba não existir (compatibilidade pré-v8.0)."""
     wb = openpyxl.load_workbook(path, data_only=True)
     if "Composição" not in wb.sheetnames:
         return []
@@ -341,41 +332,24 @@ def read_composicao(path: Path) -> list[dict]:
     rows: list[dict] = []
     for r in range(6, ws.max_row + 1):
         row = {headers[i]: c.value for i, c in enumerate(ws[r]) if i < len(headers)}
-        if not (row.get("Incorporadora") and row.get("Empreendimento") and row.get("Tipologia")):
-            continue
-        # v7.0: schema 12 col tem "Planta" e "Área (m²)" únicos
-        # v6.2 fallback: tem "Área mín/máx" e não tem "Planta"
-        is_v70 = "Planta" in headers and "Área (m²)" in headers
-        if is_v70:
-            area = row.get("Área (m²)")
-            planta = row.get("Planta") or ""
-            total_planta = row.get("Total planta")
-            area_min = area
-            area_max = area
-        else:
-            area_min = row.get("Área mín (m²)")
-            area_max = row.get("Área máx (m²)")
-            area = (area_min + area_max) / 2 if (area_min and area_max) else (area_min or area_max)
-            planta = ""
-            total_planta = None
-        total_tip = row.get("Total tipologia") or row.get("Nº Unidades")
-        disp = row.get("Disponíveis") if "Disponíveis" in row else row.get("Nº Unidades")
-        rows.append({
-            "incorporadora": row.get("Incorporadora"),
-            "empreendimento": row.get("Empreendimento"),
-            "tipologia": row.get("Tipologia"),
-            "planta": planta,                  # v7.0
-            "area": area,                       # v7.0 (valor único)
-            "total_planta": total_planta,      # v7.0
-            "unidades": total_tip,              # mantido — Total tipologia (análise de oferta)
-            "disponiveis": disp,                # mantido — estoque (análise de absorção)
-            "area_min": area_min,               # back-compat
-            "area_max": area_max,               # back-compat
-            "ticket_min": row.get("Ticket mín (R$)"),
-            "ticket_max": row.get("Ticket máx (R$)"),
-            "rsm2": row.get("R$/m² médio"),
-            "origem": row.get("Origem"),
-        })
+        if row.get("Incorporadora") and row.get("Empreendimento") and row.get("Tipologia"):
+            # v6.2: prioriza 'Total tipologia' (novo) — chave para análises de OFERTA
+            # 'Disponíveis' (ou 'Nº Unidades' legado) é para análise de ESTOQUE
+            total_tip = row.get("Total tipologia") or row.get("Nº Unidades")
+            disp = row.get("Disponíveis") if "Disponíveis" in row else row.get("Nº Unidades")
+            rows.append({
+                "incorporadora": row.get("Incorporadora"),
+                "empreendimento": row.get("Empreendimento"),
+                "tipologia": row.get("Tipologia"),
+                "unidades": total_tip,        # v6.2: agora é Total tipologia (Σ=Total) — análise de oferta
+                "disponiveis": disp,           # v6.2: estoque (Σ Disponíveis ≤ Total) — análise de absorção
+                "area_min": row.get("Área mín (m²)"),
+                "area_max": row.get("Área máx (m²)"),
+                "ticket_min": row.get("Ticket mín (R$)"),
+                "ticket_max": row.get("Ticket máx (R$)"),
+                "rsm2": row.get("R$/m² médio"),
+                "origem": row.get("Origem"),
+            })
     return rows
 
 
@@ -742,7 +716,7 @@ if (sessionStorage.getItem("dom-auth") === "1") {
   </section>
   </div><!-- /tab-panorama -->
 
-  <!-- TAB: DASHBOARD v8.0.0 — análise por bairro enxuta + bubble oferta granularidade PLANTA (v7.0 PADRAO) -->
+  <!-- TAB: DASHBOARD v7.2.0 — análise por bairro enxuta (bubble posicionamento + bubble oferta + tabela) -->
   <div class="tab-panel" id="tab-dashboard">
 
     <section class="dash-filters-bar">
@@ -1483,47 +1457,41 @@ function renderDashBairros(data) {
     });
   }
 
-  // ─── Bubble: oferta por bairro × tamanho do apto (v8.0.0 — granularidade de PLANTA) ───
-  // v8.0.0: cada bolha = (bairro × tipologia × planta) ao invés de (bairro × tipologia).
-  // Permite enxergar absorção por TICKET REAL (3D 100m² vs 3D 125m² no mesmo bairro).
+  // ─── Bubble: oferta por bairro × tamanho do apto (cada bolha = par bairro×tipologia) ───
+  // Junta COMP_DATA (por empreend × tipologia) com ALL_DATA (bairro do empreend).
   destroyDashChart('ch-bairro-oferta');
 
   // 1. lookup empreendimento → {bairro, total, vendido}
   const empMap = {};
   data.forEach(e => { empMap[e.empreendimento] = e; });
 
-  // 2. agrega por (bairro, tipologia, planta_label, area_round 1dec):
-  //    soma Total_planta (oferta), área única (não mais média ponderada), contagem distinta de empreend.
-  const ofertaPair = {};  // 'bairro|tip|planta|area' → {bairro, tipologia, planta, area, totalPlanta, empSet}
+  // 2. agrega por (bairro, tipologia): soma unidades disponíveis, área média ponderada por unidades, contagem distinta de empreend.
+  const ofertaPair = {};  // 'bairro|tipologia' → {bairro, tipologia, areaSum, areaW, unidDisp, empSet}
   COMP_DATA.forEach(c => {
     const e = empMap[c.empreendimento];
-    if (!e) return;
+    if (!e) return;  // empreend. fora do filtro do dashboard
     const b = e.bairro;
     if (!b || b === 'São Luís' || b === 'Não identificado') return;
     if (!c.tipologia || c.tipologia === '—') return;
-    // v7.0: usa c.area (valor único). Fallback se vier de v6.2 (média min/max).
-    const area = c.area != null ? c.area
-                : ((c.area_min && c.area_max) ? (c.area_min + c.area_max) / 2
-                                              : (c.area_min || c.area_max || null));
-    if (!area) return;
-    // v7.0: usa Total_planta (granular); fallback unidades (Total tipologia)
-    const totalPlanta = c.total_planta != null ? c.total_planta : (c.unidades || 0);
-    if (totalPlanta <= 0) return;
-    const planta = c.planta || '';
-    const areaRound = Math.round(area * 10) / 10;
-    const key = b + '|' + c.tipologia + '|' + planta + '|' + areaRound;
+    const areaMed = (c.area_min && c.area_max) ? (c.area_min + c.area_max) / 2
+                    : (c.area_min || c.area_max || null);
+    if (!areaMed) return;
+    // unidades = c.unidades (disponíveis na composição)
+    const unid = c.unidades || 0;
+    const key = b + '|' + c.tipologia;
     if (!ofertaPair[key]) {
-      ofertaPair[key] = { bairro: b, tipologia: c.tipologia, planta: planta, area: areaRound,
-                          totalPlanta: 0, empSet: new Set() };
+      ofertaPair[key] = { bairro: b, tipologia: c.tipologia, areaSum: 0, areaW: 0, unidDisp: 0, empSet: new Set() };
     }
     const slot = ofertaPair[key];
-    slot.totalPlanta += totalPlanta;
+    slot.areaSum += areaMed * Math.max(unid, 1);  // pondera pelo nº unidades (peso mín. 1)
+    slot.areaW += Math.max(unid, 1);
+    slot.unidDisp += unid;
     slot.empSet.add(c.empreendimento);
   });
   const pairs = Object.values(ofertaPair).map(p => ({
-    bairro: p.bairro, tipologia: p.tipologia, planta: p.planta,
-    areaMed: p.area,
-    unidDisp: p.totalPlanta,  // mantém nome p/ compat com resto do código (representa OFERTA agora, não disp)
+    bairro: p.bairro, tipologia: p.tipologia,
+    areaMed: p.areaSum / p.areaW,
+    unidDisp: p.unidDisp,
     nEmp: p.empSet.size
   })).filter(p => p.unidDisp > 0);
 
@@ -1555,7 +1523,6 @@ function renderDashBairros(data) {
         r: 6 + (p.nEmp / maxNEmp) * 18,  // raio 6–24 px conforme nº empreend.
         _bairro: p.bairro,
         _tip: p.tipologia,
-        _planta: p.planta,
         _nEmp: p.nEmp
       })),
       backgroundColor: bairroColors[bDisp] + 'AA',
@@ -1571,16 +1538,15 @@ function renderDashBairros(data) {
       options: { responsive: true, maintainAspectRatio: false,
         plugins: {
           legend: { position: 'right', labels: { boxWidth: 12, font: {size: 11} } },
-          title: { display: true, text: 'Mapa de oferta por planta (v7.0): tamanho do apto × oferta total (cor = bairro · tamanho = nº empreend.)' },
+          title: { display: true, text: 'Mapa de oferta: tamanho do apto × unidades disponíveis (cor = bairro · tamanho da bolha = nº empreend.)' },
           tooltip: { callbacks: { label: ctx => {
             const d = ctx.raw;
-            const lbl = d._planta ? (' [' + d._planta + ']') : '';
-            return d._bairro + ' · ' + d._tip + lbl + ' · ' + d.x.toFixed(1) + ' m² · ' + d.y + ' unid. (oferta total) · ' + d._nEmp + ' empreend.';
+            return d._bairro + ' · ' + d._tip + ' · ' + d.x.toFixed(0) + ' m² · ' + d.y + ' unid. disp. · ' + d._nEmp + ' empreend.';
           }}}
         },
         scales: {
           x: { title: { display: true, text: 'Área média do apto (m²)' }, ticks: { callback: v => v + ' m²' } },
-          y: { title: { display: true, text: 'Oferta total (Total planta) no cruzamento bairro × tipologia × planta' }, beginAtZero: true, ticks: { precision: 0 } }
+          y: { title: { display: true, text: 'Unidades disponíveis (no cruzamento bairro × tipologia)' }, beginAtZero: true, ticks: { precision: 0 } }
         }
       },
       plugins: [{
@@ -1874,10 +1840,8 @@ def build(include_all: bool = False) -> None:
 
     composicao = read_composicao(planilha)
     if composicao:
-        # v7.0: somar Total_planta (granular) ao invés de unidades (Total tipologia, repetido por planta)
-        total_unid_comp = sum((c.get("total_planta") or c.get("unidades") or 0) for c in composicao)
-        n_emp_comp = len(set((c.get("incorporadora"), c.get("empreendimento")) for c in composicao))
-        print(f"📊 Composição: {len(composicao)} linhas / {total_unid_comp} unidades / {n_emp_comp} empreend.")
+        total_unid_comp = sum(c.get("unidades") or 0 for c in composicao)
+        print(f"📊 Composição: {len(composicao)} linhas / {total_unid_comp} unidades por tipologia")
     else:
         print("📊 Composição: aba ausente (planilha pré-v8.0)")
 

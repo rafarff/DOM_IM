@@ -1,0 +1,6 @@
+incorporadora: Delman
+empreendimento: Azimuth
+fonte: {origem_principal: tabela_local}
+plantas:
+- {tip: 3D, planta: '', area: 196.62, total: 1, disp: 1, t_min: 3600000, t_max: 3600000,
+  rs_m2: 18309, origem: tabela_local}

@@ -1,0 +1,8 @@
+incorporadora: Niágara
+empreendimento: ORO Ponta d'Areia
+fonte: {origem_principal: tabela_local}
+plantas:
+- {tip: 3D, planta: Padrão, area: 80.32, total: 88, disp: 88, t_min: 1003326, t_max: 1537396,
+  rs_m2: 15952, origem: tabela_local}
+- {tip: 4D, planta: Cobertura Duplex, area: 160.65, total: 8, disp: 8, t_min: 2275000,
+  t_max: 2575000, rs_m2: 15095, origem: tabela_local}

@@ -1,0 +1,6 @@
+incorporadora: Mota Machado
+empreendimento: Entre Rios
+fonte: {origem_principal: tabela_local}
+plantas:
+- {tip: 3D, planta: '', area: 146.82, total: 30, disp: 30, t_min: 1732638, t_max: 2719860,
+  rs_m2: 14679, origem: tabela_local}

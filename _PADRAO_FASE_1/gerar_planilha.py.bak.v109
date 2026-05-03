@@ -19,30 +19,8 @@ from openpyxl.drawing.image import Image as XLImage
 # ═══════════════════════════════════════════════════════════════
 # PARÂMETROS GLOBAIS
 # ═══════════════════════════════════════════════════════════════
-VERSION = "11.1"
+VERSION = "10.9"
 DATE_STR = "03/05/2026"
-# v11.1 — (03/05/2026): R1 — C_RAW migrado de hardcoded (Python) para arquivos YAML
-#   por empreendimento (composicao/<inc>__<emp>.yaml). Função load_c_raw_from_dir()
-#   carrega 1 arquivo por (inc, emp). Vantagens: edição em YAML (sem mexer no script),
-#   isolamento (mudança em 1 empreend não afeta outros), auditoria git granular.
-#   29 arquivos / 44 entries. Schema 12-col v7.0 mantido. Output script idêntico.
-#   Próxima etapa (R2 backlog): aba Incorporadoras vira derivada.
-# v11.0 — (03/05/2026): VIRADA ESTRUTURAL §3.7 v7.0 — granularidade de PLANTA.
-#   Aba Composição: 11 col → 12 col. Schema C_RAW (hardcoded list): 10 → 12 col.
-#     antes: (Inc, Emp, Tip, disp, area_min, area_max, ticket_min, ticket_max, rs_m2, origem)
-#     novo:  (Inc, Emp, Tip, Planta, Area, Total_planta, Disp, ticket_min, ticket_max, rs_m2, origem)
-#   Funções novas:
-#     - bucketizar_plantas(rows): agrupa unidades por área (round 1 dec) → 1 entry por planta
-#   Funções refatoradas:
-#     - compute_total_per_tipologia: agora simplesmente Σ Total_planta por tipologia (ortogonal §3.6)
-#     - apply_estimativa_distribuicao: emite entries 12-col com Planta="" (1 planta por tipologia)
-#     - consolidate_multi_torre: agrega C_RAW por (tipologia, planta) com mesma área
-#   Validação nova §3.7.C.6: Σ Total planta = Total tipologia por (inc, emp, tip).
-#   Re-extração: 14 empreend. com origem nível 1-2 reprocessados para granular (Renaissance,
-#     Mount Solaro, Legacy, Dom Ricardo, Giardino F/L, etc. ganharam plantas distintas).
-#   Razão estrutural (Rafael 03/05): "ticket dita absorção, não tipologia. Mesma 3D em
-#     100m² vs 125m² tem público-alvo distinto (~R$400k de diferença)."
-#   PADRAO bumpa v6.2 → v7.0. Ortogonalidade §3.6/§3.7 preservada. Total continua âncora.
 # v10.9 — (03/05/2026): +1 destravado manual (Rafael 03/05). Legacy Residence (Alfa
 #   Engenharia, Península): Total = 30 (2 apto/andar × 15 andares), mono-tipologia 4D
 #   em 2 plantas (15u 175m² + 15u 185m²). Áreas E_RAW atualizadas (175-180 → 175-185).
@@ -927,61 +905,106 @@ I_META = {
 # Heurística tipologia × área (SLZ-padrão): <40 Studio, 40-55 1D, 55-75 2D,
 # 75-95 3D, >95 4D. Em casos especiais (mono-tipologia declarada, áreas em
 # fronteira), classificação manual prevalece.
-def load_c_raw_from_dir(comp_dir=None):
-    """v11.1 (R1): carrega C_RAW de arquivos YAML em composicao/ ao invés de hardcoded.
-    
-    1 arquivo YAML por (incorporadora, empreendimento), schema 12-col v7.0:
-      (Inc, Emp, Tip, Planta, Area, Total_planta, Disp, t_min, t_max, rs_m2, origem)
-    
-    Vantagens:
-      - Edição não requer mexer no script (qualquer YAML editor funciona)
-      - 1 arquivo por empreend = isolamento (mudança não afeta outros)
-      - Validação de schema explícita no carregamento
-      - Auditoria git granular por empreend
-    """
-    import yaml as _yaml
-    if comp_dir is None:
-        comp_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'composicao')
-    if not os.path.isdir(comp_dir):
-        print(f'⚠ Pasta composicao/ não encontrada em {comp_dir} — C_RAW vazio')
-        return []
-    rows = []
-    files = sorted(os.listdir(comp_dir))
-    for fn in files:
-        if not fn.endswith('.yaml') or fn.startswith('.'): continue
-        path = os.path.join(comp_dir, fn)
-        try:
-            with open(path, encoding='utf-8') as f:
-                doc = _yaml.safe_load(f)
-        except Exception as e:
-            print(f'✗ ERRO ao ler {fn}: {e}')
-            continue
-        if not doc: continue
-        inc = doc.get('incorporadora')
-        emp = doc.get('empreendimento')
-        if not (inc and emp):
-            print(f'⚠ {fn} sem incorporadora/empreendimento — pulando')
-            continue
-        plantas = doc.get('plantas') or []
-        for p in plantas:
-            row = (
-                inc, emp,
-                p.get('tip'), p.get('planta') or '',
-                p.get('area'),
-                p.get('total'), p.get('disp'),
-                p.get('t_min'), p.get('t_max'),
-                p.get('rs_m2'),
-                p.get('origem'),
-            )
-            rows.append(row)
-    n_yaml = sum(1 for f in files if f.endswith('.yaml'))
-    print(f'✓ load_c_raw_from_dir: {len(rows)} entries de {n_yaml} arquivos YAML em composicao/')
-    return rows
+C_RAW = [
+    # The View (Delman) — 93 unid: tabela 28/04/2026 v3
+    ("Delman", "The View", "Studio", 28, 36.05, 36.45, 539969, 640469, 16763, "tabela_local"),
+    ("Delman", "The View", "1D", 26, 42.45, 54.06, 630255, 959721, 16006, "tabela_local"),
+    ("Delman", "The View", "2D", 15, 68.91, 74.92, 1062210, 1355300, 16577, "tabela_local"),
+    ("Delman", "The View", "3D", 24, 80.72, 85.87, 1354011, 1504011, 16637, "tabela_local"),
+    # Landscape (Delman) — 51 unid: tabela 04/2026
+    ("Delman", "Landscape", "3D", 17, 88.07, 88.07, 1206282, 1400282, 14755, "tabela_local"),
+    ("Delman", "Landscape", "4D", 34, 103.60, 143.64, 1428516, 2328766, 14716, "tabela_local"),
+    # Studio Design 7 Península (Delman) — 31 unid: tabela 04/2026
+    ("Delman", "Studio Design 7 Península", "1D", 13, 42.40, 43.50, 710160, 740727, 16813, "tabela_local"),
+    ("Delman", "Studio Design 7 Península", "2D", 17, 61.08, 65.80, 1004013, 1146600, 16264, "tabela_local"),
+    ("Delman", "Studio Design 7 Península", "3D", 1, 88.78, 88.78, 1553650, 1553650, 17500, "tabela_local"),
+    # Wave Residence (Delman) — 5 unid: penthouses 293m² Ponta do Farol
+    ("Delman", "Wave Residence", "4D", 5, 293.69, 293.69, 5581808, 5828289, 19360, "tabela_local"),
+    # Edifício Bossa (Mota Machado) — 36 unid: tabela 04/2026
+    ("Mota Machado", "Edifício Bossa", "4D", 36, 191.02, 196.04, 2850507, 3708342, 16663, "tabela_local"),
+    # Altos do São Francisco (Treviso) — 26 unid: imóvel pronto, ago/2025
+    ("Treviso", "Altos do São Francisco", "2D", 26, 57.93, 67.15, 495809, 761677, 10024, "tabela_local"),
+    # Renaissance Conceito (Monteplan) — 44 unid: 2 torres Botticelli 82m² (3D) + Leonardo 110m² (4D)
+    ("Monteplan", "Renaissance Conceito", "3D", 15, 82.00, 82.00, 1038621, 1177759, 13686, "tabela_local"),  # v9.2: corrigido 30→15 (parser SFH+FDC duplicava)
+    ("Monteplan", "Renaissance Conceito", "4D", 7, 110.00, 110.00, 1359410, 1565192, 13168, "tabela_local"),  # v9.2: corrigido 14→7 (parser duplicava)
+    # Vila Coimbra (Castelucci) — 36 casas horizontais Araçagy, área construída uniforme
+    ("Castelucci", "Vila Coimbra", "4D", 36, 124.63, 124.63, 1019834, 1081967, 8367, "tabela_local"),
 
+    # ─── Lote 2 (v8.1) ──────────────────────────────────────────
+    # Vernazza Torre Norte (Treviso) — 37 unid 130-130,5m² Renascença
+    ("Treviso", "Vernazza Torre Norte", "4D", 37, 130.00, 130.49, 1784821, 2191902, 15219, "tabela_local"),
+    # Vernazza Torre Sul (Treviso) — 26 unid 88-90m²
+    ("Treviso", "Vernazza Torre Sul", "3D", 26, 87.98, 90.10, 1277584, 1586363, 15599, "tabela_local"),
+    # Quartier 22 (Delman) — 1 unid Ponta d'Areia, 165m² (apto 601)
+    ("Delman", "Quartier 22", "3D", 1, 165.00, 165.00, 3000000, 3000000, 18182, "tabela_local"),
+    # Sky Residence (Delman) — 1 unid Ponta d'Areia, 247m² (apto 200)
+    ("Delman", "Sky Residence", "4D", 1, 246.69, 246.69, 4700000, 4700000, 19052, "tabela_local"),
+    # Azimuth (Delman) — 1 unid Ponta d'Areia, 197m² (apto 901)
+    ("Delman", "Azimuth", "3D", 1, 196.62, 196.62, 3600000, 3600000, 18309, "tabela_local"),
+    # Al Mare Tirreno (Mota Machado) — 1 unid 215m² Av. dos Holandeses Q9 L9
+    ("Mota Machado", "Al Mare Tirreno", "4D", 1, 215.00, 215.00, 3025856, 3025856, 14074, "tabela_local"),
+    # Entre Rios (Mota Machado) — 30 unid (Torre Douro + Tejo) 146,82m² Renascença
+    ("Mota Machado", "Entre Rios", "3D", 30, 146.82, 146.82, 1732638, 2719860, 14679, "tabela_local"),
+    # Reserva São Marcos (Mota Machado) — 2 plantas, áreas do BOOK
+    # Planta 1 (2D) 67-69m² | Planta 2 (3D) 102-104m². Tickets agregados (~6 grupos).
+    ("Mota Machado", "Reserva São Marcos", "2D", 3, 67.48, 68.75, 977382, 1316965, 17535, "tabela_local"),
+    ("Mota Machado", "Reserva São Marcos", "4D", 3, 102.25, 104.05, 1467380, 1869461, 16590, "tabela_local"),
+    # Le Noir (Hiali) — 4 unid Renascença II, áreas 49-62m² compactos
+    ("Hiali", "Le Noir", "1D", 1, 49.74, 49.74, 710000, 710000, 14274, "tabela_local"),
+    ("Hiali", "Le Noir", "2D", 3, 58.91, 62.62, 800000, 870000, 13682, "tabela_local"),
+    # ORO Ponta d'Areia (Niágara) — 96 unid: 88 padrão 80m² + 8 cobertura duplex 160m²
+    ("Niágara", "ORO Ponta d'Areia", "3D", 88, 80.32, 80.32, 1003326, 1537396, 15952, "tabela_local"),
+    ("Niágara", "ORO Ponta d'Areia", "4D", 8, 160.65, 160.65, 2275000, 2575000, 15095, "tabela_local"),
+    # Edifício Sanpaolo (Monteplan) — 1 unid dupla restante (apto 204-205, R$610k 108m²)
+    # Tratada como 2 unidades 54m² R$305k cada. Posicionamento Cohama, ~99% vendido.
+    ("Monteplan", "Edifício Sanpaolo", "1D", 2, 54.00, 54.00, 305000, 305000, 5648, "tabela_local"),
 
-# v11.1 — C_RAW agora é carregado de arquivos YAML em composicao/
-# (era hardcoded em v8.0–v11.0; ver function load_c_raw_from_dir acima)
-C_RAW = load_c_raw_from_dir()
+    # ─── Lote 3 (v8.2) — Zion via visão multimodal ───────────────
+    # Zion Ponta d'Areia (Ergus) — 10 unid disponíveis 04/2026, todas 148,55m² 4D.
+    # Tabela em PDF imagem extraída via pdftoppm + Claude visão. R$/m² médio 15.500.
+    ("Ergus", "Zion Ponta d'Areia", "4D", 10, 148.55, 148.55, 2170378, 2556972, 15500, "tabela_local_imagem"),
+
+    # ─── Lote 4 (v10.1) — 4 empreend. com tabela texto ─────────────
+    # Monte Meru (Berg Engenharia) — 2 unid 3D, ~135m²
+    ("Berg Engenharia", "Monte Meru", "3D", 2, 135.32, 135.83, 1932400, 1944500, 14298, "tabela_local"),
+    # Residencial Novo Anil (Monteplan) — 30 unid 2D 53,94m² uniforme (8 blocos A1-B4)
+    ("Monteplan", "Residencial Novo Anil", "2D", 30, 53.94, 53.94, 324142, 324143, 6009, "tabela_local"),
+    # Giardino Fiore (Alfa) — 6 unid 3D, 110-128m², 3 colunas
+    ("Alfa Engenharia", "Giardino Residenza Torre Fiore", "3D", 6, 110.77, 128.37, 1838492, 2032938, 15373, "tabela_local"),
+    # Giardino Luce (Alfa) — 5 unid 3D, 93-101m², 4 colunas
+    ("Alfa Engenharia", "Giardino Residenza Torre Luce", "3D", 5, 93.62, 101.31, 1442168, 1595303, 15299, "tabela_local"),
+
+    # ─── Lote 5 (v10.2) — DOM Incorporação via visão multimodal ─────
+    # Dom Lucas (DOM) — 9 unid disponíveis 04/2026, todas 100,35 m² casa (3D)
+    # Tabela ABR/2026 em PDF imagem — extraída via pdftoppm + visão Claude.
+    # 46 unid totais (UH 1-46), 9 disp + 1 reserv + 36 vend → ~80% vendido.
+    ("DOM Incorporação", "Dom Lucas", "3D", 9, 100.35, 100.35, 835894, 850937, 8406, "tabela_local_imagem"),
+    # Dom José (DOM) — 3 unid disponíveis 04/2026, todas 154,64 m² casa (4D)
+    # 22 unid totais (UH 1-22 confirmado por implantação numerada), 3 disp + 19 vend → ~86% vendido.
+    ("DOM Incorporação", "Dom José", "4D", 3, 154.64, 154.64, 1403358, 1420196, 9130, "tabela_local_imagem"),
+
+    # ─── DOM Ricardo (Lote 6 v10.7) — book DOM 12/2023 + total declarado Rafael 03/05/2026 ───
+    # 30 unid total = 10 andares × 3 col por andar. Col 1 (85,75m² 3D) + Col 2 (84,96m² 3D) + Col 3 (71,92m² 2D)
+    # Book diz "100% VENDIDO" → disp = 0 em ambas tipologias. Para origem `book`, Σ disp não é base de Total tip.
+    # NOTA: c[3] aqui é "disp", mas pra origem `book` o cálculo de Total tip usa lookup direto (ver compute_total_per_tipologia)
+    ("DOM Incorporação", "Edifício Dom Ricardo", "2D", 0, 71.92, 71.92, 690860, 690860, 9606, "book"),
+    ("DOM Incorporação", "Edifício Dom Ricardo", "3D", 0, 84.96, 85.75, 1194374, 1194374, 13989, "book"),
+
+    # ─── Dom Antônio será aplicado pelo nível 5.1 mono automaticamente (12u 3D 136,2m²) ───
+
+    # ─── Mount Solaro (Lote 7 v10.8) — book Berg+Gonçalves via site oficial 03/05/2026 ───
+    # 50 unid total = 20 lofts 68m² (2D) + 10 apt 72m² (2D) + 20 apt 104m² (3D)
+    # Pré-lançamento (06/2025 T-36) → todos disponíveis (estoque 100%)
+    ("Berg Engenharia", "Mount Solaro", "2D", 30, 68.00, 72.00, 907200, 1100000, 13750, "site_oficial"),
+    ("Berg Engenharia", "Mount Solaro", "3D", 20, 104.00, 104.00, 1500000, 1700000, 15384, "site_oficial"),
+
+    # ─── Legacy Residence (Lote 8 v10.9) — informado Rafael 03/05/2026 ───
+    # 30 unid = 2 aptos/andar × 15 andares. Mono-tipologia 4D em 2 plantas:
+    # 15u 175m² + 15u 185m². Tickets ainda não confirmados (sem tabela comercial).
+    # disp=30 é placeholder (Rafael deu apenas product specs, não info de vendas).
+    ("Alfa Engenharia", "Legacy Residence", "4D", 30, 175.00, 185.00, None, None, None, "informado_manualmente"),
+]
+
 # ═══════════════════════════════════════════════════════════════
 # v10.6 — VIRADA §3.7 v2 (PADRAO v6.2)
 #   Funções: consolidação multi-torre, estimativa nível 5, total por tipologia
@@ -1089,38 +1112,32 @@ def consolidate_multi_torre(E_RAW, C_RAW):
             del E_RAW[i]
         E_RAW.append(tuple(base))
 
-        # Consolidar C_RAW v7.0: trocar nome da torre pelo consolidado, agregar mesmas (tipologia, planta)
-        # Schema 12-col: (Inc, Emp, Tip, Planta, Area, Total_planta, Disp, t_min, t_max, rs_m2, origem)
+        # Consolidar C_RAW: trocar nome da torre pelo consolidado, agregar mesmas tipologias
         crows_torres = [c for c in C_RAW if c[0] == inc and c[1] in torres]
         crows_outras = [c for c in C_RAW if not (c[0] == inc and c[1] in torres)]
-        # Chave de agregação v7.0: (tipologia, planta_label, area_round_1dec)
-        # Plantas iguais entre torres (mesma tip+area) → soma; diferentes → entries separadas
-        agg_by_planta = {}
+        agg_by_tip = {}
         for c in crows_torres:
-            tip = c[2]; planta_lbl = c[3] or ''
-            area = c[4]
-            area_key = round(area, 1) if area is not None else None
-            key = (tip, planta_lbl, area_key)
-            if key not in agg_by_planta:
-                agg_by_planta[key] = list(c)
-                agg_by_planta[key][1] = novo  # rename
+            tip = c[2]
+            if tip not in agg_by_tip:
+                agg_by_tip[tip] = list(c)
+                agg_by_tip[tip][1] = novo  # rename
                 continue
-            cur = agg_by_planta[key]
-            cur[5] = (cur[5] or 0) + (c[5] or 0)  # Total_planta soma
-            cur[6] = (cur[6] or 0) + (c[6] or 0)  # Disp soma
-            cur[7] = safe_min([cur[7], c[7]])     # ticket_min
-            cur[8] = safe_max([cur[8], c[8]])     # ticket_max
-            if cur[7] and cur[8] and cur[4]:
-                cur[9] = round(((cur[7] + cur[8]) / 2) / cur[4])  # R$/m² médio
-        TIP_ORD = ['Studio','1D','2D','3D','4D','Lote','—']
-        ord_key = lambda k: (TIP_ORD.index(k[0]) if k[0] in TIP_ORD else 99, k[2] or 0, k[1])
+            cur = agg_by_tip[tip]
+            cur[3] = (cur[3] or 0) + (c[3] or 0)  # disp
+            cur[4] = safe_min([cur[4], c[4]])     # area_min
+            cur[5] = safe_max([cur[5], c[5]])     # area_max
+            cur[6] = safe_min([cur[6], c[6]])     # ticket_min
+            cur[7] = safe_max([cur[7], c[7]])     # ticket_max
+            # R$/m² médio: recalcular se possível
+            if cur[6] and cur[7] and cur[4] and cur[5]:
+                cur[8] = round(((cur[6] + cur[7]) / 2) / ((cur[4] + cur[5]) / 2))
         C_RAW.clear()
         C_RAW.extend(crows_outras)
-        for key in sorted(agg_by_planta.keys(), key=ord_key):
-            C_RAW.append(tuple(agg_by_planta[key]))
+        for tip in sorted(agg_by_tip.keys()):
+            C_RAW.append(tuple(agg_by_tip[tip]))
 
         log.append(f"  [ok] {inc}/{novo}: {len(idx_torres)} torres → 1 entry, total={base[6]}, "
-                   f"{len(crows_torres)} C_RAW → {len(agg_by_planta)} plantas agregadas")
+                   f"{len(crows_torres)} C_RAW → {len(agg_by_tip)} tipologias agregadas")
 
     if log:
         print("§3.7.D — Consolidação multi-torre (v10.6):")
@@ -1128,225 +1145,116 @@ def consolidate_multi_torre(E_RAW, C_RAW):
     return E_RAW, C_RAW
 
 
-def bucketizar_plantas(parser_rows, area_decimals=1):
-    """§3.7.B item 6 (v7.0): agrupa unidades extraídas de tabela em PLANTAS por área.
-
-    Input:  parser_rows = [(apto, area, ticket), ...]
-    Output: [(label, area, n_unid_disp, ticket_min, ticket_max, rs_m2_pond), ...]
-
-    Cada bucket de área (round 1 dec) = 1 planta. Label fica vazio (a ser preenchido
-    manualmente no C_RAW se book/tabela declara nome). R$/m² ponderado por ticket × área.
-    """
-    from collections import defaultdict as _dd
-    buckets = _dd(list)  # area_round → [(apto, area_real, ticket), ...]
-    for apto, area, ticket in parser_rows:
-        if area is None: continue
-        key = round(area, area_decimals)
-        buckets[key].append((apto, area, ticket))
-
-    out = []
-    for area_round, items in sorted(buckets.items()):
-        n = len(items)
-        tickets_validos = [t for _, _, t in items if t is not None]
-        if tickets_validos:
-            t_min, t_max = min(tickets_validos), max(tickets_validos)
-            # R$/m² ponderado: Σ ticket / Σ área das unidades com ticket
-            soma_tickets = sum(t for _, _, t in items if t is not None)
-            soma_areas = sum(a for _, a, t in items if t is not None)
-            rs_m2 = round(soma_tickets / soma_areas) if soma_areas else None
-        else:
-            t_min = t_max = rs_m2 = None
-        out.append(("", area_round, n, t_min, t_max, rs_m2))
-    return out
-
-
 def compute_total_per_tipologia(E_RAW, C_RAW):
-    """§3.7 v7.0: calcula Total por tipologia em runtime — agora baseado em Σ Total_planta.
+    """§3.7 v6.2: calcula Total por tipologia em runtime, retorna dict.
 
-    Schema C_RAW v7.0 (12 col): (Inc, Emp, Tip, Planta, Area, Total_planta, Disp,
-                                 ticket_min, ticket_max, rs_m2, origem)
-      - Idx 5 = Total_planta (NOVO v7.0; antes idx 3 era disp/total)
-      - Idx 6 = Disp (NOVO posicionamento)
-      - Idx 10 = origem
-
-    Comportamento:
-      - Idealmente: Total_planta vem declarado por planta → Total_tip = Σ Total_planta
-      - Quando origem = tabela_local (parcial — lista só disponíveis) e Σ Total_planta < E_RAW.Total:
-        aplicar PRO-RATA por % do Disp empreend. (preserva comportamento v6.2 — origem ganha sufixo _pro_rata)
-      - Estimativas nível 5: Total_planta já é o total da tipologia (1 planta por tip)
+    Regras (já documentadas em PADRAO §3.7):
+      - Mono-tipologia em E_RAW: Total tipologia = E_RAW.Total
+      - Multi-tip + origem `tabela_local_completa`: Σ disp já = Total → Total tip = disp
+      - Multi-tip + origem `tabela_local_parcial`: pro-rata pelo % do disp_emp,
+        origem ganha sufixo `_pro_rata`
+      - Origens estimativa_*: Total tip = disp (já é o total por construção)
+      - Total empreend. ausente → Total tip = None
     """
+    # Lookup empreend. → entry
     emp_lookup = {(e[0], e[1]): e for e in E_RAW}
-    from collections import defaultdict as _dd
-
-    # Agrega Total_planta + Disp por (inc, emp, tip)
-    sum_total_planta = _dd(int)
-    sum_disp = _dd(int)
-    origens_por_tip = _dd(set)
-    sum_disp_emp = _dd(int)  # Σ Disp por empreend (para pro-rata)
-    n_tips_c_raw = _dd(int)  # nº de tipologias distintas em C_RAW por empreend.
-    tips_emp = _dd(set)
+    # Soma disp por empreend.
+    disp_by_emp = {}
     for c in C_RAW:
-        inc, emp, tip = c[0], c[1], c[2]
-        total_planta = c[5] or 0
-        disp = c[6] or 0
-        origem = c[10]
-        sum_total_planta[(inc, emp, tip)] += total_planta
-        sum_disp[(inc, emp, tip)] += disp
-        sum_disp_emp[(inc, emp)] += disp
-        origens_por_tip[(inc, emp, tip)].add(origem or '')
-        tips_emp[(inc, emp)].add(tip)
-    for k, ts in tips_emp.items():
-        n_tips_c_raw[k] = len(ts)
+        key = (c[0], c[1])
+        disp_by_emp[key] = disp_by_emp.get(key, 0) + (c[3] or 0)
 
-    result = {}  # (inc, emp, tip) → (total_tip, origem_consensual)
+    # Conta n entries C_RAW por empreend. (chave: mono-em-C_RAW vs multi-em-C_RAW)
+    n_tips_c_raw = {}
+    for c in C_RAW:
+        n_tips_c_raw[(c[0], c[1])] = n_tips_c_raw.get((c[0], c[1]), 0) + 1
 
-    for key in origens_por_tip:
-        inc, emp, tip = key
+    # Override manual de Total tipologia para casos especiais onde o book declara totais
+    # mas C_RAW.disp armazena 0 (100% vendido). Chave: (inc, emp, tip) → total_tip.
+    # NOVO v10.7: usado quando origem=`book` e disp=0 (book diz 100% vendido) — declara totais explícitos.
+    BOOK_TOTAL_OVERRIDE = {
+        ('DOM Incorporação', 'Edifício Dom Ricardo', '2D'): 10,
+        ('DOM Incorporação', 'Edifício Dom Ricardo', '3D'): 20,
+    }
+
+    result = {}  # (inc, emp, tip) → (total_tip, origem_revisada)
+    # Pré-cálculo p/ pro-rata: se ∆ entre soma e total é não-zero, ajustar último entry pra fechar
+    pending_pro_rata = {}  # (inc, emp) → list of (key, raw_value)
+
+    for c in C_RAW:
+        inc, emp, tip, disp = c[0], c[1], c[2], c[3]
+        origem = c[9]
         emp_entry = emp_lookup.get((inc, emp))
-        oset = origens_por_tip[key] - {''}
-        origem = next(iter(oset)) if len(oset) == 1 else (';'.join(sorted(oset)) if oset else '')
         if not emp_entry:
-            result[key] = (None, origem)
+            result[(inc, emp, tip)] = (None, origem)
             continue
         total_emp = emp_entry[6]
-        soma_planta = sum_total_planta[key]
 
-        # Caso 1: origem estimativa_* — soma de plantas é total da tipologia (1 planta = total tip por construção)
-        if origem.startswith('estimativa_distribuição'):
-            result[key] = (soma_planta, origem)
+        # Override book_total_explicito (v10.7): origem `book` com Total tipologia declarado manualmente
+        if (inc, emp, tip) in BOOK_TOTAL_OVERRIDE:
+            result[(inc, emp, tip)] = (BOOK_TOTAL_OVERRIDE[(inc, emp, tip)], origem)
             continue
 
-        # Caso 2: sem Total empreend. → não há âncora pra inferir Total tip
+        # Origens estimativa_*: total tip = disp (estimativa já é total por construção)
+        if origem and origem.startswith('estimativa_distribuição'):
+            result[(inc, emp, tip)] = (disp, origem)
+            continue
+
         if not total_emp:
-            result[key] = (soma_planta if soma_planta else None, origem)
+            result[(inc, emp, tip)] = (None, origem)
             continue
 
-        # Caso 3: mono-tip em C_RAW (única tipologia listada) → todo Total empreend. é dessa tip
+        # Mono-tipologia em C_RAW (única entry pro empreend.) → toda composição é dessa tipologia
         if n_tips_c_raw.get((inc, emp), 0) == 1:
-            result[key] = (total_emp, origem)
+            result[(inc, emp, tip)] = (total_emp, origem)
             continue
 
-        # Caso 4: origem `tabela_local_completa` ou `book` — Total_planta é confiável, Σ deve fechar com Total
-        if origem in ('tabela_local_completa', 'book', 'memorial', 'site_oficial', 'informado_manualmente', 'tabela_local_imagem'):
-            # Se Σ Total_planta == Total_emp por construção, usa direto
-            soma_emp_total = sum(sum_total_planta[(inc, emp, t)] for t in tips_emp[(inc, emp)])
-            if soma_emp_total == total_emp:
-                result[key] = (soma_planta, origem)
-                continue
-            # Discrepância: warn será emitido em §3.7.C.4. Usa Σ Total_planta declarado.
-            result[key] = (soma_planta, origem)
+        # Multi-tip + origem completa: Σ disp já = Total (por construção)
+        if origem == 'tabela_local_completa':
+            result[(inc, emp, tip)] = (disp, origem)
             continue
 
-        # Caso 5: origem `tabela_local` (parcial) — Total_planta listado é só disp.
-        # Pro-rata por % do Disp empreend. (preserva comportamento v6.2)
-        soma_disp_e = sum_disp_emp.get((inc, emp), 0)
-        if soma_disp_e > 0:
-            disp_tip = sum_disp[key]
-            total_tip = round(disp_tip * total_emp / soma_disp_e)
+        # Multi-tip + origem parcial (incl. tabela_local, tabela_local_imagem, tabela_local_parcial):
+        # pro-rata pelo % do disp_emp. Ajuste de off-by-one feito num passo final.
+        soma_disp = disp_by_emp.get((inc, emp), 0)
+        if soma_disp > 0:
+            total_tip = round((disp or 0) * total_emp / soma_disp)
             ori_marcada = (origem + '_pro_rata') if (origem and not origem.endswith('_pro_rata')) else (origem or 'pro_rata')
-            result[key] = (total_tip, ori_marcada)
+            result[(inc, emp, tip)] = (total_tip, ori_marcada)
+            pending_pro_rata.setdefault((inc, emp), []).append((inc, emp, tip))
         else:
-            result[key] = (soma_planta if soma_planta else None, origem)
+            result[(inc, emp, tip)] = (None, origem)
 
-    # Ajuste de arredondamento pro-rata: força Σ = Total por empreend.
-    pro_rata_keys_by_emp = _dd(list)
-    for key, (tt, ori) in result.items():
-        if ori and ori.endswith('_pro_rata'):
-            pro_rata_keys_by_emp[(key[0], key[1])].append(key)
-    for (inc, emp), keys in pro_rata_keys_by_emp.items():
+    # Ajuste de arredondamento: pra cada empreend. com pro-rata, força Σ = Total
+    for (inc, emp), keys in pending_pro_rata.items():
         total_emp = emp_lookup[(inc, emp)][6]
         if not total_emp: continue
         soma = sum(result[k][0] for k in keys if result[k][0] is not None)
-        # outras tipologias do mesmo empreend (não-pro_rata) também contam
-        outras_tips = [t for t in tips_emp[(inc, emp)] if (inc, emp, t) not in keys]
-        soma_outras = sum(result.get((inc, emp, t), (0, ''))[0] or 0 for t in outras_tips)
-        diff = total_emp - soma - soma_outras
+        diff = total_emp - soma
         if diff != 0 and keys:
+            # Ajusta no entry com maior Total tip
             keys_sorted = sorted(keys, key=lambda k: -(result[k][0] or 0))
             k_maior = keys_sorted[0]
             tt, ori = result[k_maior]
-            result[k_maior] = ((tt or 0) + diff, ori)
-    return result
-
-
-def compute_total_planta(E_RAW, C_RAW, total_tip_dict):
-    """§3.7 v7.0: calcula Total_planta inferido (para casos onde C_RAW armazena disp).
-
-    Retorna dict: (inc, emp, tip, planta_label, area_round) → Total_planta_inferido
-
-    Lógica:
-      - Origem forte (book, memorial, site_oficial, informado_manualmente, estimativa_*,
-        tabela_local_completa, tabela_local_imagem): Total_planta_inferido = c[5] declarado
-      - Origem tabela_local (parcial): Total_planta_inferido = round(Disp_planta × Total_tip / Σ Disp_tip)
-    """
-    from collections import defaultdict as _dd
-    sum_disp_por_tip = _dd(int)
-    for c in C_RAW:
-        sum_disp_por_tip[(c[0], c[1], c[2])] += (c[6] or 0)
-
-    result = {}
-    pending_pro_rata = _dd(list)  # (inc, emp, tip) → list of plant keys (for rounding ajdust)
-    for c in C_RAW:
-        inc, emp, tip, planta, area, total_planta_decl, disp = c[0], c[1], c[2], c[3] or '', c[4], c[5], c[6]
-        origem = c[10]
-        area_round = round(area, 1) if area is not None else None
-        plant_key = (inc, emp, tip, planta, area_round)
-        total_tip, _ = total_tip_dict.get((inc, emp, tip), (None, ''))
-
-        # Origens fortes ou estimativa: Total_planta declarado prevalece
-        if total_tip is None or origem in ('book', 'memorial', 'site_oficial',
-                                            'informado_manualmente', 'tabela_local_completa') \
-                or (origem and origem.startswith('estimativa_distribuição')):
-            result[plant_key] = total_planta_decl
-            continue
-
-        # Origem parcial (tabela_local): pro-rata
-        soma_disp_tip = sum_disp_por_tip.get((inc, emp, tip), 0)
-        if soma_disp_tip > 0 and total_tip:
-            tp = round((disp or 0) * total_tip / soma_disp_tip)
-            result[plant_key] = tp
-            pending_pro_rata[(inc, emp, tip)].append(plant_key)
-        else:
-            result[plant_key] = total_planta_decl
-
-    # Ajuste arredondamento dentro de cada tipologia: força Σ Total_planta = Total_tip
-    for tip_key, plant_keys in pending_pro_rata.items():
-        total_tip = total_tip_dict[tip_key][0]
-        if total_tip is None: continue
-        soma = sum(result.get(pk, 0) or 0 for pk in plant_keys)
-        diff = total_tip - soma
-        if diff != 0 and plant_keys:
-            # Ajusta na planta com mais unidades
-            pk_maior = max(plant_keys, key=lambda pk: result.get(pk, 0) or 0)
-            result[pk_maior] = (result.get(pk_maior, 0) or 0) + diff
+            result[k_maior] = (tt + diff, ori)
 
     return result
 
 
 def apply_estimativa_distribuicao(E_RAW, C_RAW):
-    """§3.7.A.1 nível 5 (v7.0): aplica sub-regras 5.1-5.4 nos empreend. com Total mas sem C_RAW.
-
-    v7.0: emite entries no schema 12-col com Planta="" (estimativa não inventa plantas).
-    Para cada empreend × tipologia: 1 planta única (label "", área = média declarada/mediana).
-    Total_planta = unidades alocadas pra essa tipologia. Disp = mesmo (estimativa não distingue
-    estoque vs total). Tickets/rs_m2 = None (estimativa não conhece preço).
-
-    Schema entry: (Inc, Emp, Tip, Planta, Area, Total_planta, Disp,
-                   ticket_min, ticket_max, rs_m2, origem)
-    """
+    """§3.7.A.1 nível 5: aplica sub-regras 5.1-5.4 nos empreend. com Total mas sem C_RAW."""
     from statistics import median
     from collections import defaultdict as _dd
 
-    # Medianas de área por tipologia (de C_RAW existente, fontes fortes apenas)
-    # v7.0: C_RAW.area é valor único (idx 4), não mais min/max
+    # Medianas de área por tipologia (calculadas runtime de C_RAW existente, fontes fortes apenas)
     areas_por_tip = _dd(list)
     for c in C_RAW:
-        origem = c[10] or ''
+        origem = c[9] or ''
         if origem.startswith('estimativa_distribuição'):
             continue
-        area = c[4]
-        if area:
-            areas_por_tip[c[2]].append(area)
+        a_min, a_max = c[4], c[5]
+        if a_min and a_max:
+            areas_por_tip[c[2]].append((a_min + a_max) / 2)
     median_area = {t: median(vs) for t, vs in areas_por_tip.items() if vs}
 
     emps_com_comp = set((c[0], c[1]) for c in C_RAW)
@@ -1368,22 +1276,23 @@ def apply_estimativa_distribuicao(E_RAW, C_RAW):
         tip_list = [t.strip() for t in str(tip_decl).split(';') if t.strip() and t.strip() != '—']
 
         if not tip_list:
-            # 5.4: sem tipologia — 1 planta "—" sem área
-            new_entries.append((inc, emp, '—', '', None, total, total, None, None, None,
+            # 5.4: sem tipologia
+            new_entries.append((inc, emp, '—', total, None, None, None, None, None,
                                 'estimativa_distribuição_sem_tipologia'))
             log.append(f"  [5.4] {inc} | {emp}: 1 entry '—' Total={total}")
         elif len(tip_list) == 1:
-            # 5.1: mono-tipologia — 1 planta com área média declarada ou mediana
+            # 5.1: mono-tipologia
             t = tip_list[0]
             if a_min and a_max:
-                area = (a_min + a_max) / 2
+                am, ax = a_min, a_max
             else:
-                area = median_area.get(t)
-            new_entries.append((inc, emp, t, '', area, total, total, None, None, None,
+                med = median_area.get(t)
+                am = ax = med
+            new_entries.append((inc, emp, t, total, am, ax, None, None, None,
                                 'estimativa_distribuição_mono'))
-            log.append(f"  [5.1] {inc} | {emp}: 1 entry {t} Total={total} área={area}")
+            log.append(f"  [5.1] {inc} | {emp}: 1 entry {t} Total={total} área={am}-{ax}")
         else:
-            # 5.2 ou 5.3 — 1 planta por tipologia com distribuição uniforme
+            # 5.2 ou 5.3
             tip_sorted = sorted(tip_list, key=lambda t: TIP_ORDER.index(t) if t in TIP_ORDER else 99)
             n = len(tip_sorted)
             base = total // n
@@ -1400,14 +1309,13 @@ def apply_estimativa_distribuicao(E_RAW, C_RAW):
                     else: area_per_tip[t] = median_area.get(t, (a_min + a_max) / 2)
                 origem = 'estimativa_distribuição_multi_com_area'
             else:
-                # 5.3 sem área: mediana da carteira
+                # 5.3 sem área
                 area_per_tip = {t: median_area.get(t) for t in tip_sorted}
                 origem = 'estimativa_distribuição_multi_sem_area'
 
             for t, u in zip(tip_sorted, unids):
                 a = area_per_tip.get(t)
-                # 1 planta por tipologia — Total_planta = u, Disp = u
-                new_entries.append((inc, emp, t, '', a, u, u, None, None, None, origem))
+                new_entries.append((inc, emp, t, u, a, a, None, None, None, origem))
             log.append(f"  [{'5.2' if tem_area else '5.3'}] {inc} | {emp}: {n} tipologias "
                        f"({'+'.join(f'{u}{t}' for u,t in zip(unids,tip_sorted))}) origem={origem}")
 
@@ -1429,7 +1337,6 @@ C_RAW = list(C_RAW)
 E_RAW, C_RAW = consolidate_multi_torre(E_RAW, C_RAW)
 EST_NEW, BLOQUEADOS = apply_estimativa_distribuicao(E_RAW, C_RAW)
 TOTAL_TIP_DICT = compute_total_per_tipologia(E_RAW, C_RAW)
-TOTAL_PLANTA_DICT = compute_total_planta(E_RAW, C_RAW, TOTAL_TIP_DICT)
 
 # ═══════════════════════════════════════════════════════════════
 # CÁLCULOS AUTOMÁTICOS (ver §3 do PADRAO.md)
@@ -1495,7 +1402,7 @@ for entry in E_RAW:
     total = entry_l[6]
     estoque_atual = entry_l[17]
     origem_total = entry_l[24]
-    soma_comp = sum((c[6] or 0) for c in C_RAW if c[0] == inc and c[1] == emp)  # v7.0: c[6] = Disp (era c[3] na v6.2)
+    soma_comp = sum(c[3] for c in C_RAW if c[0] == inc and c[1] == emp)
 
     if estoque_atual is not None:
         # Já preenchido manualmente — manter, marcar origem
@@ -1817,9 +1724,10 @@ ft2.alignment = Alignment(horizontal="right",vertical="center")
 # ABA 3 — COMPOSIÇÃO (v8.0+) — 1 linha por (empreendimento, tipologia)
 # ═══════════════════════════════════════════════════════════════
 ws3 = wb.create_sheet("Composição")
-N_COLS_C = 12  # v7.0: schema 11→12 col (+ Planta, Área única, Total planta separado de Disp)
-HEADERS_C = ["Incorporadora", "Empreendimento", "Tipologia", "Planta",
-             "Área (m²)", "Total tipologia", "Total planta", "Disponíveis",
+N_COLS_C = 11  # v6.2: +Total tipologia
+HEADERS_C = ["Incorporadora", "Empreendimento", "Tipologia",
+             "Total tipologia", "Disponíveis",  # v6.2: schema 10→11 col
+             "Área mín (m²)", "Área máx (m²)",
              "Ticket mín (R$)", "Ticket máx (R$)",
              "R$/m² médio", "Origem"]
 
@@ -1846,39 +1754,22 @@ for j, h in enumerate(HEADERS_C):
 ws3.row_dimensions[5].height = 28
 
 TIPO_ORDER_C = ["Studio", "1D", "2D", "3D", "4D", "Lote"]
-# v7.0: ordenar por (inc, emp, tipologia, area) — plantas dentro da mesma tipologia ordenadas por área
-C_RAW_SORTED = sorted(
-    C_RAW,
-    key=lambda r: (
-        r[0], r[1],
-        TIPO_ORDER_C.index(r[2]) if r[2] in TIPO_ORDER_C else 99,
-        r[4] if r[4] is not None else 999,  # área asc
-        r[3] or '',  # label asc (desempate)
-    )
-)
+C_RAW_SORTED = sorted(C_RAW, key=lambda r: (r[0], r[1], TIPO_ORDER_C.index(r[2]) if r[2] in TIPO_ORDER_C else 99))
 
 formats_c = [None]*N_COLS_C
-# Schema xlsx v7.0: [Inc, Emp, Tip, Planta, Área, Total tipologia, Total planta, Disp, Tk_min, Tk_max, R$/m², Origem]
-formats_c[4] = '0.00" m²"'        # Área
-formats_c[5] = formats_c[6] = formats_c[7] = '0'  # Total tip + Total planta + Disp
-formats_c[8] = formats_c[9] = formats_c[10] = 'R$ #,##0'
+formats_c[3] = formats_c[4] = '0'  # Total tipologia + Disponíveis
+formats_c[5] = formats_c[6] = '0.00" m²"'
+formats_c[7] = formats_c[8] = formats_c[9] = 'R$ #,##0'
 
-# v7.0: expand row insere "Total tipologia" (calculado em runtime) entre Planta+Área e Total planta
-def expand_c_row_v70(row):
-    """Schema in (12 col C_RAW): (Inc, Emp, Tip, Planta, Area, Total_planta_decl, Disp, t_min, t_max, rs_m2, origem)
-    Schema out (12 col xlsx):  [Inc, Emp, Tip, Planta, Área, Total_tip, Total_planta, Disp, t_min, t_max, rs_m2, origem_rev]
-    Total_tipologia vem do TOTAL_TIP_DICT (Σ Total_planta runtime + pro-rata por tipologia).
-    Total_planta vem do TOTAL_PLANTA_DICT (Σ planta dentro da tip = Total_tip por construção).
-    """
-    inc, emp, tip, planta, area, total_planta_decl, disp, t_min, t_max, rs_m2, origem = row
-    total_tip, origem_revisada = TOTAL_TIP_DICT.get((inc, emp, tip), (None, origem))
-    area_round = round(area, 1) if area is not None else None
-    plant_key = (inc, emp, tip, planta or '', area_round)
-    total_planta_render = TOTAL_PLANTA_DICT.get(plant_key, total_planta_decl)
-    return (inc, emp, tip, planta or '', area, total_tip, total_planta_render, disp,
-            t_min, t_max, rs_m2, origem_revisada)
+# v6.2: rebuild C_RAW_SORTED com 11 col: insere Total tipologia entre Tipologia (idx 2) e Disponíveis (idx 3 antigo)
+def expand_c_row_v62(row):
+    inc, emp, tip = row[0], row[1], row[2]
+    disp = row[3]
+    rest = row[4:]  # area_min, area_max, ticket_min, ticket_max, rsm2, origem
+    total_tip, origem_revisada = TOTAL_TIP_DICT.get((inc, emp, tip), (None, row[9]))
+    return (inc, emp, tip, total_tip, disp) + rest[:-1] + (origem_revisada,)
 
-C_RAW_EXPANDED = [expand_c_row_v70(r) for r in C_RAW_SORTED]
+C_RAW_EXPANDED = [expand_c_row_v62(r) for r in C_RAW_SORTED]
 
 for i, row_data in enumerate(C_RAW_EXPANDED):
     row_idx = 6+i
@@ -1888,24 +1779,23 @@ for i, row_data in enumerate(C_RAW_EXPANDED):
         c = ws3.cell(row=row_idx, column=1+j, value=v)
         c.font = font(DOM_GRAY_DARK, 10)
         c.fill = fill(row_fill)
-        c.alignment = center() if j not in (0,1,11) else left()
+        c.alignment = center() if j not in (0,1,10) else left()
         c.border = border_thin()
         if formats_c[j]:
             c.number_format = formats_c[j]
-    ws3.cell(row=row_idx, column=2).font = font(DOM_GRAY_DARK, 10, bold=True)  # Empreend bold
-    ws3.cell(row=row_idx, column=3).font = font(DOM_GOLD_DARK, 10, bold=True)  # Tipologia gold (agrupador)
-    ws3.cell(row=row_idx, column=4).font = font(DOM_GRAY_DARK, 10, italic=True)  # Planta itálico
-    ws3.cell(row=row_idx, column=6).font = font(DOM_GOLD_DARK, 10, bold=True)  # Total tipologia destaque
+    ws3.cell(row=row_idx, column=2).font = font(DOM_GRAY_DARK, 10, bold=True)
+    ws3.cell(row=row_idx, column=3).font = font(DOM_GOLD_DARK, 10, bold=True)
+    ws3.cell(row=row_idx, column=4).font = font(DOM_GOLD_DARK, 10, bold=True)  # Total tipologia destaque
     # Marca visualmente entries de origem estimativa_*
-    origem_val = row_data[11] or ''
+    origem_val = row_data[10] or ''
     if origem_val.startswith('estimativa_distribuição') or origem_val.endswith('_pro_rata'):
         for j in range(N_COLS_C):
             ws3.cell(row=row_idx, column=1+j).font = font(DOM_GRAY_MID, 10, italic=True)
 
 total_row_c = 6 + len(C_RAW_SORTED)
-widths_c = [18, 26, 10, 16, 11, 12, 12, 11, 14, 14, 12, 18]
+widths_c = [18, 28, 12, 11, 13, 13, 16, 16, 14, 18]
 set_column_widths(ws3, widths_c)
-ws3.freeze_panes = "D6"
+ws3.freeze_panes = "C6"
 ws3.auto_filter.ref = f"A5:{get_column_letter(N_COLS_C)}{total_row_c-1}"
 
 ws3.merge_cells(start_row=total_row_c, start_column=1, end_row=total_row_c, end_column=N_COLS_C)
@@ -1927,7 +1817,6 @@ ft3.alignment = Alignment(horizontal="right", vertical="center")
 # ═══════════════════════════════════════════════════════════════
 
 # §3.6 — soma C_RAW vs total quando origem=tabela_local_completa (threshold 5%)
-# v7.0: schema C_RAW idx 5 = Total_planta (era idx 3 = disp na v6.2)
 THRESHOLD_PCT = 5.0
 warnings_36 = []
 for entry in E_RAW:
@@ -1936,23 +1825,20 @@ for entry in E_RAW:
     origem_total = entry[24] if len(entry) > 24 else None
     if origem_total != 'tabela_local_completa' or total is None:
         continue
-    soma_comp = sum((c[5] or 0) for c in C_RAW if c[0] == inc and c[1] == emp)
+    soma_comp = sum(c[3] for c in C_RAW if c[0] == inc and c[1] == emp)
     if soma_comp == 0:
         continue
     diff_pct = abs(total - soma_comp) / total * 100
     if diff_pct > THRESHOLD_PCT:
         warnings_36.append(
-            f"  WARN {inc} | {emp}: total={total} mas Σ C_RAW.Total_planta={soma_comp} ({diff_pct:.1f}% diff)"
+            f"  WARN {inc} | {emp}: total={total} mas Σ C_RAW={soma_comp} ({diff_pct:.1f}% diff)"
         )
 
-# §3.7.C.1 (v7.0) — Anti-duplicação: (inc, emp, tipologia, planta_label, area_round) único em C_RAW
+# §3.7.C.1 — Anti-duplicação: (inc, emp, tipologia) único em C_RAW
 from collections import Counter
-def _planta_dup_key(c):
-    area_round = round(c[4], 1) if c[4] is not None else None
-    return (c[0], c[1], c[2], (c[3] or ''), area_round)
-keys_comp = Counter(_planta_dup_key(c) for c in C_RAW)
-errors_dup = [f"  ERROR duplicado: {inc} | {emp} | {tipo} | planta='{p}' area={a}m² aparece {n}x"
-              for (inc, emp, tipo, p, a), n in keys_comp.items() if n > 1]
+keys_comp = Counter((c[0], c[1], c[2]) for c in C_RAW)
+errors_dup = [f"  ERROR duplicado: {inc} | {emp} | {tipo} aparece {n}x"
+              for (inc, emp, tipo), n in keys_comp.items() if n > 1]
 
 # §3.7.C.2 — Heurística vs Tipologia declarada
 # Se empreend é mono-tipologia E_RAW (Tipologia tem 1 valor sem ;), comparar com C_RAW
@@ -2067,31 +1953,6 @@ if warnings_374_estimativa:
         print(w)
 print(f"\n✓ §3.7.C.4 — invariante Σ=Total fechada exato: {len(ok_374)}/{len(set(sum_total_tip_emp.keys()))} empreend.")
 
-# §3.7.C.6 — INVARIANTE v7.0: Σ Total_planta = Total tipologia por (inc, emp, tip)
-# Validação NOVA v7.0: garante que a granularidade de planta fecha com a tipologia
-warnings_376 = []
-ok_376 = []
-from collections import defaultdict as _dd_376
-sum_planta_por_tip = _dd_376(int)
-for plant_key, tp in TOTAL_PLANTA_DICT.items():
-    inc_, emp_, tip_, _, _ = plant_key
-    if tp is not None:
-        sum_planta_por_tip[(inc_, emp_, tip_)] += tp
-for key, total_tip_v in TOTAL_TIP_DICT.items():
-    total_tip = total_tip_v[0]
-    if total_tip is None: continue
-    soma = sum_planta_por_tip.get(key, 0)
-    if soma == total_tip:
-        ok_376.append(key)
-    else:
-        inc_, emp_, tip_ = key
-        warnings_376.append(f"  WARN {inc_} | {emp_} | {tip_}: Total tip={total_tip} mas Σ Total_planta={soma} (∆={total_tip - soma:+d})")
-
-_print_section("VALIDAÇÃO §3.7.C.6 — invariante v7.0: Σ Total_planta = Total tipologia",
-               warnings_376, prefix='⚠ WARN')
-total_keys_v7 = len([k for k,v in TOTAL_TIP_DICT.items() if v[0] is not None])
-print(f"✓ §3.7.C.6 — invariante Σ planta = tipologia fechada exato: {len(ok_376)}/{total_keys_v7} (inc, emp, tip)")
-
 # §3.9 — Validação Mês de Lançamento: estimativa_T-36 desatualizada (v9.5+)
 warnings_39 = []
 from datetime import datetime as _dt
@@ -2126,8 +1987,8 @@ for entry in E_RAW:
 
 _print_section("VALIDAÇÃO §3.10 — Bairro/Região", warnings_310)
 
-if not (warnings_36 or errors_dup or warnings_heur or warnings_cov or warnings_39 or warnings_310 or warnings_376):
-    print("✓ Validações §3.6 + §3.7 + §3.9 + §3.10 (incl. §3.7.C.6 v7.0): todas passaram")
+if not (warnings_36 or errors_dup or warnings_heur or warnings_cov or warnings_39 or warnings_310):
+    print("✓ Validações §3.6 + §3.7 + §3.9 + §3.10: todas passaram")
 
 # ═══════════════════════════════════════════════════════════════
 # SALVAR — usa a pasta NFD (a real do usuário, com .DS_Store) para
@@ -2149,8 +2010,6 @@ wb.save(OUT)
 print(f"✓ Salvo: {OUT}")
 print(f"  Empreendimentos: {len(E_PROCESSED)}")
 print(f"  Incorporadoras:  {len(I_ROWS)} (ativas: {sum(1 for r in I_ROWS if r[1]>0)}, sem material: {sum(1 for r in I_ROWS if r[1]==0)})")
-sum_planta_render = sum((tp or 0) for tp in TOTAL_PLANTA_DICT.values())
-n_emp_comp = len(set((c[0], c[1]) for c in C_RAW))
-print(f"  Composição:      {len(C_RAW)} linhas / {sum_planta_render} unidades (Total planta render) / {sum((r[6] or 0) for r in C_RAW)} disp / {n_emp_comp} empreend.")
+print(f"  Composição:      {len(C_RAW)} linhas / {sum(r[3] for r in C_RAW)} unidades extraídas")
 print(f"  VGV total mapeado: R$ {sum(r[16] for r in E_PROCESSED if r[16]):,.0f}")
 print(f"  Preço médio calculado para: {sum(1 for r in E_PROCESSED if r[15])} de {len(E_PROCESSED)} empreend.")

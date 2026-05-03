@@ -1,0 +1,10 @@
+incorporadora: Treviso
+empreendimento: Altos do São Francisco
+fonte: {origem_principal: tabela_local}
+plantas:
+- {tip: 2D, planta: '', area: 57.9, total: 19, disp: 19, t_min: 495808.64, t_max: 668263.82,
+  rs_m2: 9864, origem: tabela_local}
+- {tip: 2D, planta: '', area: 67.2, total: 6, disp: 6, t_min: 646706.92, t_max: 747305.77,
+  rs_m2: 10309, origem: tabela_local}
+notas: 'Re-parsed v11.1 (R1/2026-05-03): 25 unid extraídas → 2 plantas (bucketização
+  §3.7 v7.0)'

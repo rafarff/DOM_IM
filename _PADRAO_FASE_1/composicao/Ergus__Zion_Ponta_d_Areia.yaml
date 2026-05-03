@@ -1,0 +1,6 @@
+incorporadora: Ergus
+empreendimento: Zion Ponta d'Areia
+fonte: {origem_principal: tabela_local_imagem}
+plantas:
+- {tip: 4D, planta: '', area: 148.55, total: 10, disp: 10, t_min: 2170378, t_max: 2556972,
+  rs_m2: 15500, origem: tabela_local_imagem}

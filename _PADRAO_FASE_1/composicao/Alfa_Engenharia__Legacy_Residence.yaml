@@ -1,0 +1,8 @@
+incorporadora: Alfa Engenharia
+empreendimento: Legacy Residence
+fonte: {origem_principal: informado_manualmente}
+plantas:
+- {tip: 4D, planta: Planta 175m², area: 175.0, total: 15, disp: 15, t_min: null, t_max: null,
+  rs_m2: null, origem: informado_manualmente}
+- {tip: 4D, planta: Planta 185m², area: 185.0, total: 15, disp: 15, t_min: null, t_max: null,
+  rs_m2: null, origem: informado_manualmente}

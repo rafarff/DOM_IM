@@ -1,0 +1,10 @@
+incorporadora: Berg Engenharia
+empreendimento: Mount Solaro
+fonte: {origem_principal: site_oficial}
+plantas:
+- {tip: 2D, planta: Loft 68m², area: 68.0, total: 20, disp: 20, t_min: 907200, t_max: 907200,
+  rs_m2: 13341, origem: site_oficial}
+- {tip: 2D, planta: Apt 72m², area: 72.0, total: 10, disp: 10, t_min: 1100000, t_max: 1100000,
+  rs_m2: 15278, origem: site_oficial}
+- {tip: 3D, planta: Apt 104m², area: 104.0, total: 20, disp: 20, t_min: 1500000, t_max: 1700000,
+  rs_m2: 15384, origem: site_oficial}

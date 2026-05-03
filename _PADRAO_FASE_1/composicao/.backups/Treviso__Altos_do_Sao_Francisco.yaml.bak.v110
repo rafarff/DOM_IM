@@ -1,0 +1,6 @@
+incorporadora: Treviso
+empreendimento: Altos do São Francisco
+fonte: {origem_principal: tabela_local}
+plantas:
+- {tip: 2D, planta: '', area: 62.54, total: 26, disp: 26, t_min: 495809, t_max: 761677,
+  rs_m2: 10024, origem: tabela_local}

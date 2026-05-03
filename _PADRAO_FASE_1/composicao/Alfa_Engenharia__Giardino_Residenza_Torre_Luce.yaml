@@ -1,0 +1,12 @@
+incorporadora: Alfa Engenharia
+empreendimento: Giardino Residenza Torre Luce
+fonte: {origem_principal: tabela_local}
+plantas:
+- {tip: 3D, planta: '', area: 93.6, total: 1, disp: 1, t_min: 1453540.39, t_max: 1453540.39,
+  rs_m2: 15526, origem: tabela_local}
+- {tip: 3D, planta: '', area: 99.1, total: 2, disp: 2, t_min: 1442167.62, t_max: 1486200.0,
+  rs_m2: 14778, origem: tabela_local}
+- {tip: 3D, planta: '', area: 101.3, total: 2, disp: 2, t_min: 1587366.25, t_max: 1595303.08,
+  rs_m2: 15708, origem: tabela_local}
+notas: 'Re-parsed v11.1 (R1/2026-05-03): 5 unid extraídas → 3 plantas (bucketização
+  §3.7 v7.0)'

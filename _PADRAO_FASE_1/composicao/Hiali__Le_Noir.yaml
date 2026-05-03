@@ -1,0 +1,8 @@
+incorporadora: Hiali
+empreendimento: Le Noir
+fonte: {origem_principal: tabela_local}
+plantas:
+- {tip: 1D, planta: '', area: 49.74, total: 1, disp: 1, t_min: 710000, t_max: 710000,
+  rs_m2: 14274, origem: tabela_local}
+- {tip: 2D, planta: '', area: 60.77, total: 3, disp: 3, t_min: 800000, t_max: 870000,
+  rs_m2: 13682, origem: tabela_local}

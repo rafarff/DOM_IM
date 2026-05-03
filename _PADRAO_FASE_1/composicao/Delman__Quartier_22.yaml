@@ -1,0 +1,6 @@
+incorporadora: Delman
+empreendimento: Quartier 22
+fonte: {origem_principal: tabela_local}
+plantas:
+- {tip: 3D, planta: '', area: 165.0, total: 1, disp: 1, t_min: 3000000, t_max: 3000000,
+  rs_m2: 18182, origem: tabela_local}

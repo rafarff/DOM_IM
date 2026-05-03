@@ -1,0 +1,10 @@
+incorporadora: Delman
+empreendimento: Studio Design 7 Península
+fonte: {origem_principal: tabela_local}
+plantas:
+- {tip: 1D, planta: '', area: 42.95, total: 13, disp: 13, t_min: 710160, t_max: 740727,
+  rs_m2: 16813, origem: tabela_local}
+- {tip: 2D, planta: '', area: 63.44, total: 17, disp: 17, t_min: 1004013, t_max: 1146600,
+  rs_m2: 16264, origem: tabela_local}
+- {tip: 3D, planta: '', area: 88.78, total: 1, disp: 1, t_min: 1553650, t_max: 1553650,
+  rs_m2: 17500, origem: tabela_local}

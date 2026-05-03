@@ -1,0 +1,6 @@
+incorporadora: Treviso
+empreendimento: Vernazza Torre Sul
+fonte: {origem_principal: tabela_local}
+plantas:
+- {tip: 3D, planta: '', area: 89.04, total: 26, disp: 26, t_min: 1277584, t_max: 1586363,
+  rs_m2: 15599, origem: tabela_local}

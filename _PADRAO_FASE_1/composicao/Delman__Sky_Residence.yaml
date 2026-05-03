@@ -1,0 +1,6 @@
+incorporadora: Delman
+empreendimento: Sky Residence
+fonte: {origem_principal: tabela_local}
+plantas:
+- {tip: 4D, planta: '', area: 246.69, total: 1, disp: 1, t_min: 4700000, t_max: 4700000,
+  rs_m2: 19052, origem: tabela_local}

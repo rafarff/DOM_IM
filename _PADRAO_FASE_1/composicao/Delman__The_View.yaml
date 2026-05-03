@@ -1,0 +1,32 @@
+incorporadora: Delman
+empreendimento: The View
+fonte: {origem_principal: tabela_local}
+plantas:
+- {tip: Studio, planta: '', area: 36.0, total: 24, disp: 24, t_min: 567080.92, t_max: 634131.5,
+  rs_m2: 16774, origem: tabela_local}
+- {tip: Studio, planta: '', area: 36.5, total: 4, disp: 4, t_min: 539968.6, t_max: 640468.6,
+  rs_m2: 16697, origem: tabela_local}
+- {tip: 1D, planta: '', area: 42.5, total: 12, disp: 12, t_min: 630255.48, t_max: 730755.48,
+  rs_m2: 15987, origem: tabela_local}
+- {tip: 1D, planta: '', area: 43.6, total: 11, disp: 11, t_min: 648345.44, t_max: 748845.44,
+  rs_m2: 15965, origem: tabela_local}
+- {tip: 1D, planta: '', area: 44.3, total: 2, disp: 2, t_min: 682110.71, t_max: 689610.71,
+  rs_m2: 15475, origem: tabela_local}
+- {tip: 1D, planta: '', area: 54.1, total: 1, disp: 1, t_min: 959720.69, t_max: 959720.69,
+  rs_m2: 17753, origem: tabela_local}
+- {tip: 2D, planta: '', area: 68.9, total: 3, disp: 3, t_min: 1062210.05, t_max: 1089210.05,
+  rs_m2: 15632, origem: tabela_local}
+- {tip: 2D, planta: '', area: 69.6, total: 9, disp: 9, t_min: 1073939.31, t_max: 1223939.31,
+  rs_m2: 16474, origem: tabela_local}
+- {tip: 2D, planta: '', area: 72.1, total: 1, disp: 1, t_min: 1279982.65, t_max: 1279982.65,
+  rs_m2: 17753, origem: tabela_local}
+- {tip: 2D, planta: '', area: 72.5, total: 1, disp: 1, t_min: 1278937.7, t_max: 1278937.7,
+  rs_m2: 17641, origem: tabela_local}
+- {tip: 2D, planta: '', area: 74.9, total: 1, disp: 1, t_min: 1355299.8, t_max: 1355299.8,
+  rs_m2: 18090, origem: tabela_local}
+- {tip: 3D, planta: '', area: 80.7, total: 1, disp: 1, t_min: 1433012.47, t_max: 1433012.47,
+  rs_m2: 17753, origem: tabela_local}
+- {tip: 3D, planta: '', area: 85.9, total: 23, disp: 23, t_min: 1354011.21, t_max: 1504011.21,
+  rs_m2: 16588, origem: tabela_local}
+notas: 'Re-parsed v11.1 (R1/2026-05-03): 93 unid extraídas → 13 plantas (bucketização
+  §3.7 v7.0)'

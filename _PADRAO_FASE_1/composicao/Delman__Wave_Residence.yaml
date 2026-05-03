@@ -1,0 +1,6 @@
+incorporadora: Delman
+empreendimento: Wave Residence
+fonte: {origem_principal: tabela_local}
+plantas:
+- {tip: 4D, planta: '', area: 293.69, total: 5, disp: 5, t_min: 5581808, t_max: 5828289,
+  rs_m2: 19360, origem: tabela_local}

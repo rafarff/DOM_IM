@@ -1,0 +1,6 @@
+incorporadora: Mota Machado
+empreendimento: Al Mare Tirreno
+fonte: {origem_principal: tabela_local}
+plantas:
+- {tip: 4D, planta: '', area: 215.0, total: 1, disp: 1, t_min: 3025856, t_max: 3025856,
+  rs_m2: 14074, origem: tabela_local}

@@ -3,26 +3,29 @@
 > **Para Claude (toda sessão):** este é o **primeiro arquivo a ler** antes de qualquer ação. Confirma a base de trabalho. Se a invariante 0.3 do PADRAO falhar contra os números aqui, **PARAR**.
 
 **Última atualização:** 03/05/2026
-**Versão Planilha vigente:** v10.9
-**Versão PADRAO vigente:** v6.2
-**Versão script `gerar_planilha.py`:** 10.9 (DATE_STR: 03/05/2026)
+**Versão Planilha vigente:** v11.1
+**Versão PADRAO vigente:** v7.0
+**Versão script `gerar_planilha.py`:** 11.1 (DATE_STR: 03/05/2026)
 
 ---
 
-## Snapshot da carteira (v10.9)
+## Snapshot da carteira (v11.1)
 
 | Métrica | Valor |
 |---|---:|
-| Aba Empreendimentos | **44 linhas** ← 46→44 após consolidação multi-torre §3.7.D-A v10.6 |
-| Aba Incorporadoras | **16 linhas** |
-| Aba Composição | **49 linhas / 1.351 unidades** ← +1 vs v10.8 (Legacy 30u 4D 175-185m²) |
-| Aba Empreendimentos schema | **27 colunas** (sem mudança v10.9) |
-| Aba Composição schema | **11 colunas (v6.2)** |
+| Aba Empreendimentos | **44 linhas** (sem mudança vs v10.9) |
+| Aba Incorporadoras | **16 linhas** (em rota de eliminação — backlog R2) |
+| Aba Composição | **78 linhas / 2.246 unidades / 34 empreend.** ← granularidade de PLANTA refinada (era 53 em v11.0; +25 plantas pelos 6 re-parsed) |
+| Fonte de C_RAW | **29 arquivos YAML** em `composicao/<inc>__<emp>.yaml` (R1 done — não é mais hardcoded) |
+| Aba Empreendimentos schema | **27 colunas** (sem mudança) |
+| Aba Composição schema | **12 colunas (v7.0)** ← +1 vs v6.2 (Planta + Área única + Total planta separado de Disp) |
 | Drift script ↔ planilha | **0** ✅ |
-| VGV total mapeado | **R$ 2,52 bi** (sem mudança vs v10.8 — Legacy entrou sem ticket calculável; aguarda tabela comercial Alfa) |
-| Cobertura Composição | **34/44 empreend. = 77%** ← +1 vs v10.8 (Legacy Residence) |
-| **Invariante v6.2 Σ Total tip = E_RAW.Total** | **30/30 fechado exato** ✅ |
-| Bloqueados sem Total | **10 empreend.** → `pendencias_TOTAL.md` (-1 vs v10.8) |
+| VGV total mapeado | **R$ 2,52 bi** (sem mudança — ajuste de granularidade não muda VGV) |
+| Cobertura Composição | **34/44 empreend. = 77%** (mantida vs v10.9) |
+| **Invariante v6.2 Σ Total tip = E_RAW.Total** | **30/34 fechado exato** ⚠ 4 parciais (Vila Coimbra, Le Noir, Bossa, Reserva SM) |
+| **Invariante v7.0 Σ Total planta = Total tip** | **49/49 fechado exato** ✅ (NOVA — pro-rata fecha por construção) |
+| Bloqueados sem Total | **10 empreend.** → `pendencias_TOTAL.md` (sem mudança) |
+| **Plantas declaradas com label** | **9 plantas** (Renaissance Botticelli/Leonardo, Mount Solaro Loft 68/Apt 72/Apt 104, Dom Ricardo Col 1/2/3, Reserva SM Planta 1/2, Legacy 175m²/185m², ORO Padrão/Cobertura Duplex) |
 
 ### Cobertura por incorporadora (% empreend. com composição detalhada)
 
@@ -73,6 +76,29 @@ cd 00_ESTUDO_CONSOLIDADO/ && ls -1 Planilha_Mestre_Panorama_v*.xlsx | sort -V | 
 - **v8.0** (02/05/2026) — Aba Composição introduzida. Lote 1: 15 linhas / 322 unid.
 - **v8.1** (02/05/2026) — **Lote 2 entregue.** +13 linhas / +209 unid. Cobertura 17% → 39%.
 - **v8.2** (02/05/2026) — **Lote 3 (parcial — Zion via visão multimodal).** +1 linha / +10 unid. Cobertura 39% → 41%.
+
+- **v11.1** (03/05/2026) — **R1 entregue + re-parsing granular dos 6 com range grande.**
+   - **(R1)** C_RAW migrado de hardcoded em Python para 29 arquivos YAML em `composicao/<inc>__<emp>.yaml`. Função `load_c_raw_from_dir()` carrega no startup. Schema 12-col v7.0 idêntico ao v11.0; smoke test confirma output bit-a-bit. Edição de empreend agora é YAML (zero-friction, qualquer editor), não mais Python.
+   - **(Re-parsing)** 6 empreend. com range grande de área dentro da mesma tipologia foram re-parseados unidade-a-unidade via `pdftotext -layout` + parsers (Delman, Treviso Altos, Alfa) + bucketizador `bucketizar_plantas()`:
+     - The View (Delman): 4 entries → **13 plantas** (93 unid parseadas)
+     - Landscape (Delman): 2 → **4 plantas** (51 unid)
+     - Studio Design 7 Península (Delman): 3 → **12 plantas** (32 unid)
+     - Altos do São Francisco (Treviso): 1 → **2 plantas** (25 unid)
+     - Giardino Fiore (Alfa): 1 → **3 plantas** (6 unid — Coluna 01 127m², Coluna 02 128m², Coluna 03 110m² — match exato com book)
+     - Giardino Luce (Alfa): 1 → **3 plantas** (5 unid — Coluna 01 99m², Coluna 02 101m², Coluna 04 93m²)
+   - C_RAW expandido de 53 → **78 linhas** (+25 plantas reais). Total unidades render mantido em 2.246. Invariantes §3.7.C.4 (30/34) e §3.7.C.6 (49/49) preservadas.
+   - **Catálogo de parsers atualizado:** Alfa (parse_alfa) agora trata header "COLUNA NN - YYY,YYm²" pra atribuir área às unidades seguintes (formato Giardino).
+   - Próxima frente backlog: R2 (eliminar aba Incorporadoras) ou R3 (U_RAW unidade-a-unidade) — definir quando voltar.
+
+- **v11.0** (03/05/2026) — **VIRADA ESTRUTURAL §3.7 v7.0 — granularidade de PLANTA.** Decisão Rafael 03/05: "ticket dita absorção mais do que tipologia. Mesma 3D em 100m² vs 125m² tem público-alvo distinto (~R$400k de diferença de ticket = mudança de público)."
+   - **(1) Aba Composição: schema 11 → 12 col.** Entram: `Planta` (label do book quando declarado: Botticelli, Loft 68, Coluna 1) + `Área (m²)` (única, não mais range). Sai: `Área mín/máx`. Total planta separado de Disp. Granularidade vira (empreend × tipologia × planta).
+   - **(2) Invariante de 3 níveis.** Antes: `Σ Total tip = E_RAW.Total`. Agora: `Σ Total planta = Total tipologia` (NOVA §3.7.C.6) + `Σ Total tipologia = E_RAW.Total` (mantida §3.7.C.4). Ortogonalidade §3.6/§3.7 preservada — Total continua âncora.
+   - **(3) Função `bucketizar_plantas()`** nova: agrupa parser output por área (round 1 dec) → 1 entry por planta. Função `compute_total_planta()` nova: pro-rata por planta dentro da tipologia (preserva comportamento v6.2 quando origem é tabela_local parcial).
+   - **(4) Re-extração C_RAW:** 38 entries 10-col → **44 entries 12-col**. Plantas declaradas: Renaissance (Botticelli 82m² / Leonardo 110m²), Mount Solaro (Loft 68 / Apt 72 / Apt 104), Dom Ricardo (Coluna 1 85,75 / Coluna 2 84,96 / Coluna 3 71,92), Reserva São Marcos (Planta 1 / Planta 2), Legacy Residence (Planta 175m² / Planta 185m²), ORO (Padrão 80m² / Cobertura Duplex 160m²). Após estimativa nível 5 + multi-torre: **53 linhas / 2.246 unidades / 34 empreend.**
+   - **(5) build_panorama v8.0.0:** `read_composicao()` lê schema 12-col com fallback v6.2. **Bubble de oferta** vira granular: cada bolha = (bairro × tipologia × planta), Y = Total planta render (oferta), tamanho = nº empreend. Permite leitura "3D 100m² em Calhau é mono-oferta vs 3D 125m² é disputado".
+   - **(6) §3.7.B item 6 NOVO** — bucketização explícita no workflow. Catálogo §3.7.1 mantém os 8 parsers (não mudam — bucketizador opera sobre output deles).
+   - **(7) Validações:** §3.7.C.1 (anti-dup) chave virou (inc, emp, tip, planta_label, area_round). §3.7.C.6 NOVA fecha 49/49. §3.7.C.4 mantida (30/34, 4 parciais não-pro-rata aceitos como WARN). PADRAO bumpa v6.2 → v7.0.
+
 - **v10.9** (03/05/2026) — **+1 destravado manual (Rafael 03/05).** Legacy Residence (Alfa, Península): Total = 30 (2 apto/andar × 15 andares), mono-tipologia 4D em 2 plantas (15u 175m² + 15u 185m²). Áreas E_RAW atualizadas (175-180 → 175-185), origem total = `informado_manualmente`. C_RAW agregada §3.7: 4D 30 unid 175-185m², origem `informado_manualmente`. Convenção Mount Solaro: disp=Total como placeholder (Rafael forneceu apenas product specs, sem info de vendas — Observações flagam isso, lançamento 07/2024 sugere venda parcial). §3.7 nível 5.1 deixa de aplicar a Legacy. Cobertura Composição 33→34/44 = 77%. Invariante 30/30 fechada exato. Bloqueados 11→10. VGV mantido R$ 2,52 bi (tickets Legacy ainda pendentes — entrarão como calculáveis quando tabela comercial chegar). **Pendentes Tier A2 Alfa: restou Connect Península.** Tier A1 Canopus 2 / Tier B 6 / Tier C 1.
 
 - **v10.8** (03/05/2026) — **WEB RESEARCH BATCH (15 bloqueados pesquisados).** +4 destravados completos via web/site oficial: **LIV Residence** (Alfa, 75u mono 3D 90,83-100,23m², site Alfa); **Residencial Ana Vitória** (Castelucci, 30 casas 83m² 2D;3D, site Castelucci); **Mount Solaro** (Berg+Gonçalves, 50u = 20+10+20 multi 2D+3D, site Gonçalves); **Village Prime Eldorado** (Canopus, 400u mono 2D 43,5m² em 5 torres, Imirante 31/10). +7 enriquecidos parciais (tipologia/área obtidas, total ainda falta): Legacy Residence (4D 175-180m²), Reserva Península (4D 127-171m²), Varandas Grand Park (3D 74-87m²), Villa Adagio (2D 48,9m²), Village Reserva II (2D 41m²), Village Del Ville II (2D 42-43m²), Villa di Carpi (3 plantas 2D 49-52m²). +3 correções de bairro: Mount Solaro→Península, Varandas→Calhau, Villa Adagio→Iguaíba. **Achado fora-do-escopo:** Lagoon Residence (Lua Nova) é Santo Amaro do Maranhão (cidade satélite, NÃO Grande SLZ) — flag pra Rafael decidir manter/tirar. Cobertura 27→33/44 = 75%, bloqueados 17→11.

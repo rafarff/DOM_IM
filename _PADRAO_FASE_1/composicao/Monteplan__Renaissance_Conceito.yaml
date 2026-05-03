@@ -1,0 +1,8 @@
+incorporadora: Monteplan
+empreendimento: Renaissance Conceito
+fonte: {origem_principal: tabela_local}
+plantas:
+- {tip: 3D, planta: Botticelli, area: 82.0, total: 15, disp: 15, t_min: 1038621, t_max: 1177759,
+  rs_m2: 13686, origem: tabela_local}
+- {tip: 4D, planta: Leonardo, area: 110.0, total: 7, disp: 7, t_min: 1359410, t_max: 1565192,
+  rs_m2: 13168, origem: tabela_local}

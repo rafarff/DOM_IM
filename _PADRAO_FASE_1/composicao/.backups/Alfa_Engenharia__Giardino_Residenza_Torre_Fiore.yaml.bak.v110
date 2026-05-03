@@ -1,0 +1,6 @@
+incorporadora: Alfa Engenharia
+empreendimento: Giardino Residenza Torre Fiore
+fonte: {origem_principal: tabela_local}
+plantas:
+- {tip: 3D, planta: '', area: 119.57, total: 6, disp: 6, t_min: 1838492, t_max: 2032938,
+  rs_m2: 15373, origem: tabela_local}

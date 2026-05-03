@@ -1,0 +1,12 @@
+incorporadora: Delman
+empreendimento: The View
+fonte: {origem_principal: tabela_local}
+plantas:
+- {tip: Studio, planta: '', area: 36.25, total: 28, disp: 28, t_min: 539969, t_max: 640469,
+  rs_m2: 16763, origem: tabela_local}
+- {tip: 1D, planta: '', area: 48.26, total: 26, disp: 26, t_min: 630255, t_max: 959721,
+  rs_m2: 16006, origem: tabela_local}
+- {tip: 2D, planta: '', area: 71.92, total: 15, disp: 15, t_min: 1062210, t_max: 1355300,
+  rs_m2: 16577, origem: tabela_local}
+- {tip: 3D, planta: '', area: 83.3, total: 24, disp: 24, t_min: 1354011, t_max: 1504011,
+  rs_m2: 16637, origem: tabela_local}

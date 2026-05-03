@@ -1,0 +1,30 @@
+incorporadora: Delman
+empreendimento: Studio Design 7 Península
+fonte: {origem_principal: tabela_local}
+plantas:
+- {tip: 1D, planta: '', area: 42.4, total: 3, disp: 3, t_min: 715712.0, t_max: 729712.0,
+  rs_m2: 17100, origem: tabela_local}
+- {tip: 1D, planta: '', area: 42.9, total: 1, disp: 1, t_min: 725140.23, t_max: 725140.23,
+  rs_m2: 16911, origem: tabela_local}
+- {tip: 1D, planta: '', area: 43.0, total: 8, disp: 8, t_min: 710160.0, t_max: 740726.58,
+  rs_m2: 16681, origem: tabela_local}
+- {tip: 1D, planta: '', area: 43.5, total: 1, disp: 1, t_min: 735625.0, t_max: 735625.0,
+  rs_m2: 16911, origem: tabela_local}
+- {tip: 2D, planta: '', area: 61.1, total: 1, disp: 1, t_min: 1068900.0, t_max: 1068900.0,
+  rs_m2: 17500, origem: tabela_local}
+- {tip: 2D, planta: '', area: 64.3, total: 7, disp: 7, t_min: 1004013.44, t_max: 1052013.44,
+  rs_m2: 15954, origem: tabela_local}
+- {tip: 2D, planta: '', area: 64.4, total: 4, disp: 4, t_min: 1006243.02, t_max: 1021243.02,
+  rs_m2: 15732, origem: tabela_local}
+- {tip: 2D, planta: '', area: 64.5, total: 3, disp: 3, t_min: 1007198.56, t_max: 1055198.56,
+  rs_m2: 15941, origem: tabela_local}
+- {tip: 2D, planta: '', area: 65.4, total: 1, disp: 1, t_min: 1143800.0, t_max: 1143800.0,
+  rs_m2: 17500, origem: tabela_local}
+- {tip: 2D, planta: '', area: 65.5, total: 1, disp: 1, t_min: 1146600.0, t_max: 1146600.0,
+  rs_m2: 17500, origem: tabela_local}
+- {tip: 2D, planta: '', area: 65.8, total: 1, disp: 1, t_min: 1130016.3, t_max: 1130016.3,
+  rs_m2: 17174, origem: tabela_local}
+- {tip: 3D, planta: '', area: 88.8, total: 1, disp: 1, t_min: 1553650.0, t_max: 1553650.0,
+  rs_m2: 17500, origem: tabela_local}
+notas: 'Re-parsed v11.1 (R1/2026-05-03): 32 unid extraídas → 12 plantas (bucketização
+  §3.7 v7.0)'

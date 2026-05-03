@@ -1,0 +1,8 @@
+incorporadora: Mota Machado
+empreendimento: Reserva São Marcos
+fonte: {origem_principal: tabela_local}
+plantas:
+- {tip: 2D, planta: Planta 1, area: 68.12, total: 3, disp: 3, t_min: 977382, t_max: 1316965,
+  rs_m2: 17535, origem: tabela_local}
+- {tip: 4D, planta: Planta 2, area: 103.15, total: 3, disp: 3, t_min: 1467380, t_max: 1869461,
+  rs_m2: 16590, origem: tabela_local}

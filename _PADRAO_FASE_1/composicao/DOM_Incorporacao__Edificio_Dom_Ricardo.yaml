@@ -1,0 +1,10 @@
+incorporadora: DOM Incorporação
+empreendimento: Edifício Dom Ricardo
+fonte: {origem_principal: book}
+plantas:
+- {tip: 2D, planta: Coluna 3, area: 71.92, total: 10, disp: 0, t_min: 690860, t_max: 690860,
+  rs_m2: 9606, origem: book}
+- {tip: 3D, planta: Coluna 2, area: 84.96, total: 10, disp: 0, t_min: 1194374, t_max: 1194374,
+  rs_m2: 14058, origem: book}
+- {tip: 3D, planta: Coluna 1, area: 85.75, total: 10, disp: 0, t_min: 1194374, t_max: 1194374,
+  rs_m2: 13929, origem: book}
