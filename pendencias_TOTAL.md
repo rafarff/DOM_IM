@@ -1,80 +1,78 @@
 # Pendências de TOTAL — Empreendimentos sem Total apurado
 
-> Criado em **03/05/2026** com a planilha **v10.6** e o **PADRAO v6.2**.
-> Documento gerencial: lista os empreendimentos da carteira que **ainda não têm Total apurado** via §3.6 (hierarquia de 7 níveis: memorial → book → tabela_completa → tabela_parcial → numeração → imagens → manual → N/A).
-> Sem Total apurado, **§3.7 não pode ser aplicado** (nem fontes fortes níveis 1–4, nem estimativa nível 5). Esses empreendimentos ficam fora das análises por unidades até que o Total seja apurado.
-
-## Como destravar
-
-Para cada empreendimento abaixo, seguir a hierarquia §3.6:
-
-1. **Memorial de incorporação** (mais forte) — buscar em registro de imóveis ou pedir ao corretor.
-2. **Book oficial** com tabela ou implantação numerada — site, corretor, redes sociais.
-3. **Tabela ABR/2026** ou outra com listagem completa de unidades — corretor, agregador, parceria.
-4. **Imagens de implantação** com numeração (UH 01–NN) — book ou redes.
-5. **Treinamento de corretor** — ele declara o total durante apresentação.
-6. **Informado manualmente** (Rafael) — se já souber.
-7. **N/A** — apenas se nada das opções acima é viável (raro).
-
-Após apurar, atualizar a tupla em `gerar_planilha.py` (col 7 do E_RAW) com:
-- `Total` (int)
-- `Origem total unid.` (col 24, valor do enum §4.7)
-- Observações registrando fonte, data, link
-
-A invariante v6.2 (Σ Composição = Total) destrava automaticamente: se já existir C_RAW para o empreend., o script reconcilia via §3.7.C.4; se não, o nível 5 estimativa é aplicado conforme árvore §3.7.A.1.
-
----
-
-## Lista priorizada (17 empreendimentos)
-
-### Tier 1 — Tipologia conhecida em E_RAW (mais fácil — só falta o Total)
-
-Esses caem direto em §3.7 nível 5 sub-regra 5.1, 5.2 ou 5.3 assim que Total chegar. Priorizar.
-
-| # | Incorporadora | Empreend. | Tipologia E_RAW | Bairro | Sub-regra após Total |
-|---|---|---|---|---|---|
-| 1 | DOM Incorporação | Dom Antônio | 3D | Jardim Eldorado | 5.1 (mono) |
-| 2 | DOM Incorporação | Edifício Dom Ricardo | 2D; 3D | Renascença II | 5.2/5.3 (multi) |
-| 3 | Alfa Engenharia | LIV Residence | 3D | Ponta d'Areia | 5.1 (mono) |
-| 4 | Alfa Engenharia | Legacy Residence | 4D | Península | 5.1 (mono) |
-| 5 | Castelucci | Residencial Ana Vitória | 2D; 3D | Araçagi | 5.2/5.3 (multi) |
-| 6 | Castelucci | Villa di Carpi | 2D | Cohatrac | 5.1 (mono) |
-| 7 | Ergus | Nexus Renascença | Studio; 1D; 2D | Renascença | 5.2/5.3 (multi) |
-| 8 | Treviso | Villagio Treviso | Lote | São Luís (genérico) | 5.1 (loteamento) |
-
-### Tier 2 — Sem tipologia em E_RAW (precisa de mais info — Total + Tipologia)
-
-Esses caem em sub-regra 5.4 (sem tipologia) se chegar só Total, ou direto em fonte forte se chegar tabela completa.
-
-| # | Incorporadora | Empreend. | Bairro |
-|---|---|---|---|
-| 9 | Alfa Engenharia | Connect Península | Península |
-| 10 | Berg Engenharia | Mount Solaro | São Luís (genérico) |
-| 11 | Canopus | Village Reserva II | São Luís (genérico) |
-| 12 | Canopus | Village Prime Eldorado | Jardim Eldorado |
-| 13 | Canopus | Village Del Ville II | São Luís (genérico) |
-| 14 | Sá Cavalcante | Reserva Península | Ponta d'Areia |
-| 15 | Franere | Varandas Grand Park | São Luís (genérico) |
-| 16 | Lua Nova | Villa Adagio | São Luís (genérico) |
-| 17 | Lua Nova | Lagoon Residence | Santo Amaro |
-
----
+> Atualizado em **03/05/2026** com a planilha **v10.8** e o **PADRAO v6.2**.
+> Documento gerencial: lista os empreendimentos da carteira que **ainda não têm Total apurado** via §3.6 (hierarquia de 7 níveis).
 
 ## Status
 
 **Total da carteira:** 44 empreendimentos
-**Com Total apurado:** 27 (61%)
-**Bloqueados aqui:** 17 (39%)
+**Com Total apurado:** 33 (75%) — destravam Composição automaticamente
+**Bloqueados aqui:** 11 (25%)
 
-**Cobertura §3.7 atual (v10.6):**
-- 26 fontes fortes (níveis 1–4, mantidas após consolidação multi-torre)
-- 3 estimativas nível 5 aplicadas automaticamente (Ilha Parque, Golden Green Beach, Cond. Prime Cohama)
-- 17 bloqueados (esta lista)
-
-À medida que os 17 caem da fila, a estimativa nível 5 ou a fonte forte é aplicada automaticamente pelo script — sem intervenção manual no §3.7.
+**Histórico desta lista:**
+- v10.6: 17 bloqueados
+- v10.7: 15 (Dom Antônio + Dom Ricardo destravados pelo Rafael)
+- **v10.8: 11** (LIV, Ana Vitória, Mount Solaro, Village Prime Eldorado destravados via web research)
 
 ---
 
-## Observação importante (PADRAO v6.2)
+## Lista priorizada (11 empreendimentos restantes)
 
-> §3.6 (Total) e §3.7 (Composição) são processos ortogonais. **Total é a âncora.** Composição se conforma ao Total, nunca o contrário. Não criar estimativas de Total a partir de Composição. Se faltar Total, o empreend. fica nesta lista até que uma fonte real seja consultada.
+### Tier A — Pacotes que destravam vários de uma vez (pesquisa concentrada)
+
+#### A1. Pacote Canopus (2 restantes)
+Os 3 lançamentos Canopus 31/10/2025 totalizam **1.487 unidades / R$ 300M VGV** (Imirante). Sabemos: Village Prime Eldorado = 400 unid. Restam 1.087 entre Reserva II e Del Ville II. **Atalho:** 1 contato com comercial Canopus → 2 destravados.
+
+| # | Empreend. | Bairro | Tipologia (já mapeada) | Área | Falta |
+|---|---|---|---|---|---|
+| 1 | **Village Reserva II** | Cohatrac | 2D | 41m² | Total |
+| 2 | **Village Del Ville II** | Iguaíba | 2D | 42-43m² | Total |
+
+#### A2. Alfa Engenharia — Connect Península + Legacy Residence (2 restantes)
+Você mencionou ter book local da **Legacy Residence (375MB)**. Posso atacar via visão multimodal (mesma técnica que destravou Dom Lucas/Dom José/Mount Solaro). Connect Península precisa de book/site Alfa.
+
+| # | Empreend. | Bairro | Tipologia | Área | Falta |
+|---|---|---|---|---|---|
+| 3 | **Legacy Residence** | Península | 4D mono | 175-180m² | Total (book local 375MB disponível) |
+| 4 | **Connect Península** | Península | a confirmar (perfil Housi → Studio/1D) | a confirmar | Total + tipologia |
+
+### Tier B — Empreendimentos individuais (cada um 1 contato)
+
+| # | Empreend. | Inc. | Bairro | Tipologia | Área | Próxima ação |
+|---|---|---|---|---|---|---|
+| 5 | **Reserva Península** | Sá Cavalcante | Península | 4D mono | 127-171m² | Pedir book (lançamento 09/2025, evento 'Casa Sal') |
+| 6 | **Nexus Renascença** | Ergus | Renascença | Studio;1D;2D | 33-94m² | Imprensa Diego Emir / site Ergus |
+| 7 | **Villagio Treviso** | Treviso | a confirmar | Lote (loteamento) | terreno | Site Treviso ou contato comercial |
+| 8 | **Villa di Carpi** | Castelucci | Cohatrac | 2D mono (3 plantas) | 49,36-51,88m² | Site meuvilladicarpi.com.br ou Ziag |
+| 9 | **Varandas Grand Park** | Franere | Calhau | 3D mono | 74-87m² | Pronto pra entrega — ofício direto à Franere/Gafisa |
+| 10 | **Villa Adagio** | Lua Nova | Iguaíba | 2D mono | 48,90m² | Site Lua Nova / IG / vídeo Sinduscon |
+
+### Tier C — Fora do escopo (decidir antes de pesquisar)
+
+| # | Empreend. | Inc. | Status | Decisão pendente |
+|---|---|---|---|---|
+| 11 | **Lagoon Residence** | Lua Nova | **Santo Amaro do Maranhão** (cidade satélite, ~250km de SLZ — porta dos Lençóis) | ⚠ **Manter na carteira ou tirar?** Não é Grande SLZ. |
+
+---
+
+## Como destravar
+
+Para cada empreendimento, seguir a hierarquia §3.6:
+1. **Memorial de incorporação** (mais forte) — registro de imóveis
+2. **Book oficial** com tabela ou implantação numerada — site, corretor
+3. **Tabela ABR/2026** ou outra com listagem completa — corretor, agregador
+4. **Imagens de implantação** com numeração — book ou redes
+5. **Treinamento de corretor**
+6. **Informado manualmente** (Rafael)
+7. **N/A** — apenas se nada das opções acima é viável (raro)
+
+Após apurar, atualizar a tupla em `gerar_planilha.py` (col 7 do E_RAW). A invariante v6.2 destrava automaticamente: Composição é gerada via §3.7 nível 5 (estimativa) ou recebe fonte forte (1-4) conforme o que estiver disponível.
+
+---
+
+## Achados v10.8 que ainda precisam de validação Rafael
+
+1. **Lagoon Residence (Tier C)** — fora do escopo geográfico, decidir manter ou tirar
+2. **Village Prime Eldorado bairro** — endereço CEP "Vila Vicente Fialho", mas marca/posicionamento Canopus = "Eldorado". Mantive `Jardim Eldorado` por origem `imprensa` (Imirante) — confirmar?
+3. **Mount Solaro entries C_RAW** — agreguei 20u 68m² + 10u 72m² em uma única entry "2D" (30u 68-72m²) por simplicidade. Pode-se desagregar em 2 entries 2D distintas se preferir granularidade fina.
+4. **Residencial Ana Vitória "Entregue"** — marquei como `Entregue` pelo lançamento de 01/2018, mas vale confirmar se ainda está em comercialização (ticket parte de R$ 557k indica que sim).

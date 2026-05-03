@@ -19,8 +19,36 @@ from openpyxl.drawing.image import Image as XLImage
 # ═══════════════════════════════════════════════════════════════
 # PARÂMETROS GLOBAIS
 # ═══════════════════════════════════════════════════════════════
-VERSION = "10.6"
+VERSION = "10.8"
 DATE_STR = "03/05/2026"
+# v10.8 — (03/05/2026): WEB RESEARCH BATCH (Rafael 03/05). +4 destravados de Total
+# via fontes oficiais e imprensa, +7 enriquecidos parciais, +3 correções de bairro:
+#   Destravados (Total apurado por web/site_oficial):
+#     - LIV Residence (Alfa): Total=75, mono 3D, área 90,83-100,23m². Site Alfa.
+#     - Residencial Ana Vitória (Castelucci): Total=30 casas 83m² 2D;3D. Site Castelucci.
+#     - Mount Solaro (Berg+Gonçalves): Total=50 (20+10+20), book multi 2D+3D. Site Gonçalves.
+#       Bairro corrigido São Luís→Península.
+#     - Village Prime Eldorado (Canopus): Total=400, mono 2D 43,5m², 5 torres. Imirante 31/10.
+#   Enriquecidos parciais (Total ainda falta mas dados preenchidos):
+#     - Legacy Residence (Alfa): tipologia 4D, área 175-180m².
+#     - Reserva Península (Sá Cav.): tipologia 4D, área 127-171m². Bairro Península.
+#     - Varandas Grand Park (Franere): tipologia 3D, área 74-87m². Bairro Calhau.
+#     - Villa Adagio (Lua Nova): tipologia 2D, área 48,90m². Bairro Iguaíba.
+#     - Village Reserva II (Canopus): tipologia 2D 41m². Bairro Cohatrac.
+#     - Village Del Ville II (Canopus): tipologia 2D 42-43m². Bairro Iguaíba.
+#     - Villa di Carpi (Castelucci): área 49-52m² (3 plantas).
+#   Correções de bairro: Mount Solaro→Península, Varandas→Calhau, Villa Adagio→Iguaíba.
+#   Achado fora-do-escopo: Lagoon Residence (Lua Nova) é em Santo Amaro do Maranhão
+#   (cidade satélite, não SLZ-Grande SLZ) — flag pra Rafael decidir manter ou tirar.
+# Cobertura Composição: 29/44 → ~33/44 = 75%. Bloqueados: 17 → ~13.
+# v10.7 — (03/05/2026): +2 destravados de pendencias_TOTAL.md (Rafael 03/05):
+#   1. Dom Antônio: Total=12 (Rafael), 12 casas iguais 136,2m², mono-tipologia 3D.
+#      §3.7 nível 5.1 aplica automático: 12u 3D 136,2m². Origem total = informado_manualmente.
+#   2. Edifício Dom Ricardo: Total=30 (Rafael), 10 andares × 3 col por andar.
+#      Composição via book (fonte forte nível 3): 10u 2D 71,92m² + 20u 3D 84,96-85,75m².
+#      Book diz "100% VENDIDO" → estoque manual 0.0. Total tipologia declarado em
+#      BOOK_TOTAL_OVERRIDE (compute_total_per_tipologia).
+# Carteira: 27/44 → 29/44 cobertura Composição = 66%. Bloqueados: 17 → 15.
 # v10.6 — (03/05/2026): VIRADA ESTRUTURAL §3.7 v2 (PADRAO v6.2)
 #   1. Consolidação multi-torre (regra A): Vernazza N+S → "Vernazza Residenza";
 #      Giardino Fiore+Luce → "Giardino Residenza". Carteira 46→44.
@@ -358,31 +386,31 @@ def classificar_segmento_por_m2(preco_m2):
 E_RAW = [
     # ═══ ALFA ENGENHARIA ═════════════════════════════════════════════════
     ("Alfa Engenharia","Connect Península",
-     "Endereço não localizado, Ponta d'Areia, São Luís - MA","Península",
+     "Endereço não localizado, Península da Ponta D'Areia, São Luís - MA","Península",
      "Vertical","Alto",
      None,"07/2024","—", None,None,None, "—",
      None,None, None,None,None,
      "N/A","N/A","site_oficial",
-     "https://www.alfaengenharia.com.br","14/04/2026",
-     "Tipologia a confirmar em book/site/Instagram. Tecnologia Housi (gestão de locação) NÃO determina tipologia — descrição anterior corrigida. Sem tabela comercial pública.", None, None, "informado_manualmente"),
+     "https://alfaengenhariama.com.br/lancamentos-imobiliarios/","03/05/2026",
+     "Tipologia detalhada (Alfa Engenharia 03/05/2026): Localizado Península da Ponta D'Areia. Tecnologia Housi integrada (gestão de locação, comunicação com portaria, gestão remota). Apartamentos 'design + eficiência'. **Tipologia + Total não confirmados** — site Alfa lista mas sem ficha técnica pública. Perfil Housi historicamente é Studio/1D.", None, None, "informado_manualmente"),
 
     ("Alfa Engenharia","Legacy Residence",
-     "Endereço não localizado, Ponta d'Areia, São Luís - MA","Península",
+     "Endereço não localizado, Península da Ponta D'Areia, São Luís - MA","Península",
      "Vertical","Luxo",
-     None,"07/2024","10/2027", None,None,None, "4D",
+     None,"07/2024","10/2027", 175,180,None, "4D",
      None,None, None,None,None,
      "N/A","N/A","imprensa",
-     "https://www.alfaengenharia.com.br","14/04/2026",
-     "Tipologia detalhada: 4 suítes. 13 opções de lazer, elevador privativo. Book local (375MB) + site oficial. Sem ticket público.", None, None, "informado_manualmente"),
+     "https://alfaengenhariama.com.br/portfolio/legacy/","03/05/2026",
+     "Tipologia detalhada (site Alfa + Adhemar Carlos + Habittare 03/05/2026): 4 SUÍTES, 175m² e 180m² priv (mono-tipologia 4D), 3 vagas. Elevador com hall privativo, varanda gourmet. Até 14 opções de lazer (quadra multi-esportes, piscinas adulto+infantil, sauna, spa, salão de eventos, gourmet, churrasqueira, jogos, mini market, fitness, crossfit, pet area, playground, kids). Localização Península próxima a restaurantes, escolas, spas. **TOTAL ainda não confirmado** — aguarda book completo (375MB local) ou tabela comercial.", None, None, "informado_manualmente"),
 
     ("Alfa Engenharia","LIV Residence",
      "Rua Aziz Heluy, S/N, Ponta d'Areia, São Luís - MA","Ponta d'Areia",
      "Vertical","Alto",
-     None,"07/2023","—", None,None,None, "3D",
+     75,"07/2023","07/2027", 90.83,100.23,None, "3D",
      None,None, None,None,None,
      "N/A","N/A","site_oficial",
-     "https://www.alfaengenharia.com.br","14/04/2026",
-     "Tipologia detalhada: 3 suítes. 1º Housi do MA. Book local + site Alfa. Sem tabela comercial.", None, None, None),
+     "https://alfaengenhariama.com.br/empreendimento/liv/","03/05/2026",
+     "Tipologia detalhada (site Alfa + Etna Imóveis 03/05/2026): 1 torre × 75 apartamentos × 3 elevadores. 3 PLANTAS: 90,83m² + 91,77m² + 100,23m². Mono-tipologia 3D (3 suítes), 2 vagas. 1º Housi do MA — tecnologia integrada (mini market, lavanderia coletiva, vending, bike share, EV charging, delivery, fechadura digital). Entrega JUL/2027. **TOTAL = 75 confirmado em site oficial Alfa (03/05/2026)**.", "site_oficial", None, "site_oficial"),
 
     # ═══ DELMAN ═════════════════════════════════════════════════════════
     ("Delman","Azimuth",
@@ -553,13 +581,13 @@ E_RAW = [
      "Tipologia detalhada: Aptos 135 m², 2-3 vagas. Tabela ABR/2026 (Berg Engenharia). 4 tipologias (1-4) com áreas similares 135,32 / 135,83 m². Lançamento 04/2024 estimado pela pasta. Conclusão: 30/04/2027 (T-36 perfeito). Tipo 3 (135,32m²): apto 103 disponível R$ 1.932.400. Tipo 4 (135,83m²): apto 104 disponível R$ 1.944.500, demais (204-1004) VENDIDOS = 9 vendidos no Tipo 4 → estoque concentrado em 1 unidade visível. Apto 704 tem 3 vagas (diferencial). Correção INCC. Histórico Berg: Montparnasse, Golden Tower, Peninsula Mall, Monte Olimpo, Monte Fuji.", None, None, None),
 
     ("Berg Engenharia","Mount Solaro",
-     "Endereço não localizado, São Luís - MA","São Luís",
-     "Vertical",None,
-     None,"06/2025 ⚠ T-36","—", None,None,None, "—",
-     None,None, None,None,None,
-     "N/A","N/A","imprensa",
-     "https://www.bergengenharia.com.br","14/04/2026",
-     "SPE Berg + Gonçalves requereu Licença de Instalação (Diário Oficial SL).", None, None, None),
+     "Endereço não localizado, Península da Ponta D'Areia, São Luís - MA","Península",
+     "Vertical","Alto",
+     50,"06/2025 ⚠ T-36","—", 68,104,None, "2D; 3D",
+     907200,None, None,None,None,
+     "site_oficial","N/A","imprensa",
+     "https://goncalvesempreendimentos.com.br/empreendimento/mount-solaro","03/05/2026",
+     "Tipologia detalhada (Ziag + Adhemar Carlos + Gonçalves Empr. 03/05/2026): SPE Berg Engenharia + Gonçalves Empreendimentos, parceria. **TOTAL = 50 unid (20+10+20)**: 20 LOFTS DUPLEX 68m² (2 suítes) + 10 apt 72m² (2 suítes + lavanderia) + 20 apt 104m² (3 suítes + lavanderia). 2 vagas/unid. Inspirado design italiano. Lazer: spa heated, cinema aberto, wine bar, pet care, fitness, coworking. Painéis solares, fechaduras digitais. Ticket parte de R$ 907.200 (entrada 6×R$17k). Bairro corrigido v10.8: era 'São Luís' genérico → Península (book/site).", "site_oficial", None, "site_oficial"),
 
     # ═══ SÁ CAVALCANTE ══════════════════════════════════════════════════
     ("Sá Cavalcante","Ilha Parque Residence",
@@ -607,27 +635,27 @@ E_RAW = [
 
     # ─── CANOPUS — 3 lançamentos out/2025 (Imirante, None, None) ───
     ("Canopus","Village Reserva II",
-     "Endereço não localizado, São Luís - MA","São Luís",
-     "Horizontal",None,
-     None,"10/2025","—", None,None,None, "—",
+     "Avenida do Fio, Reserva do Itapiracó, Novo Cohatrac, Maiobão, Paço do Lumiar - MA","Cohatrac",
+     "Vertical","Popular",
+     None,"10/2025","—", 41,41,None, "2D",
      None,None, None,None,None,
      "N/A","N/A","imprensa",
-     "https://canopusconstrucoes.com.br","14/04/2026",
-     "1 dos 3 novos lançamentos Canopus anunciados em 31/10/2025 (Imirante). SEM tabela ou book mapeado.", None, None, None),
+     "https://www.ziag.com.br/imovel/village-reserva-2","03/05/2026",
+     "Tipologia detalhada (Imirante 31/10/2025 + Ziag + iMeu 03/05/2026): 1 dos 3 lançamentos Canopus 31/10/2025. Apt 41m² 2 quartos, 1 banheiro, cozinha + área de serviço. Vagas: 1 carro OU 1 moto (varia). MCMV. Pacote Canopus 3 lançamentos = 1.487 unid total / R$ 300M VGV (sabido: Prime Eldorado=400). **TOTAL Reserva II individual ainda não confirmado** — esperando comercial Canopus ou release detalhado.", None, None, "imprensa"),
 
     ("Canopus","Village Prime Eldorado",
-     "Endereço não localizado, Jardim Eldorado, São Luís - MA","Jardim Eldorado",
-     "Horizontal",None,
-     None,"10/2025","—", None,None,None, "—",
+     "Rua Eurípedes Bezerra, SN, Vila Vicente Fialho, São Luís - MA","Jardim Eldorado",
+     "Vertical","Popular",
+     400,"07/2025","—", 43.50,43.50,None, "2D",
      None,None, None,None,None,
      "N/A","N/A","imprensa",
-     "https://canopusconstrucoes.com.br","14/04/2026",
-     "Canopus em movimento forte no Eldorado. Fonte: Imirante 31/10/2025.", None, None, None),
+     "https://canopusconstrucoes.com.br/sao-luis/imoveis/condominio-village-prime-eldorado","03/05/2026",
+     "Tipologia detalhada (site Canopus + Imirante 31/10/2025 + 03/05/2026): **TOTAL = 400 unid em 5 torres** (lançado julho 2025). Mono-tipologia 2D 43,50m² (1 suíte + 1 quarto). Vagas variadas (carro/moto). MCMV — segmento Popular. Tickets MCMV típicos. Endereço CEP: Rua Eurípedes Bezerra, Vila Vicente Fialho. Bairro mantido Jardim Eldorado (senso comum/marca: Canopus posicionou como Eldorado mesmo o CEP sendo Vicente Fialho — área entre Cohama e Turu).", "imprensa", None, "imprensa"),
 
     ("Canopus","Village Del Ville II",
-     "Endereço não localizado, São Luís - MA","São Luís",
-     "Horizontal",None,
-     None,"10/2025","—", None,None,None, "—",
+     "Avenida Principal, 35, Iguaíba, Paço do Lumiar - MA","Iguaíba",
+     "Horizontal","Popular",
+     None,"10/2025","—", 42,43,None, "2D",
      None,None, None,None,None,
      "N/A","N/A","imprensa",
      "https://canopusconstrucoes.com.br","14/04/2026",
@@ -644,51 +672,51 @@ E_RAW = [
      "Tipologia detalhada: Casa 124,63 m² (terreno 164-204 m²). Tabela LANÇAMENTO 03/2026. Parceria Castelucci + Grupo Coimbra Alves. ~36-41 casas no Araçagi (numeração até casa 41, várias agrupadas: 02-17, 36-38, 39-40). Área construída UNIFORME 124,63 m². Terreno varia 164-204 m². Ticket à vista R$ 1.019.834 (casa 21) a R$ 1.081.967 (casa 41) — VARIAÇÃO POR TAMANHO DE TERRENO, não por área construída. Avaliação: R$ 915.000. Pagamento: 24m IPCA+0,49% / 36m IPCA+1,49% / Caixa. Lazer privativa não integrada ao preço. Paulo Castelucci (CEO) em entrevista à Mirante FM. Patrocínio Imob Summit 2026.", "book", None, None),
 
     ("Castelucci","Villa di Carpi",
-     "Endereço não localizado, Cohatrac, São Luís - MA","Cohatrac",
-     "Horizontal",None,
-     None,"06/2024 ⚠ T-36","—", 49,52,None, "2D",
-     None,None, None,None,None,
+     "Avenida Antônio Galberto / Av. do Fio, Cohatrac, Paço do Lumiar - MA","Cohatrac",
+     "Vertical","Popular",
+     None,"06/2024 ⚠ T-36","—", 49.36,51.88,None, "2D",
+     219000,None, None,None,None,
      "agregador","N/A","site_oficial",
-     "https://construtoracastelucci.com.br","14/04/2026",
-     "Tipologia detalhada: 2Q. Compactos 49-52m², 2Q. Público Cohatrac/médio. Instagram @construtoracastelucci anunciou como lançamento; preço não divulgado.", None, None, None),
+     "https://meuvilladicarpi.com.br/","03/05/2026",
+     "Tipologia detalhada (Ziag + iMeu + meuvilladicarpi 03/05/2026): 3 PLANTAS 2 quartos: Tipo A 49,36m² (1 semi-suíte) + Tipo B 51,88m² (1 suíte + 2 WCs) + Tipo C 51,76m² (1 WC). Todos com varanda gourmet. Serviços inteligentes (lavanderia, coworking, farmácia, mini market via app). Ticket a partir de R$ 219.000 (renda mín R$ 1.800). Popular/MCMV. Localização Cohatrac/Paço do Lumiar (200m da Maioba). **TOTAL ainda não confirmado** — agregador menciona 3 plantas mas total agregado falta.", None, None, None),
 
     ("Castelucci","Residencial Ana Vitória",
-     "Endereço não localizado, Araçagy, São Luís - MA","Araçagi",
-     "Horizontal",None,
-     None,"01/2018","—", None,None,None, "2D; 3D",
-     None,None, None,None,None,
+     "Rua do Bacuri / Av. Norte, Araçagy, São Luís - MA","Araçagi",
+     "Horizontal","Médio",
+     30,"01/2018","Entregue", 83,83,None, "2D; 3D",
+     557000,557000, None,None,None,
      "site_oficial","N/A","site_oficial",
-     "https://construtoracastelucci.com.br","14/04/2026",
-     "Tipologia detalhada: 2-3Q. Apartamentos 2-3Q Araçagi. Site oficial Castelucci. Bairro=Araçagi (região senso comum, §3.10 v10.5 — Rafael 03/05/2026).", None, None, "informado_manualmente"),
+     "https://www.grupocastelucci.com.br/imoveis/sao-luis/aracagi","03/05/2026",
+     "Tipologia detalhada (site Castelucci + Etna Imóveis 03/05/2026): **TOTAL = 30 casas 83m²** (1 suíte, cozinha americana, 2 vagas, áreas laterais e fundo concretadas). Casas 2 OU 3 quartos (variantes). 100% pavimentado. 2 entradas. Lançamento antigo 01/2018 — provavelmente entregue (status confirmar). Ticket parte de R$ 557.000. Bairro=Araçagi (região senso comum, §3.10 v10.5).", "site_oficial", None, "informado_manualmente"),
 
     # ─── FRANERE — série Gran Park ───
     ("Franere","Varandas Grand Park",
-     "Endereço não localizado, São Luís - MA","São Luís",
-     "Horizontal",None,
-     None,"06/2024 ⚠ T-36","—", None,None,None, "—",
+     "Avenida dos Holandeses, Parque Shalom, Calhau, São Luís - MA","Calhau",
+     "Vertical","Médio",
+     None,"06/2024 ⚠ T-36","Pronto", 74,87,None, "3D",
      None,None, None,None,None,
      "site_oficial","N/A","site_oficial",
-     "https://franere.com.br","14/04/2026",
-     "Franere ('Maior construtora do Maranhão', 40 anos). Série 'Gran Park' tem múltiplos módulos. IG @franereoficial_.", None, None, None),
+     "http://franere.com.br/empreendimentos/varandas-grand-park","03/05/2026",
+     "Tipologia detalhada (site Franere + iMeu + Etna 03/05/2026): Apt 3 quartos 74-87m², 1 suíte + 1 semi-suíte + 1 quarto. Mono-tipologia 3D. Pronto pra entrega ('ready-to-move-in'). Parceria Franere + Gafisa SA. Calhau / Parque Shalom (próximo Av. dos Holandeses). Bairro corrigido v10.8: 'São Luís' genérico → Calhau. **TOTAL ainda não confirmado** — agregador menciona configurações mas total falta.", "site_oficial", None, "site_oficial"),
 
     # ─── LUA NOVA — 2 empreend. ───
     ("Lua Nova","Villa Adagio",
-     "Endereço não localizado, São Luís - MA","São Luís",
-     "Horizontal",None,
-     None,"06/2024 ⚠ T-36","—", None,None,None, "—",
+     "Avenida Principal, 50, Iguaíba, Paço do Lumiar - MA","Iguaíba",
+     "Horizontal","Popular",
+     None,"06/2024 ⚠ T-36","—", 48.90,48.90,None, "2D",
      None,None, None,None,None,
      "site_oficial","N/A","site_oficial",
-     "https://construtoraluanova.com.br","14/04/2026",
-     "Construtora Lua Nova desde 1985. IG @construtoraluanova. Detalhes tipologia/ticket a coletar via book.", None, None, None),
+     "https://construtoraluanova.com.br/detalhe-empreendimento.php?empreendimento=villa-adagio","03/05/2026",
+     "Tipologia detalhada (site Lua Nova + Ziag + iMeu 03/05/2026): Casas 48,90m² construída em terreno 128m² (8x16), 2 quartos com possibilidade de ampliação para 3, sala estar+jantar, banheiro, cozinha, área de serviço. Lotes especiais até 153m². Mono-tipologia 2D. 1 vaga garagem + 40 visitantes, guarita + cerca elétrica. Centro comercial 12 lojas previsto. Lazer: salão festas, quiosques gourmet, piscinas, playground, campo, quadra. Bairro corrigido v10.8: 'São Luís' genérico → Iguaíba. **TOTAL ainda não confirmado** — site mostra projeto mas não nº casas.", "site_oficial", None, "site_oficial"),
 
     ("Lua Nova","Lagoon Residence",
-     "Endereço não localizado, Santo Amaro, São Luís - MA","Santo Amaro",
-     "Vertical",None,
-     None,"04/2026","—", None,None,None, "—",
+     "Santo Amaro do Maranhão - MA (cidade satélite, porta dos Lençóis)","Santo Amaro",
+     "Horizontal","Médio-alto",
+     None,"04/2026","—", None,None,None, "2D; 3D",
      None,None, None,None,None,
      "site_oficial","N/A","site_oficial",
-     "https://construtoraluanova.com.br","14/04/2026",
-     "Residência no Santo Amaro — região com oferta crescente de médio padrão.", None, None, None),
+     "https://lagoonresidence.com.br/","03/05/2026",
+     "Tipologia detalhada (lagoonresidence.com.br + Habittare 03/05/2026): **CIDADE SATÉLITE — Santo Amaro do Maranhão** (porta dos Lençóis), NÃO bairro de SLZ. Bangalôs duplex 2 e 3 quartos + 2 vagas. Resort residencial. SPE 01 Opport Enogueira Lima Ltda (sede SLZ). Construção permit nº 67/2023, registro incorporação 25/09/2023. ⚠ ATENÇÃO ESCOPO: Santo Amaro é fora de SLZ-Grande SLZ — avaliar se mantém na carteira ou tira. **TOTAL não confirmado.**", None, None, "site_oficial"),
 
     ("Lua Nova","Golden Green Beach",
      "Acesso pela Avenida dos Holandeses, São Luís - MA","Araçagi",
@@ -703,11 +731,11 @@ E_RAW = [
     ("DOM Incorporação","Edifício Dom Ricardo",
      "Rua dos Rouxinóis, 8, Renascença II, São Luís - MA","Renascença II",
      "Vertical",None,
-     None,"12/2023","12/2026", 71.92,85.75,None, "2D; 3D",
-     690860,1194374, None,None, None,
+     30,"12/2023","12/2026", 71.92,85.75,None, "2D; 3D",
+     690860,1194374, None,None, 0.0,
      "tabela_local","tabela_local","interno",
      "https://www.imeu.com.br/empreendimento/dom-ricardo-apartamentos-sao-luis-2-a-3-quartos-71-a-85-m/19044585-MIM","03/05/2026",
-     "Tipologia detalhada (BOOK 12/2023 — recebido 03/05/2026): 3 colunas/aptos por andar. Col 1 = 85,75 m² priv (3 SUÍTES + varanda gourmet, 2 vagas). Col 2 = 84,96 m² priv (3 SUÍTES + varanda gourmet, 2 vagas). Col 3 = 71,92 m² priv (1 suíte master + 1 quarto + cozinha americana, 1 vaga). Diferenciais: porcelanato, fechadura digital, tomadas USB-C, infra carregador carro elétrico, energia solar áreas comuns. 13 itens de lazer (piscina, quadra, sauna, brinquedoteca etc.). Memorial R.14/28.859 1º RGI SLZ. Parceria DOM Incorporação + MB Engenharia (sócios). Book diz '100% VENDIDO, OBRAS INICIADAS' (12/2023). Tabela interna SPE (xlsx Apr 2026): 19 contratos VENDIDOS (Status=V). Tickets contratados R$ 690k-1.194k (variam por andar e timing 2023-2025). Entrega DEZ/2026. Bairro book: 'Pracinha da Lagoa' (microregião do Renascença II). Total real depende de # andares — não confirmado em book. [enriquecido v10.2]", "N/A", None, "book"),
+     "Tipologia detalhada (BOOK 12/2023 — recebido 03/05/2026): 3 colunas/aptos por andar × 10 andares = 30 unid (Rafael 03/05/2026). Col 1 = 85,75 m² priv (3 SUÍTES + varanda gourmet, 2 vagas). Col 2 = 84,96 m² priv (3 SUÍTES + varanda gourmet, 2 vagas). Col 3 = 71,92 m² priv (1 suíte master + 1 quarto + cozinha americana, 1 vaga). Composição confirmada v10.7: 10u 2D (Col 3) + 20u 3D (Cols 1+2). Diferenciais: porcelanato, fechadura digital, tomadas USB-C, infra carregador carro elétrico, energia solar áreas comuns. 13 itens de lazer (piscina, quadra, sauna, brinquedoteca etc.). Memorial R.14/28.859 1º RGI SLZ. Parceria DOM Incorporação + MB Engenharia (sócios). Book 12/2023 diz '100% VENDIDO, OBRAS INICIADAS' → estoque=0 manual. Tabela interna SPE (xlsx Apr 2026): 19 contratos VENDIDOS rastreados (resto vendido sem contrato no nosso radar). Tickets contratados R$ 690k-1.194k (variam por andar e timing 2023-2025). Entrega DEZ/2026. Bairro book: 'Pracinha da Lagoa' (microregião do Renascença II).", "informado_manualmente", "informado_manualmente", "book"),
 
     ("MB Engenharia","Condomínio Prime Cohama",
      "Endereço não localizado, Cohama, São Luís - MA","Cohama",
@@ -721,11 +749,11 @@ E_RAW = [
     ("DOM Incorporação","Dom Antônio",
      "Endereço não localizado, Jardim Eldorado (Turú), São Luís - MA","Jardim Eldorado",
      "Horizontal","Médio",
-     None,"06/2023","—", 136,136,None, "3D",
+     12,"06/2023","—", 136.2,136.2,None, "3D",
      906870,906870, None,None,None,
      "agregador","N/A","interno",
      "https://www.imovelnacidade.com/destaque/mb-construtora/","23/04/2026",
-     "Tipologia detalhada: 3Q casas duplex. DOM Incorporação com MB Engenharia como sócia (empreendimento conjunto). Lançamento 06/2023 confirmado internamente. Casa duplex 3Q, 136m², R$906.870. Produto horizontal Eldorado/Turú. [reconstituído da v4.16 em 25/04/2026]", None, None, None),
+     "Tipologia detalhada: 3Q casas duplex. DOM Incorporação com MB Engenharia como sócia (empreendimento conjunto). Lançamento 06/2023 confirmado internamente. **TOTAL = 12 casas iguais 136,2 m² (Rafael 03/05/2026)** — mono-tipologia 3D, padrão duplex idêntico. Ticket R$906.870. Produto horizontal Eldorado/Turú. Composição via §3.7 nível 5.1 (mono): 12u 3D 136,2m². [reconstituído da v4.16 em 25/04/2026; total declarado v10.7]", "informado_manualmente", None, None),
 
     # ─── MONTEPLAN — 2 empreend. ativos ───
     ("Monteplan","Renaissance Conceito",
@@ -757,13 +785,13 @@ E_RAW = [
 
     # ─── SÁ CAVALCANTE — Reserva Península (novo, None, None) ───
     ("Sá Cavalcante","Reserva Península",
-     "Endereço não localizado, Ponta d'Areia (Península), São Luís - MA","Ponta d'Areia",
-     "Vertical","Alto",
-     None,"10/2025","—", None,None,None, "—",
+     "Endereço não localizado, Península da Ponta D'Areia, São Luís - MA","Península",
+     "Vertical","Luxo",
+     None,"09/2025","—", 127.14,171.36,None, "4D",
      None,None, None,None,None,
      "site_oficial","N/A","site_oficial",
-     "https://www.instagram.com/sacavalcantema/","14/04/2026",
-     "Lançamento Sá Cavalcante out/2025. Estande 'Casa Sal' na Península. 'Os espaços conversam...' — narrativa de estilo de vida.", None, None, None),
+     "https://apto.vc/br/ma/sao-luis/ponta-dareia/reserva-peninsula","03/05/2026",
+     "Tipologia detalhada (Apto.vc + Triunfo + Adhemar Carlos 03/05/2026): Apt 4 quartos (2-4 suítes), 127,14m² a 171,36m² priv. Mono-tipologia 4D (varia em # suítes). 2-3 vagas. 1.900m² lazer (piscinas com deck, beach tennis, soccer, festas, jogos, pet, gym, pilates/yoga, gourmet, sauna, spa, churrasqueira, kids, coworking). Lançamento estande 'Casa Sal' (out/2025 = 10/2025; release diz 09/2025 — ajustado para 09/2025). Bairro Península (alto padrão). **TOTAL ainda não confirmado** — aguarda book/release detalhado.", None, None, "site_oficial"),
 
     # ═══ HIALI ═════════════════════════════════════════════════════════
     ("Hiali","Le Noir",
@@ -944,6 +972,21 @@ C_RAW = [
     # Dom José (DOM) — 3 unid disponíveis 04/2026, todas 154,64 m² casa (4D)
     # 22 unid totais (UH 1-22 confirmado por implantação numerada), 3 disp + 19 vend → ~86% vendido.
     ("DOM Incorporação", "Dom José", "4D", 3, 154.64, 154.64, 1403358, 1420196, 9130, "tabela_local_imagem"),
+
+    # ─── DOM Ricardo (Lote 6 v10.7) — book DOM 12/2023 + total declarado Rafael 03/05/2026 ───
+    # 30 unid total = 10 andares × 3 col por andar. Col 1 (85,75m² 3D) + Col 2 (84,96m² 3D) + Col 3 (71,92m² 2D)
+    # Book diz "100% VENDIDO" → disp = 0 em ambas tipologias. Para origem `book`, Σ disp não é base de Total tip.
+    # NOTA: c[3] aqui é "disp", mas pra origem `book` o cálculo de Total tip usa lookup direto (ver compute_total_per_tipologia)
+    ("DOM Incorporação", "Edifício Dom Ricardo", "2D", 0, 71.92, 71.92, 690860, 690860, 9606, "book"),
+    ("DOM Incorporação", "Edifício Dom Ricardo", "3D", 0, 84.96, 85.75, 1194374, 1194374, 13989, "book"),
+
+    # ─── Dom Antônio será aplicado pelo nível 5.1 mono automaticamente (12u 3D 136,2m²) ───
+
+    # ─── Mount Solaro (Lote 7 v10.8) — book Berg+Gonçalves via site oficial 03/05/2026 ───
+    # 50 unid total = 20 lofts 68m² (2D) + 10 apt 72m² (2D) + 20 apt 104m² (3D)
+    # Pré-lançamento (06/2025 T-36) → todos disponíveis (estoque 100%)
+    ("Berg Engenharia", "Mount Solaro", "2D", 30, 68.00, 72.00, 907200, 1100000, 13750, "site_oficial"),
+    ("Berg Engenharia", "Mount Solaro", "3D", 20, 104.00, 104.00, 1500000, 1700000, 15384, "site_oficial"),
 ]
 
 # ═══════════════════════════════════════════════════════════════
@@ -1110,6 +1153,14 @@ def compute_total_per_tipologia(E_RAW, C_RAW):
     for c in C_RAW:
         n_tips_c_raw[(c[0], c[1])] = n_tips_c_raw.get((c[0], c[1]), 0) + 1
 
+    # Override manual de Total tipologia para casos especiais onde o book declara totais
+    # mas C_RAW.disp armazena 0 (100% vendido). Chave: (inc, emp, tip) → total_tip.
+    # NOVO v10.7: usado quando origem=`book` e disp=0 (book diz 100% vendido) — declara totais explícitos.
+    BOOK_TOTAL_OVERRIDE = {
+        ('DOM Incorporação', 'Edifício Dom Ricardo', '2D'): 10,
+        ('DOM Incorporação', 'Edifício Dom Ricardo', '3D'): 20,
+    }
+
     result = {}  # (inc, emp, tip) → (total_tip, origem_revisada)
     # Pré-cálculo p/ pro-rata: se ∆ entre soma e total é não-zero, ajustar último entry pra fechar
     pending_pro_rata = {}  # (inc, emp) → list of (key, raw_value)
@@ -1122,6 +1173,11 @@ def compute_total_per_tipologia(E_RAW, C_RAW):
             result[(inc, emp, tip)] = (None, origem)
             continue
         total_emp = emp_entry[6]
+
+        # Override book_total_explicito (v10.7): origem `book` com Total tipologia declarado manualmente
+        if (inc, emp, tip) in BOOK_TOTAL_OVERRIDE:
+            result[(inc, emp, tip)] = (BOOK_TOTAL_OVERRIDE[(inc, emp, tip)], origem)
+            continue
 
         # Origens estimativa_*: total tip = disp (estimativa já é total por construção)
         if origem and origem.startswith('estimativa_distribuição'):
