@@ -278,7 +278,7 @@ if (sessionStorage.getItem("dom-auth") === "1") {
   </section>
   </div><!-- /tab-panorama -->
 
-  <!-- TAB: DASHBOARD v7.0 — análise de mercado por dimensão -->
+  <!-- TAB: DASHBOARD v7.1.0 — análise por bairro consolidada (bubble + timeline + 3 heatmaps) -->
   <div class="tab-panel" id="tab-dashboard">
 
     <section class="dash-filters-bar">
@@ -305,10 +305,8 @@ if (sessionStorage.getItem("dom-auth") === "1") {
 
     <section class="dash-section">
       <h2 class="dash-section-h">Análise por Bairro</h2>
-      <div class="dash-section-grid">
-        <div class="dash-card-mini"><div class="chart-wrap"><canvas id="ch-bairro-vgv"></canvas></div></div>
-        <div class="dash-card-mini"><div class="chart-wrap"><canvas id="ch-bairro-rsm2"></canvas></div></div>
-      </div>
+
+      <!-- Tabela resumo -->
       <div class="dash-table-wrap">
         <table class="dash-table">
           <thead><tr>
@@ -318,6 +316,38 @@ if (sessionStorage.getItem("dom-auth") === "1") {
           </tr></thead>
           <tbody id="tbl-bairros-body"></tbody>
         </table>
+      </div>
+
+      <!-- Posicionamento competitivo: bubble ticket × R$/m² (cada bolha = 1 bairro, tamanho = nº empreend.) -->
+      <div class="dash-card-mini" style="margin-top:16px">
+        <div class="chart-wrap" style="height:420px"><canvas id="ch-bairro-bubble"></canvas></div>
+        <p class="dash-note">Posicionamento competitivo dos bairros. Eixo X = R$/m² médio · Eixo Y = ticket médio · tamanho da bolha = nº de empreendimentos no bairro. Bairros isolados (poucos players) tendem a indicar nichos premium ou vácuo de oferta.</p>
+      </div>
+
+      <!-- Lançamentos por bairro no tempo (semestre) -->
+      <div class="dash-card-mini" style="margin-top:16px">
+        <div class="chart-wrap" style="height:380px"><canvas id="ch-bairro-timeline"></canvas></div>
+        <p class="dash-note" id="ch-bairro-timeline-note">Lançamentos por semestre, empilhados por bairro (top bairros · demais agregados em "Outros"). <strong>Atenção:</strong> datas com origem <em>T-36</em> (estimativa entrega-36m) aparecem em opacidade reduzida — não são datas reais e podem ter ±6 meses de erro.</p>
+      </div>
+
+      <!-- Heatmaps (consolidados de Mapas de Calor → todos com lente do bairro) -->
+      <h3 class="dash-section-sub" style="margin-top:24px;color:var(--dom-gray-dark);font-size:14px">Cruzamentos do bairro</h3>
+      <div class="dash-grid-half">
+        <div class="dash-card-mini">
+          <h3>Bairro × Incorporadora</h3>
+          <div id="heatmap-bi" class="heatmap-host"></div>
+          <p class="dash-note">Nº de empreendimentos por cruzamento. Mostra dominância territorial e onde há vácuo de competição.</p>
+        </div>
+        <div class="dash-card-mini">
+          <h3>Bairro × Tipologia</h3>
+          <div id="heatmap-bt" class="heatmap-host"></div>
+          <p class="dash-note">Branco = vácuo de oferta. Hover mostra os empreendimentos.</p>
+        </div>
+        <div class="dash-card-mini">
+          <h3>Bairro × Segmento</h3>
+          <div id="heatmap-bs" class="heatmap-host"></div>
+          <p class="dash-note">Onde cada faixa de mercado se concentra.</p>
+        </div>
       </div>
     </section>
 
@@ -371,21 +401,7 @@ if (sessionStorage.getItem("dom-auth") === "1") {
       </div>
     </section>
 
-    <section class="dash-section">
-      <h2 class="dash-section-h">Mapas de Calor (cruzamentos)</h2>
-      <div class="dash-grid-half">
-        <div class="dash-card-mini">
-          <h3>Bairro × Tipologia</h3>
-          <div id="heatmap-bt" class="heatmap-host"></div>
-          <p class="dash-note">Nº de empreendimentos por cruzamento. Branco = vácuo de oferta. Hover mostra empreend.</p>
-        </div>
-        <div class="dash-card-mini">
-          <h3>Bairro × Segmento</h3>
-          <div id="heatmap-bs" class="heatmap-host"></div>
-          <p class="dash-note">Onde cada faixa de mercado se concentra.</p>
-        </div>
-      </div>
-    </section>
+    <!-- v7.1.0: seção Mapas de Calor consolidada dentro de Análise por Bairro -->
 
   </div><!-- /tab-dashboard -->
 
@@ -810,7 +826,13 @@ const SEG_COLORS = {
 const TIPO_ORDER = ['Vertical', 'Horizontal', 'Loteamento'];
 
 // ═══════════════════════════════════════════════════════════════
-// DASHBOARD v7.0 — análise de mercado por dimensão
+// DASHBOARD v7.1.0 — análise por bairro reformada
+//   · removidas as 2 barras antigas (VGV/m² por bairro) — redundantes com a tabela
+//   · adicionado bubble ticket × R$/m² (cada bolha = bairro, tamanho = nº emp.)
+//   · adicionado stacked bar de lançamentos por semestre × bairro (T-36 hachurado)
+//   · 3 heatmaps consolidados na seção bairro:
+//       Bairro × Incorporadora (novo) · Bairro × Tipologia · Bairro × Segmento
+//   · seção "Mapas de Calor (cruzamentos)" foi removida (consolidação)
 // ═══════════════════════════════════════════════════════════════
 let DASH_FILTER = { periodo_meses: 24, seg: '', tipo: '', bairro: '', inc: '' };
 const DASH_CHARTS = {};
@@ -959,37 +981,178 @@ function renderDashBairros(data) {
   ).join('');
   document.getElementById('tbl-bairros-body').innerHTML = tbody || '<tr><td colspan="9" style="text-align:center;color:var(--dom-gray-mid);padding:20px">Nenhum bairro com filtros aplicados</td></tr>';
 
-  const top10 = rows.slice(0, 10);
-  destroyDashChart('ch-bairro-vgv');
-  if (top10.length > 0) {
-    DASH_CHARTS['ch-bairro-vgv'] = new Chart(document.getElementById('ch-bairro-vgv'), {
-      type: 'bar',
-      data: {
-        labels: top10.map(r => r.bairro),
-        datasets: [{ label: 'VGV (R$ M)', data: top10.map(r => r.vgvTotal / 1e6),
-          backgroundColor: '#C9A84C', borderColor: '#8B6914', borderWidth: 1 }]
+  // ─── Bubble: posicionamento ticket × R$/m² (cada bolha = bairro, tamanho = nº empreend.) ───
+  destroyDashChart('ch-bairro-bubble');
+  const bubblePts = rows.filter(r => r.ticketMed && r.rsm2Med);
+  if (bubblePts.length > 0) {
+    const maxN = Math.max(...bubblePts.map(r => r.n));
+    DASH_CHARTS['ch-bairro-bubble'] = new Chart(document.getElementById('ch-bairro-bubble'), {
+      type: 'bubble',
+      data: { datasets: bubblePts.map(r => ({
+        label: r.bairro,
+        data: [{
+          x: r.rsm2Med,
+          y: r.ticketMed,
+          r: 6 + (r.n / maxN) * 22,  // raio 6–28 px conforme nº empreend.
+          _bairro: r.bairro,
+          _n: r.n,
+          _vgv: r.vgvTotal
+        }],
+        backgroundColor: 'rgba(201,168,76,0.55)',
+        borderColor: '#8B6914',
+        borderWidth: 1.5
+      })) },
+      options: { responsive: true, maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          title: { display: true, text: 'Posicionamento competitivo dos bairros: Ticket × R$/m² (tamanho = nº empreendimentos)' },
+          tooltip: { callbacks: { label: ctx => {
+            const d = ctx.raw;
+            return d._bairro + ' · ' + d._n + ' empreend. · ticket méd. R$ ' + formatBRL(d.y, true) + ' · R$/m² ' + formatBRL(d.x) + ' · VGV R$ ' + formatBRL(d._vgv, true);
+          }}},
+          datalabels: false
+        },
+        scales: {
+          x: { title: { display: true, text: 'R$/m² médio do bairro' }, ticks: { callback: v => 'R$ ' + (v/1000).toFixed(0) + 'k' } },
+          y: { title: { display: true, text: 'Ticket médio do bairro' }, ticks: { callback: v => 'R$ ' + (v/1000).toFixed(0) + 'k' } }
+        }
       },
-      options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false,
-        plugins: { legend: { display: false }, title: { display: true, text: 'Top 10 bairros por VGV (R$ Milhões)' } },
-        scales: { x: { ticks: { callback: v => 'R$ ' + v + 'M' } } } }
+      plugins: [{
+        id: 'bubble-labels',
+        afterDatasetsDraw(chart) {
+          const {ctx} = chart;
+          chart.data.datasets.forEach((ds, i) => {
+            const meta = chart.getDatasetMeta(i);
+            meta.data.forEach((pt, j) => {
+              const d = ds.data[j];
+              ctx.save();
+              ctx.fillStyle = '#1A1A1A';
+              ctx.font = '600 10px Calibri, Arial, sans-serif';
+              ctx.textAlign = 'center';
+              ctx.textBaseline = 'middle';
+              ctx.fillText(d._bairro, pt.x, pt.y);
+              ctx.restore();
+            });
+          });
+        }
+      }]
     });
   }
 
-  const sortedR = rows.filter(r => r.rsm2Med).sort((a,b) => b.rsm2Med - a.rsm2Med).slice(0, 10);
-  destroyDashChart('ch-bairro-rsm2');
-  if (sortedR.length > 0) {
-    DASH_CHARTS['ch-bairro-rsm2'] = new Chart(document.getElementById('ch-bairro-rsm2'), {
-      type: 'bar',
-      data: {
-        labels: sortedR.map(r => r.bairro),
-        datasets: [{ label: 'R$/m² médio', data: sortedR.map(r => r.rsm2Med),
-          backgroundColor: '#0F7B6C', borderColor: '#000', borderWidth: 1 }]
-      },
-      options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false,
-        plugins: { legend: { display: false }, title: { display: true, text: 'R$/m² médio por bairro (top 10)' } },
-        scales: { x: { ticks: { callback: v => 'R$ ' + (v/1000).toFixed(0) + 'k' } } } }
+  // ─── Timeline: lançamentos por semestre × bairro (top 6 bairros + Outros) ───
+  // Constrói pares (semestre, bairro) com flag se a data é T-36 (estimativa).
+  const lancamentos = data.filter(e => {
+    const m = String(e.lancamento || '').match(/^(\d{1,2})\/(\d{4})$/);
+    return m && e.bairro && e.bairro !== 'São Luís' && e.bairro !== 'Não identificado';
+  });
+
+  // Top bairros por nº de lançamentos (no recorte temporal já filtrado pelo dashboard)
+  const bairroFreq = {};
+  lancamentos.forEach(e => { bairroFreq[e.bairro] = (bairroFreq[e.bairro] || 0) + 1; });
+  const TOP_N = 6;
+  const topBairrosTime = Object.entries(bairroFreq).sort((a,b) => b[1]-a[1]).slice(0, TOP_N).map(x => x[0]);
+  const bairroLabel = b => topBairrosTime.includes(b) ? b : 'Outros';
+
+  // Agrupa por semestre (AAAA-Sx) × bairroLabel × origem (real | T-36)
+  const semCounts = {};  // { 'AAAA-Sx': { bairroLabel: { real: n, t36: n } } }
+  lancamentos.forEach(e => {
+    const m = e.lancamento.match(/^(\d{1,2})\/(\d{4})$/);
+    const mo = parseInt(m[1]); const yr = parseInt(m[2]);
+    const sem = mo <= 6 ? 'S1' : 'S2';
+    const key = yr + '-' + sem;
+    const lbl = bairroLabel(e.bairro);
+    const isT36 = (e.lancamento_origem || '').toUpperCase() === 'T-36';
+    if (!semCounts[key]) semCounts[key] = {};
+    if (!semCounts[key][lbl]) semCounts[key][lbl] = { real: 0, t36: 0 };
+    semCounts[key][lbl][isT36 ? 't36' : 'real'] += 1;
+  });
+
+  const semestres = Object.keys(semCounts).sort();  // 'AAAA-Sx' já ordena cronologicamente
+  const bairroOrder = topBairrosTime.concat(Object.values(semCounts).some(s => s['Outros']) ? ['Outros'] : []);
+
+  // Paleta consistente para os bairros (ouro DOM como destaque + tons análogos)
+  const bairroPalette = ['#C9A84C', '#1B4584', '#0F7B6C', '#8B2E2E', '#5D6E3C', '#6A4C93', '#8C8C8C'];
+  const bairroColor = b => bairroPalette[bairroOrder.indexOf(b) % bairroPalette.length] || '#8C8C8C';
+
+  destroyDashChart('ch-bairro-timeline');
+  if (semestres.length > 0) {
+    // Para cada bairro: 2 datasets (real, t-36) compartilhando a mesma stack
+    const datasets = [];
+    bairroOrder.forEach(b => {
+      datasets.push({
+        label: b + ' (data confirmada)',
+        data: semestres.map(s => (semCounts[s][b]?.real) || 0),
+        backgroundColor: bairroColor(b),
+        borderColor: '#000', borderWidth: 0.5,
+        stack: 'lancamentos'
+      });
+      datasets.push({
+        label: b + ' (estimativa T-36)',
+        data: semestres.map(s => (semCounts[s][b]?.t36) || 0),
+        backgroundColor: bairroColor(b) + '55',  // alpha reduzido = ~33%
+        borderColor: bairroColor(b),
+        borderWidth: 1,
+        borderDash: [4,3],
+        stack: 'lancamentos'
+      });
     });
+
+    DASH_CHARTS['ch-bairro-timeline'] = new Chart(document.getElementById('ch-bairro-timeline'), {
+      type: 'bar',
+      data: { labels: semestres, datasets: datasets },
+      options: { responsive: true, maintainAspectRatio: false,
+        plugins: {
+          legend: { position: 'right', labels: { boxWidth: 12, font: {size: 10}, filter: (item) => !item.text.includes('estimativa T-36') } },
+          title: { display: true, text: 'Empreendimentos lançados por semestre · empilhados por bairro' },
+          tooltip: { callbacks: { label: ctx => ctx.dataset.label + ': ' + ctx.parsed.y } }
+        },
+        scales: {
+          x: { stacked: true, title: { display: true, text: 'Semestre' } },
+          y: { stacked: true, beginAtZero: true, ticks: { precision: 0 }, title: { display: true, text: 'Nº empreendimentos' } }
+        }
+      }
+    });
+
+    // Atualiza nota com diagnóstico de qualidade da data
+    const totalReal = lancamentos.filter(e => (e.lancamento_origem || '').toUpperCase() !== 'T-36').length;
+    const totalT36 = lancamentos.length - totalReal;
+    const pctT36 = lancamentos.length ? Math.round((totalT36 / lancamentos.length) * 100) : 0;
+    const noteEl = document.getElementById('ch-bairro-timeline-note');
+    if (noteEl) {
+      noteEl.innerHTML = 'Lançamentos por semestre, empilhados por bairro (top ' + TOP_N + ' · demais agregados em "Outros"). ' +
+        '<strong>Qualidade da data:</strong> ' + totalReal + ' confirmadas · ' + totalT36 + ' estimativa T-36 (' + pctT36 + '%, em hachurado/translúcido — entrega menos 36 meses, ±6m de erro).';
+    }
   }
+
+  // ─── Heatmap Bairro × Incorporadora ───
+  const allBairrosHM = [...new Set(data.map(e => e.bairro).filter(b => b && b !== 'São Luís' && b !== 'Não identificado'))].sort();
+  const allIncs = [...new Set(data.map(e => e.incorporadora).filter(i => i))].sort();
+  const matrixBI = {};
+  allBairrosHM.forEach(b => { matrixBI[b] = {}; allIncs.forEach(i => matrixBI[b][i] = []); });
+  data.forEach(e => {
+    if (matrixBI[e.bairro] && matrixBI[e.bairro][e.incorporadora]) matrixBI[e.bairro][e.incorporadora].push(e);
+  });
+  const countsBI = allBairrosHM.flatMap(b => allIncs.map(i => matrixBI[b][i].length));
+  const maxBI = countsBI.length > 0 ? Math.max(...countsBI, 1) : 1;
+
+  let htmlBI = '<table class="heatmap-tbl"><thead><tr><th></th>';
+  allIncs.forEach(i => htmlBI += '<th title="' + i + '">' + i.replace(/Engenharia/i, 'Eng.').replace(/Incorporação/i, 'Inc.') + '</th>');
+  htmlBI += '</tr></thead><tbody>';
+  allBairrosHM.forEach(b => {
+    htmlBI += '<tr><td class="row-label">' + b + '</td>';
+    allIncs.forEach(i => {
+      const cell = matrixBI[b][i];
+      const n = cell.length;
+      const intensity = n > 0 ? Math.min(0.9, (n / maxBI) * 0.85 + 0.15) : 0;
+      const bg = n > 0 ? 'rgba(201,168,76,' + intensity + ')' : '#fafafa';
+      const tip = n > 0 ? cell.map(e => e.empreendimento).join(', ') : 'Sem oferta dessa incorporadora';
+      const safe = tip.replace(/"/g, '&quot;');
+      htmlBI += '<td style="background:' + bg + '" title="' + safe + '"><span class="cell-val">' + (n || '') + '</span></td>';
+    });
+    htmlBI += '</tr>';
+  });
+  htmlBI += '</tbody></table>';
+  document.getElementById('heatmap-bi').innerHTML = allBairrosHM.length ? htmlBI : '<p style="color:var(--dom-gray-mid);font-size:12px;padding:20px">Sem dados nos filtros aplicados</p>';
 }
 
 function renderDashTipologias(data) {
