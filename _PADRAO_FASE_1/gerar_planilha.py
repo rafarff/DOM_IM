@@ -19,7 +19,7 @@ from openpyxl.drawing.image import Image as XLImage
 # ═══════════════════════════════════════════════════════════════
 # PARÂMETROS GLOBAIS
 # ═══════════════════════════════════════════════════════════════
-VERSION = "10.4"
+VERSION = "10.5"
 DATE_STR = "03/05/2026"
 # v5.0 — (25/04/2026): MUDANÇA ESTRUTURAL — adoção do PADRAO v2.0.
 # +Coluna Tipo (Vertical/Horizontal/Misto) inserida como col. 5. 24 → 25 colunas.
@@ -518,13 +518,13 @@ E_RAW = [
      "Tipologia detalhada: 3 suítes (1 master). 3 tipologias (125 / 146,82 / 156,94 m²). 2 torres x 15 pav. Tab ABR/26: 15 unid, VGV R$ 32,3M. Ticket R$ 1,73–2,72M (méd R$ 2,15M). R$/m² pond R$ 15.162 (faixa R$ 13,9k–17,3k). Rua dos Bicudos, Renascença. [reconstituído da v4.16 em 25/04/2026]", "tabela_local_completa", None, "informado_manualmente"),
 
     ("Mota Machado","Al Mare Tirreno",
-     "Av. dos Holandeses, Qd 9 Lt 9, São Marcos, São Luís - MA","São Marcos",
+     "Av. dos Holandeses, Qd 9 Lt 9, São Marcos, São Luís - MA","Calhau",
      "Vertical",None,
      None,"08/2024","Pronto", 215,215,None, "4D",
      3025856,3120721, None,None, None,
      "tabela","tabela","book",
      "https://motamachado.com.br","23/04/2026",
-     "Tipologia detalhada: 4 suítes, 3 vagas. Torre A 'Tirreno' da Mota Machado Collection. Imóvel PRONTO. 215 m², 4 suítes, 3 vagas. Apts 102, 201, 202 listados. Ticket R$ 3,02-3,12M. R$/m² méd R$ 14.293. Av. dos Holandeses / São Marcos. [reconstituído da v4.16 em 25/04/2026]", "N/A", None, None),
+     "Tipologia detalhada: 4 suítes, 3 vagas. Torre A 'Tirreno' da Mota Machado Collection. Imóvel PRONTO. 215 m², 4 suítes, 3 vagas. Apts 102, 201, 202 listados. Ticket R$ 3,02-3,12M. R$/m² méd R$ 14.293. Av. dos Holandeses / São Marcos (endereço oficial CEP) — bairro=Calhau (região senso comum, §3.10 v10.5). [reconstituído da v4.16 em 25/04/2026]", "N/A", None, "informado_manualmente"),
 
     # ═══ BERG ══════════════════════════════════════════════════════════
     ("Berg Engenharia","Monte Meru",
@@ -637,13 +637,13 @@ E_RAW = [
      "Tipologia detalhada: 2Q. Compactos 49-52m², 2Q. Público Cohatrac/médio. Instagram @construtoracastelucci anunciou como lançamento; preço não divulgado.", None, None, None),
 
     ("Castelucci","Residencial Ana Vitória",
-     "Endereço não localizado, Araçagy, São Luís - MA","Araçagy",
+     "Endereço não localizado, Araçagy, São Luís - MA","Araçagi",
      "Horizontal",None,
      None,"01/2018","—", None,None,None, "2D; 3D",
      None,None, None,None,None,
      "site_oficial","N/A","site_oficial",
      "https://construtoracastelucci.com.br","14/04/2026",
-     "Tipologia detalhada: 2-3Q. Apartamentos 2-3Q Araçagy. Site oficial Castelucci.", None, None, None),
+     "Tipologia detalhada: 2-3Q. Apartamentos 2-3Q Araçagi. Site oficial Castelucci. Bairro=Araçagi (região senso comum, §3.10 v10.5 — Rafael 03/05/2026).", None, None, "informado_manualmente"),
 
     # ─── FRANERE — série Gran Park ───
     ("Franere","Varandas Grand Park",
@@ -770,13 +770,13 @@ E_RAW = [
      "Tipologia detalhada: Casa 3 dorm (1 suíte) + 2 vagas. Condomínio horizontal (sobrados). 1 ÚNICA tipologia: casa 100,35 m² construída (área usada para R$/m²). Terreno varia 136,00-145,79 m² conforme posição. **TOTAL = 46 unidades** (UH 1 a 46, tabela ABR/2026 lista todas com status). Lazer: campo society, piscina, deck, salão, gourmet, petplay, playground. Status ABR/2026: **9 disponíveis** (UH 2, 4, 9, 17, 19, 21, 23, 24, 30) + 1 RESERVADA + 36 VENDIDAS = ~80% vendido. Entrega DEZ/2028 (atualizado da tabela 04/2026 — antes 01/2029). Ticket à vista R$ 835.894-850.937 → R$/m² construção R$ 8.330-8.481. Construção: DOM Incorporação + Agrasty Construções LTDA. Vendas: André Leite Imóveis. CORREÇÃO v5.2: Área máx era 145,78 (terreno) — corrigida para 100,35 (construída). Convenção PADRAO §1: Tipo=Horizontal usa área construída. Extraído via visão multimodal (PDFs imagem) v10.2. NB: origem total = `tabela_local_parcial` mesmo a tabela listando TODAS as 46 (com status), pois C_RAW guarda apenas DISPONÍVEIS — convenção §3.7 (mesma do Renaissance Conceito v9.2).", "tabela_local_parcial", None, "informado_manualmente"),
 
     ("DOM Incorporação","Dom José",
-     "FQV9+JJ Jardim Eldorado, São Luís - MA","Jardim Eldorado",
+     "FQV9+JJ Jardim Eldorado, São Luís - MA","Turu",
      "Horizontal",None,
      22,"06/2024","07/2027", 154.64,154.64,None, "4D",
      1403358,1420196, None,None, None,
      "tabela_local","tabela_local","interno",
      "","03/05/2026",
-     "Tipologia detalhada: Casa 4+ dorm, alto padrão. Condomínio horizontal alto padrão. 1 ÚNICA tipologia: casa 154,64 m² construída. Terreno varia 178,49-180,96 m² conforme posição. **TOTAL = 22 unidades** (UH 1 a 22, confirmado por implantação numerada do book + tabela). Status ABR/2026: **3 disponíveis** (UH 1, 8, 10) + 19 VENDIDAS = ~86% vendido. Tickets à vista R$ 1.403.358-1.420.196 → R$/m² construção R$ 9.075-9.184. Entrega JUL/2027 (atualizado da tabela 04/2026 — antes 06/2027). Construção: DOM Incorporação + LP Barros Const. e Serviços ME. Vendas: André Leite Imóveis. Bairro confirmado pelo book: 'localizado no bairro Jardim Eldorado, em São Luís'. Lazer: piscina adulto+infantil, playground, espaço gourmet, churrasqueira. CORREÇÃO v5.2: Área máx era 180,98 (terreno) — corrigida para 154,64 (construída). Convenção PADRAO §1: Tipo=Horizontal usa área construída. Extraído via visão multimodal v10.2. NB: origem total = `tabela_local_parcial` mesmo a tabela listando TODAS as 22 (implantação 01-22), pois C_RAW guarda apenas DISPONÍVEIS — convenção §3.7.", "tabela_local_parcial", None, "book"),
+     "Tipologia detalhada: Casa 4+ dorm, alto padrão. Condomínio horizontal alto padrão. 1 ÚNICA tipologia: casa 154,64 m² construída. Terreno varia 178,49-180,96 m² conforme posição. **TOTAL = 22 unidades** (UH 1 a 22, confirmado por implantação numerada do book + tabela). Status ABR/2026: **3 disponíveis** (UH 1, 8, 10) + 19 VENDIDAS = ~86% vendido. Tickets à vista R$ 1.403.358-1.420.196 → R$/m² construção R$ 9.075-9.184. Entrega JUL/2027 (atualizado da tabela 04/2026 — antes 06/2027). Construção: DOM Incorporação + LP Barros Const. e Serviços ME. Vendas: André Leite Imóveis. Bairro CEP/book: 'Jardim Eldorado'; bairro=Turu (região senso comum, §3.10 v10.5 — Rafael 03/05/2026). Lazer: piscina adulto+infantil, playground, espaço gourmet, churrasqueira. CORREÇÃO v5.2: Área máx era 180,98 (terreno) — corrigida para 154,64 (construída). Convenção PADRAO §1: Tipo=Horizontal usa área construída. Extraído via visão multimodal v10.2. NB: origem total = `tabela_local_parcial` mesmo a tabela listando TODAS as 22 (implantação 01-22), pois C_RAW guarda apenas DISPONÍVEIS — convenção §3.7.", "tabela_local_parcial", None, "informado_manualmente"),
 ]
 
 # ═══════════════════════════════════════════════════════════════

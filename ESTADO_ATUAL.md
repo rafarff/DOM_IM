@@ -3,9 +3,9 @@
 > **Para Claude (toda sessão):** este é o **primeiro arquivo a ler** antes de qualquer ação. Confirma a base de trabalho. Se a invariante 0.3 do PADRAO falhar contra os números aqui, **PARAR**.
 
 **Última atualização:** 03/05/2026
-**Versão Planilha vigente:** v10.4
+**Versão Planilha vigente:** v10.5
 **Versão PADRAO vigente:** v6.1
-**Versão script `gerar_planilha.py`:** 10.4 (DATE_STR: 03/05/2026)
+**Versão script `gerar_planilha.py`:** 10.5 (DATE_STR: 03/05/2026)
 
 ---
 
@@ -70,6 +70,8 @@ cd 00_ESTUDO_CONSOLIDADO/ && ls -1 Planilha_Mestre_Panorama_v*.xlsx | sort -V | 
 - **v8.0** (02/05/2026) — Aba Composição introduzida. Lote 1: 15 linhas / 322 unid.
 - **v8.1** (02/05/2026) — **Lote 2 entregue.** +13 linhas / +209 unid. Cobertura 17% → 39%.
 - **v8.2** (02/05/2026) — **Lote 3 (parcial — Zion via visão multimodal).** +1 linha / +10 unid. Cobertura 39% → 41%.
+- **v10.5** (03/05/2026) — **+3 overrides manuais §3.10** (Rafael 03/05): Al Mare Tirreno (Mota Machado) São Marcos→Calhau · Dom José (DOM) Jardim Eldorado→Turu · Residencial Ana Vitória (Castelucci) Araçagy→Araçagi (normalização ortográfica). Origem Bairro = `informado_manualmente` em todos. §3.10 warnings 41→39 (−2: Dom José já tinha origem `book` na v10.4, agora corrigida pra `informado_manualmente` mas continua fora do warning). Bonus em build_panorama.py: COORDS_BAIRRO ganha alias "Turu"=("Turú") pra geocoding case-sem-acento. Distribuição atualizada: Calhau passou de 4→5 emp.; Araçagi 2→3; Turu 1→2; São Marcos saiu da lista (Al Mare era o único); Jardim Eldorado 3→2.
+
 - **build_panorama v7.1.0** (03/05/2026) — **Reforma da seção "Análise por Bairro" do Dashboard HTML.** Sem mudança de schema/planilha. Mudanças: (1) **removidas** as 2 barras antigas (VGV e R$/m² por bairro — redundantes com a tabela já presente); (2) **adicionado bubble** ticket × R$/m² com cada bolha = 1 bairro, tamanho proporcional a nº empreendimentos (visualização de posicionamento competitivo); (3) **adicionado stacked bar** de lançamentos por semestre × bairro (top 6 + "Outros"), com datas de origem `T-36` em opacidade reduzida + borda tracejada (sinaliza que são estimativas entrega-36m, não datas reais; nota mostra % de T-36 — atualmente 12 de 46 = 26%); (4) **3 heatmaps consolidados** na seção bairro: novo Bairro × Incorporadora + os existentes Bairro × Tipologia e Bairro × Segmento (movidos da seção "Mapas de Calor (cruzamentos)", que foi **removida**). Layout final da seção: tabela → bubble → timeline → 3 heatmaps lado a lado em "Cruzamentos do bairro".
 
 - **v10.4** (03/05/2026) — **+1 bairro manual**: Legacy Residence (Alfa) Ponta d'Areia → Península (informado_manualmente). §3.10 warnings 42→41.

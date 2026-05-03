@@ -83,6 +83,7 @@ COORDS_BAIRRO = {
     "Cohab Anil":        (-2.5535, -44.2655),
     "Jardim Eldorado":   (-2.5590, -44.2485),
     "Turú":              (-2.5620, -44.2515),
+    "Turu":              (-2.5620, -44.2515),  # alias sem acento (senso comum, §3.10)
     "Cantinho do Céu":   (-2.5650, -44.2660),
     "Araçagi":           (-2.4920, -44.2200),
     "Araçagy":           (-2.4920, -44.2200),
