@@ -1,5 +1,5 @@
 # PADRÃO FASE 1 — Inteligência de Mercado DOM
-**Versão:** 6.0 (atualizada em 02/05/2026)
+**Versão:** 6.1 (atualizada em 02/05/2026)
 **Status:** 🟢 APROVADO pelo Rafael
 
 > **ATENÇÃO — Claude:** este documento é um CONTRATO. Toda vez que o Rafael
@@ -336,6 +336,9 @@ Cada incorporadora tem layout próprio de tabela. Catálogo identificado em SLZ:
 | **Castelucci** | `Casas X a Y / Casa N + TERRENO + R$ VALOR + ÁREA_CONSTRUÍDA` | Vila Coimbra | Range "Casas X a Y" expande pra (Y-X+1) unidades |
 | **Niágara** | `POSIÇÃO X - APTOS A, B, C, D - N VAGAS  ÁREA  VALOR_VENDA` | ORO Ponta d'Areia | **1 linha = N aptos**. Tabela NÃO permite inferir vendidas (formato agrupa) |
 | **Hiali** | `APTO ÁREA À VISTA SINAL ...` | Le Noir | Pattern simples |
+| **Alfa Engenharia** *(v10.1+)* | `COLUNA(S) NN - YYY,YYm²` (header) + `<unidade> <vagas> <valores...> <ticket>` (linhas) | Giardino Fiore, Giardino Luce | Área no header de cada bloco de coluna |
+| **Berg Engenharia** *(v10.1+)* | `APARTAMENTO DE Y,YYM2 + TIPO N + <apto> <valores...> <preço total>` | Monte Meru | Cada bloco de tipo (TIPO 3, TIPO 4) tem header próprio |
+| **Monteplan Anil** *(v10.1+)* | `<bloco>-<apto> L INVEST` (idêntico Sanpaolo, áreas no rodapé) | Residencial Novo Anil | Múltiplos blocos (A1-B4) com áreas uniformes 53,94m² |
 
 Quando aparecer empreendimento de incorporadora não catalogada acima, **adicionar parser nova ao catálogo** ao invés de improvisar.
 

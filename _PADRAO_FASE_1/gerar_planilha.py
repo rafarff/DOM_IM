@@ -19,8 +19,8 @@ from openpyxl.drawing.image import Image as XLImage
 # ═══════════════════════════════════════════════════════════════
 # PARÂMETROS GLOBAIS
 # ═══════════════════════════════════════════════════════════════
-VERSION = "10.0"
-DATE_STR = "02/05/2026"
+VERSION = "10.2"
+DATE_STR = "03/05/2026"
 # v5.0 — (25/04/2026): MUDANÇA ESTRUTURAL — adoção do PADRAO v2.0.
 # +Coluna Tipo (Vertical/Horizontal/Misto) inserida como col. 5. 24 → 25 colunas.
 # +Hiali e DOM Incorporação como incorporadoras monitoradas (14 → 16). Tracking da
@@ -236,6 +236,38 @@ DATE_STR = "02/05/2026"
 # tabela_local_parcial (tabela só lista 22 disponíveis; 105 vem da descrição
 # arquitetônica 'Torre Leonardo 45 + Torre Botticelli 60'). Validação a 5%
 # pagou pelo investimento na primeira execução.
+# v10.2 — (03/05/2026): UPDATE Dom Lucas + Dom José via VISÃO MULTIMODAL.
+# Rafael colocou no INBOX (03/05/2026) os books DOM e nova tabela:
+#   - Book Edifício Dom Ricardo (texto OK) → enriquece tipologia (3 colunas, col 3 é
+#     2D não 3D), bairro Renascença II (book diz Pracinha da Lagoa, microregião do
+#     Renascença II), parceria DOM+MB Engenharia, memorial R.14/28.859, 13 itens
+#     lazer, entrega DEZ/2026, book afirma "100% VENDIDO". xlsx interno mostra 19
+#     contratos VENDIDOS (DR101-DR901, ticket R$ 690k-1.194k). Tipologia muda de
+#     "2D; 3D" mantém — col 1+2 são 3D (3 suítes 85-86m² priv), col 3 é 2D (1 suíte
+#     master + 1 quarto, 71,92m² priv). Total real depende de # andares — não
+#     confirmado em book → permanece None, origem N/A. Origem bairro = book.
+#   - Book Dom José + Tabela Dom José ABR/2026 (PDFs imagem → pdftoppm + Claude
+#     visão). Implantação numerada 01-22 → TOTAL = 22 (origem tabela_local_completa,
+#     duplo-confirmado por book+tabela). 3 disponíveis (UH 1, 8, 10) + 19 vendidas =
+#     86% vendido. Tickets à vista R$ 1.403.358-1.420.196 (variação por terreno
+#     178,49-180,96m²). Mês entrega 06/2027 → 07/2027 (correção pela tabela). Bairro
+#     Jardim Eldorado confirmado pelo book ("está localizado no bairro Jardim
+#     Eldorado, em São Luís"). Construção DOM + LP Barros Const. e Serviços ME.
+#     Vendas André Leite Imóveis.
+#   - Tabela Dom Lucas 03/2026 e 04/2026 (PDFs imagem). Tabela ABR/2026 lista UH 1-46
+#     com status. TOTAL = 46 (origem tabela_local_completa). 9 disponíveis (UH 2, 4,
+#     9, 17, 19, 21, 23, 24, 30) + 1 reservada + 36 vendidas = ~80% vendido. Tickets
+#     à vista R$ 835.894-850.937 (variação por terreno 136-145,79m²). Mês entrega
+#     01/2029 → 12/2028 (correção pela tabela: "PREVISÃO DE ENTREGA: DEZEMBRO DE
+#     2028"). Construção DOM + Agrasty Construções LTDA. Vendas André Leite Imóveis.
+# +2 entries em C_RAW (Lote 5): Dom Lucas 3D 9 unid + Dom José 4D 3 unid.
+# Cobertura Composição: 23/46 → 25/46 = 54%. Validação §3.7.C.3 (cobertura
+# tabela arquivada sem C_RAW) zerada para DOM Lucas e Dom José. Validação §3.6
+# vai computar 9/46=19,6% estoque (Dom Lucas) e 3/22=13,6% estoque (Dom José).
+# Origem bairro preenchida nos 3 (book). Total origem em 2 (Dom Lucas/José).
+# VGV mapeado: incremento R$ 38.760k (Dom Lucas 46 × 843,4k) + R$ 31.060k (Dom José
+# 22 × 1.411,8k) = ~R$ 70M novos no VGV total mapeado.
+
 
 # ═══════════════════════════════════════════════════════════════
 # IDENTIDADE VISUAL DOM
@@ -653,13 +685,13 @@ E_RAW = [
 
     # ─── MB ENGENHARIA — 3 empreend. ───
     ("DOM Incorporação","Edifício Dom Ricardo",
-     "Rua dos Rouxinóis, 8, Jardim Renascença, São Luís - MA","Jardim Renascença",
+     "Rua dos Rouxinóis, 8, Renascença II, São Luís - MA","Renascença II",
      "Vertical",None,
-     None,"12/2023","—", 71,85,None, "2D; 3D",
-     None,None, None,None, None,
-     "agregador","agregador","interno",
-     "https://www.imeu.com.br/empreendimento/dom-ricardo-apartamentos-sao-luis-2-a-3-quartos-71-a-85-m/19044585-MIM","23/04/2026",
-     "Tipologia detalhada: 2-3Q. DOM Incorporação com MB Engenharia como sócia (empreendimento conjunto). Lançamento 12/2023 confirmado internamente. Próximo à Praça da Lagoa (Foguete). 'Sucesso de vendas, 6 unidades disponíveis' (IG jan/2025). Estoque estimado ≤6%. [reconstituído da v4.16 em 25/04/2026]", None, None, None),
+     None,"12/2023","12/2026", 71.92,85.75,None, "2D; 3D",
+     690860,1194374, None,None, None,
+     "tabela_local","tabela_local","interno",
+     "https://www.imeu.com.br/empreendimento/dom-ricardo-apartamentos-sao-luis-2-a-3-quartos-71-a-85-m/19044585-MIM","03/05/2026",
+     "Tipologia detalhada (BOOK 12/2023 — recebido 03/05/2026): 3 colunas/aptos por andar. Col 1 = 85,75 m² priv (3 SUÍTES + varanda gourmet, 2 vagas). Col 2 = 84,96 m² priv (3 SUÍTES + varanda gourmet, 2 vagas). Col 3 = 71,92 m² priv (1 suíte master + 1 quarto + cozinha americana, 1 vaga). Diferenciais: porcelanato, fechadura digital, tomadas USB-C, infra carregador carro elétrico, energia solar áreas comuns. 13 itens de lazer (piscina, quadra, sauna, brinquedoteca etc.). Memorial R.14/28.859 1º RGI SLZ. Parceria DOM Incorporação + MB Engenharia (sócios). Book diz '100% VENDIDO, OBRAS INICIADAS' (12/2023). Tabela interna SPE (xlsx Apr 2026): 19 contratos VENDIDOS (Status=V). Tickets contratados R$ 690k-1.194k (variam por andar e timing 2023-2025). Entrega DEZ/2026. Bairro book: 'Pracinha da Lagoa' (microregião do Renascença II). Total real depende de # andares — não confirmado em book. [enriquecido v10.2]", "N/A", None, "book"),
 
     ("MB Engenharia","Condomínio Prime Cohama",
      "Endereço não localizado, Cohama, São Luís - MA","Cohama",
@@ -731,20 +763,20 @@ E_RAW = [
     ("DOM Incorporação","Dom Lucas",
      "Tv. Boa Esperança, 101 - Cantinho do Céu, São Luís - MA, 65074-030","Cantinho do Céu",
      "Horizontal",None,
-     None,"02/2026","01/2029", 100.35,100.35,None, "3D",
-     835000,851000, None,None, None,
-     "tabela","tabela","interno",
-     "","27/04/2026",
-     "Tipologia detalhada: Casa 3 dorm (1 suíte) + 2 vagas. Condomínio horizontal (sobrados). 1 ÚNICA tipologia: casa 100,35 m² construída (área usada para R$/m²). Terreno varia 136-146 m² conforme posição. ~38 casas. Lazer: campo society, piscina, deck, salão, gourmet, petplay, playground. Muitas unidades VENDIDAS. Entrega 01/2029. Ticket R$ 835-851k → R$/m² construção ~R$ 8.400. CORREÇÃO v5.2: Área máx era 145,78 (terreno) — corrigida para 100,35 (construída). Convenção PADRAO §1: Tipo=Horizontal usa área construída.", None, None, None),
+     46,"02/2026","12/2028", 100.35,100.35,None, "3D",
+     835894,850937, None,None, None,
+     "tabela_local","tabela_local","interno",
+     "","03/05/2026",
+     "Tipologia detalhada: Casa 3 dorm (1 suíte) + 2 vagas. Condomínio horizontal (sobrados). 1 ÚNICA tipologia: casa 100,35 m² construída (área usada para R$/m²). Terreno varia 136,00-145,79 m² conforme posição. **TOTAL = 46 unidades** (UH 1 a 46, tabela ABR/2026 lista todas com status). Lazer: campo society, piscina, deck, salão, gourmet, petplay, playground. Status ABR/2026: **9 disponíveis** (UH 2, 4, 9, 17, 19, 21, 23, 24, 30) + 1 RESERVADA + 36 VENDIDAS = ~80% vendido. Entrega DEZ/2028 (atualizado da tabela 04/2026 — antes 01/2029). Ticket à vista R$ 835.894-850.937 → R$/m² construção R$ 8.330-8.481. Construção: DOM Incorporação + Agrasty Construções LTDA. Vendas: André Leite Imóveis. CORREÇÃO v5.2: Área máx era 145,78 (terreno) — corrigida para 100,35 (construída). Convenção PADRAO §1: Tipo=Horizontal usa área construída. Extraído via visão multimodal (PDFs imagem) v10.2. NB: origem total = `tabela_local_parcial` mesmo a tabela listando TODAS as 46 (com status), pois C_RAW guarda apenas DISPONÍVEIS — convenção §3.7 (mesma do Renaissance Conceito v9.2).", "tabela_local_parcial", None, "book"),
 
     ("DOM Incorporação","Dom José",
      "FQV9+JJ Jardim Eldorado, São Luís - MA","Jardim Eldorado",
      "Horizontal",None,
-     None,"06/2024","06/2027", 154.64,154.64,None, "4D",
-     1400000,1415000, None,None, None,
-     "tabela","tabela","interno",
-     "","27/04/2026",
-     "Tipologia detalhada: Casa 4+ dorm, alto padrão. Condomínio horizontal alto padrão. 1 ÚNICA tipologia: casa 154,64 m² construída. Terreno varia 170-181 m² conforme posição. Maioria das unidades VENDIDAS (14+ marcadas VENDIDA na tabela ABR/2026). Entrega 06/2027. Ticket ~R$ 1,4M → R$/m² construção ~R$ 9.150. CORREÇÃO v5.2: Área máx era 180,98 (terreno) — corrigida para 154,64 (construída). Convenção PADRAO §1: Tipo=Horizontal usa área construída.", None, None, None),
+     22,"06/2024","07/2027", 154.64,154.64,None, "4D",
+     1403358,1420196, None,None, None,
+     "tabela_local","tabela_local","interno",
+     "","03/05/2026",
+     "Tipologia detalhada: Casa 4+ dorm, alto padrão. Condomínio horizontal alto padrão. 1 ÚNICA tipologia: casa 154,64 m² construída. Terreno varia 178,49-180,96 m² conforme posição. **TOTAL = 22 unidades** (UH 1 a 22, confirmado por implantação numerada do book + tabela). Status ABR/2026: **3 disponíveis** (UH 1, 8, 10) + 19 VENDIDAS = ~86% vendido. Tickets à vista R$ 1.403.358-1.420.196 → R$/m² construção R$ 9.075-9.184. Entrega JUL/2027 (atualizado da tabela 04/2026 — antes 06/2027). Construção: DOM Incorporação + LP Barros Const. e Serviços ME. Vendas: André Leite Imóveis. Bairro confirmado pelo book: 'localizado no bairro Jardim Eldorado, em São Luís'. Lazer: piscina adulto+infantil, playground, espaço gourmet, churrasqueira. CORREÇÃO v5.2: Área máx era 180,98 (terreno) — corrigida para 154,64 (construída). Convenção PADRAO §1: Tipo=Horizontal usa área construída. Extraído via visão multimodal v10.2. NB: origem total = `tabela_local_parcial` mesmo a tabela listando TODAS as 22 (implantação 01-22), pois C_RAW guarda apenas DISPONÍVEIS — convenção §3.7.", "tabela_local_parcial", None, "book"),
 ]
 
 # ═══════════════════════════════════════════════════════════════
@@ -850,15 +882,15 @@ C_RAW = [
     # Vernazza Torre Sul (Treviso) — 26 unid 88-90m²
     ("Treviso", "Vernazza Torre Sul", "3D", 26, 87.98, 90.10, 1277584, 1586363, 15599, "tabela_local"),
     # Quartier 22 (Delman) — 1 unid Ponta d'Areia, 165m² (apto 601)
-    ("Delman", "Quartier 22", "4D", 1, 165.00, 165.00, 3000000, 3000000, 18182, "tabela_local"),
+    ("Delman", "Quartier 22", "3D", 1, 165.00, 165.00, 3000000, 3000000, 18182, "tabela_local"),
     # Sky Residence (Delman) — 1 unid Ponta d'Areia, 247m² (apto 200)
     ("Delman", "Sky Residence", "4D", 1, 246.69, 246.69, 4700000, 4700000, 19052, "tabela_local"),
     # Azimuth (Delman) — 1 unid Ponta d'Areia, 197m² (apto 901)
-    ("Delman", "Azimuth", "4D", 1, 196.62, 196.62, 3600000, 3600000, 18309, "tabela_local"),
+    ("Delman", "Azimuth", "3D", 1, 196.62, 196.62, 3600000, 3600000, 18309, "tabela_local"),
     # Al Mare Tirreno (Mota Machado) — 1 unid 215m² Av. dos Holandeses Q9 L9
     ("Mota Machado", "Al Mare Tirreno", "4D", 1, 215.00, 215.00, 3025856, 3025856, 14074, "tabela_local"),
     # Entre Rios (Mota Machado) — 30 unid (Torre Douro + Tejo) 146,82m² Renascença
-    ("Mota Machado", "Entre Rios", "4D", 30, 146.82, 146.82, 1732638, 2719860, 14679, "tabela_local"),
+    ("Mota Machado", "Entre Rios", "3D", 30, 146.82, 146.82, 1732638, 2719860, 14679, "tabela_local"),
     # Reserva São Marcos (Mota Machado) — 2 plantas, áreas do BOOK
     # Planta 1 (2D) 67-69m² | Planta 2 (3D) 102-104m². Tickets agregados (~6 grupos).
     ("Mota Machado", "Reserva São Marcos", "2D", 3, 67.48, 68.75, 977382, 1316965, 17535, "tabela_local"),
@@ -877,6 +909,25 @@ C_RAW = [
     # Zion Ponta d'Areia (Ergus) — 10 unid disponíveis 04/2026, todas 148,55m² 4D.
     # Tabela em PDF imagem extraída via pdftoppm + Claude visão. R$/m² médio 15.500.
     ("Ergus", "Zion Ponta d'Areia", "4D", 10, 148.55, 148.55, 2170378, 2556972, 15500, "tabela_local_imagem"),
+
+    # ─── Lote 4 (v10.1) — 4 empreend. com tabela texto ─────────────
+    # Monte Meru (Berg Engenharia) — 2 unid 3D, ~135m²
+    ("Berg Engenharia", "Monte Meru", "3D", 2, 135.32, 135.83, 1932400, 1944500, 14298, "tabela_local"),
+    # Residencial Novo Anil (Monteplan) — 30 unid 2D 53,94m² uniforme (8 blocos A1-B4)
+    ("Monteplan", "Residencial Novo Anil", "2D", 30, 53.94, 53.94, 324142, 324143, 6009, "tabela_local"),
+    # Giardino Fiore (Alfa) — 6 unid 3D, 110-128m², 3 colunas
+    ("Alfa Engenharia", "Giardino Residenza Torre Fiore", "3D", 6, 110.77, 128.37, 1838492, 2032938, 15373, "tabela_local"),
+    # Giardino Luce (Alfa) — 5 unid 3D, 93-101m², 4 colunas
+    ("Alfa Engenharia", "Giardino Residenza Torre Luce", "3D", 5, 93.62, 101.31, 1442168, 1595303, 15299, "tabela_local"),
+
+    # ─── Lote 5 (v10.2) — DOM Incorporação via visão multimodal ─────
+    # Dom Lucas (DOM) — 9 unid disponíveis 04/2026, todas 100,35 m² casa (3D)
+    # Tabela ABR/2026 em PDF imagem — extraída via pdftoppm + visão Claude.
+    # 46 unid totais (UH 1-46), 9 disp + 1 reserv + 36 vend → ~80% vendido.
+    ("DOM Incorporação", "Dom Lucas", "3D", 9, 100.35, 100.35, 835894, 850937, 8406, "tabela_local_imagem"),
+    # Dom José (DOM) — 3 unid disponíveis 04/2026, todas 154,64 m² casa (4D)
+    # 22 unid totais (UH 1-22 confirmado por implantação numerada), 3 disp + 19 vend → ~86% vendido.
+    ("DOM Incorporação", "Dom José", "4D", 3, 154.64, 154.64, 1403358, 1420196, 9130, "tabela_local_imagem"),
 ]
 
 # ═══════════════════════════════════════════════════════════════
