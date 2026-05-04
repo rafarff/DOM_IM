@@ -1,0 +1,48 @@
+incorporadora: Monteplan
+empreendimento: Renaissance Conceito
+fonte: {origem_principal: tabela_local, parser: monteplan_renaissance, data_extracao: '2026-04-28'}
+unidades:
+- {apto: LE 101, tip: 4D, planta: Leonardo, area: 110.0, status: disponível, ticket: 1359410.37, origem: tabela_local}
+- {apto: LE 102, tip: 4D, planta: Leonardo, area: 110.0, status: disponível, ticket: 1390747.63, origem: tabela_local}
+- {apto: LE 201, tip: 4D, planta: Leonardo, area: 110.0, status: disponível, ticket: 1371945.28, origem: tabela_local}
+- {apto: LE 501, tip: 4D, planta: Leonardo, area: 110.0, status: disponível, ticket: 1409549.99, origem: tabela_local}
+- {apto: LE 801, tip: 4D, planta: Leonardo, area: 110.0, status: disponível, ticket: 1489982.29, origem: tabela_local}
+- {apto: LE 1301, tip: 4D, planta: Leonardo, area: 110.0, status: disponível, ticket: 1552656.81, origem: tabela_local}
+- {apto: LE 1401, tip: 4D, planta: Leonardo, area: 110.0, status: disponível, ticket: 1565191.72, origem: tabela_local}
+- {apto: BO 101, tip: 3D, planta: Botticelli, area: 82.0, status: disponível, ticket: 1038621.28, origem: tabela_local}
+- {apto: BO 201, tip: 3D, planta: Botticelli, area: 82.0, status: disponível, ticket: 1049067.03, origem: tabela_local}
+- {apto: BO 301, tip: 3D, planta: Botticelli, area: 82.0, status: disponível, ticket: 1059512.79, origem: tabela_local}
+- {apto: BO 501, tip: 3D, planta: Botticelli, area: 82.0, status: disponível, ticket: 1080404.29, origem: tabela_local}
+- {apto: BO 601, tip: 3D, planta: Botticelli, area: 82.0, status: disponível, ticket: 1093670.41, origem: tabela_local}
+- {apto: BO 801, tip: 3D, planta: Botticelli, area: 82.0, status: disponível, ticket: 1114561.91, origem: tabela_local}
+- {apto: BO 901, tip: 3D, planta: Botticelli, area: 82.0, status: disponível, ticket: 1125007.66, origem: tabela_local}
+- {apto: BO 1001, tip: 3D, planta: Botticelli, area: 82.0, status: disponível, ticket: 1135453.41, origem: tabela_local}
+- {apto: BO 1101, tip: 3D, planta: Botticelli, area: 82.0, status: disponível, ticket: 1145899.18, origem: tabela_local}
+- {apto: BO 1102, tip: 3D, planta: Botticelli, area: 82.0, status: disponível, ticket: 1146421.45, origem: tabela_local}
+- {apto: BO 1201, tip: 3D, planta: Botticelli, area: 82.0, status: disponível, ticket: 1156344.92, origem: tabela_local}
+- {apto: BO 1301, tip: 3D, planta: Botticelli, area: 82.0, status: disponível, ticket: 1166790.68, origem: tabela_local}
+- {apto: BO 1302, tip: 3D, planta: Botticelli, area: 82.0, status: disponível, ticket: 1167312.96, origem: tabela_local}
+- {apto: BO 1401, tip: 3D, planta: Botticelli, area: 82.0, status: disponível, ticket: 1177236.42, origem: tabela_local}
+- {apto: BO 1402, tip: 3D, planta: Botticelli, area: 82.0, status: disponível, ticket: 1177758.72, origem: tabela_local}
+- {apto: LE 101, tip: 4D, planta: Leonardo, area: 110.0, status: disponível, ticket: 1359410.37, origem: tabela_local}
+- {apto: LE 102, tip: 4D, planta: Leonardo, area: 110.0, status: disponível, ticket: 1390747.63, origem: tabela_local}
+- {apto: LE 201, tip: 4D, planta: Leonardo, area: 110.0, status: disponível, ticket: 1371945.28, origem: tabela_local}
+- {apto: LE 501, tip: 4D, planta: Leonardo, area: 110.0, status: disponível, ticket: 1409549.99, origem: tabela_local}
+- {apto: LE 801, tip: 4D, planta: Leonardo, area: 110.0, status: disponível, ticket: 1489982.29, origem: tabela_local}
+- {apto: LE 1301, tip: 4D, planta: Leonardo, area: 110.0, status: disponível, ticket: 1552656.81, origem: tabela_local}
+- {apto: LE 1401, tip: 4D, planta: Leonardo, area: 110.0, status: disponível, ticket: 1565191.72, origem: tabela_local}
+- {apto: BO 101, tip: 3D, planta: Botticelli, area: 82.0, status: disponível, ticket: 1038621.28, origem: tabela_local}
+- {apto: BO 201, tip: 3D, planta: Botticelli, area: 82.0, status: disponível, ticket: 1049067.03, origem: tabela_local}
+- {apto: BO 301, tip: 3D, planta: Botticelli, area: 82.0, status: disponível, ticket: 1059512.79, origem: tabela_local}
+- {apto: BO 501, tip: 3D, planta: Botticelli, area: 82.0, status: disponível, ticket: 1080404.29, origem: tabela_local}
+- {apto: BO 601, tip: 3D, planta: Botticelli, area: 82.0, status: disponível, ticket: 1093670.41, origem: tabela_local}
+- {apto: BO 801, tip: 3D, planta: Botticelli, area: 82.0, status: disponível, ticket: 1114561.91, origem: tabela_local}
+- {apto: BO 901, tip: 3D, planta: Botticelli, area: 82.0, status: disponível, ticket: 1125007.66, origem: tabela_local}
+- {apto: BO 1001, tip: 3D, planta: Botticelli, area: 82.0, status: disponível, ticket: 1135453.41, origem: tabela_local}
+- {apto: BO 1101, tip: 3D, planta: Botticelli, area: 82.0, status: disponível, ticket: 1145899.18, origem: tabela_local}
+- {apto: BO 1102, tip: 3D, planta: Botticelli, area: 82.0, status: disponível, ticket: 1146421.45, origem: tabela_local}
+- {apto: BO 1201, tip: 3D, planta: Botticelli, area: 82.0, status: disponível, ticket: 1156344.92, origem: tabela_local}
+- {apto: BO 1301, tip: 3D, planta: Botticelli, area: 82.0, status: disponível, ticket: 1166790.68, origem: tabela_local}
+- {apto: BO 1302, tip: 3D, planta: Botticelli, area: 82.0, status: disponível, ticket: 1167312.96, origem: tabela_local}
+- {apto: BO 1401, tip: 3D, planta: Botticelli, area: 82.0, status: disponível, ticket: 1177236.42, origem: tabela_local}
+- {apto: BO 1402, tip: 3D, planta: Botticelli, area: 82.0, status: disponível, ticket: 1177758.72, origem: tabela_local}

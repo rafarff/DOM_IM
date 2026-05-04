@@ -1,0 +1,36 @@
+incorporadora: Delman
+empreendimento: Studio Design 7 Península
+fonte: {origem_principal: tabela_local, documento: TABELA_STUDIO_DESIGN_7_PENINSULA, data_extracao: '2026-04-28', parser: parse_delman}
+unidades:
+- {apto: '203', tip: 2D, planta: '', area: 64.44, status: disponível, ticket: 1006243.02, origem: tabela_local}
+- {apto: '204', tip: 2D, planta: '', area: 64.3, status: disponível, ticket: 1004013.44, origem: tabela_local}
+- {apto: '205', tip: 2D, planta: '', area: 64.5, status: disponível, ticket: 1007198.56, origem: tabela_local}
+- {apto: '211', tip: 1D, planta: '', area: 43.04, status: disponível, ticket: 710160.0, origem: tabela_local}
+- {apto: '212', tip: 1D, planta: '', area: 43.04, status: disponível, ticket: 710160.0, origem: tabela_local}
+- {apto: '213', tip: 1D, planta: '', area: 43.04, status: disponível, ticket: 710160.0, origem: tabela_local}
+- {apto: '303', tip: 2D, planta: '', area: 64.44, status: disponível, ticket: 1011243.02, origem: tabela_local}
+- {apto: '304', tip: 2D, planta: '', area: 64.3, status: disponível, ticket: 1009013.44, origem: tabela_local}
+- {apto: '311', tip: 1D, planta: '', area: 43.04, status: disponível, ticket: 713603.2, origem: tabela_local}
+- {apto: '403', tip: 2D, planta: '', area: 64.44, status: disponível, ticket: 1016243.02, origem: tabela_local}
+- {apto: '404', tip: 2D, planta: '', area: 64.3, status: disponível, ticket: 1014013.44, origem: tabela_local}
+- {apto: '413', tip: 1D, planta: '', area: 43.04, status: disponível, ticket: 714464.0, origem: tabela_local}
+- {apto: '503', tip: 2D, planta: '', area: 64.44, status: disponível, ticket: 1021243.02, origem: tabela_local}
+- {apto: '504', tip: 2D, planta: '', area: 64.3, status: disponível, ticket: 1019013.44, origem: tabela_local}
+- {apto: '505', tip: 2D, planta: '', area: 64.5, status: disponível, ticket: 1022198.56, origem: tabela_local}
+- {apto: '512', tip: 1D, planta: '', area: 43.04, status: disponível, ticket: 716616.0, origem: tabela_local}
+- {apto: '710', tip: 1D, planta: '', area: 42.4, status: disponível, ticket: 715712.0, origem: tabela_local}
+- {apto: '804', tip: 2D, planta: '', area: 64.3, status: disponível, ticket: 1038013.44, origem: tabela_local}
+- {apto: '806', tip: 1D, planta: '', area: 43.5, status: disponível, ticket: 735625.0, origem: tabela_local}
+- {apto: '809', tip: 1D, planta: '', area: 42.88, status: disponível, ticket: 725140.23, origem: tabela_local}
+- {apto: '811', tip: 1D, planta: '', area: 43.04, status: disponível, ticket: 727845.98, origem: tabela_local}
+- {apto: '904', tip: 2D, planta: '', area: 64.3, status: disponível, ticket: 1045013.44, origem: tabela_local}
+- {apto: '907', tip: 1D, planta: '', area: 42.4, status: disponível, ticket: 729704.0, origem: tabela_local}
+- {apto: '910', tip: 1D, planta: '', area: 42.4, status: disponível, ticket: 729712.0, origem: tabela_local}
+- {apto: '911', tip: 1D, planta: '', area: 43.04, status: disponível, ticket: 740726.58, origem: tabela_local}
+- {apto: '1004', tip: 2D, planta: '', area: 64.3, status: disponível, ticket: 1052013.44, origem: tabela_local}
+- {apto: '1005', tip: 2D, planta: '', area: 64.5, status: disponível, ticket: 1055198.56, origem: tabela_local}
+- {apto: '1101', tip: 2D, planta: '', area: 61.08, status: disponível, ticket: 1068900.0, origem: tabela_local}
+- {apto: '1104', tip: 2D, planta: '', area: 65.8, status: disponível, ticket: 1130016.3, origem: tabela_local}
+- {apto: '1106', tip: 2D, planta: '', area: 65.52, status: disponível, ticket: 1146600.0, origem: tabela_local}
+- {apto: '1107', tip: 2D, planta: '', area: 65.36, status: disponível, ticket: 1143800.0, origem: tabela_local}
+- {apto: '1108', tip: 3D, planta: '', area: 88.78, status: disponível, ticket: 1553650.0, origem: tabela_local}

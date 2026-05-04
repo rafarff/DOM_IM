@@ -1,0 +1,5 @@
+incorporadora: Delman
+empreendimento: Sky Residence
+fonte: {origem_principal: tabela_local, parser: delman, data_extracao: '2026-04-28'}
+unidades:
+- {apto: '200', tip: 4D, planta: '', area: 246.69, status: disponível, ticket: 4700000.0, origem: tabela_local}

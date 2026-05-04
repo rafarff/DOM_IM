@@ -1,0 +1,9 @@
+incorporadora: Delman
+empreendimento: Wave Residence
+fonte: {origem_principal: tabela_local, parser: delman, data_extracao: '2026-04-28'}
+unidades:
+- {apto: '301', tip: 4D, planta: '', area: 293.69, status: disponível, ticket: 5819289.0, origem: tabela_local}
+- {apto: '302', tip: 4D, planta: '', area: 293.69, status: disponível, ticket: 5581808.25, origem: tabela_local}
+- {apto: '401', tip: 4D, planta: '', area: 293.69, status: disponível, ticket: 5828289.0, origem: tabela_local}
+- {apto: '402', tip: 4D, planta: '', area: 293.69, status: disponível, ticket: 5590808.25, origem: tabela_local}
+- {apto: '602', tip: 4D, planta: '', area: 293.69, status: disponível, ticket: 5608808.25, origem: tabela_local}

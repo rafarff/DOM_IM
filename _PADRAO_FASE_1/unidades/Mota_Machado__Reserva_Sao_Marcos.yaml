@@ -1,0 +1,14 @@
+incorporadora: Mota Machado
+empreendimento: Reserva São Marcos
+fonte: {origem_principal: tabela_local, parser: mota, data_extracao: '2026-04-28'}
+unidades:
+- {apto: '1701', tip: 2D, planta: Planta 1 — Lagoa, area: 68.12, status: disponível, ticket: 1316965.02, origem: tabela_local}
+- {apto: '1702', tip: 2D, planta: Planta 1 — Lagoa, area: 68.12, status: disponível, ticket: 1316965.02, origem: tabela_local}
+- {apto: '1703', tip: 2D, planta: Planta 1 — Lagoa, area: 68.12, status: disponível, ticket: 1316965.02, origem: tabela_local}
+- {apto: '301', tip: 2D, planta: Planta 1 — Lagoa, area: 68.12, status: disponível, ticket: 977382.31, origem: tabela_local}
+- {apto: '302', tip: 2D, planta: Planta 1 — Lagoa, area: 68.12, status: disponível, ticket: 977382.31, origem: tabela_local}
+- {apto: '303', tip: 2D, planta: Planta 1 — Lagoa, area: 68.12, status: disponível, ticket: 977382.31, origem: tabela_local}
+- {apto: '1504', tip: 4D, planta: Planta 2 — Litorânea, area: 103.15, status: disponível, ticket: 1850951.6, origem: tabela_local}
+- {apto: '1505', tip: 4D, planta: Planta 2 — Litorânea, area: 103.15, status: disponível, ticket: 1850951.6, origem: tabela_local}
+- {apto: '404', tip: 4D, planta: Planta 2 — Litorânea, area: 103.15, status: disponível, ticket: 1504064.95, origem: tabela_local}
+- {apto: '405', tip: 4D, planta: Planta 2 — Litorânea, area: 103.15, status: disponível, ticket: 1504064.95, origem: tabela_local}

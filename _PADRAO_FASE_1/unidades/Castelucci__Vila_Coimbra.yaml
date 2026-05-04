@@ -1,0 +1,40 @@
+incorporadora: Castelucci
+empreendimento: Vila Coimbra
+fonte: {origem_principal: tabela_local, parser: castelucci, data_extracao: '2026-04-28'}
+unidades:
+- {apto: Casa 2, tip: 4D, planta: '', area: 124.63, status: disponível, ticket: 1029000.0, origem: tabela_local}
+- {apto: Casa 3, tip: 4D, planta: '', area: 124.63, status: disponível, ticket: 1029000.0, origem: tabela_local}
+- {apto: Casa 4, tip: 4D, planta: '', area: 124.63, status: disponível, ticket: 1029000.0, origem: tabela_local}
+- {apto: Casa 5, tip: 4D, planta: '', area: 124.63, status: disponível, ticket: 1029000.0, origem: tabela_local}
+- {apto: Casa 6, tip: 4D, planta: '', area: 124.63, status: disponível, ticket: 1029000.0, origem: tabela_local}
+- {apto: Casa 7, tip: 4D, planta: '', area: 124.63, status: disponível, ticket: 1029000.0, origem: tabela_local}
+- {apto: Casa 8, tip: 4D, planta: '', area: 124.63, status: disponível, ticket: 1029000.0, origem: tabela_local}
+- {apto: Casa 9, tip: 4D, planta: '', area: 124.63, status: disponível, ticket: 1029000.0, origem: tabela_local}
+- {apto: Casa 10, tip: 4D, planta: '', area: 124.63, status: disponível, ticket: 1029000.0, origem: tabela_local}
+- {apto: Casa 11, tip: 4D, planta: '', area: 124.63, status: disponível, ticket: 1029000.0, origem: tabela_local}
+- {apto: Casa 12, tip: 4D, planta: '', area: 124.63, status: disponível, ticket: 1029000.0, origem: tabela_local}
+- {apto: Casa 13, tip: 4D, planta: '', area: 124.63, status: disponível, ticket: 1029000.0, origem: tabela_local}
+- {apto: Casa 14, tip: 4D, planta: '', area: 124.63, status: disponível, ticket: 1029000.0, origem: tabela_local}
+- {apto: Casa 15, tip: 4D, planta: '', area: 124.63, status: disponível, ticket: 1029000.0, origem: tabela_local}
+- {apto: Casa 16, tip: 4D, planta: '', area: 124.63, status: disponível, ticket: 1029000.0, origem: tabela_local}
+- {apto: Casa 17, tip: 4D, planta: '', area: 124.63, status: disponível, ticket: 1029000.0, origem: tabela_local}
+- {apto: Casa 18, tip: 4D, planta: '', area: 124.63, status: disponível, ticket: 1055775.0, origem: tabela_local}
+- {apto: Casa 19, tip: 4D, planta: '', area: 124.63, status: disponível, ticket: 1043033.0, origem: tabela_local}
+- {apto: Casa 20, tip: 4D, planta: '', area: 124.63, status: disponível, ticket: 1026086.0, origem: tabela_local}
+- {apto: Casa 21, tip: 4D, planta: '', area: 124.63, status: disponível, ticket: 1019834.0, origem: tabela_local}
+- {apto: Casa 22, tip: 4D, planta: '', area: 124.63, status: disponível, ticket: 1024826.0, origem: tabela_local}
+- {apto: Casa 23, tip: 4D, planta: '', area: 124.63, status: disponível, ticket: 1052483.0, origem: tabela_local}
+- {apto: Casa 24, tip: 4D, planta: '', area: 124.63, status: disponível, ticket: 1038072.0, origem: tabela_local}
+- {apto: Casa 25, tip: 4D, planta: '', area: 124.63, status: disponível, ticket: 1046813.0, origem: tabela_local}
+- {apto: Casa 26, tip: 4D, planta: '', area: 124.63, status: disponível, ticket: 1052483.0, origem: tabela_local}
+- {apto: Casa 27, tip: 4D, planta: '', area: 124.63, status: disponível, ticket: 1057775.0, origem: tabela_local}
+- {apto: Casa 28, tip: 4D, planta: '', area: 124.63, status: disponível, ticket: 1063571.0, origem: tabela_local}
+- {apto: Casa 29, tip: 4D, planta: '', area: 124.63, status: disponível, ticket: 1069556.0, origem: tabela_local}
+- {apto: Casa 30, tip: 4D, planta: '', area: 124.63, status: disponível, ticket: 1075526.0, origem: tabela_local}
+- {apto: Casa 31, tip: 4D, planta: '', area: 124.63, status: disponível, ticket: 1081511.0, origem: tabela_local}
+- {apto: Casa 36, tip: 4D, planta: '', area: 124.63, status: disponível, ticket: 1046325.0, origem: tabela_local}
+- {apto: Casa 37, tip: 4D, planta: '', area: 124.63, status: disponível, ticket: 1046325.0, origem: tabela_local}
+- {apto: Casa 38, tip: 4D, planta: '', area: 124.63, status: disponível, ticket: 1046325.0, origem: tabela_local}
+- {apto: Casa 39, tip: 4D, planta: '', area: 124.63, status: disponível, ticket: 1074833.0, origem: tabela_local}
+- {apto: Casa 40, tip: 4D, planta: '', area: 124.63, status: disponível, ticket: 1074833.0, origem: tabela_local}
+- {apto: Casa 41, tip: 4D, planta: '', area: 124.63, status: disponível, ticket: 1081967.0, origem: tabela_local}

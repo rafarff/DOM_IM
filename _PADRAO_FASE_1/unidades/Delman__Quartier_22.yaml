@@ -1,0 +1,5 @@
+incorporadora: Delman
+empreendimento: Quartier 22
+fonte: {origem_principal: tabela_local, parser: delman, data_extracao: '2026-04-28'}
+unidades:
+- {apto: '601', tip: 3D, planta: '', area: 165.0, status: disponível, ticket: 3000000.0, origem: tabela_local}

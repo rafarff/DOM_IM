@@ -1,0 +1,10 @@
+incorporadora: Alfa Engenharia
+empreendimento: Giardino Residenza Torre Fiore
+fonte: {origem_principal: tabela_local, documento: TABELA_GIARDINO_FIORE, data_extracao: '2026-04-28', parser: parse_alfa}
+unidades:
+- {apto: '1001', tip: 3D, planta: Coluna 01, area: 127.3, status: disponível, ticket: 2032938.42, origem: tabela_local}
+- {apto: '701', tip: 3D, planta: Coluna 01, area: 127.3, status: disponível, ticket: 1973150.0, origem: tabela_local}
+- {apto: '201', tip: 3D, planta: Coluna 01, area: 127.3, status: disponível, ticket: 1885632.44, origem: tabela_local}
+- {apto: '101', tip: 3D, planta: Coluna 01, area: 127.3, status: disponível, ticket: 1838491.63, origem: tabela_local}
+- {apto: '102', tip: 3D, planta: Coluna 02, area: 128.37, status: disponível, ticket: 1880620.5, origem: tabela_local}
+- {apto: '1403', tip: 3D, planta: Coluna 03, area: 110.77, status: disponível, ticket: 1868169.12, origem: tabela_local}

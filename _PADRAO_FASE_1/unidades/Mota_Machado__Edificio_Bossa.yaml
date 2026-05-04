@@ -1,0 +1,26 @@
+incorporadora: Mota Machado
+empreendimento: Edifício Bossa
+fonte: {origem_principal: tabela_local, parser: mota, data_extracao: '2026-04-28'}
+unidades:
+- {apto: '501', tip: 4D, planta: '', area: 192.64, status: disponível, ticket: 3009431.8, origem: tabela_local}
+- {apto: '601', tip: 4D, planta: '', area: 196.04, status: disponível, ticket: 3129855.49, origem: tabela_local}
+- {apto: '701', tip: 4D, planta: '', area: 192.64, status: disponível, ticket: 3125179.17, origem: tabela_local}
+- {apto: '801', tip: 4D, planta: '', area: 196.04, status: disponível, ticket: 3230818.57, origem: tabela_local}
+- {apto: '502', tip: 4D, planta: '', area: 191.02, status: disponível, ticket: 2880199.36, origem: tabela_local}
+- {apto: '602', tip: 4D, planta: '', area: 191.02, status: disponível, ticket: 2943500.44, origem: tabela_local}
+- {apto: '702', tip: 4D, planta: '', area: 191.02, status: disponível, ticket: 2990976.26, origem: tabela_local}
+- {apto: '802', tip: 4D, planta: '', area: 191.02, status: disponível, ticket: 3038452.07, origem: tabela_local}
+- {apto: '902', tip: 4D, planta: '', area: 191.02, status: disponível, ticket: 3070102.61, origem: tabela_local}
+- {apto: '1002', tip: 4D, planta: '', area: 191.02, status: disponível, ticket: 3101753.15, origem: tabela_local}
+- {apto: '1102', tip: 4D, planta: '', area: 191.02, status: disponível, ticket: 3133403.7, origem: tabela_local}
+- {apto: '1202', tip: 4D, planta: '', area: 191.02, status: disponível, ticket: 3165054.24, origem: tabela_local}
+- {apto: '1502', tip: 4D, planta: '', area: 191.02, status: disponível, ticket: 3323306.95, origem: tabela_local}
+- {apto: '1602', tip: 4D, planta: '', area: 191.02, status: disponível, ticket: 3386608.03, origem: tabela_local}
+- {apto: '1702', tip: 4D, planta: '', area: 191.02, status: disponível, ticket: 3481559.66, origem: tabela_local}
+- {apto: '1802', tip: 4D, planta: '', area: 191.02, status: disponível, ticket: 3576511.29, origem: tabela_local}
+- {apto: '1902', tip: 4D, planta: '', area: 191.02, status: disponível, ticket: 3671462.92, origem: tabela_local}
+- {apto: '1201', tip: 4D, planta: '', area: 191.02, status: disponível, ticket: 3132424.81, origem: tabela_local}
+- {apto: '1301', tip: 4D, planta: '', area: 191.02, status: disponível, ticket: 3163749.06, origem: tabela_local}
+- {apto: '1901', tip: 4D, planta: '', area: 191.02, status: disponível, ticket: 3633612.78, origem: tabela_local}
+- {apto: '1302', tip: 4D, planta: '', area: 192.64, status: disponível, ticket: 3257050.56, origem: tabela_local}
+- {apto: '1402', tip: 4D, planta: '', area: 196.04, status: disponível, ticket: 3380170.26, origem: tabela_local}

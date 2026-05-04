@@ -1,0 +1,29 @@
+incorporadora: Treviso
+empreendimento: Altos do São Francisco
+fonte: {origem_principal: tabela_local, documento: TABELA_ALTOS_DO_SAO_FRANCISCO, data_extracao: '2026-04-28', parser: parse_treviso_altos}
+unidades:
+- {apto: '102', tip: 2D, planta: '', area: 57.93, status: disponível, ticket: 495808.64, origem: tabela_local}
+- {apto: '106', tip: 2D, planta: '', area: 57.93, status: disponível, ticket: 495808.64, origem: tabela_local}
+- {apto: '202', tip: 2D, planta: '', area: 57.93, status: disponível, ticket: 510179.9, origem: tabela_local}
+- {apto: '203', tip: 2D, planta: '', area: 67.15, status: disponível, ticket: 646706.92, origem: tabela_local}
+- {apto: '204', tip: 2D, planta: '', area: 57.93, status: disponível, ticket: 553293.7, origem: tabela_local}
+- {apto: '302', tip: 2D, planta: '', area: 57.93, status: disponível, ticket: 524551.17, origem: tabela_local}
+- {apto: '303', tip: 2D, planta: '', area: 67.15, status: disponível, ticket: 661078.19, origem: tabela_local}
+- {apto: '304', tip: 2D, planta: '', area: 57.93, status: disponível, ticket: 567664.96, origem: tabela_local}
+- {apto: '308', tip: 2D, planta: '', area: 57.93, status: disponível, ticket: 567664.96, origem: tabela_local}
+- {apto: '402', tip: 2D, planta: '', area: 57.93, status: disponível, ticket: 538922.43, origem: tabela_local}
+- {apto: '404', tip: 2D, planta: '', area: 57.93, status: disponível, ticket: 582036.23, origem: tabela_local}
+- {apto: '406', tip: 2D, planta: '', area: 57.93, status: disponível, ticket: 538922.43, origem: tabela_local}
+- {apto: '503', tip: 2D, planta: '', area: 67.15, status: disponível, ticket: 689820.72, origem: tabela_local}
+- {apto: '504', tip: 2D, planta: '', area: 57.93, status: disponível, ticket: 596407.49, origem: tabela_local}
+- {apto: '508', tip: 2D, planta: '', area: 57.93, status: disponível, ticket: 596407.49, origem: tabela_local}
+- {apto: '602', tip: 2D, planta: '', area: 57.93, status: disponível, ticket: 567664.96, origem: tabela_local}
+- {apto: '603', tip: 2D, planta: '', area: 67.15, status: disponível, ticket: 704191.98, origem: tabela_local}
+- {apto: '702', tip: 2D, planta: '', area: 57.93, status: disponível, ticket: 582036.23, origem: tabela_local}
+- {apto: '704', tip: 2D, planta: '', area: 57.93, status: disponível, ticket: 625150.02, origem: tabela_local}
+- {apto: '708', tip: 2D, planta: '', area: 57.93, status: disponível, ticket: 653892.55, origem: tabela_local}
+- {apto: '802', tip: 2D, planta: '', area: 57.93, status: disponível, ticket: 596407.49, origem: tabela_local}
+- {apto: '804', tip: 2D, planta: '', area: 57.93, status: disponível, ticket: 668263.82, origem: tabela_local}
+- {apto: '806', tip: 2D, planta: '', area: 57.93, status: disponível, ticket: 596407.49, origem: tabela_local}
+- {apto: '901', tip: 2D, planta: '', area: 67.15, status: disponível, ticket: 704191.98, origem: tabela_local}
+- {apto: '903', tip: 2D, planta: '', area: 67.15, status: disponível, ticket: 747305.77, origem: tabela_local}

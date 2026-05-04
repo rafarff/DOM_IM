@@ -1,0 +1,8 @@
+incorporadora: Hiali
+empreendimento: Le Noir
+fonte: {origem_principal: tabela_local, parser: hiali, data_extracao: '2026-04-28'}
+unidades:
+- {apto: '101', tip: 2D, planta: '', area: 62.62, status: disponível, ticket: 850000.0, origem: tabela_local}
+- {apto: '201', tip: 2D, planta: '', area: 62.62, status: disponível, ticket: 870000.0, origem: tabela_local}
+- {apto: '405', tip: 2D, planta: '', area: 58.91, status: disponível, ticket: 800000.0, origem: tabela_local}
+- {apto: '504', tip: 1D, planta: '', area: 49.74, status: disponível, ticket: 710000.0, origem: tabela_local}

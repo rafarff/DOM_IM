@@ -1,0 +1,71 @@
+# Metadados estáveis das incorporadoras monitoradas
+# Tudo o mais (VGV, segmentos, bairros, ticket médio, R$/m², % com arquivo)
+# é derivado em runtime via GROUP BY na aba Empreendimentos.
+# Editar livre — gerar_planilha.py lê este arquivo.
+
+Mota Machado:
+  site: https://motamachado.com.br
+  instagram: '@motamachado'
+  posicionamento: Cearense em expansão no NE. Lançou Bossa em abr/2026 no Calhau (4 suítes, 191-195m², vista mar). Reserva São Marcos em obras. VGV 2025 R$350M.
+Berg Engenharia:
+  site: https://www.bergengenharia.com.br
+  instagram: '@bergengenharia'
+  posicionamento: 28 anos em SL. Monte Meru (Península, 135m²) em comercialização. Mount Solaro em parceria com Gonçalves Empreend. (SPE, LI solicitada).
+Alfa Engenharia:
+  site: https://www.alfaengenharia.com.br
+  instagram: '@alfaengenhariama'
+  posicionamento: 'Tech-forward (1º Housi do MA em LIV). Novo lançamento Giardino Residenza (Ponta do Farol). Marca no IG: @alfaengenhariama.'
+Lua Nova:
+  site: https://construtoraluanova.com.br
+  instagram: '@construtoraluanova'
+  posicionamento: Desde 1985 (40+ anos). Villa Adagio + Lagoon Residence (Santo Amaro). Perfil médio-padrão. Mapeada via web.
+Delman:
+  site: https://www.delman.com.br
+  instagram: '@delmanincorporadora'
+  posicionamento: 'Referência de luxo em Ponta d''Areia; 7 empreend. mapeados (ticket R$530k-R$5,8M). 2026 traz forte movimento no Calhau: Landscape (lançamento) + The View (pré-lançamento ABR/2026, 36-101m²,
+    17º andar premium ~R$18k/m²).'
+Treviso:
+  site: https://trevisoengenharia.com.br
+  instagram: '@treviso.engenharia'
+  posicionamento: Vernazza (120 un. Ponta d'Areia) + Villagio Treviso (loteamento). Ed. Biadene Oaice é sede.
+Ergus:
+  site: https://ergusengenharia.com.br
+  instagram: '@ergusengenharia'
+  posicionamento: 25 anos em 2026. Multi-produto (Zion, Nexus, Lead Office, On Residence, Open Design). Proposta sustentável. Projeto Nexus 10.000m² em Renascença.
+Monteplan:
+  site: https://monteplanengenharia.com.br
+  instagram: '@monteplanengenharia'
+  posicionamento: Renaissance Conceito (Renascença II, alto padrão) + Sanpaolo (esgotado). Portfólio residencial e comercial.
+Franere:
+  site: https://franere.com.br
+  instagram: '@franereoficial_'
+  posicionamento: '''Maior construtora do Maranhão'' (self-proclamada). 40 anos. Série Gran Park / Varandas Grand Park.'
+Canopus:
+  site: https://canopusconstrucoes.com.br
+  instagram: '@canopusconstrucoes'
+  posicionamento: 'Endereço: Av. Cel. Colares Moreira, 1, J. Renascença. 3 lançamentos out/2025: Village Reserva II, Prime Eldorado, Del Ville II. Atua também em Imperatriz.'
+Niágara:
+  site: https://niagaraempreendimentos.com.br
+  instagram: '@niagaraimoveis'
+  posicionamento: ORO com ampla faixa 80-160m², parcelamento 48m pós-assinatura. Reserva dos Vinhais (Vinhais 2Q 48m²) + Reserva dos Buritis.
+MB Engenharia:
+  site: ''
+  instagram: '@mbengenharia.br'
+  posicionamento: 'Sócia da DOM Incorporação em Dom Antônio + Edifício Dom Ricardo (reclassificados como DOM em v4.18). Próprios: Prime Cohama (22 casas duplex 140m²) + Fernando de Noronha 2ª etapa.'
+Sá Cavalcante:
+  site: https://www.sacavalcante.com.br
+  instagram: '@sacavalcantema'
+  posicionamento: Grupo desde 1974 (shoppings + incorporação). Ilha Parque entregue + NOVO Reserva Península (out/2025, Ponta d'Areia).
+Castelucci:
+  site: https://construtoracastelucci.com.br
+  instagram: '@construtoracastelucci'
+  posicionamento: 10+ anos. CEO Paulo Castelucci (Mirante FM). Vila Coimbra (parceria Coimbra Alves, Araçagi alto padrão) + Villa di Carpi (Cohatrac) + Ana Vitória (Araçagy). Patrocinador Imob Summit.
+Hiali:
+  site: ''
+  instagram: '@hialiconstrucoes'
+  posicionamento: 'Parceria com Silveira Inc. Le Noir (Renascença II): compactos premium 49-62m², ticket R$ 710-870k. Memorial 04/2025. Posicionamento jovem/investidor. Mapeada via tabela arquivada.'
+DOM Incorporação:
+  site: https://domincorporacao.com.br
+  instagram: '@domincorporacao'
+  posicionamento: 'EU. Portfólio próprio: Dom Lucas (horizontal Cantinho do Céu, 100m²+terreno, R$ 835-851k), Dom José (horizontal Eldorado alto padrão, casa 154m², R$ 1,4M). Em parceria com MB Engenharia:
+    Dom Antônio (Turú) + Edifício Dom Ricardo (Jd. Renascença). Tracked aqui para benchmarking interno.'

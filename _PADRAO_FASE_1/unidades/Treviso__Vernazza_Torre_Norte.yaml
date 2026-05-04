@@ -1,0 +1,41 @@
+incorporadora: Treviso
+empreendimento: Vernazza Torre Norte
+fonte: {origem_principal: tabela_local, parser: vernazza, data_extracao: '2026-04-28'}
+unidades:
+- {apto: N-101, tip: 4D, planta: '', area: 130.49, status: disponível, ticket: 1857758.65, origem: tabela_local}
+- {apto: N-102, tip: 4D, planta: '', area: 130.49, status: disponível, ticket: 1857758.65, origem: tabela_local}
+- {apto: N-103, tip: 4D, planta: '', area: 130.0, status: disponível, ticket: 1820603.48, origem: tabela_local}
+- {apto: N-104, tip: 4D, planta: '', area: 130.0, status: disponível, ticket: 1820603.48, origem: tabela_local}
+- {apto: N-201, tip: 4D, planta: '', area: 130.49, status: disponível, ticket: 1920922.45, origem: tabela_local}
+- {apto: N-202, tip: 4D, planta: '', area: 130.49, status: disponível, ticket: 1920922.45, origem: tabela_local}
+- {apto: N-203, tip: 4D, planta: '', area: 130.0, status: disponível, ticket: 1882504.0, origem: tabela_local}
+- {apto: N-204, tip: 4D, planta: '', area: 130.0, status: disponível, ticket: 1882504.0, origem: tabela_local}
+- {apto: N-301, tip: 4D, planta: '', area: 130.49, status: disponível, ticket: 1946509.14, origem: tabela_local}
+- {apto: N-401, tip: 4D, planta: '', area: 130.49, status: disponível, ticket: 1972436.64, origem: tabela_local}
+- {apto: N-402, tip: 4D, planta: '', area: 130.49, status: disponível, ticket: 1972436.64, origem: tabela_local}
+- {apto: N-403, tip: 4D, planta: '', area: 130.0, status: disponível, ticket: 1932987.9, origem: tabela_local}
+- {apto: N-404, tip: 4D, planta: '', area: 130.0, status: disponível, ticket: 1932987.9, origem: tabela_local}
+- {apto: N-501, tip: 4D, planta: '', area: 130.49, status: disponível, ticket: 1998709.49, origem: tabela_local}
+- {apto: N-502, tip: 4D, planta: '', area: 130.49, status: disponível, ticket: 1998709.49, origem: tabela_local}
+- {apto: N-503, tip: 4D, planta: '', area: 130.0, status: disponível, ticket: 1958735.3, origem: tabela_local}
+- {apto: N-504, tip: 4D, planta: '', area: 130.0, status: disponível, ticket: 1958735.3, origem: tabela_local}
+- {apto: N-601, tip: 4D, planta: '', area: 130.49, status: disponível, ticket: 2025332.3, origem: tabela_local}
+- {apto: N-602, tip: 4D, planta: '', area: 130.49, status: disponível, ticket: 2025332.3, origem: tabela_local}
+- {apto: N-603, tip: 4D, planta: '', area: 130.0, status: disponível, ticket: 1984825.66, origem: tabela_local}
+- {apto: N-701, tip: 4D, planta: '', area: 130.49, status: disponível, ticket: 2052309.73, origem: tabela_local}
+- {apto: N-702, tip: 4D, planta: '', area: 130.49, status: disponível, ticket: 2052309.73, origem: tabela_local}
+- {apto: N-803, tip: 4D, planta: '', area: 130.0, status: disponível, ticket: 2038053.57, origem: tabela_local}
+- {apto: N-804, tip: 4D, planta: '', area: 130.0, status: disponível, ticket: 2038053.57, origem: tabela_local}
+- {apto: N-903, tip: 4D, planta: '', area: 130.0, status: disponível, ticket: 2065200.44, origem: tabela_local}
+- {apto: N-904, tip: 4D, planta: '', area: 130.0, status: disponível, ticket: 2065200.44, origem: tabela_local}
+- {apto: N-1002, tip: 4D, planta: '', area: 130.49, status: disponível, ticket: 2135417.25, origem: tabela_local}
+- {apto: N-1003, tip: 4D, planta: '', area: 130.0, status: disponível, ticket: 2092708.91, origem: tabela_local}
+- {apto: N-1004, tip: 4D, planta: '', area: 130.0, status: disponível, ticket: 2092708.91, origem: tabela_local}
+- {apto: N-1102, tip: 4D, planta: '', area: 130.49, status: disponível, ticket: 2163861.01, origem: tabela_local}
+- {apto: N-1104, tip: 4D, planta: '', area: 130.0, status: disponível, ticket: 2120583.79, origem: tabela_local}
+- {apto: N-1203, tip: 4D, planta: '', area: 130.0, status: disponível, ticket: 2148829.97, origem: tabela_local}
+- {apto: N-1301, tip: 4D, planta: '', area: 130.49, status: disponível, ticket: 2221890.19, origem: tabela_local}
+- {apto: N-1302, tip: 4D, planta: '', area: 130.49, status: disponível, ticket: 2221890.19, origem: tabela_local}
+- {apto: N-1303, tip: 4D, planta: '', area: 130.0, status: disponível, ticket: 2177452.38, origem: tabela_local}
+- {apto: N-1403, tip: 4D, planta: '', area: 130.0, status: disponível, ticket: 2206456.05, origem: tabela_local}
+- {apto: N-1503, tip: 4D, planta: '', area: 130.0, status: disponível, ticket: 2235846.04, origem: tabela_local}

@@ -1,78 +1,77 @@
-# Pendências de TOTAL — Empreendimentos sem Total apurado
+# Pendências de Total Apurado — Inteligência Mercado DOM
 
-> Atualizado em **03/05/2026** com a planilha **v10.9** e o **PADRAO v6.2**.
-> Documento gerencial: lista os empreendimentos da carteira que **ainda não têm Total apurado** via §3.6 (hierarquia de 7 níveis).
-
-## Status
-
-**Total da carteira:** 44 empreendimentos
-**Com Total apurado:** 34 (77%) — destravam Composição automaticamente
-**Bloqueados aqui:** 10 (23%)
-
-**Histórico desta lista:**
-- v10.6: 17 bloqueados
-- v10.7: 15 (Dom Antônio + Dom Ricardo destravados pelo Rafael)
-- v10.8: 11 (LIV, Ana Vitória, Mount Solaro, Village Prime Eldorado destravados via web research)
-- **v10.9: 10** (Legacy Residence destravado por Rafael — 30u 4D 175/185m²)
+**Última atualização:** 03/05/2026 (v11.5)
+**Status:** 9 empreendimentos ainda sem Total apurado (era 10; Villa Adagio destravado)
 
 ---
 
-## Lista priorizada (10 empreendimentos restantes)
+## Empreendimentos com info enriquecida via web mas sem Total
 
-### Tier A — Pacotes que destravam vários de uma vez (pesquisa concentrada)
+### Connect Península (Alfa Engenharia) — Ponta D'Areia
+**Status:** info de 3 plantas confirmada via Triunfo Imóveis 03/05/2026
+- Planta 42m² — 1 quarto + WC
+- Planta 48m² — 1 suíte + lavabo
+- Planta 69m² — 2 suítes + lavabo
+**Pendente:** nº total de pavimentos / unidades por andar.
+**Próximo passo:** contato direto Alfa Engenharia ou consulta cartório (memorial).
 
-#### A1. Pacote Canopus (2 restantes)
-Os 3 lançamentos Canopus 31/10/2025 totalizam **1.487 unidades / R$ 300M VGV** (Imirante). Sabemos: Village Prime Eldorado = 400 unid. Restam 1.087 entre Reserva II e Del Ville II. **Atalho:** 1 contato com comercial Canopus → 2 destravados.
+### Lagoon Residence (Lua Nova) — Santo Amaro do Maranhão
+**Status:** bangalôs (não apartamentos) confirmados — 2 e 3 quartos com 2 vagas.
+**Caveat geográfico:** SANTO AMARO DO MARANHÃO, não Grande SLZ. Decidir manter ou tirar do escopo.
+**Próximo passo:** site oficial lagoonresidence.com.br ou contato Habittare.
 
-| # | Empreend. | Bairro | Tipologia (já mapeada) | Área | Falta |
-|---|---|---|---|---|---|
-| 1 | **Village Reserva II** | Cohatrac | 2D | 41m² | Total |
-| 2 | **Village Del Ville II** | Iguaíba | 2D | 42-43m² | Total |
+### Villa di Carpi (Castelucci) — Cohatrac (Paço do Lumiar)
+**Status:** 3 plantas confirmadas via Ziag/imeu/houseimobiliaria
+- 49,36m² — 2 quartos com semi-suite
+- 51,76m² — 2 quartos PCD
+- 51,88m² — 2 quartos com 1 suíte
+- Entrega prevista: 12/2027
+**Pendente:** nº de torres × pavimentos × aptos por andar.
+**Próximo passo:** contato Castelucci ou Ziag.
 
-#### A2. Alfa Engenharia — Connect Península (1 restante)
-Legacy Residence destravado pelo Rafael na v10.9 (30u 4D 175m² + 185m²). Resta Connect Península, que precisa de book/site Alfa.
+### Varandas Grand Park (Franere/Gafisa) — Calhau
+**Status:** confirmado 3D 74-87m² Calhau, "Pronto" no site Franere. A partir de R$ 342k.
+**Pendente:** nº de torres × pavimentos × aptos.
+**Próximo passo:** contato Franere/Gafisa direto (98 4009-2020).
 
-| # | Empreend. | Bairro | Tipologia | Área | Falta |
-|---|---|---|---|---|---|
-| 3 | **Connect Península** | Península | a confirmar (perfil Housi → Studio/1D) | a confirmar | Total + tipologia |
+### Reserva Península (Sá Cavalcante) — Ponta D'Areia
+**Status:** 4D 127-171m², 2-4 suítes + 3 wc, lazer 1.900m². Entrega 12/2028. Arquiteto Alexandre Feu.
+**Pendente:** nº de torres × pavimentos × aptos por andar.
+**Próximo passo:** contato Sá Cavalcante (sacavalcante.com.br) ou Triunfo Imóveis.
 
-### Tier B — Empreendimentos individuais (cada um 1 contato)
+### Village Reserva II + Village Del Ville II (Canopus)
+**Status:** Imirante 31/10/2025: 3 lançamentos (Reserva II + Del Ville II + Prime Eldorado) **somam 1.487 unidades / R$ 300M VGV**.
+- Prime Eldorado: 400 unid (já apurado v10.8)
+- Resíduo: 1.087 unidades distribuídas entre Reserva II + Del Ville II
+**Pendente:** breakdown individual por empreend.
+**Próximo passo:** Canopus direto (canopusconstrucoes.com.br).
 
-| # | Empreend. | Inc. | Bairro | Tipologia | Área | Próxima ação |
-|---|---|---|---|---|---|---|
-| 4 | **Reserva Península** | Sá Cavalcante | Península | 4D mono | 127-171m² | Pedir book (lançamento 09/2025, evento 'Casa Sal') |
-| 5 | **Nexus Renascença** | Ergus | Renascença | Studio;1D;2D | 33-94m² | Imprensa Diego Emir / site Ergus |
-| 6 | **Villagio Treviso** | Treviso | a confirmar | Lote (loteamento) | terreno | Site Treviso ou contato comercial |
-| 7 | **Villa di Carpi** | Castelucci | Cohatrac | 2D mono (3 plantas) | 49,36-51,88m² | Site meuvilladicarpi.com.br ou Ziag |
-| 8 | **Varandas Grand Park** | Franere | Calhau | 3D mono | 74-87m² | Pronto pra entrega — ofício direto à Franere/Gafisa |
-| 9 | **Villa Adagio** | Lua Nova | Iguaíba | 2D mono | 48,90m² | Site Lua Nova / IG / vídeo Sinduscon |
+### Nexus Renascença (Ergus) — Renascença
+**Status:** projeto 10.000m² confirmado (multi-produto Ergus). Tipologia "Studio; 1D; 2D".
+**Pendente:** memorial não localizado em web search.
+**Próximo passo:** contato Ergus (ergusengenharia.com.br) ou cartório 1º RI.
 
-### Tier C — Fora do escopo (decidir antes de pesquisar)
-
-| # | Empreend. | Inc. | Status | Decisão pendente |
-|---|---|---|---|---|
-| 10 | **Lagoon Residence** | Lua Nova | **Santo Amaro do Maranhão** (cidade satélite, ~250km de SLZ — porta dos Lençóis) | ⚠ **Manter na carteira ou tirar?** Não é Grande SLZ. |
+### Villagio Treviso (Treviso) — bairro não identificado
+**Status:** loteamento. Nome não retorna em web SLZ — pode ser nome interno.
+**Pendente:** verificar com Treviso Engenharia.
+**Próximo passo:** contato Treviso (trevisoengenharia.com.br).
 
 ---
 
-## Como destravar
+## Destravados v11.5 (web research 03/05/2026)
 
-Para cada empreendimento, seguir a hierarquia §3.6:
-1. **Memorial de incorporação** (mais forte) — registro de imóveis
-2. **Book oficial** com tabela ou implantação numerada — site, corretor
-3. **Tabela ABR/2026** ou outra com listagem completa — corretor, agregador
-4. **Imagens de implantação** com numeração — book ou redes
-5. **Treinamento de corretor**
-6. **Informado manualmente** (Rafael)
-7. **N/A** — apenas se nada das opções acima é viável (raro)
-
-Após apurar, atualizar a tupla em `gerar_planilha.py` (col 7 do E_RAW). A invariante v6.2 destrava automaticamente: Composição é gerada via §3.7 nível 5 (estimativa) ou recebe fonte forte (1-4) conforme o que estiver disponível.
+| Empreend. | Total apurado | Origem |
+|---|---:|---|
+| **Villa Adagio** (Lua Nova / Iguaíba) | **479 casas mono 2D 48,90m²** | site_oficial (imovelnacidade) |
 
 ---
 
-## Achados v10.8 que ainda precisam de validação Rafael
+## Sumário cobertura geral
 
-1. **Lagoon Residence (Tier C)** — fora do escopo geográfico, decidir manter ou tirar
-2. **Village Prime Eldorado bairro** — endereço CEP "Vila Vicente Fialho", mas marca/posicionamento Canopus = "Eldorado". Mantive `Jardim Eldorado` por origem `imprensa` (Imirante) — confirmar?
-3. **Mount Solaro entries C_RAW** — agreguei 20u 68m² + 10u 72m² em uma única entry "2D" (30u 68-72m²) por simplicidade. Pode-se desagregar em 2 entries 2D distintas se preferir granularidade fina.
-4. **Residencial Ana Vitória "Entregue"** — marquei como `Entregue` pelo lançamento de 01/2018, mas vale confirmar se ainda está em comercialização (ticket parte de R$ 557k indica que sim).
+| Métrica | v11.4 (antes) | v11.5 (agora) |
+|---|---:|---:|
+| Empreend. com Total apurado | 34/44 = 77% | **35/44 = 80%** |
+| Empreend. bloqueados pendencias_TOTAL.md | 10 | **9** |
+| Empreend. com info enriquecida (tipologia/área) mas sem Total | 0 | **6** (Connect Pen + Lagoon + Villa di Carpi + Varandas + Reserva Pen + Nexus) |
+
+Próximo bloqueio é puramente operacional — exige contato direto com 8 incorporadoras (a 9ª é o Lagoon que pode sair do escopo). Web search saturou.

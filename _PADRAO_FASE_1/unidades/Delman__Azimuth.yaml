@@ -1,0 +1,5 @@
+incorporadora: Delman
+empreendimento: Azimuth
+fonte: {origem_principal: tabela_local, parser: delman, data_extracao: '2026-04-28'}
+unidades:
+- {apto: '901', tip: 3D, planta: '', area: 196.62, status: disponível, ticket: 3600000.0, origem: tabela_local}

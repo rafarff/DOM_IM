@@ -19,8 +19,49 @@ from openpyxl.drawing.image import Image as XLImage
 # ═══════════════════════════════════════════════════════════════
 # PARÂMETROS GLOBAIS
 # ═══════════════════════════════════════════════════════════════
-VERSION = "11.1"
+VERSION = "11.6"
 DATE_STR = "03/05/2026"
+# v11.6 — (03/05/2026): R3 LOTE 3 — visão multimodal nos 3 PDFs imagem.
+#   Dom Lucas (DOM): 46 unidades (9 disp + 1 reserv + 36 vend) — tabela mar/2026 lida via Read PNG
+#   Dom José (DOM): 22 unidades (3 disp + 19 vend) — tabela abr/2026 lida via Read PNG (rotacionada 90°)
+#   Zion Ponta d'Areia (Ergus): 60 unidades (10 disp + 50 vend) — book + complemento manual
+#     (PDF Zion 042026 é book/plantas, não tabela; cobertura via composicao prévia)
+#   U_RAW: 21 → 24 empreend (100% das fontes 1-2 cobertas). 544 → 672 unidades.
+#   Cobertura U_RAW total: 24/26 = 92% (Al Mare e Entre Rios mantidos manuais por baixa cobertura parser).
+#   Composição cresceu correspondentemente — entries Dom Lucas/Dom José/Zion saem de composicao/ e
+#   passam a ser DERIVADAS do U_RAW. Aba Unidades: 544 → 672 linhas.
+# v11.5 — (03/05/2026): WEB RESEARCH dos 10 bloqueados (5h pesquisa, 8 sites/imprensa).
+#   +1 destravado completo: Villa Adagio (Lua Nova) Total=479 casas mono 2D 48,90m² (imovelnacidade).
+#   +6 enriquecidos parciais (info nova mas Total ainda pendente):
+#     - Connect Península (Alfa): 3 plantas confirmadas (42m² 1Q, 48m² 1S, 69m² 2S — Triunfo)
+#     - Lagoon Residence: bangalôs 2D+3D (caveat: Santo Amaro, fora SLZ-Grande SLZ)
+#     - Villa di Carpi (Castelucci): 3 plantas 49,36/51,76/51,88m² 2D, entrega 12/2027 (Ziag)
+#     - Varandas Grand Park (Franere/Gafisa): confirmado 3D 74-87m² Calhau, "Pronto"
+#     - Reserva Península (Sá Cav): 4D 127-171m², 1.900m² lazer, entrega 12/2028
+#     - Canopus 3 lançamentos (Imirante 31/10/2025): 1.487 unid total, R$ 300M VGV
+#       (Reserva II + Del Ville II + Prime Eldorado já 400). Resíduo 1.087 não breakeven.
+#   Cobertura Total apurado: 34/44 → 35/44 = 80%. Bloqueados: 10 → 9.
+#   pendencias_TOTAL.md atualizado com próximos passos por empreend (saturação web; faltam contatos diretos).
+# v11.4 — (03/05/2026): R3 LOTE 2 — U_RAW expandido para 21 empreend / 544 unidades.
+#   Cobertura U_RAW: 6 → 21 empreend. (lote 1 + 15 novos). Catálogo §3.7.1 cresceu:
+#   Mota Machado, Treviso Vernazza, Monteplan Renaissance/Sanpaolo/Novo Anil,
+#   Niágara, Hiali, Castelucci, Berg — todos com parsers funcionais.
+#   Aceito como manual: Al Mare Tirreno + Entre Rios (formatos peculiares, parser captura <50%);
+#     mantidos em composicao/. Cobertura ORO duplex (8u 4D 160m²) adicionada manual em U_RAW.
+#   C_RAW híbrido: 62 derivadas de U_RAW + 13 lidas de composicao/. Aba Composição: 84 linhas.
+# v11.3 — (03/05/2026): R3 — U_RAW (átomo: 1 linha por UNIDADE) entra como fonte primária.
+#   Pasta unidades/<inc>__<emp>.yaml (1 arquivo por empreend. com origem nível 1-2).
+#   Funções novas: load_u_raw_from_dir() + compute_c_raw_from_u_raw().
+#   C_RAW HÍBRIDO: empreend em U_RAW têm C_RAW derivado runtime (bucketização);
+#     demais (book/manual/estimativa) leem composicao/ direto.
+#   Lote 1: 6 empreend / 212 unidades (The View 93 + Landscape 51 + SD7P 32 + Altos SF 25 +
+#     Giardino F 6 + Giardino L 5). Próximo lote (~17 empreend) no roadmap.
+#   Visão Rafael 03/05/2026: "se fosse começar do zero faria por unidade".
+#   PADRAO §3.7.0 (NOVA) explicita U_RAW como fonte primária quando disponível.
+# v11.2 — (03/05/2026): R2 — Aba Incorporadoras vira DERIVADA. I_META hardcoded
+#   (4096 chars, 16 entries × 3 campos) movido para incorporadoras_meta.yaml.
+#   Função load_incorporadoras_meta() carrega no startup. Aba Incorporadoras na xlsx
+#   continua idêntica visualmente — só a fonte mudou. Próximo backlog: R3 (U_RAW) ou R4.
 # v11.1 — (03/05/2026): R1 — C_RAW migrado de hardcoded (Python) para arquivos YAML
 #   por empreendimento (composicao/<inc>__<emp>.yaml). Função load_c_raw_from_dir()
 #   carrega 1 arquivo por (inc, emp). Vantagens: edição em YAML (sem mexer no script),
@@ -735,11 +776,11 @@ E_RAW = [
     ("Lua Nova","Villa Adagio",
      "Avenida Principal, 50, Iguaíba, Paço do Lumiar - MA","Iguaíba",
      "Horizontal","Popular",
-     None,"06/2024 ⚠ T-36","—", 48.90,48.90,None, "2D",
+     479,"06/2024 ⚠ T-36","—", 48.90,48.90,None, "2D",
      None,None, None,None,None,
      "site_oficial","N/A","site_oficial",
      "https://construtoraluanova.com.br/detalhe-empreendimento.php?empreendimento=villa-adagio","03/05/2026",
-     "Tipologia detalhada (site Lua Nova + Ziag + iMeu 03/05/2026): Casas 48,90m² construída em terreno 128m² (8x16), 2 quartos com possibilidade de ampliação para 3, sala estar+jantar, banheiro, cozinha, área de serviço. Lotes especiais até 153m². Mono-tipologia 2D. 1 vaga garagem + 40 visitantes, guarita + cerca elétrica. Centro comercial 12 lojas previsto. Lazer: salão festas, quiosques gourmet, piscinas, playground, campo, quadra. Bairro corrigido v10.8: 'São Luís' genérico → Iguaíba. **TOTAL ainda não confirmado** — site mostra projeto mas não nº casas.", "site_oficial", None, "site_oficial"),
+     "v11.5 web research 03/05/2026: TOTAL=479 casas confirmado (imovelnacidade.com — Lua Nova). Casas 48,90m² construída em terreno 128m² (8x16), 2 quartos com ampliação para 3, sala estar+jantar, banheiro, cozinha, área de serviço. Lotes especiais até 153m². Mono-tipologia 2D. 1 vaga + 40 visitantes, guarita + cerca elétrica. Lazer: salão festas, quiosques gourmet, piscinas, playground, campo, quadra. Bairro Iguaíba (Paço do Lumiar).", "site_oficial", "site_oficial", "site_oficial"),
 
     ("Lua Nova","Lagoon Residence",
      "Santo Amaro do Maranhão - MA (cidade satélite, porta dos Lençóis)","Santo Amaro",
@@ -881,40 +922,37 @@ if _problemas:
 # Campos editáveis manualmente por incorporadora (os calculáveis ficam None):
 # (incorporadora, site, instagram, posicionamento)
 # v4.2: removidas colunas RI e Capital Aberto (irrelevantes para o mercado SLZ).
-I_META = {
-    "Mota Machado":     ("https://motamachado.com.br","@motamachado",
-                         "Cearense em expansão no NE. Lançou Bossa em abr/2026 no Calhau (4 suítes, 191-195m², vista mar). Reserva São Marcos em obras. VGV 2025 R$350M."),
-    "Berg Engenharia":  ("https://www.bergengenharia.com.br","@bergengenharia",
-                         "28 anos em SL. Monte Meru (Península, 135m²) em comercialização. Mount Solaro em parceria com Gonçalves Empreend. (SPE, LI solicitada)."),
-    "Alfa Engenharia":  ("https://www.alfaengenharia.com.br","@alfaengenhariama",
-                         "Tech-forward (1º Housi do MA em LIV). Novo lançamento Giardino Residenza (Ponta do Farol). Marca no IG: @alfaengenhariama."),
-    "Lua Nova":         ("https://construtoraluanova.com.br","@construtoraluanova",
-                         "Desde 1985 (40+ anos). Villa Adagio + Lagoon Residence (Santo Amaro). Perfil médio-padrão. Mapeada via web."),
-    "Delman":           ("https://www.delman.com.br","@delmanincorporadora",
-                         "Referência de luxo em Ponta d'Areia; 7 empreend. mapeados (ticket R$530k-R$5,8M). 2026 traz forte movimento no Calhau: Landscape (lançamento) + The View (pré-lançamento ABR/2026, 36-101m², 17º andar premium ~R$18k/m²)."),
-    "Treviso":          ("https://trevisoengenharia.com.br","@treviso.engenharia",
-                         "Vernazza (120 un. Ponta d'Areia) + Villagio Treviso (loteamento). Ed. Biadene Oaice é sede."),
-    "Ergus":            ("https://ergusengenharia.com.br","@ergusengenharia",
-                         "25 anos em 2026. Multi-produto (Zion, Nexus, Lead Office, On Residence, Open Design). Proposta sustentável. Projeto Nexus 10.000m² em Renascença."),
-    "Monteplan":        ("https://monteplanengenharia.com.br","@monteplanengenharia",
-                         "Renaissance Conceito (Renascença II, alto padrão) + Sanpaolo (esgotado). Portfólio residencial e comercial."),
-    "Franere":          ("https://franere.com.br","@franereoficial_",
-                         "'Maior construtora do Maranhão' (self-proclamada). 40 anos. Série Gran Park / Varandas Grand Park."),
-    "Canopus":          ("https://canopusconstrucoes.com.br","@canopusconstrucoes",
-                         "Endereço: Av. Cel. Colares Moreira, 1, J. Renascença. 3 lançamentos out/2025: Village Reserva II, Prime Eldorado, Del Ville II. Atua também em Imperatriz."),
-    "Niágara":          ("https://niagaraempreendimentos.com.br","@niagaraimoveis",
-                         "ORO com ampla faixa 80-160m², parcelamento 48m pós-assinatura. Reserva dos Vinhais (Vinhais 2Q 48m²) + Reserva dos Buritis."),
-    "MB Engenharia":    ("","@mbengenharia.br",
-                         "Sócia da DOM Incorporação em Dom Antônio + Edifício Dom Ricardo (reclassificados como DOM em v4.18). Próprios: Prime Cohama (22 casas duplex 140m²) + Fernando de Noronha 2ª etapa."),
-    "Sá Cavalcante":    ("https://www.sacavalcante.com.br","@sacavalcantema",
-                         "Grupo desde 1974 (shoppings + incorporação). Ilha Parque entregue + NOVO Reserva Península (out/2025, Ponta d'Areia)."),
-    "Castelucci":       ("https://construtoracastelucci.com.br","@construtoracastelucci",
-                         "10+ anos. CEO Paulo Castelucci (Mirante FM). Vila Coimbra (parceria Coimbra Alves, Araçagi alto padrão) + Villa di Carpi (Cohatrac) + Ana Vitória (Araçagy). Patrocinador Imob Summit."),
-    "Hiali":            ("","@hialiconstrucoes",
-                         "Parceria com Silveira Inc. Le Noir (Renascença II): compactos premium 49-62m², ticket R$ 710-870k. Memorial 04/2025. Posicionamento jovem/investidor. Mapeada via tabela arquivada."),
-    "DOM Incorporação": ("https://domincorporacao.com.br","@domincorporacao",
-                         "EU. Portfólio próprio: Dom Lucas (horizontal Cantinho do Céu, 100m²+terreno, R$ 835-851k), Dom José (horizontal Eldorado alto padrão, casa 154m², R$ 1,4M). Em parceria com MB Engenharia: Dom Antônio (Turú) + Edifício Dom Ricardo (Jd. Renascença). Tracked aqui para benchmarking interno."),
-}
+def load_incorporadoras_meta(meta_path=None):
+    """v11.2 (R2): carrega metadados estáveis das incorporadoras de YAML.
+
+    Aba Incorporadoras passa a ser DERIVADA em runtime — apenas 3 campos por incorp.
+    são "metadados estáveis" (site, IG, posicionamento). Resto (VGV, segs, bairros,
+    ticket médio, R$/m², % carteira) é GROUP BY de E_RAW.
+
+    Vantagens vs I_META hardcoded:
+      - Edição em YAML (não Python)
+      - Posicionamento textual com syntax highlighting
+      - 1 lugar pra atualizar IG / site quando muda
+      - Reduz drift dado/metadado (metadados ficam isolados)
+    """
+    import yaml as _yaml
+    if meta_path is None:
+        meta_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'incorporadoras_meta.yaml')
+    if not os.path.exists(meta_path):
+        print(f'⚠ incorporadoras_meta.yaml não encontrado em {meta_path} — I_META vazio')
+        return {}
+    with open(meta_path, encoding='utf-8') as f:
+        doc = _yaml.safe_load(f) or {}
+    # Converter pra tupla (site, ig, posicionamento) pra compat com código existente
+    out = {}
+    for inc, vals in doc.items():
+        out[inc] = (vals.get('site') or '', vals.get('instagram') or '', vals.get('posicionamento') or '')
+    print(f'✓ load_incorporadoras_meta: {len(out)} incorporadoras de incorporadoras_meta.yaml')
+    return out
+
+
+# v11.2 — I_META agora é carregado de YAML (era hardcoded em v8.0–v11.1)
+I_META = load_incorporadoras_meta()
 
 # ═══════════════════════════════════════════════════════════════
 # C_RAW — Composição por tipologia (v8.0+)
@@ -927,6 +965,94 @@ I_META = {
 # Heurística tipologia × área (SLZ-padrão): <40 Studio, 40-55 1D, 55-75 2D,
 # 75-95 3D, >95 4D. Em casos especiais (mono-tipologia declarada, áreas em
 # fronteira), classificação manual prevalece.
+def load_u_raw_from_dir(uni_dir=None):
+    """v11.3 (R3): carrega U_RAW (1 linha por UNIDADE) de unidades/<inc>__<emp>.yaml.
+
+    Schema U_RAW (9 col): (Inc, Emp, Apto, Tipologia, Planta_label, Area, Status, Ticket, Origem)
+
+    U_RAW é o ÁTOMO do sistema (visão Rafael 03/05/2026). Cobertura inicial:
+    empreend. com origem nível 1-2 (tabela_local / tabela_local_imagem) — onde temos info
+    unidade-a-unidade. Para fontes nível 3-5 (book/manual/estimativa), continua C_RAW agregado
+    em composicao/ (não há info por unidade individual).
+    """
+    import yaml as _yaml
+    if uni_dir is None:
+        uni_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'unidades')
+    if not os.path.isdir(uni_dir):
+        return []
+    rows = []
+    files = sorted(f for f in os.listdir(uni_dir) if f.endswith('.yaml') and not f.startswith('.'))
+    for fn in files:
+        path = os.path.join(uni_dir, fn)
+        try:
+            with open(path, encoding='utf-8') as f:
+                doc = _yaml.safe_load(f)
+        except Exception as e:
+            print(f'✗ ERRO ao ler U_RAW {fn}: {e}')
+            continue
+        if not doc: continue
+        inc = doc.get('incorporadora'); emp = doc.get('empreendimento')
+        if not (inc and emp): continue
+        for u in (doc.get('unidades') or []):
+            row = (
+                inc, emp,
+                u.get('apto'),
+                u.get('tip'),
+                u.get('planta') or '',
+                u.get('area'),
+                u.get('status'),
+                u.get('ticket'),
+                u.get('origem'),
+            )
+            rows.append(row)
+    print(f'✓ load_u_raw_from_dir: {len(rows)} unidades de {len(files)} arquivos YAML em unidades/')
+    return rows
+
+
+def compute_c_raw_from_u_raw(u_raw):
+    """v11.3 (R3): deriva C_RAW agregado por planta a partir de U_RAW.
+
+    Bucketização: agrupa por (inc, emp, tip, planta_label, area_round 1dec).
+    Retorna entries no schema C_RAW v7.0 (12 col):
+      (Inc, Emp, Tip, Planta, Area, Total_planta, Disp, t_min, t_max, rs_m2, origem)
+
+    Campo Disp: conta unidades com status='disponível' (ou None se status não conhecido).
+    Total_planta: total de unidades dessa planta (independente do status).
+    """
+    from collections import defaultdict as _dd
+    buckets = _dd(list)  # (inc, emp, tip, planta, area_round) → list of rows
+    for inc, emp, apto, tip, planta, area, status, ticket, origem in u_raw:
+        if area is None: continue
+        key = (inc, emp, tip, planta or '', round(area, 1))
+        buckets[key].append((apto, area, status, ticket, origem))
+    out = []
+    for (inc, emp, tip, planta, area_round), items in sorted(buckets.items()):
+        total = len(items)
+        # Disp: conta unidades com status disponível ou None (default = considerar disp)
+        disp = sum(1 for _, _, s, _, _ in items if s in ('disponível', None))
+        tickets = [t for _, _, _, t, _ in items if t is not None]
+        if tickets:
+            t_min, t_max = min(tickets), max(tickets)
+            soma_t = sum(tickets)
+            soma_a = sum(a for _, a, _, t, _ in items if t is not None)
+            rs_m2 = round(soma_t / soma_a) if soma_a else None
+        else:
+            t_min = t_max = rs_m2 = None
+        # Origem dominante
+        origens = set(o for _, _, _, _, o in items)
+        origem = next(iter(origens)) if len(origens) == 1 else ';'.join(sorted(origens))
+        # Area: usar média das unidades (mais preciso que area_round)
+        area_med = round(sum(a for _, a, _, _, _ in items) / total, 2)
+        out.append((
+            inc, emp, tip, planta, area_med,
+            total, disp,
+            t_min, t_max, rs_m2,
+            origem,
+        ))
+    print(f'✓ compute_c_raw_from_u_raw: {len(out)} entries C_RAW derivadas de {len(u_raw)} unidades')
+    return out
+
+
 def load_c_raw_from_dir(comp_dir=None):
     """v11.1 (R1): carrega C_RAW de arquivos YAML em composicao/ ao invés de hardcoded.
     
@@ -981,7 +1107,14 @@ def load_c_raw_from_dir(comp_dir=None):
 
 # v11.1 — C_RAW agora é carregado de arquivos YAML em composicao/
 # (era hardcoded em v8.0–v11.0; ver function load_c_raw_from_dir acima)
-C_RAW = load_c_raw_from_dir()
+U_RAW = load_u_raw_from_dir()
+C_RAW_FROM_U = compute_c_raw_from_u_raw(U_RAW) if U_RAW else []
+C_RAW_FROM_FILES = load_c_raw_from_dir()
+# Híbrido v11.3: empreend. presentes em U_RAW têm seu C_RAW DERIVADO; demais leem do composicao/
+emps_em_u_raw = set((c[0], c[1]) for c in C_RAW_FROM_U)
+C_RAW_FROM_FILES_FILT = [c for c in C_RAW_FROM_FILES if (c[0], c[1]) not in emps_em_u_raw]
+C_RAW = C_RAW_FROM_U + C_RAW_FROM_FILES_FILT
+print(f'✓ C_RAW híbrido (R3 v11.3): {len(C_RAW_FROM_U)} entries derivadas de U_RAW + {len(C_RAW_FROM_FILES_FILT)} entries de composicao/ YAMLs (filtrado de {len(C_RAW_FROM_FILES)} originais)')
 # ═══════════════════════════════════════════════════════════════
 # v10.6 — VIRADA §3.7 v2 (PADRAO v6.2)
 #   Funções: consolidação multi-torre, estimativa nível 5, total por tipologia
@@ -1921,6 +2054,77 @@ ft3 = ws3.cell(row=total_row_c+1, column=1,
     value=f"DOM Incorporação  •  Inteligência de Mercado  •  Composição v{VERSION} (Fase 1)")
 ft3.font = Font(name="Calibri", color=DOM_GRAY_MID, size=8, italic=True)
 ft3.alignment = Alignment(horizontal="right", vertical="center")
+
+# ═══════════════════════════════════════════════════════════════
+# ABA 4 — UNIDADES (v11.3 R3) — 1 linha por UNIDADE (átomo do sistema)
+# ═══════════════════════════════════════════════════════════════
+if U_RAW:
+    ws4 = wb.create_sheet("Unidades")
+    N_COLS_U = 9
+    HEADERS_U = ["Incorporadora", "Empreendimento", "Apto", "Tipologia", "Planta",
+                 "Área (m²)", "Status", "Ticket (R$)", "Origem"]
+
+    insert_logo(ws4, LOGO_TRANSP, "A1", 55)
+    ws4.merge_cells(start_row=2, start_column=1, end_row=2, end_column=N_COLS_U)
+    title_u = ws4.cell(row=2, column=1, value="Unidades — átomo do sistema (1 linha por apartamento)")
+    title_u.font = Font(name="Calibri", color=DOM_GOLD_DARK, size=14, bold=True)
+    title_u.alignment = Alignment(horizontal="center", vertical="center")
+    ws4.row_dimensions[2].height = 22
+
+    ws4.merge_cells(start_row=3, start_column=1, end_row=3, end_column=N_COLS_U)
+    sub_u = ws4.cell(row=3, column=1,
+        value=f"v{VERSION} R3 — fonte primária para empreend. com origem nível 1-2 (tabela_local). Aba Composição é DERIVADA daqui.")
+    sub_u.font = Font(name="Calibri", color=DOM_GRAY_MID, size=10, italic=True)
+    sub_u.alignment = Alignment(horizontal="center", vertical="center")
+    ws4.row_dimensions[3].height = 18
+
+    for j, h in enumerate(HEADERS_U):
+        c = ws4.cell(row=5, column=1+j, value=h)
+        c.font = font(DOM_WHITE, 10, bold=True); c.fill = fill(DOM_GRAY_DARK)
+        c.alignment = center(); c.border = border_thin()
+    ws4.row_dimensions[5].height = 28
+
+    TIPO_ORD_U = ["Studio", "1D", "2D", "3D", "4D", "Lote"]
+    U_RAW_SORTED = sorted(U_RAW, key=lambda u: (
+        u[0], u[1],
+        TIPO_ORD_U.index(u[3]) if u[3] in TIPO_ORD_U else 99,
+        u[5] if u[5] is not None else 999,
+        u[2] or '',
+    ))
+    formats_u = [None]*N_COLS_U
+    formats_u[5] = '0.00" m²"'
+    formats_u[7] = 'R$ #,##0'
+    for i, u in enumerate(U_RAW_SORTED):
+        row_idx = 6+i
+        ws4.row_dimensions[row_idx].height = 18
+        row_fill = DOM_WHITE if row_idx%2==0 else DOM_GRAY_LIGHT
+        for j, v in enumerate(u):
+            c = ws4.cell(row=row_idx, column=1+j, value=v)
+            c.font = font(DOM_GRAY_DARK, 10)
+            c.fill = fill(row_fill)
+            c.alignment = center() if j not in (0,1,8) else left()
+            c.border = border_thin()
+            if formats_u[j]: c.number_format = formats_u[j]
+        ws4.cell(row=row_idx, column=2).font = font(DOM_GRAY_DARK, 10, bold=True)
+        ws4.cell(row=row_idx, column=4).font = font(DOM_GOLD_DARK, 10, bold=True)
+        status_v = (u[6] or '').lower()
+        if status_v == 'vendido':
+            ws4.cell(row=row_idx, column=7).font = font('8B2E2E', 10, bold=True)
+        elif status_v == 'reservado':
+            ws4.cell(row=row_idx, column=7).font = font('B87333', 10, bold=True)
+        elif status_v == 'disponível':
+            ws4.cell(row=row_idx, column=7).font = font('0F7B6C', 10)
+    total_row_u = 6 + len(U_RAW_SORTED)
+    widths_u = [18, 26, 8, 10, 14, 11, 12, 14, 18]
+    set_column_widths(ws4, widths_u)
+    ws4.freeze_panes = "C6"
+    ws4.auto_filter.ref = f"A5:{get_column_letter(N_COLS_U)}{total_row_u-1}"
+    ws4.merge_cells(start_row=total_row_u, start_column=1, end_row=total_row_u, end_column=N_COLS_U)
+    ft4 = ws4.cell(row=total_row_u, column=1,
+        value=f"DOM Incorporação  •  Inteligência de Mercado  •  Unidades v{VERSION} (R3 — fonte primária)")
+    ft4.font = Font(name="Calibri", color=DOM_GRAY_MID, size=8, italic=True)
+    ft4.alignment = Alignment(horizontal="right", vertical="center")
+
 
 # ═══════════════════════════════════════════════════════════════
 # VALIDAÇÕES AUTOMÁTICAS v9.3 (PADRAO §3.6 + §3.7)

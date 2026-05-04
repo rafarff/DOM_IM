@@ -1,0 +1,8 @@
+incorporadora: Monteplan
+empreendimento: Edifício Sanpaolo
+fonte: {origem_principal: tabela_local, parser: monteplan_sanpaolo, data_extracao: '2026-04-28'}
+unidades:
+- {apto: '204', tip: 1D, planta: '', area: 54.0, status: disponível, ticket: 305000.0, origem: tabela_local}
+- {apto: '205', tip: 1D, planta: '', area: 54.0, status: disponível, ticket: 305000.0, origem: tabela_local}
+- {apto: '204', tip: 1D, planta: '', area: 54.0, status: disponível, ticket: 305000.0, origem: tabela_local}
+- {apto: '205', tip: 1D, planta: '', area: 54.0, status: disponível, ticket: 305000.0, origem: tabela_local}

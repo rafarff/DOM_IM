@@ -1,0 +1,30 @@
+incorporadora: Treviso
+empreendimento: Vernazza Torre Sul
+fonte: {origem_principal: tabela_local, parser: vernazza, data_extracao: '2026-04-28'}
+unidades:
+- {apto: S-101, tip: 3D, planta: '', area: 87.98, status: disponível, ticket: 1277583.88, origem: tabela_local}
+- {apto: S-102, tip: 3D, planta: '', area: 87.98, status: disponível, ticket: 1303657.02, origem: tabela_local}
+- {apto: S-103, tip: 3D, planta: '', area: 90.1, status: disponível, ticket: 1303657.02, origem: tabela_local}
+- {apto: S-104, tip: 3D, planta: '', area: 90.1, status: disponível, ticket: 1277583.88, origem: tabela_local}
+- {apto: S-201, tip: 3D, planta: '', area: 87.98, status: disponível, ticket: 1283971.8, origem: tabela_local}
+- {apto: S-202, tip: 3D, planta: '', area: 87.98, status: disponível, ticket: 1307725.28, origem: tabela_local}
+- {apto: S-203, tip: 3D, planta: '', area: 90.1, status: disponível, ticket: 1307725.28, origem: tabela_local}
+- {apto: S-204, tip: 3D, planta: '', area: 90.1, status: disponível, ticket: 1283971.8, origem: tabela_local}
+- {apto: S-301, tip: 3D, planta: '', area: 87.98, status: disponível, ticket: 1290391.66, origem: tabela_local}
+- {apto: S-303, tip: 3D, planta: '', area: 90.1, status: disponível, ticket: 1314263.91, origem: tabela_local}
+- {apto: S-304, tip: 3D, planta: '', area: 90.1, status: disponível, ticket: 1290391.66, origem: tabela_local}
+- {apto: S-404, tip: 3D, planta: '', area: 90.1, status: disponível, ticket: 1296843.62, origem: tabela_local}
+- {apto: S-602, tip: 3D, planta: '', area: 87.98, status: disponível, ticket: 1358757.02, origem: tabela_local}
+- {apto: S-603, tip: 3D, planta: '', area: 90.1, status: disponível, ticket: 1358757.02, origem: tabela_local}
+- {apto: S-1004, tip: 3D, planta: '', area: 90.1, status: disponível, ticket: 1386136.65, origem: tabela_local}
+- {apto: S-1104, tip: 3D, planta: '', area: 90.1, status: disponível, ticket: 1418839.08, origem: tabela_local}
+- {apto: S-1203, tip: 3D, planta: '', area: 90.1, status: disponível, ticket: 1479180.83, origem: tabela_local}
+- {apto: S-1204, tip: 3D, planta: '', area: 90.1, status: disponível, ticket: 1452313.04, origem: tabela_local}
+- {apto: S-1303, tip: 3D, planta: '', area: 90.1, status: disponível, ticket: 1514078.41, origem: tabela_local}
+- {apto: S-1304, tip: 3D, planta: '', area: 90.1, status: disponível, ticket: 1486576.74, origem: tabela_local}
+- {apto: S-1401, tip: 3D, planta: '', area: 87.98, status: disponível, ticket: 1521648.8, origem: tabela_local}
+- {apto: S-1402, tip: 3D, planta: '', area: 87.98, status: disponível, ticket: 1549799.3, origem: tabela_local}
+- {apto: S-1403, tip: 3D, planta: '', area: 90.1, status: disponível, ticket: 1549799.3, origem: tabela_local}
+- {apto: S-1404, tip: 3D, planta: '', area: 90.1, status: disponível, ticket: 1521648.8, origem: tabela_local}
+- {apto: S-1503, tip: 3D, planta: '', area: 90.1, status: disponível, ticket: 1586362.94, origem: tabela_local}
+- {apto: S-1504, tip: 3D, planta: '', area: 90.1, status: disponível, ticket: 1557548.3, origem: tabela_local}

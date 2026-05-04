@@ -1,0 +1,9 @@
+incorporadora: Alfa Engenharia
+empreendimento: Giardino Residenza Torre Luce
+fonte: {origem_principal: tabela_local, documento: TABELA_GIARDINO_LUCE, data_extracao: '2026-04-28', parser: parse_alfa}
+unidades:
+- {apto: '701', tip: 3D, planta: Coluna 01, area: 99.08, status: disponível, ticket: 1486200.0, origem: tabela_local}
+- {apto: '101', tip: 3D, planta: Coluna 01, area: 99.08, status: disponível, ticket: 1442167.62, origem: tabela_local}
+- {apto: '1502', tip: 3D, planta: Coluna 02, area: 101.31, status: disponível, ticket: 1595303.08, origem: tabela_local}
+- {apto: '1402', tip: 3D, planta: Coluna 02, area: 101.31, status: disponível, ticket: 1587366.25, origem: tabela_local}
+- {apto: '104', tip: 3D, planta: Coluna 04, area: 93.62, status: disponível, ticket: 1453540.39, origem: tabela_local}

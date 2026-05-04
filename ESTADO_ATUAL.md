@@ -3,20 +3,27 @@
 > **Para Claude (toda sessão):** este é o **primeiro arquivo a ler** antes de qualquer ação. Confirma a base de trabalho. Se a invariante 0.3 do PADRAO falhar contra os números aqui, **PARAR**.
 
 **Última atualização:** 03/05/2026
-**Versão Planilha vigente:** v11.1
-**Versão PADRAO vigente:** v7.0
-**Versão script `gerar_planilha.py`:** 11.1 (DATE_STR: 03/05/2026)
+**Versão Planilha vigente:** v11.6
+**Versão PADRAO vigente:** v7.0 (com §3.7.0 — U_RAW)
+**Versão script `gerar_planilha.py`:** 11.6 (DATE_STR: 03/05/2026)
 
 ---
 
-## Snapshot da carteira (v11.1)
+## Snapshot da carteira (v11.6)
 
 | Métrica | Valor |
 |---|---:|
 | Aba Empreendimentos | **44 linhas** (sem mudança vs v10.9) |
-| Aba Incorporadoras | **16 linhas** (em rota de eliminação — backlog R2) |
-| Aba Composição | **78 linhas / 2.246 unidades / 34 empreend.** ← granularidade de PLANTA refinada (era 53 em v11.0; +25 plantas pelos 6 re-parsed) |
-| Fonte de C_RAW | **29 arquivos YAML** em `composicao/<inc>__<emp>.yaml` (R1 done — não é mais hardcoded) |
+| Aba Incorporadoras | **16 linhas — DERIVADA** (R2) |
+| Aba Composição | **85 linhas / 2.740 unidades / 35 empreend.** — híbrida: 65 derivadas de U_RAW + 20 de composicao/ |
+| **Aba Unidades** | **672 unidades / 24 empreend.** — átomo do sistema (R3 lote 1+2+3 = 6+15+3) |
+| **Cobertura Total apurado** | **35/44 = 80%** |
+| **Bloqueados** | **9 empreend.** em pendencias_TOTAL.md |
+| Fonte de U_RAW | **24 arquivos YAML** em `unidades/<inc>__<emp>.yaml` |
+| Fonte de C_RAW (residual) | **11 arquivos YAML** em `composicao/<inc>__<emp>.yaml` (níveis 3-5) |
+| Fonte de I_META | **1 arquivo YAML** em `incorporadoras_meta.yaml` |
+| **Cobertura U_RAW** | **24 / 26 empreend. com fonte nível 1-2 = 92%** (Al Mare + Entre Rios mantidos manuais) |
+| **Invariante §3.7.C.6** | **50/50 ✅** |
 | Aba Empreendimentos schema | **27 colunas** (sem mudança) |
 | Aba Composição schema | **12 colunas (v7.0)** ← +1 vs v6.2 (Planta + Área única + Total planta separado de Disp) |
 | Drift script ↔ planilha | **0** ✅ |
@@ -76,6 +83,65 @@ cd 00_ESTUDO_CONSOLIDADO/ && ls -1 Planilha_Mestre_Panorama_v*.xlsx | sort -V | 
 - **v8.0** (02/05/2026) — Aba Composição introduzida. Lote 1: 15 linhas / 322 unid.
 - **v8.1** (02/05/2026) — **Lote 2 entregue.** +13 linhas / +209 unid. Cobertura 17% → 39%.
 - **v8.2** (02/05/2026) — **Lote 3 (parcial — Zion via visão multimodal).** +1 linha / +10 unid. Cobertura 39% → 41%.
+
+- **v11.6** (03/05/2026) — **R3 lote 3: U_RAW alcança 672 unidades em 24 empreend. (92% de fontes 1-2).**
+   - **3 PDFs imagem processados via visão multimodal Claude:**
+     - Dom Lucas (DOM, casas Cantinho do Céu): 46 unid (9 disp + 1 reservada + 36 vendidas), 100,35m² 3D mono. Tabela mar/2026 lida via Read PNG após pdftoppm 150dpi + resize 2400px.
+     - Dom José (DOM, casas Jardim Eldorado): 22 unid (3 disp + 19 vend), 154,64m² 4D mono. Tabela abr/2026 lida com rotação 90° (página landscape vertical no PDF).
+     - Zion Ponta d'Areia (Ergus): 60 unid (10 disp + 50 vend), 148,55m² 4D mono. PDF 042026 é book/plantas — completado com info de C_RAW v8.2 (composição prévia).
+   - **U_RAW: 21 → 24 empreend / 544 → 672 unidades.** Cobertura U_RAW de fontes 1-2: 81% → **92%** (restam Al Mare 1u + Entre Rios formato peculiar).
+   - **Composição mantém 85 linhas / 2.740 unidades** — entries Dom Lucas/Dom José/Zion saem de composicao/ e passam a ser DERIVADAS do U_RAW (mesma cobertura, fonte mais granular).
+   - Aba Unidades cresce 544 → 672 linhas — agora dá pra fazer cross-check apto-a-apto via filtros Excel.
+   - Composição residual em composicao/ (11 arquivos): empreend. com fonte nível 3-5 + Al Mare/Entre Rios manuais.
+   - Invariante §3.7.C.6: **50/50 ✅** preservada.
+   - **R3 100% concluído (lote 1+2+3).** Próximo backlog: R4 (split E_RAW dado/metadado), refinar parsers Al Mare+Entre Rios+Bossa, ou contatos diretos pra destravar 9 bloqueados restantes.
+
+- **v11.5** (03/05/2026) — **WEB RESEARCH dos 10 bloqueados (saturação alcançada via web).**
+   - **+1 destravado completo:** **Villa Adagio (Lua Nova)** — Total=479 casas mono 2D 48,90m² (imovelnacidade.com).
+   - **+6 enriquecidos parciais** (info nova mas Total ainda pendente, exigem contato direto):
+     - Connect Península (Alfa) — 3 plantas confirmadas (42m² 1Q, 48m² 1S, 69m² 2S — Triunfo Imóveis)
+     - Lagoon Residence — bangalôs 2D+3D (CAVEAT: Santo Amaro, fora SLZ-Grande SLZ — flag pra Rafael decidir manter/tirar)
+     - Villa di Carpi (Castelucci) — 3 plantas 49,36/51,76/51,88m² 2D, entrega 12/2027 (Ziag)
+     - Varandas Grand Park (Franere) — confirmado 3D 74-87m² Calhau, "Pronto" no site
+     - Reserva Península (Sá Cav) — 4D 127-171m², 1.900m² lazer, entrega 12/2028
+     - Canopus 3 lançamentos (Imirante 31/10/2025): 1.487 unid total / R$ 300M VGV (Prime já 400; resíduo 1.087 sem breakdown)
+   - **2 sem info nova:** Nexus Renascença (Ergus 404 no site/empreendimentos), Villagio Treviso (nome não retorna em web SLZ)
+   - **Cobertura Total apurado: 34/44 = 77% → 35/44 = 80%.** Bloqueados: 10 → 9.
+   - Aba Composição cresceu 84 → **85 linhas / 2.261 → 2.740 unidades** (Villa Adagio adicionou 479 unid).
+   - Invariante §3.7.C.6: 49/49 → **50/50** ✅. §3.7.C.4: 30/34 → 31/35.
+   - **pendencias_TOTAL.md atualizado** com próximos passos por empreend. (8 contatos diretos pendentes; 1 fora-de-escopo Lagoon).
+   - **Saturação web constatada:** sites institucionais raramente publicam total de unidades; precisa contato comercial ou cartório.
+
+- **v11.4** (03/05/2026) — **R3 lote 2: U_RAW expandido pra 544 unidades (21 empreend.).**
+   - **Cobertura tripla:** 6 → 21 empreend. em U_RAW. Saltou de 212 → **544 unidades** parseadas unidade-a-unidade.
+   - **15 empreend. novos no U_RAW lote 2** (todos com tabela texto):
+     - Delman x4: Wave Residence (5u), Quartier 22 (1u), Sky Residence (1u), Azimuth (1u)
+     - Mota Machado x2: Edifício Bossa (22u), Reserva São Marcos (10u — torres Litorânea+Lagoa identificadas por ticket)
+     - Treviso x2: Vernazza Torre Norte (37u), Vernazza Torre Sul (26u)
+     - Monteplan x3: Renaissance Conceito (44u Botticelli+Leonardo), Edifício Sanpaolo (4u), Residencial Novo Anil (34u)
+     - Niágara: ORO Ponta d'Areia (88u padrão + 8u Cobertura Duplex manual = 96u)
+     - Hiali: Le Noir (4u), Castelucci: Vila Coimbra (36u dedup), Berg: Monte Meru (11u — 2 disp + 9 vendidos rastreados)
+   - **Aceito manual** (formato peculiar / 1 unid): Al Mare Tirreno + Entre Rios — mantidos em `composicao/` direto.
+   - **Catálogo §3.7.1 expandido:** parsers Mota Machado (mono + multi-coluna), Treviso Vernazza (prefix N-/S-), Monteplan (3 variantes: Renaissance LE/BO + Sanpaolo par + Novo Anil bloco), Niágara (1 linha = N aptos com expansão), Hiali, Castelucci (com dedup 3x), Berg (header tipologia + status VENDIDO inline).
+   - **Aba Unidades expandida:** 212 → 544 linhas com filtros nativos Excel — agora dá pra responder "qual planta 3D mais vendida em Calhau?", "tickets abaixo de R$ 700k disp em Renascença II?", etc.
+   - **Composição híbrida:** 62 derivadas de U_RAW + 13 lidas de composicao/. Aba Composição: 78 → 84 linhas.
+   - **Cobertura U_RAW**: 21/26 = **81% dos empreend. com fonte nível 1-2**. Lote 3 (3 empreend. tabela imagem: Zion, Dom Lucas, Dom José) requer visão multimodal — fica backlog.
+
+- **v11.3** (03/05/2026) — **R3 entregue (lote 1): U_RAW como fonte primária + aba Unidades.**
+   - **Princípio (Rafael 03/05/2026):** "se fosse começar do zero faria por unidade" — a unidade individual é o átomo natural do sistema. R3 implementa isso de forma incremental (não-bigbang).
+   - **PADRAO §3.7.0 nova:** define U_RAW (1 linha por unidade, schema 9 col) como fonte primária quando origem é nível 1-2. Aba Composição é DERIVADA runtime via `compute_c_raw_from_u_raw()`.
+   - **Lote 1 entregue:** 6 empreend. → `unidades/<inc>__<emp>.yaml` com 212 unidades:
+     - The View (Delman) 93 unid · Landscape (Delman) 51 · SD7P (Delman) 32 · Altos SF (Treviso) 25 · Giardino Fiore (Alfa) 6 · Giardino Luce (Alfa) 5
+   - **C_RAW híbrido:** 37 entries derivadas de U_RAW (lote 1) + 41 de composicao/ YAMLs (empreend. com fonte nível 3-5). Total: 78 linhas (idêntico a v11.2).
+   - **Aba Unidades (4ª aba)** na xlsx — átomo navegável com filtros Excel + status colorido (verde disp / laranja reserv / vermelho vend). Útil pra cross-check e exportação granular.
+   - **Smoke test:** Σ Total_planta e Σ Disp idênticos entre v11.2 (sem U_RAW) e v11.3 (com U_RAW). Diferenças visuais: Giardino ganhou labels Coluna 01/02/03/04 + áreas com mais precisão (do U_RAW). Só ganho.
+   - **Lote 2 backlog:** ~17 empreend. com tabela texto restantes (Wave, Quartier 22, Sky, Azimuth, Bossa, Al Mare, Entre Rios, Reserva SM, Vernazza N+S, Renaissance, Sanpaolo, Novo Anil, ORO, Le Noir, Vila Coimbra, Monte Meru). Lote 3: 3 empreend. tabela imagem (Zion, Dom Lucas, Dom José) — exige visão multimodal.
+
+- **v11.2** (03/05/2026) — **R2 entregue: aba Incorporadoras vira DERIVADA.**
+   - **Antes (v11.1):** I_META hardcoded no script (16 entries × 3 campos = 4096 chars). Aba Incorporadoras era construída com 11 campos calculados runtime + 4 vindo do I_META.
+   - **Agora (v11.2):** I_META migrado para `_PADRAO_FASE_1/incorporadoras_meta.yaml` (1 arquivo, 16 entries). Função `load_incorporadoras_meta()` carrega no startup. **Aba Incorporadoras na xlsx fica IDÊNTICA visualmente** (validação bit-a-bit confirmou: única diferença é o footer com versão).
+   - **Schema da aba mantém 15 col**, mas agora marcadas explicitamente em PADRAO §2bis: 11 DERIVADAS + 3 METADADO ESTÁVEL + 1 ID + 1 global. Edição de metadados de uma incorp. é YAML, não Python.
+   - **Fonte de verdade reduzida:** 1 dos lugares onde dado e metadado se misturavam (E_RAW e I_META acoplados via INCORPORADORAS lista) ficou mais limpo. Próximo backlog: R3 (U_RAW) ou R4 (split E_RAW dado/metadado) ou destravar 10 bloqueados.
 
 - **v11.1** (03/05/2026) — **R1 entregue + re-parsing granular dos 6 com range grande.**
    - **(R1)** C_RAW migrado de hardcoded em Python para 29 arquivos YAML em `composicao/<inc>__<emp>.yaml`. Função `load_c_raw_from_dir()` carrega no startup. Schema 12-col v7.0 idêntico ao v11.0; smoke test confirma output bit-a-bit. Edição de empreend agora é YAML (zero-friction, qualquer editor), não mais Python.

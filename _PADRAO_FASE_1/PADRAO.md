@@ -165,25 +165,29 @@ Em casos especiais (mono-tipologia declarada, áreas em fronteira), classificaç
 
 **O que muda no dashboard com a aba Composição:** a Seção 3 (Análise por Tipologia) faz GROUP BY tipologia natural. A Seção Bairro ganha bubble (bairro × tipologia × planta), expondo absorção por ticket real (3D 100m² em Calhau vs 3D 125m² em Calhau). Limitação: cobertura depende de quais empreend. tiveram tabela processada (roadmap dos Lotes).
 
-## 2bis. Aba Incorporadoras — 15 colunas
+## 2bis. Aba Incorporadoras — 15 colunas (v7.0+: aba DERIVADA)
 
-| # | Campo | Tipo |
-|---|---|---|
-| 1 | Incorporadora | Enum §4.1 |
-| 2 | Nº empreend. mapeados | Inteiro |
-| 3 | VGV total estimado (R$) | Soma §3.2 |
-| 4 | VGV lançado 2024 | Subconjunto §3.4 |
-| 5 | VGV lançado 2025 | Subconjunto §3.4 |
-| 6 | VGV lançado 2026 | Subconjunto §3.4 |
-| 7 | Segmentos de atuação | Lista §4.2 |
-| 8 | Bairros de atuação | Lista de bairros |
-| 9 | Ticket médio carteira | Média simples |
-| 10 | R$/m² médio carteira | Média ponderada por unidades |
-| 11 | % carteira com fonte local | `empreend_com_A / total × 100` |
-| 12 | Site oficial | URL |
-| 13 | Instagram | `@handle` ou URL |
-| 14 | Posicionamento de marca | Texto curto |
-| 15 | Última atualização | DD/MM/AAAA |
+> **v11.2 (R2 — 03/05/2026):** aba Incorporadoras passa a ser **100% derivada em runtime**. Apenas 3 campos são metadados estáveis (vão pra `incorporadoras_meta.yaml`). Os 11 demais campos por incorporadora são GROUP BY na aba Empreendimentos. Aba xlsx continua idêntica visualmente — só a fonte mudou.
+
+| # | Campo | Tipo | Origem v11.2 |
+|---|---|---|---|
+| 1 | Incorporadora | Enum §4.1 | ID — chave do agrupamento |
+| 2 | Nº empreend. mapeados | Inteiro | **DERIVADO** — `COUNT(*) WHERE Inc=X` |
+| 3 | VGV total estimado (R$) | Soma §3.2 | **DERIVADO** — `SUM(VGV)` |
+| 4 | VGV lançado 2024 | Subconjunto §3.4 | **DERIVADO** — `SUM(VGV) WHERE year_lancamento=2024` |
+| 5 | VGV lançado 2025 | Subconjunto §3.4 | **DERIVADO** |
+| 6 | VGV lançado 2026 | Subconjunto §3.4 | **DERIVADO** |
+| 7 | Segmentos de atuação | Lista §4.2 | **DERIVADO** — `DISTINCT segmento`, ordenado |
+| 8 | Bairros de atuação | Lista de bairros | **DERIVADO** — `DISTINCT bairro` |
+| 9 | Ticket médio carteira | Média simples | **DERIVADO** — `AVG((tk_min+tk_max)/2)` |
+| 10 | R$/m² médio carteira | Média | **DERIVADO** — `AVG(rs_m2)` |
+| 11 | % carteira com fonte local | `empreend_com_A / total × 100` | **DERIVADO** — pelos campos Origem do E_RAW |
+| 12 | Site oficial | URL | **METADADO ESTÁVEL** — `incorporadoras_meta.yaml` |
+| 13 | Instagram | `@handle` ou URL | **METADADO ESTÁVEL** — idem |
+| 14 | Posicionamento de marca | Texto curto | **METADADO ESTÁVEL** — idem |
+| 15 | Última atualização | DD/MM/AAAA | Global — `DATE_STR` do script |
+
+**Como editar metadados de uma incorporadora (v11.2+):** abrir `_PADRAO_FASE_1/incorporadoras_meta.yaml`, editar os 3 campos (`site`, `instagram`, `posicionamento`). Não há mais I_META no script. Os 11 derivados se atualizam automaticamente quando E_RAW muda.
 
 > **v4.2 (14/04/2026):** removidas colunas RI e Capital aberto — irrelevantes para o universo de incorporadoras de São Luís, todas de capital fechado.
 
@@ -298,6 +302,51 @@ Antes de marcar a entry como atualizada:
 4. ☐ Detectei se tabela é completa ou parcial?
 5. ☐ Registrei método/cálculo/confiança nas Observações?
 6. ☐ Rodei o script e validação §3.6 passou (ou WARN justificado)?
+
+---
+
+## 3.7.0 U_RAW (Unidades) — fonte primária do sistema (v11.3+, R3)
+
+> **Princípio (Rafael 03/05/2026):** "se fosse começar do zero faria por unidade". A **unidade individual** (apartamento) é o **átomo natural** do sistema. Quando a fonte permite (tabela_local, tabela_local_imagem), a Composição (§3.7) **deriva** automaticamente do U_RAW via bucketização por planta. Aba "Unidades" na xlsx expõe esse átomo.
+
+### Schema U_RAW (9 colunas)
+
+1 linha por (incorporadora, empreendimento, apto):
+
+| # | Campo | Tipo | Notas |
+|---|---|---|---|
+| 1 | Incorporadora | enum §4.1 | |
+| 2 | Empreendimento | str | |
+| 3 | Apto | str | "402", "1505", "Casa 12" — identificador |
+| 4 | Tipologia | enum §4.6 | Studio/1D/2D/3D/4D/Lote |
+| 5 | Planta | str | label do book quando declarado (Botticelli, Coluna 01); senão vazio |
+| 6 | Área (m²) | float | área única em m² |
+| 7 | Status | str | 'disponível' / 'vendido' / 'reservado' (None se tabela não diferencia) |
+| 8 | Ticket (R$) | float | preço à vista (ou cheio se à vista N/A) |
+| 9 | Origem | enum §3.7.A | tabela_local, tabela_local_imagem, etc. |
+
+Campos **Andar / Posição / Data_status** ficam fora do MVP — entram quando análises pedirem.
+
+### Cobertura U_RAW vs C_RAW (híbrido)
+
+- **Empreend. com origem nível 1-2** (tabela_local / tabela_local_imagem): viver em `unidades/<inc>__<emp>.yaml`. Composição é **derivada runtime** via `compute_c_raw_from_u_raw()`.
+- **Empreend. com origem nível 3-5** (book / informado_manualmente / estimativa): continua em `composicao/<inc>__<emp>.yaml` direto, agregado por planta. Não há info por unidade individual nessas fontes.
+- **Validação:** entries derivadas de U_RAW e entries lidas de composicao/ não podem coexistir pro mesmo (inc, emp). Script garante isso (filtra composicao/ excluindo empreend. presentes em U_RAW).
+
+### Aba Unidades na xlsx (v11.3+)
+
+Nova aba "Unidades" (4ª aba) renderiza U_RAW completo. Filtros nativos do Excel permitem:
+- Filtrar por bairro/incorporadora/tipologia/planta
+- Sortear por área/ticket
+- Status colorido (verde = disponível, laranja = reservado, vermelho = vendido)
+- Cross-check de C_RAW: `Σ U_RAW.disp por (inc, emp, tip, planta) == C_RAW.Disp` (invariante derivada)
+
+### Roadmap de cobertura
+
+- **Lote 1 v11.3 (entregue):** 6 empreend. / 212 unidades. Parsers Delman/Treviso Altos/Alfa.
+- **Lote 2 (próximo):** ~17 empreend. com tabela texto restantes — Wave, Quartier 22, Sky, Azimuth (Delman); Bossa, Al Mare, Entre Rios, Reserva SM (Mota Machado); Vernazza N, Vernazza S (Treviso); Renaissance, Sanpaolo, Novo Anil (Monteplan); ORO (Niágara); Le Noir (Hiali); Vila Coimbra (Castelucci); Monte Meru (Berg).
+- **Lote 3 (visão imagem):** Zion, Dom Lucas, Dom José (3 empreend. com tabela em PDF imagem — exige re-aplicação de visão multimodal).
+- **Total alcançável:** ~26 empreend. de 44 da carteira (59% — limitado por disponibilidade de tabela detalhada).
 
 ---
 

@@ -1,0 +1,38 @@
+incorporadora: Monteplan
+empreendimento: Residencial Novo Anil
+fonte: {origem_principal: tabela_local, parser: monteplan_novo_anil, data_extracao: '2026-04-28'}
+unidades:
+- {apto: A1.102, tip: 2D, planta: '', area: 53.94, status: disponível, ticket: 324142.27, origem: tabela_local}
+- {apto: A1-104, tip: 2D, planta: '', area: 53.94, status: disponível, ticket: 324142.28, origem: tabela_local}
+- {apto: A1-105, tip: 2D, planta: '', area: 53.94, status: disponível, ticket: 324142.29, origem: tabela_local}
+- {apto: A2-105, tip: 2D, planta: '', area: 53.94, status: disponível, ticket: 324142.33, origem: tabela_local}
+- {apto: A3-101, tip: 2D, planta: '', area: 53.94, status: disponível, ticket: 324142.35, origem: tabela_local}
+- {apto: A3-102, tip: 2D, planta: '', area: 53.94, status: disponível, ticket: 324142.36, origem: tabela_local}
+- {apto: A3-103, tip: 2D, planta: '', area: 53.94, status: disponível, ticket: 324142.37, origem: tabela_local}
+- {apto: A3-104, tip: 2D, planta: '', area: 53.94, status: disponível, ticket: 324142.4, origem: tabela_local}
+- {apto: A3-105, tip: 2D, planta: '', area: 53.94, status: disponível, ticket: 324142.39, origem: tabela_local}
+- {apto: B1-101, tip: 2D, planta: '', area: 53.94, status: disponível, ticket: 324142.38, origem: tabela_local}
+- {apto: B1-102, tip: 2D, planta: '', area: 53.94, status: reservado, ticket: 324142.83, origem: tabela_local}
+- {apto: B1-103, tip: 2D, planta: '', area: 53.94, status: disponível, ticket: 324142.41, origem: tabela_local}
+- {apto: B2-104, tip: 2D, planta: '', area: 53.94, status: disponível, ticket: 324142.57, origem: tabela_local}
+- {apto: B3-103, tip: 2D, planta: '', area: 53.94, status: disponível, ticket: 324142.59, origem: tabela_local}
+- {apto: B3-104, tip: 2D, planta: '', area: 53.94, status: disponível, ticket: 324142.46, origem: tabela_local}
+- {apto: B4-101, tip: 2D, planta: '', area: 53.94, status: disponível, ticket: 324142.93, origem: tabela_local}
+- {apto: B4-102, tip: 2D, planta: '', area: 53.94, status: disponível, ticket: 324142.61, origem: tabela_local}
+- {apto: A1.102, tip: 2D, planta: '', area: 53.94, status: disponível, ticket: 324142.27, origem: tabela_local}
+- {apto: A1-104, tip: 2D, planta: '', area: 53.94, status: disponível, ticket: 324142.28, origem: tabela_local}
+- {apto: A1-105, tip: 2D, planta: '', area: 53.94, status: disponível, ticket: 324142.29, origem: tabela_local}
+- {apto: A2-105, tip: 2D, planta: '', area: 53.94, status: disponível, ticket: 324142.33, origem: tabela_local}
+- {apto: A3-101, tip: 2D, planta: '', area: 53.94, status: disponível, ticket: 324142.35, origem: tabela_local}
+- {apto: A3-102, tip: 2D, planta: '', area: 53.94, status: disponível, ticket: 324142.36, origem: tabela_local}
+- {apto: A3-103, tip: 2D, planta: '', area: 53.94, status: disponível, ticket: 324142.37, origem: tabela_local}
+- {apto: A3-104, tip: 2D, planta: '', area: 53.94, status: disponível, ticket: 324142.4, origem: tabela_local}
+- {apto: A3-105, tip: 2D, planta: '', area: 53.94, status: disponível, ticket: 324142.39, origem: tabela_local}
+- {apto: B1-101, tip: 2D, planta: '', area: 53.94, status: disponível, ticket: 324142.38, origem: tabela_local}
+- {apto: B1-102, tip: 2D, planta: '', area: 53.94, status: reservado, ticket: 324142.83, origem: tabela_local}
+- {apto: B1-103, tip: 2D, planta: '', area: 53.94, status: disponível, ticket: 324142.41, origem: tabela_local}
+- {apto: B2-104, tip: 2D, planta: '', area: 53.94, status: disponível, ticket: 324142.57, origem: tabela_local}
+- {apto: B3-103, tip: 2D, planta: '', area: 53.94, status: disponível, ticket: 324142.59, origem: tabela_local}
+- {apto: B3-104, tip: 2D, planta: '', area: 53.94, status: disponível, ticket: 324142.46, origem: tabela_local}
+- {apto: B4-101, tip: 2D, planta: '', area: 53.94, status: disponível, ticket: 324142.93, origem: tabela_local}
+- {apto: B4-102, tip: 2D, planta: '', area: 53.94, status: disponível, ticket: 324142.61, origem: tabela_local}
