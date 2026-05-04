@@ -1,0 +1,6 @@
+incorporadora: DOM Incorporação
+empreendimento: Villa Terrari
+fonte: {origem_principal: informado_manualmente}
+plantas:
+- {tip: 3D, planta: '', area: 78.0, total: 88, disp: 88, t_min: 483600, t_max: 483600,
+  rs_m2: 6200, origem: informado_manualmente}

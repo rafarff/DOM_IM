@@ -1,0 +1,6 @@
+incorporadora: DOM Incorporação
+empreendimento: Dom Rafael
+fonte: {origem_principal: informado_manualmente}
+plantas:
+- {tip: 3D, planta: '', area: 122.0, total: 37, disp: 37, t_min: 1098000, t_max: 1098000,
+  rs_m2: 9000, origem: informado_manualmente}

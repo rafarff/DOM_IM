@@ -19,7 +19,7 @@ from openpyxl.drawing.image import Image as XLImage
 # ═══════════════════════════════════════════════════════════════
 # PARÂMETROS GLOBAIS
 # ═══════════════════════════════════════════════════════════════
-VERSION = "11.7"
+VERSION = "11.8"
 DATE_STR = "04/05/2026"
 # v11.6 — (03/05/2026): R3 LOTE 3 — visão multimodal nos 3 PDFs imagem.
 #   Dom Lucas (DOM): 46 unidades (9 disp + 1 reserv + 36 vend) — tabela mar/2026 lida via Read PNG
@@ -485,6 +485,16 @@ E_RAW = [
      "https://alfaengenhariama.com.br/empreendimento/liv/","03/05/2026",
      "Tipologia detalhada (site Alfa + Etna Imóveis 03/05/2026): 1 torre × 75 apartamentos × 3 elevadores. 3 PLANTAS: 90,83m² + 91,77m² + 100,23m². Mono-tipologia 3D (3 suítes), 2 vagas. 1º Housi do MA — tecnologia integrada (mini market, lavanderia coletiva, vending, bike share, EV charging, delivery, fechadura digital). Entrega JUL/2027. **TOTAL = 75 confirmado em site oficial Alfa (03/05/2026)**.", "site_oficial", None, "site_oficial"),
 
+    # Breve lançamento Alfa (Rafael 04/05/2026) — info parcial
+    ("Alfa Engenharia","Bay View",
+     "Endereço a confirmar, São Luís - MA","—",
+     "Vertical","Luxo",
+     None,"05/2026","—", None,None,None, "—",
+     None,None, 18000, None, 1.0,
+     "N/A","informado_manualmente","informado_manualmente",
+     "https://alfaengenhariama.com.br/","04/05/2026",
+     "Breve lançamento (Rafael 04/05/2026). R$/m² 18.000 (segmento Luxo). Tipo Vertical. **Total + tipologia + área + bairro PENDENTES** — Rafael vai buscar mais info. Por prática de mercado, breve lançamento nessa fase não tem tabela publicada — entra em Tabela B do Panorama.", "N/A", "informado_manualmente", None),
+
     # ═══ DELMAN ═════════════════════════════════════════════════════════
     ("Delman","Azimuth",
      "Endereço não localizado, Ponta d'Areia, São Luís - MA","Península",
@@ -832,10 +842,56 @@ E_RAW = [
      "Endereço não localizado, Jardim Eldorado (Turú), São Luís - MA","Jardim Eldorado",
      "Horizontal","Médio",
      12,"06/2023","—", 136.2,136.2,None, "3D",
-     906870,906870, None,None,None,
-     "agregador","N/A","interno",
-     "https://www.imovelnacidade.com/destaque/mb-construtora/","23/04/2026",
-     "Tipologia detalhada: 3Q casas duplex. DOM Incorporação com MB Engenharia como sócia (empreendimento conjunto). Lançamento 06/2023 confirmado internamente. **TOTAL = 12 casas iguais 136,2 m² (Rafael 03/05/2026)** — mono-tipologia 3D, padrão duplex idêntico. Ticket R$906.870. Produto horizontal Eldorado/Turú. Composição via §3.7 nível 5.1 (mono): 12u 3D 136,2m². [reconstituído da v4.16 em 25/04/2026; total declarado v10.7]", "informado_manualmente", None, None),
+     906870,906870, None,None, 0.0,
+     "informado_manualmente","informado_manualmente","interno",
+     "https://www.imovelnacidade.com/destaque/mb-construtora/","04/05/2026",
+     "Tipologia detalhada: 3Q casas duplex. DOM Incorporação com MB Engenharia como sócia (empreendimento conjunto). Lançamento 06/2023 confirmado internamente. **TOTAL = 12 casas iguais 136,2 m² (Rafael 03/05/2026)** — mono-tipologia 3D, padrão duplex idêntico. Ticket R$906.870. Produto horizontal Eldorado/Turú. Composição via §3.7 nível 5.1 (mono): 12u 3D 136,2m². **100% VENDIDO confirmado Rafael 04/05/2026** (estoque=0). Promovido para Tabela A v11.8 (orig_precos=informado_manualmente). [reconstituído da v4.16 em 25/04/2026]", "informado_manualmente", "informado_manualmente", None),
+
+    # ─── DOM INCORPORAÇÃO — BREVE LANÇAMENTOS (Rafael 04/05/2026) ──────────
+    ("DOM Incorporação","Villa Terrari",
+     "Endereço a confirmar, Paço do Lumiar - MA","Paço do Lumiar",
+     "Horizontal","Popular",
+     88,"07/2026","—", 78.0,78.0,None, "3D",
+     483600,483600, None,None, 1.0,
+     "N/A","informado_manualmente","informado_manualmente",
+     "https://www.dom.inc.br/","04/05/2026",
+     "Tipologia detalhada (Rafael 04/05/2026): Empreendimento INTERNO DOM Incorporação. **88 casas térreas** mono-tipologia 3D 78m². R$/m² 6.200 → ticket único R$ 483.600. Bairro Paço do Lumiar. Lançamento 07/2026 (futuro). Por ser breve lançamento, tabela pública não disponível — Tabela B do Panorama. Composição via §3.7 nível 5.1 (mono): 88u 3D 78m². Segmento Popular pelo R$/m² < 7k.", "informado_manualmente", "informado_manualmente", "informado_manualmente"),
+
+    ("DOM Incorporação","Dom Manuel",
+     "Endereço a confirmar, Ponta d'Areia, São Luís - MA","Ponta d'Areia",
+     "Vertical","Alto",
+     45,"08/2026","—", 113.50,134.68,None, "3D; 4D",
+     1362000,1616160, None,None, 1.0,
+     "N/A","informado_manualmente","informado_manualmente",
+     "https://www.dom.inc.br/","04/05/2026",
+     "Tipologia detalhada (Rafael 04/05/2026): Empreendimento INTERNO DOM Incorporação. **45 unid** = 30u 4D 134,68m² + 15u 3D 113,50m². R$/m² 12.000. Tickets: 4D R$ 1.616.160 / 3D R$ 1.362.000. Bairro Ponta d'Areia. Lançamento 08/2026 (futuro). Tabela B Panorama. Composição §3.7 nível 5.2.", "informado_manualmente", "informado_manualmente", "informado_manualmente"),
+
+    ("DOM Incorporação","Dom Guilherme",
+     "Endereço a confirmar, Olho D'Água, São Luís - MA","Olho D'Água",
+     "Horizontal","Luxo",
+     27,"12/2026","—", 252.02,252.02,None, "3D",
+     3024240,3024240, None,None, 1.0,
+     "N/A","informado_manualmente","informado_manualmente",
+     "https://www.dom.inc.br/","04/05/2026",
+     "Tipologia detalhada (Rafael 04/05/2026): Empreendimento INTERNO DOM Incorporação. **27 casas mono-tipologia 3D 252,02m²** (produto horizontal alto padrão). R$/m² 12.000 → ticket R$ 3.024.240. Bairro Olho D'Água. Lançamento 12/2026 (futuro). Tabela B Panorama. Composição §3.7 nível 5.1.", "informado_manualmente", "informado_manualmente", "informado_manualmente"),
+
+    ("DOM Incorporação","Dom Rafael",
+     "Endereço a confirmar, Araçagi, São Luís - MA","Araçagi",
+     "Horizontal","Médio",
+     37,"10/2026","—", 122.0,122.0,None, "3D",
+     1098000,1098000, None,None, 1.0,
+     "N/A","informado_manualmente","informado_manualmente",
+     "https://www.dom.inc.br/","04/05/2026",
+     "Tipologia detalhada (Rafael 04/05/2026): Empreendimento INTERNO DOM Incorporação. **37 casas mono-tipologia 3D 122m²** (produto horizontal). R$/m² 9.000 → ticket R$ 1.098.000. Bairro Araçagi. Lançamento 10/2026 (futuro). Tabela B Panorama. Composição §3.7 nível 5.1.", "informado_manualmente", "informado_manualmente", "informado_manualmente"),
+
+    ("DOM Incorporação","Dom Roberto",
+     "Endereço a confirmar, Ponta d'Areia, São Luís - MA","Ponta d'Areia",
+     "Vertical","Alto",
+     75,"11/2026","—", 75.09,135.0,None, "2D; 3D",
+     901080,1620000, None,None, 1.0,
+     "N/A","informado_manualmente","informado_manualmente",
+     "https://www.dom.inc.br/","04/05/2026",
+     "Tipologia detalhada (Rafael 04/05/2026): Empreendimento INTERNO DOM Incorporação. **75 unid** = 56u 3D 100,4m² + 14u 2D 75,09m² + 4u 135m² + 1u 102m² (5 unid especiais — tipologia das 4×135m² + 1×102m² A CONFIRMAR; assumindo 3D). R$/m² 12.000. Tickets: min R$ 901.080 (2D 75m²), max R$ 1.620.000 (135m²). Bairro Ponta d'Areia. Lançamento 11/2026 (futuro). Tabela B Panorama. Composição §3.7 nível 5.2 multi-tipologia.", "informado_manualmente", "informado_manualmente", "informado_manualmente"),
 
     # ─── MONTEPLAN — 2 empreend. ativos ───
     ("Monteplan","Renaissance Conceito",

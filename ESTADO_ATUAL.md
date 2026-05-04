@@ -2,23 +2,23 @@
 
 > **Para Claude (toda sessão):** este é o **primeiro arquivo a ler** antes de qualquer ação. Confirma a base de trabalho. Se a invariante 0.3 do PADRAO falhar contra os números aqui, **PARAR**.
 
-**Última atualização:** 04/05/2026
-**Versão Planilha vigente:** v11.7
+**Última atualização:** 04/05/2026 (sessão 2)
+**Versão Planilha vigente:** v11.8
 **Versão PADRAO vigente:** v7.0 (com §3.7.0 — U_RAW)
-**Versão script `gerar_planilha.py`:** 11.7 (DATE_STR: 04/05/2026)
-**Versão `build_panorama.py`:** v8.1.0 (Tabelas A/B/C + col VGV)
+**Versão script `gerar_planilha.py`:** 11.8 (DATE_STR: 04/05/2026)
+**Versão `build_panorama.py`:** v8.1.1 (A aceita informado_manualmente)
 
 ---
 
-## Snapshot da carteira (v11.7)
+## Snapshot da carteira (v11.8)
 
 | Métrica | Valor |
 |---|---:|
-| Aba Empreendimentos | **45 linhas** (+1 Cidade de Viena/Lua Nova) |
+| Aba Empreendimentos | **51 linhas** (+1 Bay View Alfa + 5 DOM breve lanç) |
 | Aba Incorporadoras | **16 linhas — DERIVADA** (R2) |
-| Aba Composição | **87 linhas / 2.916 unidades / 36 empreend.** — híbrida (65 U_RAW + 22 composicao/) |
+| Aba Composição | **96 linhas / 3.188 unidades / 41 empreend.** — híbrida (65 U_RAW + 31 composicao/) |
 | **Aba Unidades** | **848 unidades / 25 empreend.** — átomo do sistema (R3 lote 1+2+3+4 = 6+15+3+1) |
-| **Cobertura Total apurado** | **36/45 = 80%** |
+| **Cobertura Total apurado** | **42/51 = 82%** |
 | **Bloqueados** | **9 empreend.** em pendencias_TOTAL.md |
 | Fonte de U_RAW | **24 arquivos YAML** em `unidades/<inc>__<emp>.yaml` |
 | Fonte de C_RAW (residual) | **11 arquivos YAML** em `composicao/<inc>__<emp>.yaml` (níveis 3-5) |
@@ -28,7 +28,7 @@
 | Aba Empreendimentos schema | **27 colunas** (sem mudança) |
 | Aba Composição schema | **12 colunas (v7.0)** ← +1 vs v6.2 (Planta + Área única + Total planta separado de Disp) |
 | Drift script ↔ planilha | **0** ✅ |
-| VGV total mapeado | **R$ 2,70 bi** (+R$ 179M Cidade de Viena 176u × ticket médio R$ 1,02M) |
+| VGV total mapeado | **R$ 3,03 bi** (+R$ 326M: Dom Antônio R$ 11M + 5 DOM breve lanç R$ 326M)
 | Cobertura Composição | **34/44 empreend. = 77%** (mantida vs v10.9) |
 | **Invariante v6.2 Σ Total tip = E_RAW.Total** | **30/34 fechado exato** ⚠ 4 parciais (Vila Coimbra, Le Noir, Bossa, Reserva SM) |
 | **Invariante v7.0 Σ Total planta = Total tip** | **49/49 fechado exato** ✅ (NOVA — pro-rata fecha por construção) |
@@ -79,6 +79,23 @@ cd 00_ESTUDO_CONSOLIDADO/ && ls -1 Planilha_Mestre_Panorama_v*.xlsx | sort -V | 
 ---
 
 ## Mudanças estruturais recentes
+
+- **v11.8** (04/05/2026 — sessão 2) — **+6 breve lançamentos + Dom Antônio promovido para Tabela A.**
+   - **Decisão Rafael 04/05 (sessão 2):**
+     - Dom Antônio (DOM) → **subiu de Tabela C para A** com 100% vendido (estoque=0 confirmado). orig_precos passou de `agregador` para `informado_manualmente`. VGV agora calculável: 12u × R$ 906.870 = **R$ 10,9M**.
+     - **6 breve lançamentos novos** cadastrados em E_RAW + adicionados ao set `BREVE_LANCAMENTO_NAMES` (build_panorama.py):
+       1. **Bay View** (Alfa Engenharia) — Vertical, Luxo, lanç 05/2026, R$/m² 18k. Tipologia/total/área/bairro PENDENTES (Rafael busca).
+       2. **Villa Terrari** (DOM) — Paço do Lumiar, Horizontal, Popular, lanç 07/2026, **88u mono 3D 78m²** R$ 6,2k/m² ticket R$ 483k. VGV R$ 42,6M.
+       3. **Dom Manuel** (DOM) — Ponta d'Areia, Vertical, Alto, lanç 08/2026, **45u** = 30u 4D 134,68m² + 15u 3D 113,50m². R$/m² 12k. VGV R$ 67M.
+       4. **Dom Guilherme** (DOM) — Olho D'Água, Horizontal, Luxo, lanç 12/2026, **27u mono 3D 252,02m²** ticket R$ 3,02M. VGV R$ 81,7M.
+       5. **Dom Rafael** (DOM) — Araçagi, Horizontal, Médio, lanç 10/2026, **37u mono 3D 122m²** ticket R$ 1,1M. VGV R$ 40,6M.
+       6. **Dom Roberto** (DOM) — Ponta d'Areia, Vertical, Alto, lanç 11/2026, **75u** = 56×3D 100,4m² + 14×2D 75,09m² + 4×135m² + 1×102m². R$/m² 12k. VGV R$ 94,5M. Tipologia das 5 unidades especiais (135m²×4 + 102m²×1) A CONFIRMAR.
+   - `build_panorama.py` v8.1.0 → **v8.1.1**: `fase_comercial` agora aceita `informado_manualmente` em Tabela A (caso Rafael conhece o empreend. com certeza, ex: empreend. próprios DOM, Dom Antônio 100% vendido).
+   - **6 composicao YAMLs novos**: Dom_Antonio, Villa_Terrari, Dom_Manuel, Dom_Guilherme, Dom_Rafael, Dom_Roberto. Bay View sem composicao (sem dados ainda).
+   - **Distribuição Panorama:** Tabela A = **27** (+1 Dom Antônio); Tabela B = **7** (+6); Tabela C = **17** (-1 Dom Antônio).
+   - VGV total: R$ 2,70 bi → **R$ 3,03 bi** (+R$ 333M).
+   - 51 empreendimentos / 96 linhas Composição / 3.188 unidades.
+   - Invariantes §3.7.C.4 = 37/41 ✅ · §3.7.C.6 = 58/58 ✅.
 
 - **v11.7** (04/05/2026) — **Reclassificação Tabelas Panorama A/B/C + col VGV + Cidade de Viena (Lua Nova) cadastrado.**
    - **Decisão Rafael 04/05:** Tabelas do Panorama mudam de critério.

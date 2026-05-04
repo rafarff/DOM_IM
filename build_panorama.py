@@ -46,7 +46,13 @@ OUTPUT_HTML = SCRIPT_DIR / "index.html"  # nome padrão do GitHub Pages
 #   Tabela C — Demais (lançados sem tabela, info parcial)
 # Rafael mantém manualmente a lista de Breve Lançamentos abaixo.
 BREVE_LANCAMENTO_NAMES = {
-    "Nexus Renascença",  # Ergus, lanc. 04/2026 — site sem ficha técnica
+    "Nexus Renascença",   # Ergus, lanc. 04/2026 — site sem ficha técnica
+    "Bay View",           # Alfa Engenharia, lanc. 05/2026 — Rafael 04/05/2026
+    "Villa Terrari",      # DOM Incorporação, lanc. 07/2026 — interno DOM
+    "Dom Manuel",         # DOM Incorporação, lanc. 08/2026 — interno DOM
+    "Dom Guilherme",      # DOM Incorporação, lanc. 12/2026 — interno DOM
+    "Dom Rafael",         # DOM Incorporação, lanc. 10/2026 — interno DOM
+    "Dom Roberto",        # DOM Incorporação, lanc. 11/2026 — interno DOM
 }
 
 def fase_comercial(empreendimento: str, orig_precos: str) -> str:
@@ -58,7 +64,9 @@ def fase_comercial(empreendimento: str, orig_precos: str) -> str:
     """
     if empreendimento in BREVE_LANCAMENTO_NAMES:
         return "breve_lancamento"
-    if orig_precos in ("tabela", "tabela_local"):
+    # v11.8: aceita informado_manualmente como A (caso Rafael conhece o empreend. com certeza
+    # mesmo sem tabela formal — ex: empreend. próprios DOM, ou casos tipo Dom Antônio 100% vendido)
+    if orig_precos in ("tabela", "tabela_local", "informado_manualmente"):
         return "lancado_com_tabela"
     return "lancado_sem_tabela"
 

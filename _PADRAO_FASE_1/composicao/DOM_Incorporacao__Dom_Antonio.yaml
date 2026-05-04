@@ -1,0 +1,7 @@
+incorporadora: DOM Incorporação
+empreendimento: Dom Antônio
+fonte: {origem_principal: informado_manualmente}
+# 100% VENDIDO confirmado Rafael 04/05/2026 → disp=0 (todos os 12 vendidos)
+plantas:
+- {tip: 3D, planta: '', area: 136.2, total: 12, disp: 0, t_min: 906870, t_max: 906870,
+  rs_m2: 6658, origem: informado_manualmente}

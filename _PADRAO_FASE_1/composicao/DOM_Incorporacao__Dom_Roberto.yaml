@@ -1,0 +1,14 @@
+incorporadora: DOM Incorporação
+empreendimento: Dom Roberto
+fonte: {origem_principal: informado_manualmente}
+# Composição confirmada Rafael 04/05/2026: 56u 3D 100,4m² + 14u 2D 75,09m² + 4u 135m² + 1u 102m²
+# As 5 unid especiais (4×135m² + 1×102m²) tipologia A CONFIRMAR — assumido 3D pelo padrão de área grande
+plantas:
+- {tip: 3D, planta: '', area: 100.4, total: 56, disp: 56, t_min: 1204800, t_max: 1204800,
+  rs_m2: 12000, origem: informado_manualmente}
+- {tip: 2D, planta: '', area: 75.09, total: 14, disp: 14, t_min: 901080, t_max: 901080,
+  rs_m2: 12000, origem: informado_manualmente}
+- {tip: 3D, planta: 'Especial 135m²', area: 135.0, total: 4, disp: 4, t_min: 1620000, t_max: 1620000,
+  rs_m2: 12000, origem: informado_manualmente}
+- {tip: 3D, planta: 'Especial 102m²', area: 102.0, total: 1, disp: 1, t_min: 1224000, t_max: 1224000,
+  rs_m2: 12000, origem: informado_manualmente}

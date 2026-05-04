@@ -1,0 +1,8 @@
+incorporadora: DOM Incorporação
+empreendimento: Dom Manuel
+fonte: {origem_principal: informado_manualmente}
+plantas:
+- {tip: 4D, planta: '', area: 134.68, total: 30, disp: 30, t_min: 1616160, t_max: 1616160,
+  rs_m2: 12000, origem: informado_manualmente}
+- {tip: 3D, planta: '', area: 113.50, total: 15, disp: 15, t_min: 1362000, t_max: 1362000,
+  rs_m2: 12000, origem: informado_manualmente}

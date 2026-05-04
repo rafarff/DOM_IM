@@ -1,0 +1,6 @@
+incorporadora: DOM Incorporação
+empreendimento: Dom Guilherme
+fonte: {origem_principal: informado_manualmente}
+plantas:
+- {tip: 3D, planta: '', area: 252.02, total: 27, disp: 27, t_min: 3024240, t_max: 3024240,
+  rs_m2: 12000, origem: informado_manualmente}
