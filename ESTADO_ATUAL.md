@@ -2,22 +2,23 @@
 
 > **Para Claude (toda sessão):** este é o **primeiro arquivo a ler** antes de qualquer ação. Confirma a base de trabalho. Se a invariante 0.3 do PADRAO falhar contra os números aqui, **PARAR**.
 
-**Última atualização:** 03/05/2026
-**Versão Planilha vigente:** v11.6
+**Última atualização:** 04/05/2026
+**Versão Planilha vigente:** v11.7
 **Versão PADRAO vigente:** v7.0 (com §3.7.0 — U_RAW)
-**Versão script `gerar_planilha.py`:** 11.6 (DATE_STR: 03/05/2026)
+**Versão script `gerar_planilha.py`:** 11.7 (DATE_STR: 04/05/2026)
+**Versão `build_panorama.py`:** v8.1.0 (Tabelas A/B/C + col VGV)
 
 ---
 
-## Snapshot da carteira (v11.6)
+## Snapshot da carteira (v11.7)
 
 | Métrica | Valor |
 |---|---:|
-| Aba Empreendimentos | **44 linhas** (sem mudança vs v10.9) |
+| Aba Empreendimentos | **45 linhas** (+1 Cidade de Viena/Lua Nova) |
 | Aba Incorporadoras | **16 linhas — DERIVADA** (R2) |
-| Aba Composição | **85 linhas / 2.740 unidades / 35 empreend.** — híbrida: 65 derivadas de U_RAW + 20 de composicao/ |
-| **Aba Unidades** | **672 unidades / 24 empreend.** — átomo do sistema (R3 lote 1+2+3 = 6+15+3) |
-| **Cobertura Total apurado** | **35/44 = 80%** |
+| Aba Composição | **87 linhas / 2.916 unidades / 36 empreend.** — híbrida (65 U_RAW + 22 composicao/) |
+| **Aba Unidades** | **848 unidades / 25 empreend.** — átomo do sistema (R3 lote 1+2+3+4 = 6+15+3+1) |
+| **Cobertura Total apurado** | **36/45 = 80%** |
 | **Bloqueados** | **9 empreend.** em pendencias_TOTAL.md |
 | Fonte de U_RAW | **24 arquivos YAML** em `unidades/<inc>__<emp>.yaml` |
 | Fonte de C_RAW (residual) | **11 arquivos YAML** em `composicao/<inc>__<emp>.yaml` (níveis 3-5) |
@@ -27,7 +28,7 @@
 | Aba Empreendimentos schema | **27 colunas** (sem mudança) |
 | Aba Composição schema | **12 colunas (v7.0)** ← +1 vs v6.2 (Planta + Área única + Total planta separado de Disp) |
 | Drift script ↔ planilha | **0** ✅ |
-| VGV total mapeado | **R$ 2,52 bi** (sem mudança — ajuste de granularidade não muda VGV) |
+| VGV total mapeado | **R$ 2,70 bi** (+R$ 179M Cidade de Viena 176u × ticket médio R$ 1,02M) |
 | Cobertura Composição | **34/44 empreend. = 77%** (mantida vs v10.9) |
 | **Invariante v6.2 Σ Total tip = E_RAW.Total** | **30/34 fechado exato** ⚠ 4 parciais (Vila Coimbra, Le Noir, Bossa, Reserva SM) |
 | **Invariante v7.0 Σ Total planta = Total tip** | **49/49 fechado exato** ✅ (NOVA — pro-rata fecha por construção) |
@@ -78,6 +79,20 @@ cd 00_ESTUDO_CONSOLIDADO/ && ls -1 Planilha_Mestre_Panorama_v*.xlsx | sort -V | 
 ---
 
 ## Mudanças estruturais recentes
+
+- **v11.7** (04/05/2026) — **Reclassificação Tabelas Panorama A/B/C + col VGV + Cidade de Viena (Lua Nova) cadastrado.**
+   - **Decisão Rafael 04/05:** Tabelas do Panorama mudam de critério.
+     - **Tabela A** = empreendimentos COM TABELA DE VENDAS (orig_precos in tabela|tabela_local). 26 empreend.
+     - **Tabela B** = BREVE LANÇAMENTOS mapeados (sem tabela: prática de mercado nessa fase). Lista manual em `BREVE_LANCAMENTO_NAMES` no build_panorama.py. **1 empreend. atual: Nexus Renascença (Ergus)**.
+     - **Tabela C** = demais empreendimentos sem tabela. 18 empreend.
+   - **Mesmas 13 colunas em A/B/C** (incorp, emp, bairro, tipo, seg, lanç, tipologia, total unid, área méd, ticket, R$/m², **VGV (NOVA)**, %vend). Antes: A tinha 12 cols, B tinha 8 cols.
+   - `build_panorama.py` v8.1.0 — função `fase_comercial(empreendimento, orig_precos)` deriva o bucket; `renderTable()` divide em 3 buckets renderizando linha única (`renderRow`) com mesmo schema.
+   - **+1 empreend. processado do INBOX 04/05:** **Cidade de Viena (Lua Nova)** — Tabela ABR/2026, 2 torres (Mozart+Strauss), 11 andares × 8 finais. Total estimado §3.7 nível 5.2 = **2×11×8 = 176 unid**. Tabela lista 76 disp (32 Mozart + 44 Strauss) → 100 vendidas inferidas (~57% vendido). 2 plantas: 61,38m² (1 vaga, assumida 2D) + 86,58m² (2 vagas, assumida 3D). Tickets R$ 743k–1.295k. R$/m² médio R$ 12.500 (Médio). YAML em `unidades/Lua_Nova__Cidade_de_Viena.yaml`. **Pendente:** Bairro + Endereço + Mês de lançamento + confirmação 2D/3D com Lua Nova.
+   - **2 arquivos do INBOX = duplicatas** (md5 idêntico) movidos para `_DUPLICADAS_PRONTAS_PARA_DELETAR/`: TABELA_THE_VIEW_042026_v3_2804.pdf e BOOK_THE_VIEW_042026.pdf.
+   - **VGV total mapeado: R$ 2,52 bi → R$ 2,70 bi** (+R$ 179M Cidade de Viena).
+   - **Cobertura U_RAW**: 24/26 → 25/27 empreend (Cidade de Viena entra como 25º arquivo YAML em unidades/, com 76 disp + 100 vendidas estimadas = 176 entries).
+   - Aba Composição: 85 → **87 linhas** (+2 linhas Cidade de Viena: 2D 61,38m² + 3D 86,58m²). Total unidades render: 2.740 → **2.916** (+176).
+   - Invariante §3.7.C.6: 50/50 → **51/51 ✅**. §3.7.C.4: 31/35 → **32/36** (Cidade de Viena fecha pela estimativa 5.2).
 
 - **v6.0–v7.0.1** — limpezas, dashboard redesenhado, fix init.
 - **v8.0** (02/05/2026) — Aba Composição introduzida. Lote 1: 15 linhas / 322 unid.

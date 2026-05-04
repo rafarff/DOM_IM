@@ -40,29 +40,6 @@ except ImportError:
 SCRIPT_DIR = Path(__file__).resolve().parent
 OUTPUT_HTML = SCRIPT_DIR / "index.html"  # nome padrão do GitHub Pages
 
-# v8.1.0 (04/05/2026): classificação Panorama em 3 tabelas (decisão Rafael 04/05).
-#   Tabela A — Empreendimentos com tabela de vendas (acesso a tickets unidade-a-unidade)
-#   Tabela B — Breve Lançamentos mapeados (sem tabela: prática de mercado nessa fase)
-#   Tabela C — Demais (lançados sem tabela, info parcial)
-# Rafael mantém manualmente a lista de Breve Lançamentos abaixo.
-BREVE_LANCAMENTO_NAMES = {
-    "Nexus Renascença",  # Ergus, lanc. 04/2026 — site sem ficha técnica
-}
-
-def fase_comercial(empreendimento: str, orig_precos: str) -> str:
-    """
-    Classifica fase comercial em 3 buckets para as Tabelas A/B/C do Panorama.
-    - lancado_com_tabela: temos a tabela de vendas (orig_precos in tabela|tabela_local)
-    - breve_lancamento  : empreendimento listado em BREVE_LANCAMENTO_NAMES (manual)
-    - lancado_sem_tabela: demais
-    """
-    if empreendimento in BREVE_LANCAMENTO_NAMES:
-        return "breve_lancamento"
-    if orig_precos in ("tabela", "tabela_local"):
-        return "lancado_com_tabela"
-    return "lancado_sem_tabela"
-
-
 def discover_search_dirs() -> list[Path]:
     """
     Descobre dinamicamente as pastas candidatas onde a Planilha Mestre pode estar.
@@ -478,10 +455,6 @@ def enrich(rows: list[dict], include_all: bool = False) -> list[dict]:
             "lng":            lng_j,
             "on_map":         on_map,
             "is_active":      is_active,
-            "fase_comercial": fase_comercial(
-                str(r.get("Empreendimento") or "").strip(),
-                str(r.get("Orig. preços") or "—")
-            ),  # v8.1.0
         })
     # Ordena cronologicamente (mais recente primeiro)
     enriched.sort(key=lambda e: e["lancamento_sort"], reverse=True)
@@ -727,7 +700,7 @@ if (sessionStorage.getItem("dom-auth") === "1") {
   <section class="legend" id="legend"></section>
 
   <div class="table-intro">
-    <strong>📊 Tabela A — Empreendimentos com tabela de vendas</strong> · acesso completo a tickets, áreas e estoque por unidade (<strong id="cnt-a">—</strong>)
+    <strong>📊 Tabela A — Empreendimentos com dados completos</strong> · com área, ticket e R$/m² confirmados (<strong id="cnt-complete">—</strong>)
   </div>
   <section class="table-wrap">
     <table id="tbl">
@@ -743,15 +716,14 @@ if (sessionStorage.getItem("dom-auth") === "1") {
         <th data-col="area_med">Área méd (m²)</th>
         <th data-col="ticket_med">Ticket (R$)</th>
         <th data-col="rsm2">R$/m²</th>
-        <th data-col="vgv">VGV (R$)</th>
         <th data-col="vendido">% Vendido</th>
       </tr></thead>
       <tbody id="tbody"></tbody>
     </table>
   </section>
 
-  <div class="table-intro" style="background:linear-gradient(90deg,#fff,#fff5e6);border-left-color:var(--dom-gold)">
-    <strong>🚀 Tabela B — Breve Lançamentos mapeados</strong> · prática de mercado: tabela de vendas indisponível nessa fase (<strong id="cnt-b">—</strong>)
+  <div class="table-intro incomplete">
+    <strong>🔎 Tabela B — Faltam dados (área / ticket / R$/m²)</strong> · <strong id="cnt-incomplete">—</strong> empreendimento(s) — <em>priorizar buscar tabela com corretor/site</em>
   </div>
   <section class="table-wrap">
     <table id="tbl-b">
@@ -763,38 +735,9 @@ if (sessionStorage.getItem("dom-auth") === "1") {
         <th data-col="segmento">Segmento</th>
         <th data-col="lancamento_sort">Lançamento</th>
         <th data-col="dorms">Tipologia</th>
-        <th data-col="unidades">Total Unid.</th>
-        <th data-col="area_med">Área méd (m²)</th>
-        <th data-col="ticket_med">Ticket (R$)</th>
-        <th data-col="rsm2">R$/m²</th>
-        <th data-col="vgv">VGV (R$)</th>
-        <th data-col="vendido">% Vendido</th>
+        <th data-col="pendencias">O que falta</th>
       </tr></thead>
       <tbody id="tbody-b"></tbody>
-    </table>
-  </section>
-
-  <div class="table-intro incomplete">
-    <strong>🔎 Tabela C — Demais empreendimentos sem tabela de vendas</strong> · <strong id="cnt-c">—</strong> empreendimento(s) — <em>priorizar buscar tabela com corretor/site/imprensa</em>
-  </div>
-  <section class="table-wrap">
-    <table id="tbl-c">
-      <thead><tr>
-        <th data-col="incorporadora">Incorporadora</th>
-        <th data-col="empreendimento">Empreendimento</th>
-        <th data-col="bairro">Bairro</th>
-        <th data-col="tipo">Tipo</th>
-        <th data-col="segmento">Segmento</th>
-        <th data-col="lancamento_sort">Lançamento</th>
-        <th data-col="dorms">Tipologia</th>
-        <th data-col="unidades">Total Unid.</th>
-        <th data-col="area_med">Área méd (m²)</th>
-        <th data-col="ticket_med">Ticket (R$)</th>
-        <th data-col="rsm2">R$/m²</th>
-        <th data-col="vgv">VGV (R$)</th>
-        <th data-col="vendido">% Vendido</th>
-      </tr></thead>
-      <tbody id="tbody-c"></tbody>
     </table>
   </section>
   </div><!-- /tab-panorama -->
@@ -1084,49 +1027,60 @@ function renderTable(data) {
     return sortAsc ? String(av).localeCompare(String(bv)) : String(bv).localeCompare(String(av));
   });
 
-  // v8.1.0: 3 buckets pelo fase_comercial (Tabela A/B/C — mesmas colunas)
-  const tabelaA = doSort(data.filter(e => e.fase_comercial === 'lancado_com_tabela'));
-  const tabelaB = doSort(data.filter(e => e.fase_comercial === 'breve_lancamento'));
-  const tabelaC = doSort(data.filter(e => e.fase_comercial === 'lancado_sem_tabela'));
+  // Divide em COMPLETOS e INCOMPLETOS
+  const completos = doSort(data.filter(isComplete));
+  const incompletos = doSort(data.filter(e => !isComplete(e)));
 
-  document.getElementById('cnt-a').textContent = tabelaA.length;
-  document.getElementById('cnt-b').textContent = tabelaB.length;
-  document.getElementById('cnt-c').textContent = tabelaC.length;
+  // Contadores
+  document.getElementById('cnt-complete').textContent = completos.length;
+  document.getElementById('cnt-incomplete').textContent = incompletos.length;
 
-  // Renderizador único (mesmas colunas em A/B/C — só diferencia tooltip da tag de fase)
-  function renderRow(e, fase) {
-    const ticket = (e.ticket_min != null && e.ticket_max != null)
-      ? `R$ ${formatBRL(e.ticket_min, true)}–${formatBRL(e.ticket_max, true)}`
-      : '<span class="dim">—</span>';
-    const area = (e.area_med != null) ? formatArea(e.area_med) : '<span class="dim">—</span>';
-    const rsm2 = (e.rsm2 != null) ? `R$ ${formatBRL(e.rsm2)}` : '<span class="dim">—</span>';
-    const vgv = (e.vgv != null && e.vgv > 0) ? `R$ ${formatBRL(e.vgv, true)}` : '<span class="dim">—</span>';
-    const precoTip = (e.orig_precos && e.orig_precos !== '—' && e.orig_precos !== 'N/A')
-      ? ` <span class="info-icon" title="Origem dos preços: ${e.orig_precos}">ℹ</span>` : '';
+  // Tabela A: completos
+  document.getElementById('tbody').innerHTML = completos.map(e => {
+    const ticket = `R$ ${formatBRL(e.ticket_min, true)}–${formatBRL(e.ticket_max, true)}`;
+    const area = formatArea(e.area_med);
+    const nomap = '';  // mapa removido v6.4 — badge sem propósito
     return `
       <tr onclick="focusEmp('${e.empreendimento.replace(/'/g, "\\'")}')">
         <td><span class="inc-name" style="color:${getColor(e.incorporadora)}">●</span> <span class="inc-name">${e.incorporadora}</span></td>
-        <td class="emp-name">${e.empreendimento}</td>
+        <td class="emp-name">${e.empreendimento}${nomap}</td>
         <td>${e.bairro}${e.endereco && e.endereco !== '—' ? ` <span class="info-icon" title="Endereço: ${e.endereco.replace(/"/g, '&quot;')}">ℹ</span>` : ''}</td>
         <td><span class="chip ${tipoClass(e.tipo)}">${e.tipo}</span></td>
         <td><span class="chip ${segClass(e.segmento)}">${e.segmento}</span></td>
-        <td class="${fase==='lancado_com_tabela'?'price':'dim'}" style="font-weight:${fase==='lancado_com_tabela'?'600':'400'}">${e.lancamento}${e.lancamento_origem && e.lancamento_origem !== '—' ? ` <span class="info-icon" title="Origem da data: ${e.lancamento_origem}">ℹ</span>` : ''}</td>
+        <td class="price" style="font-weight:600">${e.lancamento}${e.lancamento_origem && e.lancamento_origem !== '—' ? ` <span class="info-icon" title="Origem da data: ${e.lancamento_origem}">ℹ</span>` : ''}</td>
         <td class="dim" style="font-size:11px">${e.dorms || '—'}${(() => { const d = tipologiaDetail(e.obs); return d ? ` <span class="info-icon" title="Tipologia detalhada: ${d.replace(/"/g, '&quot;')}">ℹ</span>` : ''; })()}</td>
         <td class="price">${totalUnidCell(e)}</td>
         <td class="price">${area}</td>
-        <td class="price">${ticket}${precoTip}</td>
-        <td class="price">${rsm2}${precoTip}</td>
-        <td class="price">${vgv}</td>
+        <td class="price">${ticket}${e.orig_precos && e.orig_precos !== '—' ? ` <span class="info-icon" title="Origem dos preços: ${e.orig_precos}">ℹ</span>` : ''}</td>
+        <td class="price">R$ ${formatBRL(e.rsm2)}${e.orig_precos && e.orig_precos !== '—' ? ` <span class="info-icon" title="Origem dos preços: ${e.orig_precos}">ℹ</span>` : ''}</td>
         <td class="price">${vendidoCell(e)}</td>
       </tr>
     `;
-  }
+  }).join('');
 
-  document.getElementById('tbody').innerHTML   = tabelaA.map(e => renderRow(e, 'lancado_com_tabela')).join('');
-  document.getElementById('tbody-b').innerHTML = tabelaB.map(e => renderRow(e, 'breve_lancamento')).join('');
-  document.getElementById('tbody-c').innerHTML = tabelaC.map(e => renderRow(e, 'lancado_sem_tabela')).join('');
+  // Tabela B: incompletos — mostra o que está faltando
+  document.getElementById('tbody-b').innerHTML = incompletos.map(e => {
+    const nomap = '';  // mapa removido v6.4
+    const faltam = [];
+    if (!e.on_map) faltam.push('endereço');
+    if (e.area_med == null) faltam.push('área');
+    if (e.ticket_min == null || e.ticket_max == null) faltam.push('ticket');
+    if (e.rsm2 == null) faltam.push('R$/m²');
+    return `
+      <tr onclick="focusEmp('${e.empreendimento.replace(/'/g, "\\'")}')">
+        <td><span class="inc-name" style="color:${getColor(e.incorporadora)}">●</span> <span class="inc-name">${e.incorporadora}</span></td>
+        <td class="emp-name">${e.empreendimento}${nomap}</td>
+        <td>${e.bairro}${e.endereco && e.endereco !== '—' ? ` <span class="info-icon" title="Endereço: ${e.endereco.replace(/"/g, '&quot;')}">ℹ</span>` : ''}</td>
+        <td><span class="chip ${tipoClass(e.tipo)}">${e.tipo}</span></td>
+        <td><span class="chip ${segClass(e.segmento)}">${e.segmento}</span></td>
+        <td class="dim">${e.lancamento}${e.lancamento_origem && e.lancamento_origem !== '—' ? ` <span class="info-icon" title="Origem da data: ${e.lancamento_origem}">ℹ</span>` : ''}</td>
+        <td class="dim" style="font-size:11px">${e.dorms || '—'}${(() => { const d = tipologiaDetail(e.obs); return d ? ` <span class="info-icon" title="Tipologia detalhada: ${d.replace(/"/g, '&quot;')}">ℹ</span>` : ''; })()}</td>
+        <td><span class="chip or-pendente" title="Precisa buscar tabela">${faltam.join(' · ')}</span></td>
+      </tr>
+    `;
+  }).join('');
 
-  document.querySelectorAll('#tbl thead th, #tbl-b thead th, #tbl-c thead th').forEach(th => {
+  document.querySelectorAll('#tbl thead th, #tbl-b thead th').forEach(th => {
     th.classList.remove('sorted', 'asc');
     if (th.dataset.col === sortCol) { th.classList.add('sorted'); if (sortAsc) th.classList.add('asc'); }
   });
@@ -1187,7 +1141,7 @@ function resetFilters() {
   applyFilters();
 }
 document.querySelectorAll('.filters select, .filters input').forEach(el => { el.addEventListener('input', applyFilters); el.addEventListener('change', applyFilters); });
-document.querySelectorAll('#tbl thead th, #tbl-b thead th, #tbl-c thead th').forEach(th => {
+document.querySelectorAll('#tbl thead th, #tbl-b thead th').forEach(th => {
   th.addEventListener('click', () => {
     const col = th.dataset.col;
     if (sortCol === col) sortAsc = !sortAsc; else { sortCol = col; sortAsc = false; }

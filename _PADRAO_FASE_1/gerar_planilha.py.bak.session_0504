@@ -19,8 +19,8 @@ from openpyxl.drawing.image import Image as XLImage
 # ═══════════════════════════════════════════════════════════════
 # PARÂMETROS GLOBAIS
 # ═══════════════════════════════════════════════════════════════
-VERSION = "11.7"
-DATE_STR = "04/05/2026"
+VERSION = "11.6"
+DATE_STR = "03/05/2026"
 # v11.6 — (03/05/2026): R3 LOTE 3 — visão multimodal nos 3 PDFs imagem.
 #   Dom Lucas (DOM): 46 unidades (9 disp + 1 reserv + 36 vend) — tabela mar/2026 lida via Read PNG
 #   Dom José (DOM): 22 unidades (3 disp + 19 vend) — tabela abr/2026 lida via Read PNG (rotacionada 90°)
@@ -772,16 +772,7 @@ E_RAW = [
      "http://franere.com.br/empreendimentos/varandas-grand-park","03/05/2026",
      "Tipologia detalhada (site Franere + iMeu + Etna 03/05/2026): Apt 3 quartos 74-87m², 1 suíte + 1 semi-suíte + 1 quarto. Mono-tipologia 3D. Pronto pra entrega ('ready-to-move-in'). Parceria Franere + Gafisa SA. Calhau / Parque Shalom (próximo Av. dos Holandeses). Bairro corrigido v10.8: 'São Luís' genérico → Calhau. **TOTAL ainda não confirmado** — agregador menciona configurações mas total falta.", "site_oficial", None, "site_oficial"),
 
-    # ─── LUA NOVA — 4 empreend. ───
-    ("Lua Nova","Cidade de Viena",
-     "Endereço não localizado, São Luís - MA","—",
-     "Vertical",None,
-     176,"—","—", 61.38,86.58,None, "2D; 3D",
-     743058,1294592, None,None, None,
-     "tabela_local","tabela_local","N/A",
-     "https://construtoraluanova.com.br/","04/05/2026",
-     "Tipologia detalhada (Tabela ABR/2026 recebida 04/05/2026 via INBOX): 2 torres (Mozart + Strauss), 11 andares tipo cada, 8 finais por andar tipo. Total estimado §3.7 nível 5.2 = 2×11×8 = 176 unid. Tabela vigência abr/2026 lista 76 unid disponíveis (32 Mozart + 44 Strauss) → 100 vendidas inferidas (~57% vendido). 2 plantas: (a) 61,38m² com 1 vaga — assumida 2D (35 disp); (b) 86,58m² com 2 vagas — assumida 3D (41 disp). Tipologia A CONFIRMAR com Lua Nova. Tickets disp: R$ 743k–918k (61m²) + R$ 983k–1.295k (86m²). R$/m² médio ~ R$ 12.500 — segmento Médio. Lazer: praça de boas vindas, brinquedoteca, hall social, terraço gourmet, lounge gourmet, academia, bicicletário. **Bairro + Endereço + Mês de Lançamento NÃO DECLARADOS na tabela** — pendente confirmação. Tabela INCC até entrega + IGP-M+1%/m após habite-se. Validade tabela: 30/04/2026.", "estimativa_distribuição", None, None),
-
+    # ─── LUA NOVA — 2 empreend. ───
     ("Lua Nova","Villa Adagio",
      "Avenida Principal, 50, Iguaíba, Paço do Lumiar - MA","Iguaíba",
      "Horizontal","Popular",
