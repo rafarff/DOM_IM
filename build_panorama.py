@@ -1316,9 +1316,10 @@ document.getElementById('tab-count-dados').textContent = ALL_DATA.length;
 // Inicializa ambas (mapa removido v6.4)
 
 // ─── DASHBOARD (v6.4) ─────────────────────────────────────────────────────
-const SEG_ORDER = ['Popular', 'Médio', 'Médio-alto', 'Alto', 'Luxo'];
+// v8.1.2 (04/05/2026 — Rafael): eliminada categoria Médio-alto. Cor do Médio reciclada para tom mais claro do dourado.
+const SEG_ORDER = ['Popular', 'Médio', 'Alto', 'Luxo'];
 const SEG_COLORS = {
-  'Popular': '#B8DBC5', 'Médio': '#8C8C8C', 'Médio-alto': '#E8D5A3',
+  'Popular': '#B8DBC5', 'Médio': '#E8D5A3',
   'Alto': '#C9A84C', 'Luxo': '#000000', '—': '#F2F2F2'
 };
 const TIPO_ORDER = ['Vertical', 'Horizontal', 'Loteamento'];

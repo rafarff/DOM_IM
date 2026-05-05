@@ -1,0 +1,8 @@
+incorporadora: Lua Nova
+empreendimento: Golden Green Beach
+fonte: {origem_principal: informado_manualmente}
+# Loteamento — 42 lotes 100% VENDIDOS confirmado Rafael 04/05/2026 → disp=0
+# Áreas: lotes 453-682m² (terreno). Tickets R$ 2,65M-4,40M.
+plantas:
+- {tip: Lote, planta: '', area: 567.5, total: 42, disp: 0, t_min: 2650000, t_max: 4400000,
+  rs_m2: 6210, origem: informado_manualmente}

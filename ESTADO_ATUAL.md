@@ -3,14 +3,14 @@
 > **Para Claude (toda sessão):** este é o **primeiro arquivo a ler** antes de qualquer ação. Confirma a base de trabalho. Se a invariante 0.3 do PADRAO falhar contra os números aqui, **PARAR**.
 
 **Última atualização:** 04/05/2026 (sessão 2)
-**Versão Planilha vigente:** v11.8
+**Versão Planilha vigente:** v11.12
 **Versão PADRAO vigente:** v7.0 (com §3.7.0 — U_RAW)
-**Versão script `gerar_planilha.py`:** 11.8 (DATE_STR: 04/05/2026)
+**Versão script `gerar_planilha.py`:** 11.12 (DATE_STR: 04/05/2026)
 **Versão `build_panorama.py`:** v8.1.1 (A aceita informado_manualmente)
 
 ---
 
-## Snapshot da carteira (v11.8)
+## Snapshot da carteira (v11.12)
 
 | Métrica | Valor |
 |---|---:|
@@ -79,6 +79,60 @@ cd 00_ESTUDO_CONSOLIDADO/ && ls -1 Planilha_Mestre_Panorama_v*.xlsx | sort -V | 
 ---
 
 ## Mudanças estruturais recentes
+
+- **v11.12** (04/05/2026 — sessão 2 cont.) — **Blend de segmento ajustado para 50/50 (Rafael 04/05).**
+   - Decisão: Hiali Le Noir e Edifício Dom Ricardo (tickets ~R$ 800-940k Médio + R$/m² ~12-14k Alto) precisam ser Alto. 60/40 puxava pra Médio; 50/50 + round-half-up resolve.
+   - **PADRAO §4.2 v8.2:** blend `idx = round(idx_t * 0.5 + idx_p * 0.5 + 1e-9)` (epsilon = round-half-UP, não banker's).
+   - **Mudanças (9 entries auto-classificadas):**
+     - **+2 para Alto (Rafael confirmou):** Hiali Le Noir, Edifício Dom Ricardo
+     - **+2 para Alto (efeito colateral):** Treviso Altos do São Francisco, Monteplan Edifício Sanpaolo (ambos ticket Médio + R$/m² Alto)
+     - **+5 para Luxo (efeito colateral):** Delman The View, Alfa Giardino Residenza, Treviso Vernazza Residenza, Mota Machado Entre Rios — todos ticket Alto + R$/m² Luxo (R$/m² > 15k); Zion Ponta d'Areia ficou Alto pelo hardcoded.
+   - **Distribuição segmentos:** {Popular:6, Médio:6 (−4), Alto:20 (=, mas composição diferente), Luxo:15 (+4), —:4}.
+
+- **v11.11** (04/05/2026 — sessão 2 cont.) — **PADRAO §4.2 v8.1: 4 categorias (eliminado Médio-alto) + thresholds novos.**
+   - **Decisão Rafael 04/05:** simplificar para 4 segmentos. Médio-alto eliminado.
+   - **SEGMENTOS:** `["Popular","Médio","Alto","Luxo"]` (antes 5).
+   - **Thresholds ticket médio (NOVO):**
+     - < R$ 500k → Popular  (antes <400k)
+     - R$ 500k-1M → Médio  (antes 400-700k)
+     - R$ 1M-2,5M → Alto   (antes 1,2-2,5M; absorve faixa Médio-alto)
+     - > R$ 2,5M → Luxo
+   - **Thresholds R$/m² (NOVO):**
+     - < R$ 6,5k → Popular  (antes <6k)
+     - R$ 6,5k-9k → Médio  (antes 6-8k; +500/+1k mais conservador)
+     - R$ 9k-15k → Alto    (antes 8-10k Médio-alto + 10-15k Alto)
+     - > R$ 15k → Luxo
+   - Função `classificar_segmento(ticket, m², tipo)` mantém regra de blend ticket 60% + R$/m² 40% (PADRAO §4.2 v8.0). Loteamento ainda usa só ticket.
+   - **2 hardcoded Médio-alto limpados** (sem ticket pra reclassificar): Nexus Renascença (Ergus) e Lagoon Residence (Lua Nova) → Segmento=None ("—" até buscar info).
+   - **Atualizado em build_panorama.py:** SEG_ORDER (5→4) + SEG_COLORS (recolorido: Médio agora usa o tom claro do dourado E8D5A3 que era de Médio-alto).
+   - **Distribuição segmentos ANTES → DEPOIS:**
+     - {Alto:16, Médio-alto:12, Luxo:11, Médio:5, Popular:5, —:2}
+     - **{Alto:20 (+4), Luxo:11, Médio:10 (+5), Popular:6 (+1), —:4 (+2)}**
+     - Médio-alto: 12 → 0. **Maior parte (10/12) virou Alto** (porque blend ticket+R$/m² puxa para tier maior em casos limítrofes); 2 viraram Médio (Hiali Le Noir 790k tkt + 14k R$/m²; Edifício Dom Ricardo 943k tkt + 12k R$/m²).
+     - 2 entries hardcoded Médio-alto sem ticket → "—": Nexus, Lagoon.
+
+- **v11.10** (04/05/2026 — sessão 2 cont.) — **Nova regra de segmento (ticket > R$/m²) + Golden Green Beach 100% vendido em Tabela A.**
+   - **Decisão Rafael 04/05:** "ticket é o melhor termômetro de posicionamento, R$/m² ainda importa mas com peso menor."
+   - **PADRAO §4.2 v8.0** — função `classificar_segmento(ticket_med, preco_m2, tipo)`:
+     - **Loteamento**: usa SÓ ticket (R$/m² = TERRENO, não construído — não compara). Resolve caso GGB.
+     - **Vertical/Horizontal**: blend ticket 60% + R$/m² 40%. Round com epsilon (evita banker's rounding em .5).
+     - Thresholds ticket: <400k Popular | 400-700k Médio | 700k-1,2M Médio-alto | 1,2-2,5M Alto | >2,5M Luxo
+     - Thresholds R$/m² mantidos da v2.2: <6k Popular | 6-8k Médio | 8-10k Médio-alto | 10-15k Alto | >15k Luxo
+   - **Golden Green Beach (Lua Nova) → Tabela A** com 100% vendido (Rafael 04/05). orig_precos book → informado_manualmente; estoque None → 0,0; segmento auto-classificado como **Luxo** (ticket avg R$ 3,52M, R$/m² ignorado por ser loteamento). VGV calculável: 42 × R$ 3.525.000 = R$ 148M. Composição YAML criado com disp=0.
+   - **Reclassificação automática (entries com Segmento=None):** distribuição segmentos: antes {Alto:16, Luxo:14, Médio-alto:5, Médio:8, Popular:6, —:2} → agora **{Alto:16, Médio-alto:12, Luxo:11, Médio:5, Popular:5, —:2}** (-3 Luxo, +7 Médio-alto). Empreendimentos que dropam de Luxo→Alto: Vernazza Residenza, Giardino Residenza, Studio Design 7 Península (todos R$/m² ~16k mas tickets em faixa Alto ~R$ 1,5-2,2M). The View dropa de Luxo→Alto (ticket avg R$ 1,0M). Le Noir, Reserva SM, Edifício Dom Ricardo dropam Alto→Médio-alto (tickets compatíveis com Médio-alto).
+   - **Limpeza retroativa:** 4 entries que tinham segmento hardcoded set por mim em v11.7-11.8 voltaram para None pra usar a nova regra: Cidade de Viena (Médio→Médio-alto), Villa Terrari (Popular→Médio), Dom Rafael (Médio→Médio-alto), Dom Antônio (Médio→Médio-alto).
+   - **Distribuição A/B/C:** A=**28** (+1 GGB), B=**7** (mantém), C=**16** (−1 GGB).
+   - VGV total Tabela A: R$ 2,69 bi · VGV total mapeado: R$ 3,03 bi (sem mudança — ticket é o mesmo, só a classificação muda).
+   - Invariantes §3.7.C.4 = 37/41 ✅ · §3.7.C.6 = 58/58 ✅.
+
+- **v11.9** (04/05/2026 — sessão 2 cont.) — **Web research Cidade de Viena: bairro Turu + lançamento 10/2025.**
+   - Web research confirmou:
+     - **Bairro = Turu** (origem `imprensa`). Av. Mário Andreazza, S/N, CEP 65068-500. Mesma rua e bairro da sede da Construtora Lua Nova (footer site oficial). Confirmado por: Habittare Imobiliária, Ziag Imóveis, OLX SLZ. (Sonia Barros classifica como "Olho D'Água" mas é categoria interna do agregador — Av. Mário Andreazza pertence a Turu pelo CEP).
+     - **Mês de Lançamento = 10/2025** (origem `imprensa`). Reportagem Jornal Pequeno publicada **09/10/2025** anunciando "mais um lançamento da Construtora Lua Nova". Site Lua Nova ainda lista no filtro "EM BREVE" (corretor já tem tabela mesmo assim).
+     - **Tipologia confirmada:** 61,38m² = 2D (1 suíte + 1 quarto, 1 vaga); 86,58m² = 3D (1 suíte + 2 quartos, 2 vagas). Antes assumido — agora confirmado por 3 imobiliárias.
+     - Projeto arquitetônico: Leonardo Borges + Claudia Albertini.
+   - Origem Bairro: None → `imprensa`. §3.10 warnings: 26 → 25.
+   - Segmento: classificado como **Médio** pelo R$/m² ~ R$ 12.500 (entre 10-15k).
 
 - **v11.8** (04/05/2026 — sessão 2) — **+6 breve lançamentos + Dom Antônio promovido para Tabela A.**
    - **Decisão Rafael 04/05 (sessão 2):**

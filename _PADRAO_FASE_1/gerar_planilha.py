@@ -19,7 +19,7 @@ from openpyxl.drawing.image import Image as XLImage
 # ═══════════════════════════════════════════════════════════════
 # PARÂMETROS GLOBAIS
 # ═══════════════════════════════════════════════════════════════
-VERSION = "11.8"
+VERSION = "11.12"
 DATE_STR = "04/05/2026"
 # v11.6 — (03/05/2026): R3 LOTE 3 — visão multimodal nos 3 PDFs imagem.
 #   Dom Lucas (DOM): 46 unidades (9 disp + 1 reserv + 36 vend) — tabela mar/2026 lida via Read PNG
@@ -410,22 +410,58 @@ INCORPORADORAS = [
     "Hiali","DOM Incorporação"
 ]
 
-SEGMENTOS = ["Popular","Médio","Médio-alto","Alto","Luxo"]
+SEGMENTOS = ["Popular","Médio","Alto","Luxo"]  # v8.1 (04/05/2026 — Rafael) — eliminada categoria Médio-alto
 
 ORIG_PRECOS    = ["tabela_local","site_oficial","agregador","imprensa","estimativa","N/A"]
 ORIG_ESTOQUE   = ["tabela_local","site_oficial","agregador","corretor","estimativa","N/A"]
 ORIG_LANCAMENTO= ["book","release","treinamento_corretor","site_oficial","imprensa","estimativa_T-36"]
 
-def classificar_segmento_por_m2(preco_m2):
-    """§4.2 do PADRAO v2.2 (recalibrada 27/04/2026):
-       Popular <6k | Médio 6-8k | Médio-alto 8-10k | Alto 10-15k | Luxo >15k
-       Antes (v2.0): Médio 6-9k, Médio-alto 9-13k, Alto 13-18k, Luxo >18k."""
+def _seg_por_ticket(ticket_med):
+    """Classificação por ticket médio (R$). v8.1 PADRAO §4.2 (Rafael 04/05/2026 — 4 categorias).
+       <500k Popular | 500k-1M Médio | 1M-2,5M Alto | >2,5M Luxo."""
+    if ticket_med is None: return None
+    if ticket_med < 500_000:   return "Popular"
+    if ticket_med < 1_000_000: return "Médio"
+    if ticket_med < 2_500_000: return "Alto"
+    return "Luxo"
+
+def _seg_por_m2(preco_m2):
+    """Classificação por R$/m² médio. v8.1 (Rafael 04/05/2026 — 4 categorias).
+       <6,5k Popular | 6,5k-9k Médio | 9k-15k Alto | >15k Luxo."""
     if preco_m2 is None: return None
-    if preco_m2 < 6000: return "Popular"
-    if preco_m2 < 8000: return "Médio"
-    if preco_m2 < 10000: return "Médio-alto"
+    if preco_m2 < 6500:  return "Popular"
+    if preco_m2 < 9000:  return "Médio"
     if preco_m2 < 15000: return "Alto"
     return "Luxo"
+
+def classificar_segmento(ticket_med, preco_m2, tipo=None):
+    """v8.0 PADRAO §4.2 (Rafael 04/05/2026) — segmento ponderado por TICKET (60%) + R$/m² (40%).
+
+    REGRAS:
+    - Loteamento: usa só ticket (R$/m² é preço de TERRENO, não construído — não compara).
+    - Demais: blend ticket 60% + R$/m² 40%. Se um faltar, usa o outro só.
+    - Decisão Rafael 04/05: ticket é o melhor termômetro de posicionamento competitivo
+      (define poder de compra do público-alvo); R$/m² ainda importa pois traduz qualidade
+      construtiva e localização — mas tem peso menor.
+
+    Retorna: "Popular" | "Médio" | "Alto" | "Luxo" | None  (v8.1 — sem Médio-alto)
+    """
+    is_loteamento = tipo and "oteament" in str(tipo).lower()
+    seg_t = _seg_por_ticket(ticket_med)
+    seg_p = None if is_loteamento else _seg_por_m2(preco_m2)
+    if seg_t and seg_p:
+        idx_t = SEGMENTOS.index(seg_t)
+        idx_p = SEGMENTOS.index(seg_p)
+        # v8.2 (Rafael 04/05/2026): blend 50/50 + round-half-UP (epsilon evita banker's rounding).
+        # Exemplo (1,2) Médio+Alto → 1.5 → Alto (Hiali Le Noir, Dom Ricardo).
+        # Exemplo (2,3) Alto+Luxo → 2.5 → Luxo (The View, Vernazza, Giardino).
+        idx = round(idx_t * 0.5 + idx_p * 0.5 + 1e-9)
+        return SEGMENTOS[idx]
+    return seg_t or seg_p
+
+# Compatibilidade: alias antigo (v2.2) — a chamada atualizada usa classificar_segmento
+def classificar_segmento_por_m2(preco_m2):
+    return _seg_por_m2(preco_m2)
 
 # ═══════════════════════════════════════════════════════════════
 # DATASET — 18 EMPREENDIMENTOS (Fase 1 v2.0 — migrado do v1.2)
@@ -571,7 +607,7 @@ E_RAW = [
 
     ("Ergus","Nexus Renascença",
      "Endereço não localizado, Renascença, São Luís - MA","Renascença",
-     "Vertical","Médio-alto",
+     "Vertical",None,
      None,"04/2026","—", 33,94,None, "Studio; 1D; 2D",
      None,None, None,None,None,
      "site_oficial","N/A","imprensa",
@@ -784,13 +820,13 @@ E_RAW = [
 
     # ─── LUA NOVA — 4 empreend. ───
     ("Lua Nova","Cidade de Viena",
-     "Endereço não localizado, São Luís - MA","—",
+     "Avenida Mário Andreazza, S/N, Turu, São Luís - MA","Turu",
      "Vertical",None,
-     176,"—","—", 61.38,86.58,None, "2D; 3D",
+     176,"10/2025","—", 61.38,86.58,None, "2D; 3D",
      743058,1294592, None,None, None,
-     "tabela_local","tabela_local","N/A",
-     "https://construtoraluanova.com.br/","04/05/2026",
-     "Tipologia detalhada (Tabela ABR/2026 recebida 04/05/2026 via INBOX): 2 torres (Mozart + Strauss), 11 andares tipo cada, 8 finais por andar tipo. Total estimado §3.7 nível 5.2 = 2×11×8 = 176 unid. Tabela vigência abr/2026 lista 76 unid disponíveis (32 Mozart + 44 Strauss) → 100 vendidas inferidas (~57% vendido). 2 plantas: (a) 61,38m² com 1 vaga — assumida 2D (35 disp); (b) 86,58m² com 2 vagas — assumida 3D (41 disp). Tipologia A CONFIRMAR com Lua Nova. Tickets disp: R$ 743k–918k (61m²) + R$ 983k–1.295k (86m²). R$/m² médio ~ R$ 12.500 — segmento Médio. Lazer: praça de boas vindas, brinquedoteca, hall social, terraço gourmet, lounge gourmet, academia, bicicletário. **Bairro + Endereço + Mês de Lançamento NÃO DECLARADOS na tabela** — pendente confirmação. Tabela INCC até entrega + IGP-M+1%/m após habite-se. Validade tabela: 30/04/2026.", "estimativa_distribuição", None, None),
+     "tabela_local","tabela_local","imprensa",
+     "https://jornalpequeno.com.br/2025/10/09/cidade-de-viena-mais-um-lancamento-da-construtora-lua-nova/","04/05/2026",
+     "Tipologia detalhada (Tabela ABR/2026 INBOX 04/05/2026 + web research 04/05/2026): 2 torres (Mozart + Strauss), 11 andares tipo cada, 8 finais por andar tipo. Total estimado §3.7 nível 5.2 = 2×11×8 = 176 unid. Tabela vigência abr/2026 lista 76 unid disp (32 Mozart + 44 Strauss) → 100 vendidas inferidas (~57% vendido). **2 plantas confirmadas (web — Habittare + Sonia Barros + Ziag)**: (a) 61,38m² **2D** (1 suíte + 1 quarto, 1 vaga) — 35 disp; (b) 86,58m² **3D** (1 suíte + 2 quartos, 2 vagas) — 41 disp. Tickets disp: R$ 743k–918k (61m²) + R$ 983k–1.295k (86m²). R$/m² médio ~ R$ 12.500 — segmento Médio. **Bairro Turu confirmado (origem imprensa Lua Nova: sede + Ziag + Habittare em Av. Mário Andreazza, Turu, CEP 65068-500). Lançamento OUT/2025 confirmado (Jornal Pequeno 09/10/2025).** Site Lua Nova ainda lista como \"EM BREVE\" na vitrine — tabela já circula entre corretores. Lazer: praça de boas vindas, brinquedoteca, hall social, terraço gourmet, lounge gourmet, academia, bicicletário, deck c/ piscina, quadra areia. Tabela INCC até entrega + IGP-M+1%/m após habite-se. Validade tabela: 30/04/2026. Projeto arquitetônico: Leonardo Borges + Claudia Albertini.", "estimativa_distribuição", None, "imprensa"),
 
     ("Lua Nova","Villa Adagio",
      "Avenida Principal, 50, Iguaíba, Paço do Lumiar - MA","Iguaíba",
@@ -803,7 +839,7 @@ E_RAW = [
 
     ("Lua Nova","Lagoon Residence",
      "Santo Amaro do Maranhão - MA (cidade satélite, porta dos Lençóis)","Santo Amaro",
-     "Horizontal","Médio-alto",
+     "Horizontal",None,
      None,"04/2026","—", None,None,None, "2D; 3D",
      None,None, None,None,None,
      "site_oficial","N/A","site_oficial",
@@ -812,12 +848,12 @@ E_RAW = [
 
     ("Lua Nova","Golden Green Beach",
      "Acesso pela Avenida dos Holandeses, São Luís - MA","Araçagi",
-     "Loteamento",None,
+     "Loteamento","Luxo",
      42,"06/2025 ⚠ T-36","—", 453,682,None, "Lote",
-     2650000,4400000, None,None,None,
-     "book","N/A","book",
-     "https://construtoraluanova.com.br","27/04/2026",
-     "LOTEAMENTO DE LUXO. Projeto Golden Green Beach (GGB) — bairro de luxo planejado, acesso pela Av. dos Holandeses. Lote 41: 453 m² R$ 2,65M (R$ 5.850/m² terreno). Lote 42: 682 m² R$ 4,40M (R$ 6.452/m² terreno). Em obra. Áreas comuns: piscina coberta aquecida, sauna a vapor, heliponto com acesso por escada e elevador, estacionamento 30 carros, área administrativa. Projeto arquitetônico das áreas comuns: Marcelo Franco. Urbanismo: SA Urbanismo. Referências de luxo (book): Porto Frade RJ, Fazenda Boa Vista SP, Quinta da Baroneza SP. Bairro a confirmar (Calhau ou São Marcos pela posição na Av. Holandeses). ATENÇÃO: R$/m² em loteamento é TERRENO, não construído — não compara diretamente com aptos.", "book", None, "informado_manualmente"),
+     2650000,4400000, None,None, 0.0,
+     "informado_manualmente","informado_manualmente","book",
+     "https://construtoraluanova.com.br","04/05/2026",
+     "LOTEAMENTO DE LUXO. Projeto Golden Green Beach (GGB) — bairro de luxo planejado, acesso pela Av. dos Holandeses. Lote 41: 453 m² R$ 2,65M (R$ 5.850/m² terreno). Lote 42: 682 m² R$ 4,40M (R$ 6.452/m² terreno). Em obra. Áreas comuns: piscina coberta aquecida, sauna a vapor, heliponto com acesso por escada e elevador, estacionamento 30 carros, área administrativa. Projeto arquitetônico das áreas comuns: Marcelo Franco. Urbanismo: SA Urbanismo. Referências de luxo (book): Porto Frade RJ, Fazenda Boa Vista SP, Quinta da Baroneza SP. **100% VENDIDO confirmado Rafael 04/05/2026** (estoque=0). Promovido para Tabela A v11.10 (orig_precos=informado_manualmente). Segmento Luxo: PADRAO §4.2 v8.0 — Loteamento usa só ticket (R$/m² é terreno, não construído). Tickets R$ 2,65–4,40M = Luxo. Bairro a confirmar (Calhau ou São Marcos pela posição na Av. Holandeses).", "book", "informado_manualmente", "informado_manualmente"),
 
     # ─── MB ENGENHARIA — 3 empreend. ───
     ("DOM Incorporação","Edifício Dom Ricardo",
@@ -840,7 +876,7 @@ E_RAW = [
 
     ("DOM Incorporação","Dom Antônio",
      "Endereço não localizado, Jardim Eldorado (Turú), São Luís - MA","Jardim Eldorado",
-     "Horizontal","Médio",
+     "Horizontal",None,
      12,"06/2023","—", 136.2,136.2,None, "3D",
      906870,906870, None,None, 0.0,
      "informado_manualmente","informado_manualmente","interno",
@@ -850,7 +886,7 @@ E_RAW = [
     # ─── DOM INCORPORAÇÃO — BREVE LANÇAMENTOS (Rafael 04/05/2026) ──────────
     ("DOM Incorporação","Villa Terrari",
      "Endereço a confirmar, Paço do Lumiar - MA","Paço do Lumiar",
-     "Horizontal","Popular",
+     "Horizontal",None,
      88,"07/2026","—", 78.0,78.0,None, "3D",
      483600,483600, None,None, 1.0,
      "N/A","informado_manualmente","informado_manualmente",
@@ -877,7 +913,7 @@ E_RAW = [
 
     ("DOM Incorporação","Dom Rafael",
      "Endereço a confirmar, Araçagi, São Luís - MA","Araçagi",
-     "Horizontal","Médio",
+     "Horizontal",None,
      37,"10/2026","—", 122.0,122.0,None, "3D",
      1098000,1098000, None,None, 1.0,
      "N/A","informado_manualmente","informado_manualmente",
@@ -1749,11 +1785,19 @@ for row in E_RAW:
     # calcular VGV (idx 16)
     if row[16] is None:
         row[16] = calc_vgv(row[13],row[14],row[6])
-    # auto-classificar segmento se não definido (idx 5 — não shifta, é antes do Status removido)
-    if row[5] is None and row[15] is not None:
-        row[5] = classificar_segmento_por_m2(row[15])
-    elif row[5] is None:
-        row[5] = "—"
+    # auto-classificar segmento (v8.0 PADRAO §4.2 — Rafael 04/05/2026):
+    # ticket 60% + R$/m² 40%. Loteamento usa só ticket (R$/m² = terreno).
+    if row[5] is None:
+        tmin, tmax = row[13], row[14]
+        ticket_med = None
+        if tmin is not None and tmax is not None:
+            ticket_med = (tmin + tmax) / 2
+        elif tmin is not None:
+            ticket_med = tmin
+        elif tmax is not None:
+            ticket_med = tmax
+        seg = classificar_segmento(ticket_med, row[15], row[4])
+        row[5] = seg if seg else "—"
     # (v6.0) reclassificar_status removido junto com a coluna Status
     E_PROCESSED.append(tuple(row))
 
