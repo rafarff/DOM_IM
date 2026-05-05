@@ -2,11 +2,11 @@
 
 > **Para Claude (toda sessão):** este é o **primeiro arquivo a ler** antes de qualquer ação. Confirma a base de trabalho. Se a invariante 0.3 do PADRAO falhar contra os números aqui, **PARAR**.
 
-**Última atualização:** 04/05/2026 (sessão 2)
+**Última atualização:** 04/05/2026 (sessão 2 — dash bairro v8.2.0)
 **Versão Planilha vigente:** v11.12
 **Versão PADRAO vigente:** v7.0 (com §3.7.0 — U_RAW)
 **Versão script `gerar_planilha.py`:** 11.12 (DATE_STR: 04/05/2026)
-**Versão `build_panorama.py`:** v8.1.1 (A aceita informado_manualmente)
+**Versão `build_panorama.py`:** v8.2.0 (filtro Fase Comercial default Tabela A + bubble bairro tamanho=unid + remoção mapa oferta planta)
 
 ---
 
@@ -79,6 +79,15 @@ cd 00_ESTUDO_CONSOLIDADO/ && ls -1 Planilha_Mestre_Panorama_v*.xlsx | sort -V | 
 ---
 
 ## Mudanças estruturais recentes
+
+- **build_panorama v8.2.0** (04/05/2026 — sessão 2 cont.) — **Dash bairro otimizado: filtro Fase Comercial default + bubble por unidades + remoção mapa oferta planta.**
+   - **Decisão Rafael 04/05:** B/C entram nos dashs com Total mas sem vendido → enviesa absorção. Solução: filtro default exclui B/C; tabela bairro alinha universos.
+   - **(1) Filtro novo "Fase comercial"** no topo do dashboard (após Período): `Apenas Tabela A (default)` | `Tabela A + B` | `Todas (A + B + C)`. `applyDashFilters` aplica via `e.fase_comercial`.
+   - **(2) Bubble posicionamento** (Ticket × R$/m²): tamanho da bolha passa de **nº empreendimentos → total de unidades mapeadas** no bairro. Permite ler "volume real de oferta" em vez de só "quantos players atuam". Tooltip mostra total unid + nº empreend + ticket + R$/m² + VGV.
+   - **(3) Bubble "Mapa de oferta por planta" REMOVIDO** (canvas `ch-bairro-oferta`). Era granular demais (bairro × tipologia × planta) e pouco usado em decisão de produto. Bloco HTML + bloco JS deletados; `destroyDashChart('ch-bairro-oferta')` mantido como cleanup defensivo.
+   - **(4) Tabela bairro · "Total Unid." alinhado com universo de venda:** antes `totalUnid` somava todos empreend. (mesmo sem vendido), enquanto `dispon` só contava com vendido != null → inflava o denominador da % Absorção. Agora `totalUnid` também filtra `vendido != null`. Universos consistentes.
+   - **Impacto numérico:** Default (Tabela A + Últimos 2 anos) = **20 empreend. visíveis** (era 51 sem filtro). `Tabela A` total = 28. `A+B` = 35.
+   - Arquivos alterados: `build_panorama.py` (Δ −5k chars, −90 linhas líquidas).
 
 - **v11.12** (04/05/2026 — sessão 2 cont.) — **Blend de segmento ajustado para 50/50 (Rafael 04/05).**
    - Decisão: Hiali Le Noir e Edifício Dom Ricardo (tickets ~R$ 800-940k Médio + R$/m² ~12-14k Alto) precisam ser Alto. 60/40 puxava pra Médio; 50/50 + round-half-up resolve.

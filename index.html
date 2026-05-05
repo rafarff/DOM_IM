@@ -320,6 +320,13 @@ if (sessionStorage.getItem("dom-auth") === "1") {
           <option value="0">Todos</option>
         </select>
       </div>
+      <div class="filter-group"><label>Fase comercial</label>
+        <select id="dash-f-fase">
+          <option value="lancado_com_tabela" selected>Apenas Tabela A (mapeados)</option>
+          <option value="A_B">Tabela A + B (incl. breve lanç.)</option>
+          <option value="">Todas (A + B + C)</option>
+        </select>
+      </div>
       <div class="filter-group"><label>Segmento</label><select id="dash-f-seg"></select></div>
       <div class="filter-group"><label>Tipo</label><select id="dash-f-tipo"></select></div>
       <div class="filter-group"><label>Bairro</label><select id="dash-f-bairro"></select></div>
@@ -336,19 +343,13 @@ if (sessionStorage.getItem("dom-auth") === "1") {
     <section class="dash-section">
       <h2 class="dash-section-h">Análise por Bairro</h2>
 
-      <!-- 1. Posicionamento competitivo: bubble ticket × R$/m² (cada bolha = 1 bairro, tamanho = nº empreend.) -->
+      <!-- 1. Posicionamento competitivo: bubble ticket × R$/m² (cada bolha = 1 bairro, tamanho = total de unidades) -->
       <div class="dash-card-mini">
         <div class="chart-wrap" style="height:420px"><canvas id="ch-bairro-bubble"></canvas></div>
-        <p class="dash-note">Posicionamento competitivo dos bairros. Eixo X = R$/m² médio · Eixo Y = ticket médio · tamanho da bolha = nº de empreendimentos no bairro. Bairros isolados (poucos players) tendem a indicar nichos premium ou vácuo de oferta.</p>
+        <p class="dash-note">Posicionamento competitivo dos bairros. Eixo X = R$/m² médio · Eixo Y = ticket médio · <strong>tamanho da bolha = total de unidades no bairro</strong> (universo dos empreendimentos com dado de venda mapeado). Bairros com volume grande de unidades indicam oferta concentrada; bairros pequenos com ticket alto sinalizam nichos premium ou vácuo de oferta.</p>
       </div>
 
-      <!-- 2. Mapa de oferta: bubble área × unidades disponíveis (cor = bairro, 1 bolha por (bairro, tipologia)) -->
-      <div class="dash-card-mini" style="margin-top:16px">
-        <div class="chart-wrap" style="height:460px"><canvas id="ch-bairro-oferta"></canvas></div>
-        <p class="dash-note">Mapa de oferta por bairro × tamanho do apartamento. Cada bolha = um cruzamento (bairro × tipologia). <strong>Eixo X</strong> = área média do apto (m²) · <strong>Eixo Y</strong> = unidades disponíveis · <strong>cor</strong> = bairro · <strong>tamanho</strong> = nº de empreendimentos competindo no cruzamento. Bairro com bolhas concentradas em uma só faixa de área = mono-oferta (oportunidade de diferenciação). Bolha alta + grande = oferta volumosa e pulverizada (mercado disputado). Bolha alta + pequena = oferta volumosa mas concentrada em poucos players.</p>
-      </div>
-
-      <!-- 3. Tabela resumo (último elemento) -->
+      <!-- 2. Tabela resumo (último elemento) -->
       <div class="dash-table-wrap" style="margin-top:16px">
         <table class="dash-table">
           <thead><tr>
@@ -834,7 +835,7 @@ const TIPO_ORDER = ['Vertical', 'Horizontal', 'Loteamento'];
 //       Responde: onde estão concentradas unidades de cada tamanho? quem é mono-oferta?
 //   · tabela movida pro final da seção (resumo, não destaque)
 // ═══════════════════════════════════════════════════════════════
-let DASH_FILTER = { periodo_meses: 24, seg: '', tipo: '', bairro: '', inc: '' };
+let DASH_FILTER = { periodo_meses: 24, fase: 'lancado_com_tabela', seg: '', tipo: '', bairro: '', inc: '' };
 const DASH_CHARTS = {};
 const TIPO_ORDER_ENUM = ['Studio', '1D', '2D', '3D', '4D', 'Lote'];
 
@@ -853,6 +854,12 @@ function applyDashFilters() {
       const date = new Date(parseInt(m[2]), parseInt(m[1]) - 1, 1);
       return date >= cutoff;
     });
+  }
+  // Filtro Fase Comercial (v8.2.0): exclui B/C por default pra evitar viés (B sem ticket completo · C sem dado de venda)
+  if (DASH_FILTER.fase === 'lancado_com_tabela') {
+    data = data.filter(e => e.fase_comercial === 'lancado_com_tabela');
+  } else if (DASH_FILTER.fase === 'A_B') {
+    data = data.filter(e => e.fase_comercial === 'lancado_com_tabela' || e.fase_comercial === 'breve_lancamento');
   }
   if (DASH_FILTER.seg) data = data.filter(e => e.segmento === DASH_FILTER.seg);
   if (DASH_FILTER.tipo) data = data.filter(e => e.tipo === DASH_FILTER.tipo);
@@ -954,7 +961,12 @@ function renderDashBairros(data) {
   });
 
   const rows = Object.entries(groups).map(([bairro, items]) => {
-    const totalUnid = items.reduce((a,e) => a + (e.unidades || 0), 0);
+    // v8.2.0: totalUnid alinhado com dispon (mesmo universo: empreend. com vendido != null).
+    // Evita comparar Total (incluindo não mapeados) com Disp (só mapeados) — dava falsa absorção.
+    const totalUnid = items.reduce((a,e) => {
+      if (e.unidades && e.vendido != null) return a + e.unidades;
+      return a;
+    }, 0);
     const dispon = items.reduce((a,e) => {
       if (e.unidades && e.vendido != null) return a + Math.round(e.unidades * (1 - e.vendido));
       return a;
@@ -981,11 +993,12 @@ function renderDashBairros(data) {
   ).join('');
   document.getElementById('tbl-bairros-body').innerHTML = tbody || '<tr><td colspan="9" style="text-align:center;color:var(--dom-gray-mid);padding:20px">Nenhum bairro com filtros aplicados</td></tr>';
 
-  // ─── Bubble: posicionamento ticket × R$/m² (cada bolha = bairro, tamanho = nº empreend.) ───
+  // ─── Bubble: posicionamento ticket × R$/m² (cada bolha = bairro, tamanho = total de unidades) ───
+  // v8.2.0: tamanho passa de nº empreend. → total de unidades (mapeadas). Ler "volume real de oferta" no bairro.
   destroyDashChart('ch-bairro-bubble');
-  const bubblePts = rows.filter(r => r.ticketMed && r.rsm2Med);
+  const bubblePts = rows.filter(r => r.ticketMed && r.rsm2Med && r.totalUnid > 0);
   if (bubblePts.length > 0) {
-    const maxN = Math.max(...bubblePts.map(r => r.n));
+    const maxUnid = Math.max(...bubblePts.map(r => r.totalUnid));
     DASH_CHARTS['ch-bairro-bubble'] = new Chart(document.getElementById('ch-bairro-bubble'), {
       type: 'bubble',
       data: { datasets: bubblePts.map(r => ({
@@ -993,9 +1006,10 @@ function renderDashBairros(data) {
         data: [{
           x: r.rsm2Med,
           y: r.ticketMed,
-          r: 6 + (r.n / maxN) * 22,  // raio 6–28 px conforme nº empreend.
+          r: 6 + (r.totalUnid / maxUnid) * 28,  // raio 6–34 px conforme total de unidades
           _bairro: r.bairro,
           _n: r.n,
+          _totalUnid: r.totalUnid,
           _vgv: r.vgvTotal
         }],
         backgroundColor: 'rgba(201,168,76,0.55)',
@@ -1005,10 +1019,10 @@ function renderDashBairros(data) {
       options: { responsive: true, maintainAspectRatio: false,
         plugins: {
           legend: { display: false },
-          title: { display: true, text: 'Posicionamento competitivo dos bairros: Ticket × R$/m² (tamanho = nº empreendimentos)' },
+          title: { display: true, text: 'Posicionamento competitivo dos bairros: Ticket × R$/m² (tamanho = total de unidades mapeadas)' },
           tooltip: { callbacks: { label: ctx => {
             const d = ctx.raw;
-            return d._bairro + ' · ' + d._n + ' empreend. · ticket méd. R$ ' + formatBRL(d.y, true) + ' · R$/m² ' + formatBRL(d.x) + ' · VGV R$ ' + formatBRL(d._vgv, true);
+            return d._bairro + ' · ' + d._totalUnid + ' unid. mapeadas em ' + d._n + ' empreend. · ticket méd. R$ ' + formatBRL(d.y, true) + ' · R$/m² ' + formatBRL(d.x) + ' · VGV R$ ' + formatBRL(d._vgv, true);
           }}},
           datalabels: false
         },
@@ -1039,132 +1053,8 @@ function renderDashBairros(data) {
     });
   }
 
-  // ─── Bubble: oferta por bairro × tamanho do apto (v8.0.0 — granularidade de PLANTA) ───
-  // v8.0.0: cada bolha = (bairro × tipologia × planta) ao invés de (bairro × tipologia).
-  // Permite enxergar absorção por TICKET REAL (3D 100m² vs 3D 125m² no mesmo bairro).
+  // v8.2.0: bubble 'Mapa de oferta por planta' removido. Mantém destroy defensivo caso o canvas ressurja.
   destroyDashChart('ch-bairro-oferta');
-
-  // 1. lookup empreendimento → {bairro, total, vendido}
-  const empMap = {};
-  data.forEach(e => { empMap[e.empreendimento] = e; });
-
-  // 2. agrega por (bairro, tipologia, planta_label, area_round 1dec):
-  //    soma Total_planta (oferta), área única (não mais média ponderada), contagem distinta de empreend.
-  const ofertaPair = {};  // 'bairro|tip|planta|area' → {bairro, tipologia, planta, area, totalPlanta, empSet}
-  COMP_DATA.forEach(c => {
-    const e = empMap[c.empreendimento];
-    if (!e) return;
-    const b = e.bairro;
-    if (!b || b === 'São Luís' || b === 'Não identificado') return;
-    if (!c.tipologia || c.tipologia === '—') return;
-    // v7.0: usa c.area (valor único). Fallback se vier de v6.2 (média min/max).
-    const area = c.area != null ? c.area
-                : ((c.area_min && c.area_max) ? (c.area_min + c.area_max) / 2
-                                              : (c.area_min || c.area_max || null));
-    if (!area) return;
-    // v7.0: usa Total_planta (granular); fallback unidades (Total tipologia)
-    const totalPlanta = c.total_planta != null ? c.total_planta : (c.unidades || 0);
-    if (totalPlanta <= 0) return;
-    const planta = c.planta || '';
-    const areaRound = Math.round(area * 10) / 10;
-    const key = b + '|' + c.tipologia + '|' + planta + '|' + areaRound;
-    if (!ofertaPair[key]) {
-      ofertaPair[key] = { bairro: b, tipologia: c.tipologia, planta: planta, area: areaRound,
-                          totalPlanta: 0, empSet: new Set() };
-    }
-    const slot = ofertaPair[key];
-    slot.totalPlanta += totalPlanta;
-    slot.empSet.add(c.empreendimento);
-  });
-  const pairs = Object.values(ofertaPair).map(p => ({
-    bairro: p.bairro, tipologia: p.tipologia, planta: p.planta,
-    areaMed: p.area,
-    unidDisp: p.totalPlanta,  // mantém nome p/ compat com resto do código (representa OFERTA agora, não disp)
-    nEmp: p.empSet.size
-  })).filter(p => p.unidDisp > 0);
-
-  // 3. Top N bairros por unidades disponíveis (cor distinta) · demais → "Outros"
-  const bairroDisp = {};
-  pairs.forEach(p => { bairroDisp[p.bairro] = (bairroDisp[p.bairro] || 0) + p.unidDisp; });
-  const TOP_BAIRROS = 7;
-  const topBairros = Object.entries(bairroDisp).sort((a,b) => b[1]-a[1]).slice(0, TOP_BAIRROS).map(x => x[0]);
-  const bairroDisplay = b => topBairros.includes(b) ? b : 'Outros';
-
-  // Paleta DOM (ouro como destaque) — 1 cor por bairro
-  const palette = ['#C9A84C', '#1B4584', '#0F7B6C', '#8B2E2E', '#5D6E3C', '#6A4C93', '#B87333', '#8C8C8C'];
-  const bairroColors = {};
-  topBairros.forEach((b, i) => bairroColors[b] = palette[i % palette.length]);
-  bairroColors['Outros'] = '#BFBFBF';
-
-  // 4. Agrupa por bairro_display em datasets distintos (1 dataset = 1 cor na legenda)
-  const bairrosOrder = topBairros.slice();
-  if (pairs.some(p => bairroDisplay(p.bairro) === 'Outros')) bairrosOrder.push('Outros');
-
-  const datasetsOferta = bairrosOrder.map(bDisp => {
-    const ptsB = pairs.filter(p => bairroDisplay(p.bairro) === bDisp);
-    const maxNEmp = Math.max(1, ...pairs.map(p => p.nEmp));
-    return {
-      label: bDisp,
-      data: ptsB.map(p => ({
-        x: p.areaMed,
-        y: p.unidDisp,
-        r: 6 + (p.nEmp / maxNEmp) * 18,  // raio 6–24 px conforme nº empreend.
-        _bairro: p.bairro,
-        _tip: p.tipologia,
-        _planta: p.planta,
-        _nEmp: p.nEmp
-      })),
-      backgroundColor: bairroColors[bDisp] + 'AA',
-      borderColor: bairroColors[bDisp],
-      borderWidth: 1.5
-    };
-  }).filter(ds => ds.data.length > 0);
-
-  if (datasetsOferta.length > 0) {
-    DASH_CHARTS['ch-bairro-oferta'] = new Chart(document.getElementById('ch-bairro-oferta'), {
-      type: 'bubble',
-      data: { datasets: datasetsOferta },
-      options: { responsive: true, maintainAspectRatio: false,
-        plugins: {
-          legend: { position: 'right', labels: { boxWidth: 12, font: {size: 11} } },
-          title: { display: true, text: 'Mapa de oferta por planta (v7.0): tamanho do apto × oferta total (cor = bairro · tamanho = nº empreend.)' },
-          tooltip: { callbacks: { label: ctx => {
-            const d = ctx.raw;
-            const lbl = d._planta ? (' [' + d._planta + ']') : '';
-            return d._bairro + ' · ' + d._tip + lbl + ' · ' + d.x.toFixed(1) + ' m² · ' + d.y + ' unid. (oferta total) · ' + d._nEmp + ' empreend.';
-          }}}
-        },
-        scales: {
-          x: { title: { display: true, text: 'Área média do apto (m²)' }, ticks: { callback: v => v + ' m²' } },
-          y: { title: { display: true, text: 'Oferta total (Total planta) no cruzamento bairro × tipologia × planta' }, beginAtZero: true, ticks: { precision: 0 } }
-        }
-      },
-      plugins: [{
-        id: 'oferta-tip-labels',
-        afterDatasetsDraw(chart) {
-          const {ctx} = chart;
-          chart.data.datasets.forEach((ds, i) => {
-            const meta = chart.getDatasetMeta(i);
-            meta.data.forEach((pt, j) => {
-              const d = ds.data[j];
-              if (d.r < 12) return;  // não desenha label em bolhas pequenas (poluição)
-              ctx.save();
-              ctx.fillStyle = '#000';
-              ctx.font = '600 9px Calibri, Arial, sans-serif';
-              ctx.textAlign = 'center';
-              ctx.textBaseline = 'middle';
-              ctx.fillText(d._tip, pt.x, pt.y);
-              ctx.restore();
-            });
-          });
-        }
-      }]
-    });
-  } else {
-    // Sem dados — limpar canvas
-    const c = document.getElementById('ch-bairro-oferta');
-    if (c) c.getContext('2d').clearRect(0,0,c.width,c.height);
-  }
 }
 
 function renderDashTipologias(data) {
@@ -1367,10 +1257,11 @@ function renderDashHeatmaps(data) {
 }
 
 function setupDashFilters() {
-  ['dash-f-periodo', 'dash-f-seg', 'dash-f-tipo', 'dash-f-bairro', 'dash-f-inc'].forEach(id => {
+  ['dash-f-periodo', 'dash-f-fase', 'dash-f-seg', 'dash-f-tipo', 'dash-f-bairro', 'dash-f-inc'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.addEventListener('change', () => {
       DASH_FILTER.periodo_meses = parseInt(document.getElementById('dash-f-periodo').value);
+      DASH_FILTER.fase = document.getElementById('dash-f-fase').value;
       DASH_FILTER.seg = document.getElementById('dash-f-seg').value;
       DASH_FILTER.tipo = document.getElementById('dash-f-tipo').value;
       DASH_FILTER.bairro = document.getElementById('dash-f-bairro').value;
@@ -1381,8 +1272,9 @@ function setupDashFilters() {
 }
 
 function resetDashFilters() {
-  DASH_FILTER = { periodo_meses: 24, seg: '', tipo: '', bairro: '', inc: '' };
+  DASH_FILTER = { periodo_meses: 24, fase: 'lancado_com_tabela', seg: '', tipo: '', bairro: '', inc: '' };
   document.getElementById('dash-f-periodo').value = '24';
+  document.getElementById('dash-f-fase').value = 'lancado_com_tabela';
   document.getElementById('dash-f-seg').value = '';
   document.getElementById('dash-f-tipo').value = '';
   document.getElementById('dash-f-bairro').value = '';
