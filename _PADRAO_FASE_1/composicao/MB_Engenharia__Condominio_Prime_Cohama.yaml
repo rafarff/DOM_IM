@@ -1,0 +1,9 @@
+incorporadora: MB Engenharia
+empreendimento: Condomínio Prime Cohama
+fonte: {origem_principal: tabela_local, parser: book_implantacao, data_extracao: '2026-05-06'}
+tipologias:
+- tipologia: 4D
+  area: 159.99
+  total_tipologia: 22
+  disponiveis: 4
+  observacoes: 'Casas mono 4 suítes 159,99m² construídas em lotes 218,78-312,29m². Implantação book + tabela ABR/26 (06/05/2026): 4 disp (Casas 10, 15, 21, 22) + 1 BLOQUEADA + 17 vendidas = 22 total. Tickets R$ 2,19M (Casas 10, 21) | R$ 2,40M (Casa 15) | R$ 2,50M (Casa 22). Casa 10 tem oferta promocional R$ 1,97M (com piscina + gourmet privativos). Endereço Estrada Velha do Pinheiro N 11.'

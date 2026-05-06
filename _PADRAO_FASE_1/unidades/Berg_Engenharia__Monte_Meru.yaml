@@ -1,6 +1,6 @@
 incorporadora: Berg Engenharia
 empreendimento: Monte Meru
-fonte: {origem_principal: tabela_local, parser: berg, data_extracao: '2026-04-28'}
+fonte: {origem_principal: tabela_local, parser: berg, data_extracao: '2026-05-06'}
 unidades:
 - {apto: '103', tip: 3D, planta: '', area: 135.32, status: disponível, ticket: 1932400, origem: tabela_local}
 - {apto: '104', tip: 3D, planta: '', area: 135.83, status: disponível, ticket: 1944500, origem: tabela_local}

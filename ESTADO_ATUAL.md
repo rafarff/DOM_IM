@@ -2,33 +2,33 @@
 
 > **Para Claude (toda sessão):** este é o **primeiro arquivo a ler** antes de qualquer ação. Confirma a base de trabalho. Se a invariante 0.3 do PADRAO falhar contra os números aqui, **PARAR**.
 
-**Última atualização:** 04/05/2026 (sessão 2 — dash bairro v8.2.0)
-**Versão Planilha vigente:** v11.12
+**Última atualização:** 06/05/2026 (sessão 3 — INBOX 9 PDFs + 3 incorporadoras NOVAS)
+**Versão Planilha vigente:** v11.13
 **Versão PADRAO vigente:** v7.0 (com §3.7.0 — U_RAW)
-**Versão script `gerar_planilha.py`:** 11.12 (DATE_STR: 04/05/2026)
-**Versão `build_panorama.py`:** v8.2.0 (filtro Fase Comercial default Tabela A + bubble bairro tamanho=unid + remoção mapa oferta planta)
+**Versão script `gerar_planilha.py`:** 11.13 (DATE_STR: 06/05/2026)
+**Versão `build_panorama.py`:** v8.2.0 (sem mudança nessa sessão)
 
 ---
 
-## Snapshot da carteira (v11.12)
+## Snapshot da carteira (v11.13)
 
-| Métrica | Valor |
-|---|---:|
-| Aba Empreendimentos | **51 linhas** (+1 Bay View Alfa + 5 DOM breve lanç) |
-| Aba Incorporadoras | **16 linhas — DERIVADA** (R2) |
-| Aba Composição | **96 linhas / 3.188 unidades / 41 empreend.** — híbrida (65 U_RAW + 31 composicao/) |
-| **Aba Unidades** | **848 unidades / 25 empreend.** — átomo do sistema (R3 lote 1+2+3+4 = 6+15+3+1) |
-| **Cobertura Total apurado** | **42/51 = 82%** |
-| **Bloqueados** | **9 empreend.** em pendencias_TOTAL.md |
-| Fonte de U_RAW | **24 arquivos YAML** em `unidades/<inc>__<emp>.yaml` |
-| Fonte de C_RAW (residual) | **11 arquivos YAML** em `composicao/<inc>__<emp>.yaml` (níveis 3-5) |
-| Fonte de I_META | **1 arquivo YAML** em `incorporadoras_meta.yaml` |
-| **Cobertura U_RAW** | **24 / 26 empreend. com fonte nível 1-2 = 92%** (Al Mare + Entre Rios mantidos manuais) |
-| **Invariante §3.7.C.6** | **50/50 ✅** |
+| Métrica | Valor | Δ vs v11.12 |
+|---|---:|---:|
+| Aba Empreendimentos | **54 linhas** | +3 (Fiji + JdV + Essenza) |
+| Aba Incorporadoras | **19 linhas — DERIVADA** | +3 (Áppia + ESA + Amorim Coutinho) |
+| Aba Composição | **100 linhas / 3.415 unidades / 44 empreend.** | +4 / +227 / +3 |
+| **Aba Unidades** | **905 unidades / 26 empreend.** — átomo do sistema | +57 / +1 (Fiji 57 disp parseadas) |
+| **Cobertura Total apurado** | **45/54 = 83%** | +3 destravados |
+| **Bloqueados** | **10 empreend.** em pendencias_TOTAL.md | -1 Prime Cohama destravado +1 Bay View Alfa |
+| Fonte de U_RAW | **26 arquivos YAML** em `unidades/<inc>__<emp>.yaml` | +1 Fiji (Monte Meru atualizado) |
+| Fonte de C_RAW (residual) | **21 arquivos YAML** em `composicao/<inc>__<emp>.yaml` | +3 (Prime Cohama + Essenza + JdV) |
+| Fonte de I_META | **1 arquivo YAML** em `incorporadoras_meta.yaml` | +3 entries |
+| **Cobertura U_RAW** | **25 / 27 empreend. com fonte nível 1-2 = 93%** | +1 Fiji (Al Mare + Entre Rios mantidos manuais) |
+| **Invariante §3.7.C.6** | **62/62 ✅** | +12 plantas (Fiji 2 + outros via render) |
 | Aba Empreendimentos schema | **27 colunas** (sem mudança) |
 | Aba Composição schema | **12 colunas (v7.0)** ← +1 vs v6.2 (Planta + Área única + Total planta separado de Disp) |
 | Drift script ↔ planilha | **0** ✅ |
-| VGV total mapeado | **R$ 3,03 bi** (+R$ 326M: Dom Antônio R$ 11M + 5 DOM breve lanç R$ 326M)
+| VGV total mapeado | **R$ 3,29 bi** (+R$ 263M v11.12→13: Fiji 192u +R$ 162M + Essenza 10u +R$ 35M + JdV 25u +R$ 17M + Prime Cohama destravado 22u +R$ 49M)
 | Cobertura Composição | **34/44 empreend. = 77%** (mantida vs v10.9) |
 | **Invariante v6.2 Σ Total tip = E_RAW.Total** | **30/34 fechado exato** ⚠ 4 parciais (Vila Coimbra, Le Noir, Bossa, Reserva SM) |
 | **Invariante v7.0 Σ Total planta = Total tip** | **49/49 fechado exato** ✅ (NOVA — pro-rata fecha por construção) |
@@ -79,6 +79,24 @@ cd 00_ESTUDO_CONSOLIDADO/ && ls -1 Planilha_Mestre_Panorama_v*.xlsx | sort -V | 
 ---
 
 ## Mudanças estruturais recentes
+
+- **v11.13** (06/05/2026 — sessão 3) — **+3 incorporadoras NOVAS oficiais + +3 empreend NOVOS + Prime Cohama destravado + Monte Meru update + Dom Antônio tickets reais via 12 contratos.**
+   - **Decisão Rafael 06/05:** lista única de incorporadoras — fim da distinção "oficial vs complementar". Toda incorporadora nova vai pra lista oficial monitorada; exclusão só por comando explícito. Memória `feedback_lista_incorporadoras_unica.md` registrada.
+   - **3 NOVAS INCORPORADORAS oficiais (16 → 19):**
+     - **Áppia Construtora** (@apiaengenharia): pequena/média novo player MA. Empreend: Cond. Jardim di Vincenzo (Turu, 25 casas mono 97,93m² em lotes 179-237m², ticket R$ 656-694k, Médio).
+     - **ESA Empreendimentos** (Centro SLZ, Rua do Sol 672, @esa.empreendimentos): empreend + serviços de engenharia. Empreend: Fiji Residence (Cohama Rua do Aririzal 85, 192 unid 2 torres 12 andares, 2D 61,79m² + 3D 80,53m², ticket R$ 657-1.018k, Médio-Alto). **1º empreend de SLZ com APARTAMENTOS TOKENIZADOS** (parceria HOUSI smart-living + RendMais).
+     - **Amorim Coutinho** (@amorimcoutinho, Top 15 nacional MCMV): movimento estratégico de UPSCALE. Empreend: Cond. Essenza (Olho d'Água, 10 casas alto-luxo 267m² 4 suítes, ticket R$ 3,5M, Luxo). Imobiliária parceira Habitare (Sheila Cutrim 4% comissão).
+   - **3 NOVOS EMPREENDIMENTOS cadastrados em E_RAW:** Fiji Residence (192u, U_RAW com 57 disp parseadas via parser nascido `fiji_construtora`), Cond. Jardim di Vincenzo (25u via composicao YAML 5.4 — sem tipologia declarada), Cond. Essenza (10u via composicao YAML 5.1 mono 4D).
+   - **DESTRAVAMENTO Prime Cohama (MB Engenharia):** Tabela ABR/26 + book confirmaram **22 casas mono 4 SUÍTES 159,99m²** construída (não "duplex 140m²" como vinha de imprensa 2023). Tickets R$ 2,19M-2,5M (variação só pelo tamanho do lote 218-312m²); Casa 10 oferta promo R$ 1,97M. Status: 4 disp + 1 bloqueada + 17 vendidas. Endereço Estrada Velha do Pinheiro N 11. Entrega ABR/2030. Padrão Alto/Luxo (R$/m² R$ 13,7-15,6k). **Sai dos 9 bloqueados antigos.** ⚠ WARN §3.8 ainda fica (estoque manual 0.18 vs calc 1.0) — investigar próxima sessão (provável bug compute_total_per_tipologia com origem `tabela_local_parcial`).
+   - **Atualização Monte Meru:** Tabela MAI/26 confere com cadastro v11.12 (mesmas 2 disp + tickets idem). Atualizado data extração 27/04 → 06/05/2026 + obs com diferenciais comerciais ("1º andar com pé-direito de 4º pavimento" + "nascente total" via WhatsApp corretor).
+   - **Dom Antônio — tickets reais via 12 contratos Clicksign:** range R$ 673.100,78 (Casa 03) a R$ 870.000,00 (Casa 10), médio ~R$ 745k. Antes: ticket único R$ 906.870 (estimativa). Cronograma confirmado: 6 casas (50%) em 10/08/2023 [LANÇAMENTO real, corrige 06/2023], 5 em 2024, 1 em mar/2025. Pasta CONTRATOS movida para `13_DOM_INCORPORACAO/DOM_ANTONIO/CONTRATOS/`. Privacidade: dados pessoais dos compradores NÃO persistidos.
+   - **Total mapeado v11.12 → v11.13:** Empreend 51 → **54** (+3); Incorporadoras 16 → **19** (+3); Composição 96 → **100 linhas** / 3.188 → **3.415 unidades** (+227); U_RAW 24 → **26** arquivos / 848 → **905 unidades** (+57); VGV R$ 3,03 bi → **R$ 3,29 bi** (+R$ 263M). Cobertura U_RAW 92% → **93%**.
+   - **Distribuição A/B/C estimada:** Tabela A (com tabela vendas) +3 (Fiji + JdV + Prime Cohama destravado); Tabela B mantém 7; Tabela C +1 (Essenza informado_manualmente).
+   - **Pendências v11.13 → próxima sessão:**
+     - Investigar WARN §3.8 Prime Cohama (estoque manual 0.18 vs calc 1.0) — provável bug `compute_total_per_tipologia` com origem `tabela_local_parcial`
+     - Bairro JdV (Turu) e Fiji (Cohama) precisam revalidar §3.10 origens (vieram como `informado_manualmente` e `imprensa` — checar se aparece WARN)
+     - Tipologia JdV (— sem confirmação) — buscar via book Áppia ou contato direto
+     - Mês de lançamento JdV ainda como estimativa (mar/2026 inferido pela data do PDF)
 
 - **build_panorama v8.2.0** (04/05/2026 — sessão 2 cont.) — **Dash bairro otimizado: filtro Fase Comercial default + bubble por unidades + remoção mapa oferta planta.**
    - **Decisão Rafael 04/05:** B/C entram nos dashs com Total mas sem vendido → enviesa absorção. Solução: filtro default exclui B/C; tabela bairro alinha universos.

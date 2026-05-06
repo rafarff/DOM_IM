@@ -1,0 +1,9 @@
+incorporadora: Áppia Construtora
+empreendimento: Condomínio Jardim di Vincenzo
+fonte: {origem_principal: tabela_local, parser: tabela_horizontal_lotes, data_extracao: '2026-05-06'}
+tipologias:
+- tipologia: '—'
+  area: 97.93
+  total_tipologia: 25
+  disponiveis: 17
+  observacoes: 'Casas mono 97,93m² construída em lotes variados 179,34-236,93m² (variação de ticket é função do lote). Distribuição: Quadra 01 = Casas 01-12 (12u), Quadra 02 = Casas 13-25 (13u). Tabela ABR/2026: 17 disp + 2 em negociação + 6 vendidas = 32% absorção (8/25 sem contar negoc). Tickets R$ 656.131 (Casa 01) a R$ 693.868 (Casa 12). Tipologia detalhada não declarada na tabela (— provavelmente 2 ou 3 dorms — pendente confirmar via book ou Áppia). Lazer privativo por casa.'

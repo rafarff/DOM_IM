@@ -19,60 +19,8 @@ from openpyxl.drawing.image import Image as XLImage
 # ═══════════════════════════════════════════════════════════════
 # PARÂMETROS GLOBAIS
 # ═══════════════════════════════════════════════════════════════
-VERSION = "11.13"
-DATE_STR = "06/05/2026"
-# v11.13 — (06/05/2026): +3 incorporadoras NOVAS + +3 empreend NOVOS + Prime Cohama destravado
-#                        + Monte Meru atualizado (tabela MAI/26) + Dom Antônio tickets reais.
-#   INBOX 06/05: 9 arquivos PDFs processados (3 books + 5 tabelas + 1 livro Prime Cohama).
-#
-#   NOVAS INCORPORADORAS (decisão Rafael 06/05 — todas oficiais, sem distinção complementar):
-#     • Áppia Construtora (Cond. Jardim di Vincenzo, Turu)
-#     • ESA Empreendimentos (Fiji Residence, Cohama — Powered by HOUSI/RendMais)
-#     • Amorim Coutinho (Cond. Essenza, Olho d'Água — upscale do MCMV pra luxo)
-#
-#   ATUALIZAÇÕES:
-#     • Monte Meru (Berg): tabela MAI/2026 confere v11.12 (mesmas 2 disp + tickets idem). +obs
-#       diferencial "1º andar com pé-direito de 4º pavimento + nascente total" via WhatsApp corretor.
-#       Data extração 27/04 → 06/05/2026.
-#     • Prime Cohama (MB Engenharia): DESTRAVADO via tabela ABR/26 + book. 22 casas mono 4 SUÍTES
-#       159,99m² construída em lotes 218-312m². Tickets R$ 2,19M-2,5M (oferta promo Casa 10
-#       R$ 1,97M com piscina+gourmet+terreno maior). 4 disp + 1 bloqueada + 17 vendidas.
-#       Endereço: Estrada Velha do Pinheiro N 11. Entrega ABR/2030. Antes: "casas duplex 140m²"
-#       (info errada de imprensa 2023 sem confirmação) → AGORA: "4 suítes 159,99m² + lazer".
-#     • Dom Antônio (DOM): 12 contratos Clicksign processados (CASAS 01-12). Tickets reais
-#       R$ 673.100,78 (Casa 03) a R$ 870.000 (Casa 10). Cronograma de vendas:
-#       50% (6 casas) em ago/2023 [LANÇAMENTO real]; 5 casas em 2024; 1 em mar/2025.
-#       Atualiza ticket único R$ 906.870 → range R$ 673.100-870.000 (origem informado_manualmente
-#       via contratos). Mês de lançamento corrigido: 06/2023 → 08/2023.
-#
-#   NOVOS EMPREENDIMENTOS (3):
-#     1. Cond. Jardim di Vincenzo (Áppia Construtora, Turu): 25 casas mono 97,93m² em lotes
-#        variados 179-237m². Tickets R$ 656.131-694k (varia pelo tamanho do lote). Origem
-#        tabela_local ABR/26. Status: 17 disp + 2 negoc + 6 vend (32% absorção).
-#        Lançamento: ~03/2026 (PDF book criado em 17/03/26 — estimativa informado_manualmente).
-#        Padrão Médio (R$/m² casa ~6,7-7,1k em ticket ~R$ 670k médio).
-#     2. Fiji Residence (ESA Empreendimentos, Cohama Rua do Aririzal 85): 192 unid declaradas
-#        oficial. 2 torres × 12 andares (sem 2º). 2D 61,79m² (1S+1Q) + 3D 80,53m² (1S+2Q).
-#        Tickets R$ 657-1.018k (crescem por andar). Entrega DEZ/2029 (tabela construtora).
-#        Lançamento JAN/2026 (imprensa blogsoestado 15/12/25). Origem tabela_local + imprensa.
-#        Padrão Médio-Alto (blend ticket ~R$ 800k + R$/m² ~R$ 11k). Diferencial: 1º empreend.
-#        de SLZ com APARTAMENTOS TOKENIZADOS (parceria HOUSI smart-living + RendMais).
-#     3. Cond. Essenza (Amorim Coutinho, Olho d'Água): 10 casas alto-luxo 267m² 4 suítes
-#        em condomínio fechado. Ticket único R$ 3.500.000 (a combinar). R$/m² R$ 13.108.
-#        VGV R$ 35M. Lançamento MAI/2026 (informado WhatsApp corretora Sheila Cutrim/Habitare
-#        — 4% comissão 50/50). Origem informado_manualmente (book não tem tabela formal).
-#        Padrão Luxo (ticket > 2,5M). Diferenciais: piscina + gourmet privativos + academia
-#        + salão festas + segurança/exclusividade. Movimento estratégico Amorim Coutinho upscale.
-#
-#   FONTES DESBLOQUEADAS:
-#     • pendencias_TOTAL.md: -1 (Prime Cohama sai do tier 2 → Composição completa).
-#
-#   IMPACTO NUMÉRICO ESPERADO (a confirmar pós-execução):
-#     • Empreend. mapeados: 51 → 54 (+3)
-#     • Incorporadoras: 16 → 19 (+3)
-#     • VGV total: ~R$ 3,03 bi → ~R$ 3,30 bi (+R$ 35M Essenza + ~R$ 162M Fiji + ~R$ 17M JdV
-#       + ~R$ 49M Prime Cohama destravado +~R$ 0M Monte Meru update e Dom Antônio reset).
-#
+VERSION = "11.12"
+DATE_STR = "04/05/2026"
 # v11.6 — (03/05/2026): R3 LOTE 3 — visão multimodal nos 3 PDFs imagem.
 #   Dom Lucas (DOM): 46 unidades (9 disp + 1 reserv + 36 vend) — tabela mar/2026 lida via Read PNG
 #   Dom José (DOM): 22 unidades (3 disp + 19 vend) — tabela abr/2026 lida via Read PNG (rotacionada 90°)
@@ -459,8 +407,7 @@ INCORPORADORAS = [
     "Mota Machado","Berg Engenharia","Alfa Engenharia","Lua Nova",
     "Delman","Treviso","Ergus","Monteplan","Franere","Canopus",
     "Niágara","MB Engenharia","Sá Cavalcante","Castelucci",
-    "Hiali","DOM Incorporação",
-    "Áppia Construtora","ESA Empreendimentos","Amorim Coutinho"
+    "Hiali","DOM Incorporação"
 ]
 
 SEGMENTOS = ["Popular","Médio","Alto","Luxo"]  # v8.1 (04/05/2026 — Rafael) — eliminada categoria Médio-alto
@@ -749,8 +696,8 @@ E_RAW = [
      None,"04/2024","04/2027", 135.32,135.83,None, "—",
      1932400,1944500, None,None,None,
      "tabela_local","tabela_local","imprensa",
-     "https://www.bergengenharia.com.br","06/05/2026",
-     "Tipologia detalhada: Aptos 135 m², 2-3 vagas. Tabela MAI/2026 (Berg Engenharia) confirma 2 unid. disponíveis: apto 103 (135,32 m², R$ 1.932.400) + apto 104 (135,83 m², R$ 1.944.500). 9 unidades VENDIDAS (apto 204-1004). 4 tipologias (1-4) com áreas similares. Lançamento 04/2024 estimado pela pasta. Conclusão: 30/04/2027 (T-36 perfeito). **Diferenciais comerciais (WhatsApp corretor 06/05/2026):** unidades disponíveis são de 1º andar mas com pé-direito de 4º pavimento + nascente total. Apto 704 tem 3 vagas (diferencial). Correção INCC. Histórico Berg: Montparnasse, Golden Tower, Peninsula Mall, Monte Olimpo, Monte Fuji.", None, None, None),
+     "https://www.bergengenharia.com.br","27/04/2026",
+     "Tipologia detalhada: Aptos 135 m², 2-3 vagas. Tabela ABR/2026 (Berg Engenharia). 4 tipologias (1-4) com áreas similares 135,32 / 135,83 m². Lançamento 04/2024 estimado pela pasta. Conclusão: 30/04/2027 (T-36 perfeito). Tipo 3 (135,32m²): apto 103 disponível R$ 1.932.400. Tipo 4 (135,83m²): apto 104 disponível R$ 1.944.500, demais (204-1004) VENDIDOS = 9 vendidos no Tipo 4 → estoque concentrado em 1 unidade visível. Apto 704 tem 3 vagas (diferencial). Correção INCC. Histórico Berg: Montparnasse, Golden Tower, Peninsula Mall, Monte Olimpo, Monte Fuji.", None, None, None),
 
     ("Berg Engenharia","Mount Solaro",
      "Endereço não localizado, Península da Ponta D'Areia, São Luís - MA","Península",
@@ -919,22 +866,22 @@ E_RAW = [
      "Tipologia detalhada (BOOK 12/2023 — recebido 03/05/2026): 3 colunas/aptos por andar × 10 andares = 30 unid (Rafael 03/05/2026). Col 1 = 85,75 m² priv (3 SUÍTES + varanda gourmet, 2 vagas). Col 2 = 84,96 m² priv (3 SUÍTES + varanda gourmet, 2 vagas). Col 3 = 71,92 m² priv (1 suíte master + 1 quarto + cozinha americana, 1 vaga). Composição confirmada v10.7: 10u 2D (Col 3) + 20u 3D (Cols 1+2). Diferenciais: porcelanato, fechadura digital, tomadas USB-C, infra carregador carro elétrico, energia solar áreas comuns. 13 itens de lazer (piscina, quadra, sauna, brinquedoteca etc.). Memorial R.14/28.859 1º RGI SLZ. Parceria DOM Incorporação + MB Engenharia (sócios). Book 12/2023 diz '100% VENDIDO, OBRAS INICIADAS' → estoque=0 manual. Tabela interna SPE (xlsx Apr 2026): 19 contratos VENDIDOS rastreados (resto vendido sem contrato no nosso radar). Tickets contratados R$ 690k-1.194k (variam por andar e timing 2023-2025). Entrega DEZ/2026. Bairro book: 'Pracinha da Lagoa' (microregião do Renascença II).", "informado_manualmente", "informado_manualmente", "book"),
 
     ("MB Engenharia","Condomínio Prime Cohama",
-     "Estrada Velha do Pinheiro N 11, Cohama, São Luís - MA","Cohama",
-     "Horizontal",None,
-     22,"01/2026","04/2030", 159.99,159.99,None, "4D",
-     2190000,2500000, None,None, 4/22,
-     "tabela_local","tabela_local","imprensa",
-     "https://www.instagram.com/mbengenharia.br/","06/05/2026",
-     "Tipologia detalhada: 22 casas mono 4 SUÍTES, 159,99 m² construída em lotes 218,78-312,29 m² (variação só pelo tamanho do lote). Endereço: Estrada Velha do Pinheiro N 11. Entrega ABR/2030 (em construção). Tabela ABR/2026 (Tabela Bancos): tickets R$ 2.190.000 (Casas 10, 21) | R$ 2.400.000 (Casa 15) | R$ 2.500.000 (Casa 22). Avaliação CEF R$ 2.105.000, financiamento 90% R$ 1.894.500. **Casa 10 em PREÇO DE OPORTUNIDADE R$ 1.971.000** (com piscina + espaço gourmet + terreno maior que padrão). Status (implantação book): 4 disponíveis (Casas 10, 15, 21, 22) + 1 BLOQUEADA + 17 VENDIDAS = 22 total → estoque 4/22 ≈ 18%. Construção e Incorporação: MB Engenharia. **CORREÇÃO v11.13**: cadastro anterior dizia 'casas duplex 140m²' (info de imprensa 2023 sem confirmação) — book + tabela 2026 confirmam casas com 4 SUÍTES 159,99m² (não duplex sem tipologia), produto horizontal alto/luxo (R$/m² R$ 13.690-15.625).", "tabela_local", None, "imprensa"),
+     "Endereço não localizado, Cohama, São Luís - MA","Cohama",
+     "Vertical",None,
+     22,"01/2026","—", 140,140,None, "—",
+     None,None, None,None,None,
+     "N/A","N/A","imprensa",
+     "https://www.instagram.com/mbengenharia.br/","14/04/2026",
+     "Tipologia detalhada: Casas duplex. 22 casas duplex 140m² — produto horizontal diferenciado. Pré-lançamento anunciado 2023, hoje em comercialização.", "site_oficial", None, None),
 
     ("DOM Incorporação","Dom Antônio",
      "Endereço não localizado, Jardim Eldorado (Turú), São Luís - MA","Jardim Eldorado",
      "Horizontal",None,
-     12,"08/2023","—", 136.2,136.2,None, "3D",
-     673100,870000, None,None, 0.0,
+     12,"06/2023","—", 136.2,136.2,None, "3D",
+     906870,906870, None,None, 0.0,
      "informado_manualmente","informado_manualmente","interno",
-     "https://www.imovelnacidade.com/destaque/mb-construtora/","06/05/2026",
-     "Tipologia detalhada: 3 suítes casas duplex. DOM Incorporação com MB Engenharia como sócia (empreendimento conjunto). **TOTAL = 12 casas mono 3D 136,2 m²** (mono-tipologia, padrão duplex idêntico). **TICKETS REAIS via 12 contratos Clicksign processados v11.13 (06/05/2026):** range R$ 673.100,78 (Casa 03) a R$ 870.000,00 (Casa 10), médio ~R$ 745k — variação pela data de assinatura (correção monetária + ajuste de timing). **Cronograma de vendas confirmado pelos contratos:** 6 casas (50%) assinadas em 10/08/2023 [→ LANÇAMENTO real ago/2023, corrige 06/2023 anterior]; 5 casas em 2024 (Casas 01, 02, 04, 08, 12); 1 casa em mar/2025 (Casa 10). Composição via §3.7 nível 5.1 (mono): 12u 3D 136,2m². **100% VENDIDO** (estoque=0, última venda 31/03/2025). Promovido para Tabela A v11.8. NOTA privacidade: dados pessoais dos compradores (nomes/CPF/RG/endereços residenciais) NÃO foram persistidos — só dados comerciais agregados (tickets + datas de assinatura).", "informado_manualmente", "informado_manualmente", None),
+     "https://www.imovelnacidade.com/destaque/mb-construtora/","04/05/2026",
+     "Tipologia detalhada: 3Q casas duplex. DOM Incorporação com MB Engenharia como sócia (empreendimento conjunto). Lançamento 06/2023 confirmado internamente. **TOTAL = 12 casas iguais 136,2 m² (Rafael 03/05/2026)** — mono-tipologia 3D, padrão duplex idêntico. Ticket R$906.870. Produto horizontal Eldorado/Turú. Composição via §3.7 nível 5.1 (mono): 12u 3D 136,2m². **100% VENDIDO confirmado Rafael 04/05/2026** (estoque=0). Promovido para Tabela A v11.8 (orig_precos=informado_manualmente). [reconstituído da v4.16 em 25/04/2026]", "informado_manualmente", "informado_manualmente", None),
 
     # ─── DOM INCORPORAÇÃO — BREVE LANÇAMENTOS (Rafael 04/05/2026) ──────────
     ("DOM Incorporação","Villa Terrari",
@@ -1048,42 +995,6 @@ E_RAW = [
      "tabela_local","tabela_local","interno",
      "","03/05/2026",
      "Tipologia detalhada: Casa 4+ dorm, alto padrão. Condomínio horizontal alto padrão. 1 ÚNICA tipologia: casa 154,64 m² construída. Terreno varia 178,49-180,96 m² conforme posição. **TOTAL = 22 unidades** (UH 1 a 22, confirmado por implantação numerada do book + tabela). Status ABR/2026: **3 disponíveis** (UH 1, 8, 10) + 19 VENDIDAS = ~86% vendido. Tickets à vista R$ 1.403.358-1.420.196 → R$/m² construção R$ 9.075-9.184. Entrega JUL/2027 (atualizado da tabela 04/2026 — antes 06/2027). Construção: DOM Incorporação + LP Barros Const. e Serviços ME. Vendas: André Leite Imóveis. Bairro CEP/book: 'Jardim Eldorado'; bairro=Turu (região senso comum, §3.10 v10.5 — Rafael 03/05/2026). Lazer: piscina adulto+infantil, playground, espaço gourmet, churrasqueira. CORREÇÃO v5.2: Área máx era 180,98 (terreno) — corrigida para 154,64 (construída). Convenção PADRAO §1: Tipo=Horizontal usa área construída. Extraído via visão multimodal v10.2. NB: origem total = `tabela_local_parcial` mesmo a tabela listando TODAS as 22 (implantação 01-22), pois C_RAW guarda apenas DISPONÍVEIS — convenção §3.7.", "tabela_local_parcial", None, "informado_manualmente"),
-
-    # ═══ v11.13 — 3 NOVOS EMPREENDIMENTOS (06/05/2026) ═══════════════════════════════
-    # Decisão Rafael 06/05: cadastrar 3 incorporadoras NOVAS como oficiais (todas
-    # entram na lista monitorada, sem distinção complementar — vide memória
-    # feedback_lista_incorporadoras_unica.md).
-
-    # ─── ÁPPIA CONSTRUTORA — Cond. Jardim di Vincenzo (Turu) ─────────────────
-    ("Áppia Construtora","Condomínio Jardim di Vincenzo",
-     "Endereço a confirmar, Turu, São Luís - MA","Turu",
-     "Horizontal",None,
-     25,"03/2026","—", 97.93,97.93,None, "—",
-     656131,693868, None,None, None,
-     "tabela_local","tabela_local","informado_manualmente",
-     "https://www.instagram.com/apiaengenharia/","06/05/2026",
-     "Tipologia detalhada (Tabela ABR/2026 + Book Áppia 17/03/2026): 25 casas mono 97,93 m² construída em LOTES variados 179,34-236,93 m² (variação de ticket é função do lote, casa idêntica). Distribuição: Quadra 01 = Casas 01-12 (12u), Quadra 02 = Casas 13-25 (13u). Status (tabela ABR/26): 17 disponíveis + 2 em negociação + 6 vendidas = 32% absorção (8/25). Tickets R$ 656.131,12 (Casa 01) a R$ 693.868,12 (Casa 12) — financiamento 36x R$ 2.278-2.409/mês após sinal+anuais+chave. Lazer privativo: piscina + área gourmet em cada casa. Lançamento estimado mar/2026 (book criado 17/03/26 — informado_manualmente). Padrão Médio (R$/m² casa ~6,7-7,1k). NOVA INCORPORADORA cadastrada v11.13. Bairro Turu confirmado Rafael 06/05.", "tabela_local", None, "informado_manualmente"),
-
-    # ─── ESA EMPREENDIMENTOS — Fiji Residence (Cohama) ────────────────────────
-    ("ESA Empreendimentos","Fiji Residence",
-     "Rua do Aririzal, 85, Cohama, São Luís - MA","Cohama",
-     "Vertical",None,
-     192,"01/2026","12/2029", 61.79,80.53,None, "2D; 3D",
-     657681,1018448, None,None, None,
-     "tabela_local","tabela_local","imprensa",
-     "https://www.instagram.com/esa.empreendimentos/","06/05/2026",
-     "Tipologia detalhada (Tabela MAI/2026 BL_AB + CONSTRUTORA + Book ESA dez/2025): TOTAL DECLARADO oficial = 192 unid em 2 torres (A,B) × 12 andares úteis (sem 2º). 2 plantas: TIPO 02 = 61,79 m² (1 suíte + 1 dormitório, 2D — banheiro social + banheiro suíte), TIPO 01 = 80,53 m² (1 suíte + 2 dormitórios, 3D — banheiro social + banheiro suíte + varanda suíte). Tickets: R$ 657.681 (61,79m² 5º andar Pos 2) a R$ 1.018.448 (80,53m² 12º andar Pos 1) — crescem por andar e posição. Entrega DEZ/2029 (tabela construtora). Lançamento JAN/2026 (imprensa blogsoestado 15/12/2025: 'ESA Empreendimentos lança Fiji Residence'). Endereço: Rua do Aririzal 85 Cohama. **Diferencial estratégico:** primeiro empreend. de São Luís com APARTAMENTOS TOKENIZADOS (parceria HOUSI smart-living + RendMais — gestão de locação, comunicação portaria, agenciamento serviços, mercado integrado). Algumas unidades em azul na tabela são tokenizadas + mobiliadas pela HOUSI. Lazer: piscinas adulto+infantil, multi-sport, gym, gourmet, churrasqueira, kiosk, party room, brinquedoteca, playground, pet play, spa+sauna. Padrão estimado Médio-Alto (blend ticket ~R$ 800k Médio + R$/m² ~R$ 11-13k Alto). NOVA INCORPORADORA cadastrada v11.13.", "tabela_local", None, "imprensa"),
-
-    # ─── AMORIM COUTINHO — Cond. Essenza (Olho d'Água) ────────────────────────
-    ("Amorim Coutinho","Condomínio Essenza",
-     "Endereço a confirmar, Olho d'Água, São Luís - MA","Olho d'Água",
-     "Horizontal","Luxo",
-     10,"05/2026","—", 267,267,None, "4D",
-     3500000,3500000, None,None, 1.0,
-     "informado_manualmente","informado_manualmente","informado_manualmente",
-     "https://amorimcoutinho.com.br","06/05/2026",
-     "Tipologia detalhada (Book Essenza Luxury Living jan/2026 + WhatsApp corretora Sheila Cutrim Habitare 06/05/2026): 10 casas mono 267 m² em condomínio fechado de alto padrão. **4 SUÍTES por casa** (incluindo suíte master com closet). 2 pavimentos (Piso Térreo + Piso Superior). Lançamento MAI/2026. Olho d'Água. Ticket R$ 3.500.000 (forma de pagamento 'a combinar'). R$/m² R$ 13.108. VGV calculado: 10 × R$ 3,5M = R$ 35M. Padrão Luxo (ticket > R$ 2,5M). Diferenciais: design contemporâneo + acabamentos refinados, área de lazer privativa por casa (espaço gourmet + piscina), estrutura coletiva com academia + salão de festas, segurança e exclusividade pela baixa densidade (10 unid). **Movimento estratégico:** Amorim Coutinho é tradicionalmente top 15 nacional MCMV (Popular/Médio) — Essenza é primeira incursão da marca em Luxo. Imobiliária parceira: Habitare Imóveis (consultora Sheila Cutrim 98 98864-4053, comissão 4% 50/50 corretor/imobiliária). NOVA INCORPORADORA cadastrada v11.13 — Rafael 06/05 confirmou (texto WhatsApp original grafou 'Almorim Coutinho' mas grafia oficial é Amorim Coutinho).", "informado_manualmente", "informado_manualmente", "informado_manualmente"),
-
 ]
 
 # ═══════════════════════════════════════════════════════════════
