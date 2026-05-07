@@ -1,6 +1,6 @@
 incorporadora: Ergus
 empreendimento: Zion Ponta d'Areia
-fonte: {origem_principal: tabela_local_imagem, documento: TABELA_ZION_PONTA_D_AREIA_052026.pdf (text-extraction) + TABELA_ZION_PONTA_D_AREIA_042026.pdf (visão v8.2) + composicao v8.2, data_extracao: '2026-05-07', parser: visao_multimodal_v11.6 + complemento manual + confirmacao_text_extraction_v11.14}
+fonte: {origem_principal: tabela_local_imagem, documento: TABELA_ZION_PONTA_D_AREIA_042026.pdf (book) + composicao v8.2, data_extracao: '2026-04-01', parser: visao_multimodal_v11.6 + complemento manual}
 unidades:
 - {apto: D01, tip: 4D, planta: '', area: 148.55, status: disponível, ticket: 2170378, origem: tabela_local_imagem}
 - {apto: D02, tip: 4D, planta: '', area: 148.55, status: disponível, ticket: 2241026, origem: tabela_local_imagem}

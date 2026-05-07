@@ -19,34 +19,8 @@ from openpyxl.drawing.image import Image as XLImage
 # ═══════════════════════════════════════════════════════════════
 # PARÂMETROS GLOBAIS
 # ═══════════════════════════════════════════════════════════════
-VERSION = "11.14"
-DATE_STR = "07/05/2026"
-# v11.14 — (07/05/2026): UPDATE MÍNIMO — Tabela Zion Ponta d'Areia MAI/2026 confirma v11.13.
-#   INBOX 07/05: 1 PDF processado (TABELA_ZION_PONTA_D_AREIA_052026.pdf, text-extraction).
-#
-#   ATUALIZAÇÕES:
-#     • Zion Ponta d'Areia (Ergus): tabela MAI/2026 conferida via text-extraction.
-#       Mesmas 10 unid disp + mesmas SKUs (T1/C1: 202, 1202; T1/C2: 1101, 1201, 1301, 1501;
-#       T2/C2: 302, 1002, 1102, 1202). Mesmos preços à vista (R$ 2,17M-2,56M).
-#       Mesmos R$/m² (14.610-17.213). Velocidade de vendas = 0 unid no mês ABR→MAI.
-#       Único delta: re-parcelamento (14 mensais ABR/26 → 13 mensais MAI/26;
-#       semestral OUT/26 → NOV/26 — efeito mecânico de 1 mês decorrido).
-#       Política de preço inalterada (sem reajuste, sem desconto). Data extração
-#       atualizada 02/05/2026 → 07/05/2026.
-#     • Identificada (e mantida) divergência granular nos tickets D02-D09 do U_RAW v8.2
-#       (visão multimodal) vs valores reais da tabela: agregado fica ~1% acima do
-#       real (R$ 24,17M v8.2 vs R$ 23,93M tabela MAI/26). Como não há mudança no
-#       perímetro (mesmas 10 disp, mesmo segmento Alto, mesmo R$/m² médio), opção
-#       pelo update mínimo: corrige fonte+data+obs sem mexer nos tickets granulares.
-#       Refactor completo dos tickets fica registrado como pendência futura.
-#
-#   IMPACTO NUMÉRICO: zero. Total mapeado v11.13 → v11.14 inalterado: 54 empreend,
-#     19 incorporadoras, 100 linhas Composição, 3.415 unidades, R$ 3,29 bi VGV.
-#     Cobertura U_RAW 25/27 = 93%. Aba Unidades 905. Drift script ↔ xlsx = 0.
-#
-#   ARQUIVO MOVIDO: _INBOX/Tabela Zion - Maio 2026.pdf →
-#     03_ERGUS/ZION_PONTA_D_AREIA_122023/TABELA/TABELA_ZION_PONTA_D_AREIA_052026.pdf
-#
+VERSION = "11.13"
+DATE_STR = "06/05/2026"
 # v11.13 — (06/05/2026): +3 incorporadoras NOVAS + +3 empreend NOVOS + Prime Cohama destravado
 #                        + Monte Meru atualizado (tabela MAI/26) + Dom Antônio tickets reais.
 #   INBOX 06/05: 9 arquivos PDFs processados (3 books + 5 tabelas + 1 livro Prime Cohama).
@@ -681,8 +655,8 @@ E_RAW = [
      60,"09/2025","12/2026", 148.55,148.55,None, "4D",
      2170378,2556972, None,None, None,  # v9.4: corrigido (estoque, não vendido); calc 10/60
      "tabela_local","tabela_local","treinamento_corretor",
-     "https://www.ergus.com.br","07/05/2026",
-     "Tipologia detalhada: 4 suítes + 3 vagas. 2 torres × 14 pavtos tipo × 2 aptos/andar (Coluna 1 + Coluna 2) = 56 aptos no edifício. **TABELA 04/2026 EXTRAÍDA VIA VISÃO MULTIMODAL (v8.2 — 02/05/2026)** a partir do PDF imagem (pdftoppm + Claude visão). Tabela mostra 10 unidades disponíveis: Torre 1 col 1: aptos 202, 1101, 1201, 1202, 1301, 1501 (R$2.170k-2.557k); Torre 2 col 1: aptos 302, 1102, 1202 (R$2.192k-2.445k). Todas 148,55m² (4D suítes uniforme). R$/m² 14.610-17.212 (média ~R$15.500). Estimativa total ~60 unid. % Vendido estimado 83%. Memorial Reg. nº 02, Matrícula 130.345, 1º Cartório SL. Nota da tabela: obra entregue DEZ/26 mas unidades vendidas após ABRIL/26 serão entregues JUN/27 — sinal de tração tardia. **TABELA 05/2026 (v11.14, 07/05/2026):** confirmou todas as 10 SKUs e preços via text-extraction. Velocidade de vendas = 0 unid no mês ABR→MAI. Política de preço inalterada (sem reajuste). Único delta: re-parcelamento mecânico (14→13 mensais; semestral OUT/26→NOV/26).", "book", None, "informado_manualmente"),
+     "https://www.ergus.com.br","02/05/2026",
+     "Tipologia detalhada: 4 suítes + 3 vagas. 2 torres × 14 pavtos tipo × 2 aptos/andar (Coluna 1 + Coluna 2) = 56 aptos no edifício. **TABELA 04/2026 EXTRAÍDA VIA VISÃO MULTIMODAL (v8.2 — 02/05/2026)** a partir do PDF imagem (pdftoppm + Claude visão). Tabela mostra 10 unidades disponíveis: Torre 1 col 1: aptos 202, 1101, 1201, 1202, 1301, 1501 (R$2.170k-2.557k); Torre 2 col 1: aptos 302, 1102, 1202 (R$2.192k-2.445k). Todas 148,55m² (4D suítes uniforme). R$/m² 14.610-17.212 (média ~R$15.500). Estimativa total ~60 unid. % Vendido estimado 83%. Memorial Reg. nº 02, Matrícula 130.345, 1º Cartório SL. Nota da tabela: obra entregue DEZ/26 mas unidades vendidas após ABRIL/26 serão entregues JUN/27 — sinal de tração tardia.", "book", None, "informado_manualmente"),
 
     ("Ergus","Nexus Renascença",
      "Endereço não localizado, Renascença, São Luís - MA","Renascença",

@@ -2,17 +2,17 @@
 
 > **Para Claude (toda sessão):** este é o **primeiro arquivo a ler** antes de qualquer ação. Confirma a base de trabalho. Se a invariante 0.3 do PADRAO falhar contra os números aqui, **PARAR**.
 
-**Última atualização:** 06/05/2026 (sessão 3 — INBOX 9 PDFs + 3 incorporadoras NOVAS)
-**Versão Planilha vigente:** v11.13
+**Última atualização:** 07/05/2026 (sessão 4 — Tabela Zion MAI/26 / update mínimo)
+**Versão Planilha vigente:** v11.14
 **Versão PADRAO vigente:** v7.0 (com §3.7.0 — U_RAW)
-**Versão script `gerar_planilha.py`:** 11.13 (DATE_STR: 06/05/2026)
+**Versão script `gerar_planilha.py`:** 11.14 (DATE_STR: 07/05/2026)
 **Versão `build_panorama.py`:** v8.2.0 (sem mudança nessa sessão)
 
 ---
 
 ## Snapshot da carteira (v11.13)
 
-| Métrica | Valor | Δ vs v11.12 |
+| Métrica | Valor | Δ vs v11.13 |
 |---|---:|---:|
 | Aba Empreendimentos | **54 linhas** | +3 (Fiji + JdV + Essenza) |
 | Aba Incorporadoras | **19 linhas — DERIVADA** | +3 (Áppia + ESA + Amorim Coutinho) |
@@ -79,6 +79,15 @@ cd 00_ESTUDO_CONSOLIDADO/ && ls -1 Planilha_Mestre_Panorama_v*.xlsx | sort -V | 
 ---
 
 ## Mudanças estruturais recentes
+
+- **v11.14** (07/05/2026 — sessão 4) — **Tabela Zion MAI/2026 confirmada via text-extraction. Update mínimo (zero delta numérico).**
+   - **INBOX 07/05:** 1 PDF (`Tabela Zion - Maio 2026.pdf`) movido para `03_ERGUS/ZION_PONTA_D_AREIA_122023/TABELA/TABELA_ZION_PONTA_D_AREIA_052026.pdf` seguindo padrão DOM.
+   - **Comparação ABR/26 ↔ MAI/26:** mesmas 10 unidades disp (T1/C1: 202, 1202; T1/C2: 1101, 1201, 1301, 1501; T2/C2: 302, 1002, 1102, 1202). Mesmas áreas (148,55m²). Mesmos preços à vista (R$ 2,17M-2,56M). Mesmos R$/m² (14.610-17.213). Único delta: re-parcelamento mecânico (14 mensais ABR/26 → 13 mensais MAI/26; semestral OUT/26 → NOV/26).
+   - **Insight comercial:** Velocidade de vendas Zion = 0 unid/mês entre ABR→MAI/26. Política de preço inalterada (sem reajuste, sem desconto). Em mercado Alto/Luxo Península, ausência de absorção em 1 mês com 7 meses pra entrega (DEZ/26) sinaliza teto de preço encostando na elasticidade do bairro. Vale acompanhar JUN/26.
+   - **Pendência registrada para refactor futuro:** tickets granulares D02-D09 do U_RAW v8.2 (visão multimodal) divergem dos valores reais da tabela: agregado 10 disp v8.2 = R$ 24,17M vs tabela = R$ 23,93M (delta ~1%, R$ 238k). Como o perímetro não muda (mesmas 10 disp, mesmo segmento Alto, mesmo R$/m² médio), update mínimo opta por não mexer nos tickets. Refactor pode ser feito quando aproveitarmos para renomear SKUs (D01..D10 → 202, 302, 1002, etc.) — ganho duplo.
+   - **Total mapeado v11.13 → v11.14:** Empreend **54** (=); Incorporadoras **19** (=); Composição **100 linhas / 3.415 unidades** (=); U_RAW **26 arquivos / 905 unidades** (=); VGV **R$ 3,29 bi** (=). Cobertura U_RAW 93% (=).
+   - **Drift script ↔ planilha:** **0** ✅. Invariantes §3.7.C.4 = 40/44 (=); §3.7.C.6 = 62/62 ✅ (=).
+   - **Updates sintéticos:** YAML `unidades/Ergus__Zion_Ponta_d_Areia.yaml` (campo `fonte`); script v11.13 → v11.14 (VERSION + DATE_STR + bloco comentário + entry Zion `data_atualizacao` 02/05 → 07/05/2026 + obs append).
 
 - **v11.13** (06/05/2026 — sessão 3) — **+3 incorporadoras NOVAS oficiais + +3 empreend NOVOS + Prime Cohama destravado + Monte Meru update + Dom Antônio tickets reais via 12 contratos.**
    - **Decisão Rafael 06/05:** lista única de incorporadoras — fim da distinção "oficial vs complementar". Toda incorporadora nova vai pra lista oficial monitorada; exclusão só por comando explícito. Memória `feedback_lista_incorporadoras_unica.md` registrada.
