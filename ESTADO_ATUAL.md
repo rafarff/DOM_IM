@@ -2,38 +2,38 @@
 
 > **Para Claude (toda sessão):** este é o **primeiro arquivo a ler** antes de qualquer ação. Confirma a base de trabalho. Se a invariante 0.3 do PADRAO falhar contra os números aqui, **PARAR**.
 
-**Última atualização:** 07/05/2026 (sessão 4 — Tabela Zion MAI/26 / update mínimo)
-**Versão Planilha vigente:** v11.14
+**Última atualização:** 09/05/2026 (sessão 5 — INBOX 09/05: BelSul + Arizona + 4 atualizações Dom Lucas/José)
+**Versão Planilha vigente:** v11.15
 **Versão PADRAO vigente:** v7.0 (com §3.7.0 — U_RAW)
-**Versão script `gerar_planilha.py`:** 11.14 (DATE_STR: 07/05/2026)
+**Versão script `gerar_planilha.py`:** 11.15 (DATE_STR: 09/05/2026)
 **Versão `build_panorama.py`:** v8.2.0 (sem mudança nessa sessão)
 
 ---
 
-## Snapshot da carteira (v11.13)
+## Snapshot da carteira (v11.15)
 
-| Métrica | Valor | Δ vs v11.13 |
+| Métrica | Valor | Δ vs v11.14 |
 |---|---:|---:|
-| Aba Empreendimentos | **54 linhas** | +3 (Fiji + JdV + Essenza) |
-| Aba Incorporadoras | **19 linhas — DERIVADA** | +3 (Áppia + ESA + Amorim Coutinho) |
-| Aba Composição | **100 linhas / 3.415 unidades / 44 empreend.** | +4 / +227 / +3 |
-| **Aba Unidades** | **905 unidades / 26 empreend.** — átomo do sistema | +57 / +1 (Fiji 57 disp parseadas) |
-| **Cobertura Total apurado** | **45/54 = 83%** | +3 destravados |
-| **Bloqueados** | **10 empreend.** em pendencias_TOTAL.md | -1 Prime Cohama destravado +1 Bay View Alfa |
-| Fonte de U_RAW | **26 arquivos YAML** em `unidades/<inc>__<emp>.yaml` | +1 Fiji (Monte Meru atualizado) |
-| Fonte de C_RAW (residual) | **21 arquivos YAML** em `composicao/<inc>__<emp>.yaml` | +3 (Prime Cohama + Essenza + JdV) |
-| Fonte de I_META | **1 arquivo YAML** em `incorporadoras_meta.yaml` | +3 entries |
-| **Cobertura U_RAW** | **25 / 27 empreend. com fonte nível 1-2 = 93%** | +1 Fiji (Al Mare + Entre Rios mantidos manuais) |
-| **Invariante §3.7.C.6** | **62/62 ✅** | +12 plantas (Fiji 2 + outros via render) |
+| Aba Empreendimentos | **55 linhas** | +1 (Residencial Arizona) |
+| Aba Incorporadoras | **20 linhas — DERIVADA** | +1 (BelSul — 20ª oficial) |
+| Aba Composição | **102 linhas / 3.453 unidades / 45 empreend.** | +2 / +38 / +1 |
+| **Aba Unidades** | **943 unidades / 27 empreend.** — átomo do sistema | +38 / +1 (Arizona 17 disp + 21 vend parseadas) |
+| **Cobertura Total apurado** | **46/55 = 84%** | +1 (Arizona declarado oficial) |
+| **Bloqueados** | **10 empreend.** em pendencias_TOTAL.md | sem mudança |
+| Fonte de U_RAW | **27 arquivos YAML** em `unidades/<inc>__<emp>.yaml` | +1 Arizona |
+| Fonte de C_RAW (residual) | **21 arquivos YAML** em `composicao/<inc>__<emp>.yaml` | sem mudança |
+| Fonte de I_META | **1 arquivo YAML** em `incorporadoras_meta.yaml` | +1 entry (BelSul) |
+| **Cobertura U_RAW** | **26 / 28 empreend. com fonte nível 1-2 = 93%** | +1 Arizona |
+| **Invariante §3.7.C.6** | **63/63 ✅** | +1 planta (Arizona 167,5m² mono) |
 | Aba Empreendimentos schema | **27 colunas** (sem mudança) |
-| Aba Composição schema | **12 colunas (v7.0)** ← +1 vs v6.2 (Planta + Área única + Total planta separado de Disp) |
+| Aba Composição schema | **12 colunas (v7.0)** (sem mudança) |
 | Drift script ↔ planilha | **0** ✅ |
-| VGV total mapeado | **R$ 3,29 bi** (+R$ 263M v11.12→13: Fiji 192u +R$ 162M + Essenza 10u +R$ 35M + JdV 25u +R$ 17M + Prime Cohama destravado 22u +R$ 49M)
-| Cobertura Composição | **34/44 empreend. = 77%** (mantida vs v10.9) |
-| **Invariante v6.2 Σ Total tip = E_RAW.Total** | **30/34 fechado exato** ⚠ 4 parciais (Vila Coimbra, Le Noir, Bossa, Reserva SM) |
-| **Invariante v7.0 Σ Total planta = Total tip** | **49/49 fechado exato** ✅ (NOVA — pro-rata fecha por construção) |
+| VGV total mapeado | **R$ 3,36 bi** (+R$ 65,5M Arizona 38u × R$ 1,72M)
+| Cobertura Composição | **35/45 empreend. = 78%** (+1 Arizona) |
+| **Invariante v6.2 Σ Total tip = E_RAW.Total** | **41/45 fechado exato** ⚠ 4 parciais (Vila Coimbra, Le Noir, Bossa, Reserva SM, Prime Cohama WARN §3.8) |
+| **Invariante v7.0 Σ Total planta = Total tip** | **63/63 fechado exato** ✅ |
 | Bloqueados sem Total | **10 empreend.** → `pendencias_TOTAL.md` (sem mudança) |
-| **Plantas declaradas com label** | **9 plantas** (Renaissance Botticelli/Leonardo, Mount Solaro Loft 68/Apt 72/Apt 104, Dom Ricardo Col 1/2/3, Reserva SM Planta 1/2, Legacy 175m²/185m², ORO Padrão/Cobertura Duplex) |
+| **Plantas declaradas com label** | **9 plantas** (sem mudança) |
 
 ### Cobertura por incorporadora (% empreend. com composição detalhada)
 
@@ -79,6 +79,19 @@ cd 00_ESTUDO_CONSOLIDADO/ && ls -1 Planilha_Mestre_Panorama_v*.xlsx | sort -V | 
 ---
 
 ## Mudanças estruturais recentes
+
+- **v11.15** (09/05/2026 — sessão 5) — **+1 INCORPORADORA NOVA (BelSul) + 1 EMPREEND NOVO (Residencial Arizona) + 4 atualizações Dom Lucas/José.**
+   - **INBOX 09/05:** 8 PDFs processados.
+     - **2 books duplicados** (md5 idêntico) → `_DUPLICADAS_PRONTAS_PARA_DELETAR/` (BOOK_DOM_LUCAS_R06 e Book Cond Dom Jose).
+     - **1 NOVA INCORPORADORA: BelSul Administração e Participações** (20ª da lista oficial). Construtora: Eduardo Cardoso Engenharia. Arquitetura: Militão Gomes. Vendas: André Leite Imóveis (CRECI J-707). Paisagismo: S. Andrade.
+     - **1 NOVO empreend: Residencial Arizona** — pasta `20_BELSUL/RESIDENCIAL_ARIZONA_032024/{BOOK,TABELA}` criada. **38 casas duplex** mono-tipologia 167,5 m² 3 SUÍTES (Suíte 01 13,84m² + Suíte 02 13,67m² + Suíte 03 11,93m² + 3 WCs + Varanda 10,03m²). Posição alternada NASCENTE/POENTE no front + back row 28-38 todas NASCENTE. Tabela ABR/2026 lida via visão multimodal: **17 disp / 21 vend = 55% absorção** (não 71% como diagnóstico inicial estimou). Tickets à vista R$ 1.711.788–1.746.369 — variação por posição/lote. R$/m² ~10.270 → **Padrão Alto** (não Médio como inicialmente). VGV ~R$ 65,5M. **Entrega DEZ/2026.** Diferenciais ESG/tech: energia solar (casas + áreas comuns), banda larga grátis 3 anos, 3 estações carga elétrica. Bairro Alto do Calhau (próx. São Luís Shopping + Pq. do Rangedor).
+     - **Dom Lucas** (DOM): tabelas T18 (ABR/26) + T19 (MAI/26) movidas para `13_DOM_INCORPORACAO/DOM_LUCAS_022026/TABELA/`. **Re-extração diferida** (fonte v11.6 mar/26 ainda válida — 46u parseadas; novas tabelas servem de delta histórico).
+     - **Dom José** (DOM): tabelas ABR/26 rev3 + MAI/26 movidas para `13_DOM_INCORPORACAO/DOM_JOSE_062024/TABELA/`. Re-extração diferida (fonte v11.6 abr/26 válida — 22u; rev3 + MAI/26 servem de delta).
+   - **Total mapeado v11.14 → v11.15:** Empreend 54 → **55** (+1 Arizona); Incorporadoras 19 → **20** (+1 BelSul); Composição 100 → **102 linhas** / 3.415 → **3.453 unidades** (+38); U_RAW 26 → **27** arquivos / 905 → **943 unidades** (+38); VGV R$ 3,29 bi → **R$ 3,36 bi** (+R$ 65,5M).
+   - **Cobertura U_RAW: 25/27 → 26/28 = 93%** (mantida).
+   - **Drift script ↔ planilha: 0 ✅.** Invariantes §3.7.C.4 = 41/45 (40/44 → 41/45 — Arizona fecha exato como mono); §3.7.C.6 = 63/63 ✅ (62→63, +1 planta mono Arizona).
+   - **Insight estratégico Arizona:** concorrência direta da DOM no eixo casa-duplex Alto do Calhau (R$ 1,72M ticket), comparável a **Dom Antônio (12 casas 136m² R$ 745k médio Jardim Eldorado)** e ao breve-lançamento **Dom Rafael (37 casas 122m² R$ 1,1M Araçagi)**. Velocidade Arizona ~55% absorção em ~2 anos (book mar/2024) sugere demanda firme — ESG+tech (solar + banda larga + carro elétrico) já é padrão competitivo nesse segmento, DOM precisa precificar isso.
+   - **Updates sintéticos:** YAML `unidades/BelSul__Residencial_Arizona.yaml` (38 entries U_RAW); script v11.14 → v11.15 (VERSION + DATE_STR + bloco comentário + INCORPORADORAS list +1 + 1 entry E_RAW BelSul/Arizona); YAML `incorporadoras_meta.yaml` (+1 entry BelSul).
 
 - **v11.14** (07/05/2026 — sessão 4) — **Tabela Zion MAI/2026 confirmada via text-extraction. Update mínimo (zero delta numérico).**
    - **INBOX 07/05:** 1 PDF (`Tabela Zion - Maio 2026.pdf`) movido para `03_ERGUS/ZION_PONTA_D_AREIA_122023/TABELA/TABELA_ZION_PONTA_D_AREIA_052026.pdf` seguindo padrão DOM.

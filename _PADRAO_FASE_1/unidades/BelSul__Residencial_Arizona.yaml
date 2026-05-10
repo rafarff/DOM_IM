@@ -1,0 +1,42 @@
+incorporadora: BelSul
+empreendimento: Residencial Arizona
+fonte: {origem_principal: tabela_local_imagem, documento: TABELA_RESIDENCIAL_ARIZONA_042026.pdf, data_extracao: '2026-05-09', parser: visao_multimodal_v11.15}
+unidades:
+- {apto: Casa 2, tip: 3D, planta: POENTE, area: 167.5, status: disponível, ticket: 1711788.01, origem: tabela_local_imagem}
+- {apto: Casa 4, tip: 3D, planta: POENTE, area: 167.5, status: disponível, ticket: 1720433.39, origem: tabela_local_imagem}
+- {apto: Casa 5, tip: 3D, planta: POENTE, area: 167.5, status: disponível, ticket: 1746369.57, origem: tabela_local_imagem}
+- {apto: Casa 6, tip: 3D, planta: POENTE, area: 167.5, status: disponível, ticket: 1720433.39, origem: tabela_local_imagem}
+- {apto: Casa 8, tip: 3D, planta: POENTE, area: 167.5, status: disponível, ticket: 1720433.39, origem: tabela_local_imagem}
+- {apto: Casa 10, tip: 3D, planta: POENTE, area: 167.5, status: disponível, ticket: 1720433.39, origem: tabela_local_imagem}
+- {apto: Casa 12, tip: 3D, planta: POENTE, area: 167.5, status: disponível, ticket: 1720433.39, origem: tabela_local_imagem}
+- {apto: Casa 14, tip: 3D, planta: POENTE, area: 167.5, status: disponível, ticket: 1720433.39, origem: tabela_local_imagem}
+- {apto: Casa 16, tip: 3D, planta: POENTE, area: 167.5, status: disponível, ticket: 1720433.39, origem: tabela_local_imagem}
+- {apto: Casa 18, tip: 3D, planta: POENTE, area: 167.5, status: disponível, ticket: 1720433.39, origem: tabela_local_imagem}
+- {apto: Casa 20, tip: 3D, planta: POENTE, area: 167.5, status: disponível, ticket: 1720433.39, origem: tabela_local_imagem}
+- {apto: Casa 22, tip: 3D, planta: POENTE, area: 167.5, status: disponível, ticket: 1720433.39, origem: tabela_local_imagem}
+- {apto: Casa 23, tip: 3D, planta: NASCENTE, area: 167.5, status: disponível, ticket: 1737724.19, origem: tabela_local_imagem}
+- {apto: Casa 24, tip: 3D, planta: POENTE, area: 167.5, status: disponível, ticket: 1711788.01, origem: tabela_local_imagem}
+- {apto: Casa 25, tip: 3D, planta: NASCENTE, area: 167.5, status: disponível, ticket: 1711788.01, origem: tabela_local_imagem}
+- {apto: Casa 26, tip: 3D, planta: POENTE, area: 167.5, status: disponível, ticket: 1720433.39, origem: tabela_local_imagem}
+- {apto: Casa 27, tip: 3D, planta: NASCENTE, area: 167.5, status: disponível, ticket: 1737724.19, origem: tabela_local_imagem}
+- {apto: Casa 1, tip: 3D, planta: NASCENTE, area: 167.5, status: vendido, ticket: null, origem: tabela_local_imagem}
+- {apto: Casa 3, tip: 3D, planta: NASCENTE, area: 167.5, status: vendido, ticket: null, origem: tabela_local_imagem}
+- {apto: Casa 7, tip: 3D, planta: NASCENTE, area: 167.5, status: vendido, ticket: null, origem: tabela_local_imagem}
+- {apto: Casa 9, tip: 3D, planta: NASCENTE, area: 167.5, status: vendido, ticket: null, origem: tabela_local_imagem}
+- {apto: Casa 11, tip: 3D, planta: NASCENTE, area: 167.5, status: vendido, ticket: null, origem: tabela_local_imagem}
+- {apto: Casa 13, tip: 3D, planta: NASCENTE, area: 167.5, status: vendido, ticket: null, origem: tabela_local_imagem}
+- {apto: Casa 15, tip: 3D, planta: NASCENTE, area: 167.5, status: vendido, ticket: null, origem: tabela_local_imagem}
+- {apto: Casa 17, tip: 3D, planta: NASCENTE, area: 167.5, status: vendido, ticket: null, origem: tabela_local_imagem}
+- {apto: Casa 19, tip: 3D, planta: NASCENTE, area: 167.5, status: vendido, ticket: null, origem: tabela_local_imagem}
+- {apto: Casa 21, tip: 3D, planta: NASCENTE, area: 167.5, status: vendido, ticket: null, origem: tabela_local_imagem}
+- {apto: Casa 28, tip: 3D, planta: NASCENTE, area: 167.5, status: vendido, ticket: null, origem: tabela_local_imagem}
+- {apto: Casa 29, tip: 3D, planta: NASCENTE, area: 167.5, status: vendido, ticket: null, origem: tabela_local_imagem}
+- {apto: Casa 30, tip: 3D, planta: NASCENTE, area: 167.5, status: vendido, ticket: null, origem: tabela_local_imagem}
+- {apto: Casa 31, tip: 3D, planta: NASCENTE, area: 167.5, status: vendido, ticket: null, origem: tabela_local_imagem}
+- {apto: Casa 32, tip: 3D, planta: NASCENTE, area: 167.5, status: vendido, ticket: null, origem: tabela_local_imagem}
+- {apto: Casa 33, tip: 3D, planta: NASCENTE, area: 167.5, status: vendido, ticket: null, origem: tabela_local_imagem}
+- {apto: Casa 34, tip: 3D, planta: NASCENTE, area: 167.5, status: vendido, ticket: null, origem: tabela_local_imagem}
+- {apto: Casa 35, tip: 3D, planta: NASCENTE, area: 167.5, status: vendido, ticket: null, origem: tabela_local_imagem}
+- {apto: Casa 36, tip: 3D, planta: NASCENTE, area: 167.5, status: vendido, ticket: null, origem: tabela_local_imagem}
+- {apto: Casa 37, tip: 3D, planta: NASCENTE, area: 167.5, status: vendido, ticket: null, origem: tabela_local_imagem}
+- {apto: Casa 38, tip: 3D, planta: NASCENTE, area: 167.5, status: vendido, ticket: null, origem: tabela_local_imagem}

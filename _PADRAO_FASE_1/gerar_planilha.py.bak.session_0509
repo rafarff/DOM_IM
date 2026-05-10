@@ -19,26 +19,8 @@ from openpyxl.drawing.image import Image as XLImage
 # ═══════════════════════════════════════════════════════════════
 # PARÂMETROS GLOBAIS
 # ═══════════════════════════════════════════════════════════════
-VERSION = "11.15"
-DATE_STR = "09/05/2026"
-# v11.15 — (09/05/2026): +1 INCORPORADORA NOVA (BelSul) + 1 EMPREEND NOVO (Residencial Arizona)
-#                       + 4 atualizações de tabela (Dom Lucas T18+T19, Dom José ABR rev3 + MAI/26).
-#   INBOX 09/05: 8 PDFs processados.
-#     • 2 books duplicados (md5 idêntico) → _DUPLICADAS_PRONTAS_PARA_DELETAR/
-#     • 1 NOVA INCORPORADORA: BelSul Administração e Participações (20ª)
-#         - Construtora: Eduardo Cardoso Engenharia
-#         - Vendas: André Leite Imóveis (CRECI J-707)
-#         - Arquitetura: Militão Gomes Arquitetura
-#     • 1 NOVO empreend: Residencial Arizona (Alto do Calhau, 38 casas duplex 167,5m² 3 suítes)
-#         - Tabela ABR/2026: 17 disp / 21 vend = 55% absorção
-#         - Tickets R$ 1.711.788–1.746.369 (à vista) — R$/m² ~10.270 → Padrão Alto
-#         - Entrega DEZ/2026 · VGV ~R$ 65,5M
-#         - Diferenciais: energia solar, banda larga 3 anos, 3 estações carga elétrica
-#     • Dom Lucas T18 (ABR/26) + T19 (MAI/26): tabelas movidas — re-extração diferida
-#     • Dom José ABR rev3 + MAI/26: tabelas arquivadas — re-extração diferida
-#   Total mapeado v11.14 → v11.15: Empreend 54 → 55 (+1); Incorporadoras 19 → 20 (+1);
-#     U_RAW 26 → 27 arquivos / 905 → 943 unidades (+38); VGV ~R$ 3,29 bi → ~R$ 3,36 bi (+R$ 65,5M).
-
+VERSION = "11.14"
+DATE_STR = "07/05/2026"
 # v11.14 — (07/05/2026): UPDATE MÍNIMO — Tabela Zion Ponta d'Areia MAI/2026 confirma v11.13.
 #   INBOX 07/05: 1 PDF processado (TABELA_ZION_PONTA_D_AREIA_052026.pdf, text-extraction).
 #
@@ -504,8 +486,7 @@ INCORPORADORAS = [
     "Delman","Treviso","Ergus","Monteplan","Franere","Canopus",
     "Niágara","MB Engenharia","Sá Cavalcante","Castelucci",
     "Hiali","DOM Incorporação",
-    "Áppia Construtora","ESA Empreendimentos","Amorim Coutinho",
-    "BelSul"
+    "Áppia Construtora","ESA Empreendimentos","Amorim Coutinho"
 ]
 
 SEGMENTOS = ["Popular","Médio","Alto","Luxo"]  # v8.1 (04/05/2026 — Rafael) — eliminada categoria Médio-alto
@@ -1128,16 +1109,6 @@ E_RAW = [
      "informado_manualmente","informado_manualmente","informado_manualmente",
      "https://amorimcoutinho.com.br","06/05/2026",
      "Tipologia detalhada (Book Essenza Luxury Living jan/2026 + WhatsApp corretora Sheila Cutrim Habitare 06/05/2026): 10 casas mono 267 m² em condomínio fechado de alto padrão. **4 SUÍTES por casa** (incluindo suíte master com closet). 2 pavimentos (Piso Térreo + Piso Superior). Lançamento MAI/2026. Olho d'Água. Ticket R$ 3.500.000 (forma de pagamento 'a combinar'). R$/m² R$ 13.108. VGV calculado: 10 × R$ 3,5M = R$ 35M. Padrão Luxo (ticket > R$ 2,5M). Diferenciais: design contemporâneo + acabamentos refinados, área de lazer privativa por casa (espaço gourmet + piscina), estrutura coletiva com academia + salão de festas, segurança e exclusividade pela baixa densidade (10 unid). **Movimento estratégico:** Amorim Coutinho é tradicionalmente top 15 nacional MCMV (Popular/Médio) — Essenza é primeira incursão da marca em Luxo. Imobiliária parceira: Habitare Imóveis (consultora Sheila Cutrim 98 98864-4053, comissão 4% 50/50 corretor/imobiliária). NOVA INCORPORADORA cadastrada v11.13 — Rafael 06/05 confirmou (texto WhatsApp original grafou 'Almorim Coutinho' mas grafia oficial é Amorim Coutinho).", "informado_manualmente", "informado_manualmente", "informado_manualmente"),
-
-    # ─── BELSUL — Residencial Arizona (Alto do Calhau) ────────────────────────
-    ("BelSul","Residencial Arizona",
-     "Alto do Calhau, São Luís - MA","Alto do Calhau",
-     "Horizontal",None,
-     38,"03/2024","12/2026", 167.5,167.5,167.5, "3D",
-     1711788,1746369, 1722467, None, 0.45,
-     "tabela_local_imagem","tabela_local_imagem","book",
-     "https://www.instagram.com/andreleiteimoveis/","09/05/2026",
-     "Tipologia detalhada (Tabela ABR/2026 + Book Res. Arizona criado mar/2024 + análise visão multimodal v11.15): 38 casas duplex 167,5 m² em condomínio fechado de alto padrão. **3 SUÍTES por casa** (Suíte 01 13,84m² + Suíte 02 13,67m² + Suíte 03 11,93m² + 3 WCs + Varanda 10,03m² no 1º andar). Posição NASCENTE (linha de fundo + casas 28-38) ou POENTE (linha frontal alternada com 1,3,5...). Tickets disp à vista R$ 1.711.788–1.746.369 — variação por posição/lote. Status (tabela ABR/26): 17 disp / 21 vendidas = 55% absorção. Pagamento parcelado: ATO ~R$ 231-235k + 30 mensais ~R$ 5,7k + 5 semestrais ~R$ 56k + financiamento ~R$ 1,02-1,05M. Entrega DEZEMBRO/2026. Diferenciais: energia solar (casas + áreas comuns), banda larga grátis 3 anos, 3 estações carregamento elétrico. Localização: Alto do Calhau próx. São Luís Shopping + Pq. do Rangedor. Padrão Alto (blend ticket R$ 1,72M Alto + R$/m² R$ 10,27k Alto). VGV ~R$ 65,5M. **NOVA INCORPORADORA cadastrada v11.15** — BelSul Administração e Participações (20ª da lista oficial). Construtora: Eduardo Cardoso Engenharia. Arquitetura: Militão Gomes Arquitetura. Paisagismo: S. Andrade Projetos e Construções. Vendas: André Leite Imóveis (CRECI J-707). Lançamento estimado mar/2024 (book gerado 11/03/2024 — origem book).", "informado_manualmente", "tabela_local_imagem", "informado_manualmente"),
 
 ]
 
