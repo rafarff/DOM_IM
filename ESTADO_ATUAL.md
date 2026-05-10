@@ -2,17 +2,17 @@
 
 > **Para Claude (toda sessão):** este é o **primeiro arquivo a ler** antes de qualquer ação. Confirma a base de trabalho. Se a invariante 0.3 do PADRAO falhar contra os números aqui, **PARAR**.
 
-**Última atualização:** 09/05/2026 (sessão 5 — INBOX 09/05: BelSul + Arizona + 4 atualizações Dom Lucas/José)
-**Versão Planilha vigente:** v11.15
+**Última atualização:** 09/05/2026 (sessão 5 cont. — Dom Lucas T19 + Dom José MAI/26 re-extraídos)
+**Versão Planilha vigente:** v11.16
 **Versão PADRAO vigente:** v7.0 (com §3.7.0 — U_RAW)
-**Versão script `gerar_planilha.py`:** 11.15 (DATE_STR: 09/05/2026)
+**Versão script `gerar_planilha.py`:** 11.16 (DATE_STR: 09/05/2026)
 **Versão `build_panorama.py`:** v8.2.0 (sem mudança nessa sessão)
 
 ---
 
-## Snapshot da carteira (v11.15)
+## Snapshot da carteira (v11.16)
 
-| Métrica | Valor | Δ vs v11.14 |
+| Métrica | Valor | Δ vs v11.15 |
 |---|---:|---:|
 | Aba Empreendimentos | **55 linhas** | +1 (Residencial Arizona) |
 | Aba Incorporadoras | **20 linhas — DERIVADA** | +1 (BelSul — 20ª oficial) |
@@ -79,6 +79,23 @@ cd 00_ESTUDO_CONSOLIDADO/ && ls -1 Planilha_Mestre_Panorama_v*.xlsx | sort -V | 
 ---
 
 ## Mudanças estruturais recentes
+
+- **v11.16** (09/05/2026 — sessão 5 cont.) — **UPDATE Dom Lucas T19 + Dom José MAI/26 via visão multimodal.**
+   - **Dom Lucas:** MAR/26 → MAI/26 (T19) — re-extração via visão multimodal.
+     - **Δ disp:** 9 disp + 1 reserv → 8 disp (-2 estoque).
+     - **Δ vend:** 36 → 38 (+2 vendas líquidas em 2 meses = ~1 venda/mês).
+     - **INSIGHT crítico:** 4 vendas concretizadas (UH 18, 20, 22, 30) **MAS 3 distratos/desistências** (UH 19, 23, 24 voltaram ao estoque). Net +2 vendas, mas **velocidade bruta foi maior** — sinal de que o produto Dom Lucas está com churn de venda. Vale investigar (preço alto demais? cliente desqualificado? produto/localização não convertendo?).
+     - Disp atual MAI/26: UH 2 (R$ 850.937), 4 (R$ 847.987), 9 (R$ 840.627), 17 / 19 / 21 / 23 (R$ 835.894 cada), 24 (R$ 844.730).
+     - **% vendido: 78% → 83%** (38/46).
+   - **Dom José:** ABR/26 → MAI/26 — re-extração via visão multimodal.
+     - **Δ disp:** 3 → 2 disp (UH 10 vendida concretamente).
+     - **Δ vend:** 19 → 20 (+1 venda em 1 mês).
+     - **ABR rev3 confirma estado intermediário:** UH 1 ficou RESERVADA em ABR/26 mas reserva caiu até MAI/26 (voltou a disp). UH 10 saiu de DISP (orig) → VENDIDA (rev3) → continua VENDIDA (MAI). Re-parcelamento mecânico (15X→14X mensais) é a única outra mudança entre rev3 e MAI/26.
+     - Disp atual MAI/26: UH 1 (R$ 1.403.358 / terreno 178,49 m²), UH 9 (R$ 1.412.580 / terreno 179,04 m²).
+     - **% vendido: 86% → 91%** (20/22).
+   - **Sem mudanças estruturais.** Empreend 55 (=); Incorp 20 (=); Composição 102 linhas (=); U_RAW 27/943 unid (=); VGV R$ 3,36 bi (=). Apenas % vendido recalculado.
+   - YAMLs atualizados: `unidades/DOM_Incorporacao__Dom_Lucas.yaml` + `unidades/DOM_Incorporacao__Dom_Jose.yaml`. Origem ambos bumpada para `tabela_local_imagem` MAI/26 com `parser: visao_multimodal_v11.16`.
+   - **Implicação estratégica DOM:** Dom Lucas vendeu net +2 (mas bruto +4 com 3 distratos = sinal de atrito comercial); Dom José vendeu +1 cleanly. Comparado: Arizona (BelSul, novo entrante) absorvendo ~55% em 24 meses sem distratos sinaliza que produto similar funciona — vale investigar se o preço Dom Lucas (R$ 835-850k em casas 100m² Cantinho do Céu) está calibrado vs Arizona (R$ 1,71-1,75M em casas 167m² Alto do Calhau, ~R$ 10,2k/m²). Dom Lucas hoje ~R$ 8,3-8,5k/m².
 
 - **v11.15** (09/05/2026 — sessão 5) — **+1 INCORPORADORA NOVA (BelSul) + 1 EMPREEND NOVO (Residencial Arizona) + 4 atualizações Dom Lucas/José.**
    - **INBOX 09/05:** 8 PDFs processados.

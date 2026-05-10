@@ -1,17 +1,15 @@
 incorporadora: DOM Incorporação
 empreendimento: Dom Lucas
-fonte: {origem_principal: tabela_local_imagem, documento: TABELA_DOM_LUCAS_032026_v1.pdf, data_extracao: '2026-04-01', parser: visao_multimodal_v11.6}
+fonte: {origem_principal: tabela_local_imagem, documento: TABELA_DOM_LUCAS_052026_T19.pdf, data_extracao: '2026-05-09', parser: visao_multimodal_v11.16}
 unidades:
-- {apto: '2', tip: 3D, planta: '', area: 100.35, status: disponível, ticket: 850917.84, origem: tabela_local_imagem}
+- {apto: '2', tip: 3D, planta: '', area: 100.35, status: disponível, ticket: 850937.83, origem: tabela_local_imagem}
 - {apto: '4', tip: 3D, planta: '', area: 100.35, status: disponível, ticket: 847987.61, origem: tabela_local_imagem}
-- {apto: '9', tip: 3D, planta: '', area: 100.35, status: disponível, ticket: 840627.93, origem: tabela_local_imagem}
-- {apto: '17', tip: 3D, planta: '', area: 100.35, status: disponível, ticket: 839894.79, origem: tabela_local_imagem}
-- {apto: '18', tip: 3D, planta: '', area: 100.35, status: disponível, ticket: 839894.79, origem: tabela_local_imagem}
-- {apto: '20', tip: 3D, planta: '', area: 100.35, status: disponível, ticket: 839894.79, origem: tabela_local_imagem}
-- {apto: '21', tip: 3D, planta: '', area: 100.35, status: disponível, ticket: 839894.79, origem: tabela_local_imagem}
-- {apto: '22', tip: 3D, planta: '', area: 100.35, status: disponível, ticket: 839894.79, origem: tabela_local_imagem}
-- {apto: '30', tip: 3D, planta: '', area: 100.35, status: disponível, ticket: 839894.79, origem: tabela_local_imagem}
-- {apto: '24', tip: 3D, planta: '', area: 100.35, status: reservado, ticket: 844730.08, origem: tabela_local_imagem}
+- {apto: '9', tip: 3D, planta: '', area: 100.35, status: disponível, ticket: 840627.43, origem: tabela_local_imagem}
+- {apto: '17', tip: 3D, planta: '', area: 100.35, status: disponível, ticket: 835894.79, origem: tabela_local_imagem}
+- {apto: '19', tip: 3D, planta: '', area: 100.35, status: disponível, ticket: 835894.79, origem: tabela_local_imagem}
+- {apto: '21', tip: 3D, planta: '', area: 100.35, status: disponível, ticket: 835894.79, origem: tabela_local_imagem}
+- {apto: '23', tip: 3D, planta: '', area: 100.35, status: disponível, ticket: 835894.79, origem: tabela_local_imagem}
+- {apto: '24', tip: 3D, planta: '', area: 100.35, status: disponível, ticket: 844730.08, origem: tabela_local_imagem}
 - {apto: '1', tip: 3D, planta: '', area: 100.35, status: vendido, ticket: null, origem: tabela_local_imagem}
 - {apto: '3', tip: 3D, planta: '', area: 100.35, status: vendido, ticket: null, origem: tabela_local_imagem}
 - {apto: '5', tip: 3D, planta: '', area: 100.35, status: vendido, ticket: null, origem: tabela_local_imagem}
@@ -25,13 +23,15 @@ unidades:
 - {apto: '14', tip: 3D, planta: '', area: 100.35, status: vendido, ticket: null, origem: tabela_local_imagem}
 - {apto: '15', tip: 3D, planta: '', area: 100.35, status: vendido, ticket: null, origem: tabela_local_imagem}
 - {apto: '16', tip: 3D, planta: '', area: 100.35, status: vendido, ticket: null, origem: tabela_local_imagem}
-- {apto: '19', tip: 3D, planta: '', area: 100.35, status: vendido, ticket: null, origem: tabela_local_imagem}
-- {apto: '23', tip: 3D, planta: '', area: 100.35, status: vendido, ticket: null, origem: tabela_local_imagem}
+- {apto: '18', tip: 3D, planta: '', area: 100.35, status: vendido, ticket: null, origem: tabela_local_imagem}
+- {apto: '20', tip: 3D, planta: '', area: 100.35, status: vendido, ticket: null, origem: tabela_local_imagem}
+- {apto: '22', tip: 3D, planta: '', area: 100.35, status: vendido, ticket: null, origem: tabela_local_imagem}
 - {apto: '25', tip: 3D, planta: '', area: 100.35, status: vendido, ticket: null, origem: tabela_local_imagem}
 - {apto: '26', tip: 3D, planta: '', area: 100.35, status: vendido, ticket: null, origem: tabela_local_imagem}
 - {apto: '27', tip: 3D, planta: '', area: 100.35, status: vendido, ticket: null, origem: tabela_local_imagem}
 - {apto: '28', tip: 3D, planta: '', area: 100.35, status: vendido, ticket: null, origem: tabela_local_imagem}
 - {apto: '29', tip: 3D, planta: '', area: 100.35, status: vendido, ticket: null, origem: tabela_local_imagem}
+- {apto: '30', tip: 3D, planta: '', area: 100.35, status: vendido, ticket: null, origem: tabela_local_imagem}
 - {apto: '31', tip: 3D, planta: '', area: 100.35, status: vendido, ticket: null, origem: tabela_local_imagem}
 - {apto: '32', tip: 3D, planta: '', area: 100.35, status: vendido, ticket: null, origem: tabela_local_imagem}
 - {apto: '33', tip: 3D, planta: '', area: 100.35, status: vendido, ticket: null, origem: tabela_local_imagem}

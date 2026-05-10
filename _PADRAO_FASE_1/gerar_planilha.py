@@ -19,8 +19,19 @@ from openpyxl.drawing.image import Image as XLImage
 # ═══════════════════════════════════════════════════════════════
 # PARÂMETROS GLOBAIS
 # ═══════════════════════════════════════════════════════════════
-VERSION = "11.15"
+VERSION = "11.16"
 DATE_STR = "09/05/2026"
+# v11.16 — (09/05/2026 — sessão 5 cont.): UPDATE Dom Lucas + Dom José com tabelas MAI/26.
+#   Re-extração via visão multimodal das tabelas T19 (Dom Lucas) e MAI (Dom José):
+#     • Dom Lucas: MAR/26 → MAI/26 (T19): 9 disp+1 reserv → 8 disp; 36 vend → 38 vend (+2 vendas líquidas em 2 meses).
+#       INSIGHT: 4 vendas concretizadas (UH 18, 20, 22, 30) MAS 3 distratos/desistências (UH 19, 23, 24 voltaram pro estoque) — net +2.
+#     • Dom José: ABR/26 → MAI/26: 3 disp → 2 disp; 19 vend → 20 vend (+1 venda em 1 mês). UH 10 vendida concretamente.
+#     • Dom José ABR rev3 confirma estado intermediário (UH 1 ficou RESERVADA mas reserva caiu até MAI/26 — voltou a disp).
+#   Sem mudanças estruturais — apenas atualização de status/disp dos U_RAW YAMLs vigentes.
+#   YAMLs atualizados: unidades/DOM_Incorporacao__Dom_Lucas.yaml + unidades/DOM_Incorporacao__Dom_Jose.yaml.
+#   Total mapeado v11.15 → v11.16: Empreend 55 (=); Incorporadoras 20 (=); Composição 102 linhas (=); 
+#     U_RAW 27 arquivos / 943 unidades (=); VGV ~R$ 3,36 bi (=) — apenas % vendido recalculado.
+
 # v11.15 — (09/05/2026): +1 INCORPORADORA NOVA (BelSul) + 1 EMPREEND NOVO (Residencial Arizona)
 #                       + 4 atualizações de tabela (Dom Lucas T18+T19, Dom José ABR rev3 + MAI/26).
 #   INBOX 09/05: 8 PDFs processados.
