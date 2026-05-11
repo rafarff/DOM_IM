@@ -58,22 +58,15 @@ BREVE_LANCAMENTO_NAMES = {
 def fase_comercial(empreendimento: str, orig_precos: str) -> str:
     """
     Classifica fase comercial em 3 buckets para as Tabelas A/B/C do Panorama.
-    - lancado_com_tabela: temos a tabela de vendas (qualquer variante "tabela_*" ou manual)
+    - lancado_com_tabela: temos a tabela de vendas (orig_precos in tabela|tabela_local)
     - breve_lancamento  : empreendimento listado em BREVE_LANCAMENTO_NAMES (manual)
-    - lancado_sem_tabela: demais (agregador, imprensa, site_oficial sem ficha, estimativa, N/A)
-    
-    v8.1.2 (09/05/2026): Estendido para reconhecer tabela_local_imagem e tabela_local_parcial.
-      Motivo: Arizona (BelSul), Dom Lucas, Dom José, Zion etc. usam "tabela_local_imagem" 
-      (visão multimodal de PDF imagem) e estavam caindo em C indevidamente. Prime Cohama
-      usa "tabela_local_parcial" pelo mesmo motivo. Todas têm dados de tabela completos
-      por unidade.
+    - lancado_sem_tabela: demais
     """
     if empreendimento in BREVE_LANCAMENTO_NAMES:
         return "breve_lancamento"
     # v11.8: aceita informado_manualmente como A (caso Rafael conhece o empreend. com certeza
     # mesmo sem tabela formal — ex: empreend. próprios DOM, ou casos tipo Dom Antônio 100% vendido)
-    # v8.1.2: aceita tabela_local_imagem (visão multimodal) e tabela_local_parcial (tabela parcial)
-    if orig_precos in ("tabela", "tabela_local", "tabela_local_imagem", "tabela_local_parcial", "informado_manualmente"):
+    if orig_precos in ("tabela", "tabela_local", "informado_manualmente"):
         return "lancado_com_tabela"
     return "lancado_sem_tabela"
 
