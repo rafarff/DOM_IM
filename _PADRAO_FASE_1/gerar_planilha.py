@@ -19,8 +19,19 @@ from openpyxl.drawing.image import Image as XLImage
 # ═══════════════════════════════════════════════════════════════
 # PARÂMETROS GLOBAIS
 # ═══════════════════════════════════════════════════════════════
-VERSION = "11.16"
+VERSION = "11.17"
 DATE_STR = "09/05/2026"
+# v11.17 — (09/05/2026 — sessão 5 hotfix): Corrige tupla Arizona (rsm2 wrong) — segmento Luxo→Alto.
+#   BUG identificado pelo Rafael: ao olhar o Panorama, BelSul/Arizona não aparecia.
+#   Causa raiz #1: posição 15 da tupla E_RAW é "Preço médio R$/m²" (None = auto-calculado),
+#     não "ticket médio" (que é auto pelo (min+max)/2). Eu coloquei 1722467 (avg ticket) ali,
+#     fazendo o segmento ser classificado como Luxo (R$/m² > 15k threshold) — incorreto.
+#     CORREÇÃO: None na posição 15 → script auto-calcula R$/m² = 10.283 (1.722.467/167,5) → Alto.
+#   Causa raiz #2: lançamento "03/2024" fica FORA do filtro padrão "Últimos 2 anos" 
+#     (cutoff 09/05/2024). Arizona aparece em "Dados Completos" (55 empreend) mas não no 
+#     dashboard padrão. NÃO corrigido aqui — Rafael decide se muda lançamento ou troca filtro.
+#   Total mapeado v11.16 → v11.17: zero mudanças numéricas. Apenas Segmento Arizona Luxo→Alto.
+
 # v11.16 — (09/05/2026 — sessão 5 cont.): UPDATE Dom Lucas + Dom José com tabelas MAI/26.
 #   Re-extração via visão multimodal das tabelas T19 (Dom Lucas) e MAI (Dom José):
 #     • Dom Lucas: MAR/26 → MAI/26 (T19): 9 disp+1 reserv → 8 disp; 36 vend → 38 vend (+2 vendas líquidas em 2 meses).
@@ -1145,7 +1156,7 @@ E_RAW = [
      "Alto do Calhau, São Luís - MA","Alto do Calhau",
      "Horizontal",None,
      38,"03/2024","12/2026", 167.5,167.5,167.5, "3D",
-     1711788,1746369, 1722467, None, 0.45,
+     1711788,1746369, None, None, 0.45,
      "tabela_local_imagem","tabela_local_imagem","book",
      "https://www.instagram.com/andreleiteimoveis/","09/05/2026",
      "Tipologia detalhada (Tabela ABR/2026 + Book Res. Arizona criado mar/2024 + análise visão multimodal v11.15): 38 casas duplex 167,5 m² em condomínio fechado de alto padrão. **3 SUÍTES por casa** (Suíte 01 13,84m² + Suíte 02 13,67m² + Suíte 03 11,93m² + 3 WCs + Varanda 10,03m² no 1º andar). Posição NASCENTE (linha de fundo + casas 28-38) ou POENTE (linha frontal alternada com 1,3,5...). Tickets disp à vista R$ 1.711.788–1.746.369 — variação por posição/lote. Status (tabela ABR/26): 17 disp / 21 vendidas = 55% absorção. Pagamento parcelado: ATO ~R$ 231-235k + 30 mensais ~R$ 5,7k + 5 semestrais ~R$ 56k + financiamento ~R$ 1,02-1,05M. Entrega DEZEMBRO/2026. Diferenciais: energia solar (casas + áreas comuns), banda larga grátis 3 anos, 3 estações carregamento elétrico. Localização: Alto do Calhau próx. São Luís Shopping + Pq. do Rangedor. Padrão Alto (blend ticket R$ 1,72M Alto + R$/m² R$ 10,27k Alto). VGV ~R$ 65,5M. **NOVA INCORPORADORA cadastrada v11.15** — BelSul Administração e Participações (20ª da lista oficial). Construtora: Eduardo Cardoso Engenharia. Arquitetura: Militão Gomes Arquitetura. Paisagismo: S. Andrade Projetos e Construções. Vendas: André Leite Imóveis (CRECI J-707). Lançamento estimado mar/2024 (book gerado 11/03/2024 — origem book).", "informado_manualmente", "tabela_local_imagem", "informado_manualmente"),

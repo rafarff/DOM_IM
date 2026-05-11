@@ -2,15 +2,15 @@
 
 > **Para Claude (toda sessão):** este é o **primeiro arquivo a ler** antes de qualquer ação. Confirma a base de trabalho. Se a invariante 0.3 do PADRAO falhar contra os números aqui, **PARAR**.
 
-**Última atualização:** 09/05/2026 (sessão 5 cont. — Dom Lucas T19 + Dom José MAI/26 re-extraídos)
-**Versão Planilha vigente:** v11.16
+**Última atualização:** 09/05/2026 (sessão 5 hotfix — corrige rsm2 Arizona: Luxo → Alto)
+**Versão Planilha vigente:** v11.17
 **Versão PADRAO vigente:** v7.0 (com §3.7.0 — U_RAW)
-**Versão script `gerar_planilha.py`:** 11.16 (DATE_STR: 09/05/2026)
+**Versão script `gerar_planilha.py`:** 11.17 (DATE_STR: 09/05/2026)
 **Versão `build_panorama.py`:** v8.2.0 (sem mudança nessa sessão)
 
 ---
 
-## Snapshot da carteira (v11.16)
+## Snapshot da carteira (v11.17)
 
 | Métrica | Valor | Δ vs v11.15 |
 |---|---:|---:|
@@ -79,6 +79,13 @@ cd 00_ESTUDO_CONSOLIDADO/ && ls -1 Planilha_Mestre_Panorama_v*.xlsx | sort -V | 
 ---
 
 ## Mudanças estruturais recentes
+
+- **v11.17** (09/05/2026 — sessão 5 hotfix) — **Bug fix tupla Arizona: rsm2 Luxo → Alto.**
+   - **Causa raiz:** Eu coloquei o ticket médio (1.722.467) na posição 15 da tupla E_RAW (que é "Preço médio R$/m²"), fazendo o segmento ser auto-classificado como **Luxo** (R$/m² > 15k). Correto: deixar None → script calcula R$/m² = R$ 10.322 (1.722.467 / 167,5) → **Alto** (faixa 9-15k).
+   - **Antes (v11.15-16):** Arizona aparecia no HTML com `segmento: "Luxo"` e `rsm2: 1722467` (absurdo).
+   - **Depois (v11.17):** Arizona aparece com `segmento: "Alto"` e `rsm2: 10322` ✅.
+   - **2º problema identificado (não corrigido):** Lançamento Arizona "03/2024" fica FORA do filtro padrão do dashboard "Últimos 2 anos" (cutoff 09/05/2024). Solução: usuário muda filtro no topo do dashboard ("Período: Todos" ou "Últimos 3 anos"), ou ajustamos a default — fica como decisão Rafael.
+   - **Sem mudanças estruturais.** Empreend 55 (=); Incorp 20 (=); Composição 102 linhas (=); VGV R$ 3,36 bi (=).
 
 - **v11.16** (09/05/2026 — sessão 5 cont.) — **UPDATE Dom Lucas T19 + Dom José MAI/26 via visão multimodal.**
    - **Dom Lucas:** MAR/26 → MAI/26 (T19) — re-extração via visão multimodal.
