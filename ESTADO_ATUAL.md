@@ -6,7 +6,7 @@
 **Versão Planilha vigente:** v11.17
 **Versão PADRAO vigente:** v7.0 (com §3.7.0 — U_RAW)
 **Versão script `gerar_planilha.py`:** 11.17 (DATE_STR: 09/05/2026)
-**Versão `build_panorama.py`:** v8.2.0 (sem mudança nessa sessão)
+**Versão `build_panorama.py`:** v8.2.1 (expandiu filtro Panorama ciclo 25-26 → 24-26 + entrega futura)
 
 ---
 
@@ -84,7 +84,7 @@ cd 00_ESTUDO_CONSOLIDADO/ && ls -1 Planilha_Mestre_Panorama_v*.xlsx | sort -V | 
    - **Causa raiz:** Eu coloquei o ticket médio (1.722.467) na posição 15 da tupla E_RAW (que é "Preço médio R$/m²"), fazendo o segmento ser auto-classificado como **Luxo** (R$/m² > 15k). Correto: deixar None → script calcula R$/m² = R$ 10.322 (1.722.467 / 167,5) → **Alto** (faixa 9-15k).
    - **Antes (v11.15-16):** Arizona aparecia no HTML com `segmento: "Luxo"` e `rsm2: 1722467` (absurdo).
    - **Depois (v11.17):** Arizona aparece com `segmento: "Alto"` e `rsm2: 10322` ✅.
-   - **2º problema identificado (não corrigido):** Lançamento Arizona "03/2024" fica FORA do filtro padrão do dashboard "Últimos 2 anos" (cutoff 09/05/2024). Solução: usuário muda filtro no topo do dashboard ("Período: Todos" ou "Últimos 3 anos"), ou ajustamos a default — fica como decisão Rafael.
+   - **2º problema identificado e CORRIGIDO (build_panorama v8.2.0 → v8.2.1):** Rafael apontou que Arizona não aparecia na aba Panorama (que não tem filtro UI). Causa raiz: `should_include()` filtrava só lançamentos 2025/2026, descartando Arizona (03/2024). Pior: o status field que era fallback foi REMOVIDO da planilha em v6.0 (27/04/2026) mas o filtro continuou apontando para ele — todos os matches no Panorama vinham SÓ do filtro de ano. **Correção v8.2.1:** filtro expandido para 2024/2025/2026 OU entrega futura (2026+). Ativos no ciclo: 34 → **49 empreendimentos** (+15: Arizona/BelSul + 4 Delman + 3 Alfa + 2 Mota Machado + Berg Mount Solaro + outros lançados 2024 mas com obra em andamento). **BelSul agora aparece com 1 empreend. (Arizona) no Panorama** ✅.
    - **Sem mudanças estruturais.** Empreend 55 (=); Incorp 20 (=); Composição 102 linhas (=); VGV R$ 3,36 bi (=).
 
 - **v11.16** (09/05/2026 — sessão 5 cont.) — **UPDATE Dom Lucas T19 + Dom José MAI/26 via visão multimodal.**
