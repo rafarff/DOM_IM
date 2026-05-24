@@ -19,8 +19,16 @@ from openpyxl.drawing.image import Image as XLImage
 # ═══════════════════════════════════════════════════════════════
 # PARÂMETROS GLOBAIS
 # ═══════════════════════════════════════════════════════════════
-VERSION = "11.17"
-DATE_STR = "09/05/2026"
+VERSION = "11.18"
+DATE_STR = "24/05/2026"
+# v11.18 — (24/05/2026): Correção de Bairro — Quartier 22 (Delman).
+#   Rafael instruiu manualmente: Bairro "Ponta d'Areia" → "Península".
+#   Origem Bairro: None → "informado_manualmente" (§3.10 nível 5).
+#   Racional: harmoniza com os irmãos Delman da mesma micro-região (Azimuth,
+#     Sky Residence, Studio Design 7 Península), todos já com Bairro="Península"
+#     — convenção §3.10 (Bairro = região senso comum). Também zera o WARN §3.10
+#     que existia (Bairro preenchido com Origem Bairro=None).
+#   Sem mudanças estruturais. Empreend 57 (=); zero delta numérico.
 # v11.17 — (09/05/2026 — sessão 5 hotfix): Corrige tupla Arizona (rsm2 wrong) — segmento Luxo→Alto.
 #   BUG identificado pelo Rafael: ao olhar o Panorama, BelSul/Arizona não aparecia.
 #   Causa raiz #1: posição 15 da tupla E_RAW é "Preço médio R$/m²" (None = auto-calculado),
@@ -671,13 +679,13 @@ E_RAW = [
      "Tipologia detalhada: 3 suítes. Tabela 04/2026 marcada 'pré-lançamento'. Fonte web confirma lançamento 2026. Duplex cobertura 123-143m².", "tabela_local_parcial", None, None),
 
     ("Delman","Quartier 22",
-     "Endereço não localizado, Ponta d'Areia, São Luís - MA","Ponta d'Areia",
+     "Endereço não localizado, Ponta d'Areia, São Luís - MA","Península",
      "Vertical",None,
      30,"09/2022 ⚠ T-36","09/2025", 165,165,None, "3D",
      3000000,3000000, None,None, None,
      "tabela_local","tabela_local","estimativa_T-36",
      "https://www.delman.com.br","14/04/2026",
-     "Tipologia detalhada: 3 suítes. Entrega iminente. 1 apto (601) de 30 à venda. ≈97% vendido.", "memorial", None, None),
+     "Tipologia detalhada: 3 suítes. Entrega iminente. 1 apto (601) de 30 à venda. ≈97% vendido.", "memorial", None, "informado_manualmente"),
 
     ("Delman","Sky Residence",
      "Endereço não localizado, Ponta d'Areia, São Luís - MA","Península",

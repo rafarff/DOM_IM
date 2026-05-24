@@ -2,15 +2,15 @@
 
 > **Para Claude (toda sessão):** este é o **primeiro arquivo a ler** antes de qualquer ação. Confirma a base de trabalho. Se a invariante 0.3 do PADRAO falhar contra os números aqui, **PARAR**.
 
-**Última atualização:** 09/05/2026 (sessão 5 hotfix — corrige rsm2 Arizona: Luxo → Alto)
-**Versão Planilha vigente:** v11.17
+**Última atualização:** 24/05/2026 (correção de Bairro — Quartier 22: Ponta d'Areia → Península)
+**Versão Planilha vigente:** v11.18
 **Versão PADRAO vigente:** v7.0 (com §3.7.0 — U_RAW)
-**Versão script `gerar_planilha.py`:** 11.17 (DATE_STR: 09/05/2026)
+**Versão script `gerar_planilha.py`:** 11.18 (DATE_STR: 24/05/2026)
 **Versão `build_panorama.py`:** v8.2.1 (expandiu filtro Panorama ciclo 25-26 → 24-26 + entrega futura)
 
 ---
 
-## Snapshot da carteira (v11.17)
+## Snapshot da carteira (v11.18)
 
 | Métrica | Valor | Δ vs v11.15 |
 |---|---:|---:|
@@ -79,6 +79,11 @@ cd 00_ESTUDO_CONSOLIDADO/ && ls -1 Planilha_Mestre_Panorama_v*.xlsx | sort -V | 
 ---
 
 ## Mudanças estruturais recentes
+
+- **v11.18** (24/05/2026) — **Correção de Bairro: Quartier 22 (Delman) — Ponta d'Areia → Península.**
+   - Rafael instruiu manualmente. `Bairro` "Ponta d'Areia" → "Península"; `Origem Bairro` None → `informado_manualmente` (§3.10 nível 5).
+   - **Racional:** harmoniza com os irmãos Delman da mesma micro-região (Azimuth, Sky Residence, Studio Design 7 Península), todos já com Bairro="Península" — convenção §3.10 (Bairro = região senso comum). Também resolve 1 WARN §3.10 (Bairro preenchido sem origem): §3.10 caiu de 24 → 23 WARNs.
+   - **Sem mudanças estruturais.** Empreend 55 (=); Incorp 20 (=); Composição 102 linhas (=); VGV R$ 3,36 bi (=). Zero delta numérico. Drift script ↔ planilha: 0 ✅ — diff v11.17→v11.18 tocou só 2 células de dados (Bairro + Origem Bairro do Quartier 22) + 2 banners de versão.
 
 - **v11.17** (09/05/2026 — sessão 5 hotfix) — **Bug fix tupla Arizona: rsm2 Luxo → Alto.**
    - **Causa raiz:** Eu coloquei o ticket médio (1.722.467) na posição 15 da tupla E_RAW (que é "Preço médio R$/m²"), fazendo o segmento ser auto-classificado como **Luxo** (R$/m² > 15k). Correto: deixar None → script calcula R$/m² = R$ 10.322 (1.722.467 / 167,5) → **Alto** (faixa 9-15k).
