@@ -2,15 +2,15 @@
 
 > **Para Claude (toda sessão):** este é o **primeiro arquivo a ler** antes de qualquer ação. Confirma a base de trabalho. Se a invariante 0.3 do PADRAO falhar contra os números aqui, **PARAR**.
 
-**Última atualização:** 24/05/2026 (correção de Bairro — Quartier 22: Ponta d'Areia → Península)
-**Versão Planilha vigente:** v11.18
+**Última atualização:** 25/05/2026 (correção de Bairro — Monte Meru: Ponta d'Areia → Península)
+**Versão Planilha vigente:** v11.19
 **Versão PADRAO vigente:** v7.0 (com §3.7.0 — U_RAW)
-**Versão script `gerar_planilha.py`:** 11.18 (DATE_STR: 24/05/2026)
+**Versão script `gerar_planilha.py`:** 11.19 (DATE_STR: 25/05/2026)
 **Versão `build_panorama.py`:** v8.2.1 (expandiu filtro Panorama ciclo 25-26 → 24-26 + entrega futura)
 
 ---
 
-## Snapshot da carteira (v11.18)
+## Snapshot da carteira (v11.19)
 
 | Métrica | Valor | Δ vs v11.15 |
 |---|---:|---:|
@@ -79,6 +79,11 @@ cd 00_ESTUDO_CONSOLIDADO/ && ls -1 Planilha_Mestre_Panorama_v*.xlsx | sort -V | 
 ---
 
 ## Mudanças estruturais recentes
+
+- **v11.19** (25/05/2026) — **Correção de Bairro: Monte Meru (Berg Engenharia) — Ponta d'Areia → Península.**
+   - Rafael instruiu manualmente. `Bairro` "Ponta d'Areia" → "Península"; `Origem Bairro` None → `informado_manualmente` (§3.10 nível 5).
+   - **Racional:** harmoniza com o irmão Berg "Mount Solaro", já com Bairro="Península" (endereço "Península da Ponta D'Areia") — convenção §3.10 (Bairro = região senso comum). Também resolve 1 WARN §3.10 (Bairro preenchido sem origem): §3.10 caiu de 23 → 22 WARNs.
+   - **Sem mudanças estruturais.** Empreend 55 (=); Incorp 20 (=); Composição 102 linhas (=); VGV R$ 3,36 bi (=). Zero delta numérico. Drift script ↔ planilha: 0 ✅ — diff v11.18→v11.19 tocou só 2 células de dados (Bairro + Origem Bairro do Monte Meru) + 2 banners de versão.
 
 - **v11.18** (24/05/2026) — **Correção de Bairro: Quartier 22 (Delman) — Ponta d'Areia → Península.**
    - Rafael instruiu manualmente. `Bairro` "Ponta d'Areia" → "Península"; `Origem Bairro` None → `informado_manualmente` (§3.10 nível 5).

@@ -19,8 +19,15 @@ from openpyxl.drawing.image import Image as XLImage
 # ═══════════════════════════════════════════════════════════════
 # PARÂMETROS GLOBAIS
 # ═══════════════════════════════════════════════════════════════
-VERSION = "11.18"
-DATE_STR = "24/05/2026"
+VERSION = "11.19"
+DATE_STR = "25/05/2026"
+# v11.19 — (25/05/2026): Correção de Bairro — Monte Meru (Berg Engenharia).
+#   Rafael instruiu manualmente: Bairro "Ponta d'Areia" → "Península".
+#   Origem Bairro: None → "informado_manualmente" (§3.10 nível 5).
+#   Racional: harmoniza com o irmão Berg "Mount Solaro", já com Bairro="Península"
+#     (endereço "Península da Ponta D'Areia") — convenção §3.10 (Bairro = região
+#     senso comum). Também zera o WARN §3.10 (Bairro preenchido sem origem).
+#   Sem mudanças estruturais. Empreend 55 (=); zero delta numérico.
 # v11.18 — (24/05/2026): Correção de Bairro — Quartier 22 (Delman).
 #   Rafael instruiu manualmente: Bairro "Ponta d'Areia" → "Península".
 #   Origem Bairro: None → "informado_manualmente" (§3.10 nível 5).
@@ -819,13 +826,13 @@ E_RAW = [
 
     # ═══ BERG ══════════════════════════════════════════════════════════
     ("Berg Engenharia","Monte Meru",
-     "Endereço não localizado, Ponta d'Areia, São Luís - MA","Ponta d'Areia",
+     "Endereço não localizado, Ponta d'Areia, São Luís - MA","Península",
      "Vertical",None,
      None,"04/2024","04/2027", 135.32,135.83,None, "—",
      1932400,1944500, None,None,None,
      "tabela_local","tabela_local","imprensa",
      "https://www.bergengenharia.com.br","06/05/2026",
-     "Tipologia detalhada: Aptos 135 m², 2-3 vagas. Tabela MAI/2026 (Berg Engenharia) confirma 2 unid. disponíveis: apto 103 (135,32 m², R$ 1.932.400) + apto 104 (135,83 m², R$ 1.944.500). 9 unidades VENDIDAS (apto 204-1004). 4 tipologias (1-4) com áreas similares. Lançamento 04/2024 estimado pela pasta. Conclusão: 30/04/2027 (T-36 perfeito). **Diferenciais comerciais (WhatsApp corretor 06/05/2026):** unidades disponíveis são de 1º andar mas com pé-direito de 4º pavimento + nascente total. Apto 704 tem 3 vagas (diferencial). Correção INCC. Histórico Berg: Montparnasse, Golden Tower, Peninsula Mall, Monte Olimpo, Monte Fuji.", None, None, None),
+     "Tipologia detalhada: Aptos 135 m², 2-3 vagas. Tabela MAI/2026 (Berg Engenharia) confirma 2 unid. disponíveis: apto 103 (135,32 m², R$ 1.932.400) + apto 104 (135,83 m², R$ 1.944.500). 9 unidades VENDIDAS (apto 204-1004). 4 tipologias (1-4) com áreas similares. Lançamento 04/2024 estimado pela pasta. Conclusão: 30/04/2027 (T-36 perfeito). **Diferenciais comerciais (WhatsApp corretor 06/05/2026):** unidades disponíveis são de 1º andar mas com pé-direito de 4º pavimento + nascente total. Apto 704 tem 3 vagas (diferencial). Correção INCC. Histórico Berg: Montparnasse, Golden Tower, Peninsula Mall, Monte Olimpo, Monte Fuji.", None, None, "informado_manualmente"),
 
     ("Berg Engenharia","Mount Solaro",
      "Endereço não localizado, Península da Ponta D'Areia, São Luís - MA","Península",
