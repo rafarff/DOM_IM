@@ -2,22 +2,22 @@
 
 > **Para Claude (toda sessão):** este é o **primeiro arquivo a ler** antes de qualquer ação. Confirma a base de trabalho. Se a invariante 0.3 do PADRAO falhar contra os números aqui, **PARAR**.
 
-**Última atualização:** 25/05/2026 (correção de Bairro — Monte Meru: Ponta d'Areia → Península)
-**Versão Planilha vigente:** v11.19
+**Última atualização:** 25/05/2026 (correções pós-kickoff Plan. Comercial — entry Dom Manuel + dedup Renaissance)
+**Versão Planilha vigente:** v11.21
 **Versão PADRAO vigente:** v7.0 (com §3.7.0 — U_RAW)
-**Versão script `gerar_planilha.py`:** 11.19 (DATE_STR: 25/05/2026)
+**Versão script `gerar_planilha.py`:** 11.21 (DATE_STR: 25/05/2026)
 **Versão `build_panorama.py`:** v8.2.1 (expandiu filtro Panorama ciclo 25-26 → 24-26 + entrega futura)
 
 ---
 
-## Snapshot da carteira (v11.19)
+## Snapshot da carteira (v11.21)
 
 | Métrica | Valor | Δ vs v11.15 |
 |---|---:|---:|
 | Aba Empreendimentos | **55 linhas** | +1 (Residencial Arizona) |
 | Aba Incorporadoras | **20 linhas — DERIVADA** | +1 (BelSul — 20ª oficial) |
 | Aba Composição | **102 linhas / 3.453 unidades / 45 empreend.** | +2 / +38 / +1 |
-| **Aba Unidades** | **943 unidades / 27 empreend.** — átomo do sistema | +38 / +1 (Arizona 17 disp + 21 vend parseadas) |
+| **Aba Unidades** | **921 unidades / 27 empreend.** — átomo do sistema | −22 (dedup Renaissance v11.21) |
 | **Cobertura Total apurado** | **46/55 = 84%** | +1 (Arizona declarado oficial) |
 | **Bloqueados** | **10 empreend.** em pendencias_TOTAL.md | sem mudança |
 | Fonte de U_RAW | **27 arquivos YAML** em `unidades/<inc>__<emp>.yaml` | +1 Arizona |
@@ -28,7 +28,7 @@
 | Aba Empreendimentos schema | **27 colunas** (sem mudança) |
 | Aba Composição schema | **12 colunas (v7.0)** (sem mudança) |
 | Drift script ↔ planilha | **0** ✅ |
-| VGV total mapeado | **R$ 3,36 bi** (+R$ 65,5M Arizona 38u × R$ 1,72M)
+| VGV total mapeado | **R$ 3,37 bi** (R$ 3.369.522.777 — +R$ 10,5M correção Dom Manuel v11.21)
 | Cobertura Composição | **35/45 empreend. = 78%** (+1 Arizona) |
 | **Invariante v6.2 Σ Total tip = E_RAW.Total** | **41/45 fechado exato** ⚠ 4 parciais (Vila Coimbra, Le Noir, Bossa, Reserva SM, Prime Cohama WARN §3.8) |
 | **Invariante v7.0 Σ Total planta = Total tip** | **63/63 fechado exato** ✅ |
@@ -79,6 +79,16 @@ cd 00_ESTUDO_CONSOLIDADO/ && ls -1 Planilha_Mestre_Panorama_v*.xlsx | sort -V | 
 ---
 
 ## Mudanças estruturais recentes
+
+- **v11.21** (25/05/2026) — **Correções pós-kickoff Planejamento Comercial (Dom Manuel): entry Dom Manuel + dedup Renaissance.**
+   - **(A1) Entry Dom Manuel atualizada ao modelo de preço correto** (kickoff Plan. Comercial). Tipo 02 (3D): área **113,50 → 116,38 m²**. R$/m² **12.000 → 13.400** (média ponderada apto+vagas / área priv. na tabela T0 — NÃO é o piso do 1º andar). Tickets T0: 3D 1.362.000 → **1.559.492**; 4D 1.616.160 → **1.804.712**. VGV fixado em **R$ 77.533.740** (`calc_vgv` simples-média subestimava o split 30/15 — daria R$ 75,7M). Cronograma: lançamento 08/2026 → **06/2026**; entrega — → **11/2029**. Modelo documentado nas Observações (curva de andar centrada no 8º andar, VGV-neutra; escada T0→T4 +2,0% simples: 13.400/13.668/13.936/14.204/14.472).
+   - **(A2) Dedup do U_RAW Renaissance Conceito.** Bug de parser (SFH+FDC) duplicava cada unidade: 44 linhas = 22 únicas ×2 → corrigido para **22**. Efeito: % vendido recalculado **~58% → ~79%** (estoque 0,42 → 0,21); aba Unidades **943 → 921**; Composição disp 2.247 → 2.225. Composição Renaissance: Botticelli disp 30→15, Leonardo disp 14→7 (Totais tipologia 72/33 inalterados).
+   - **Sem mudanças estruturais.** Empreend 55 (=); Incorp 20 (=); Composição 102 linhas / 3.453 unidades render (=). VGV total R$ 3,36 → **R$ 3,37 bi** (+R$ 10,5M Dom Manuel). §3.7.C.4 = 41/45 ✅; §3.7.C.6 = 63/63 ✅. Drift script ↔ planilha 0 ✅. index.html regenerado.
+
+- **v11.20** (25/05/2026) — **Correção de Bairro: Zion Ponta d'Areia (Ergus) — Península → Ponta d'Areia.**
+   - Rafael instruiu manualmente. `Bairro` "Península" → "Ponta d'Areia"; `Origem Bairro` permanece `informado_manualmente` (§3.10 nível 5).
+   - **Racional:** o Zion fica de fato na **Ponta d'Areia**, não na Península — Península é região distinta e mais valorizada. O endereço do empreendimento (Rua Aziz Heluy, Ponta d'Areia) e o vizinho de rua **LIV Residence** (mesma Rua Aziz Heluy, já com Bairro="Ponta d'Areia") confirmam. **Reverte** a movimentação Ponta d'Areia→Península feita na v10.3.
+   - **Sem mudanças estruturais.** Empreend 55 (=); Incorp 20 (=); Composição 102 linhas / 3.453 unidades (=); VGV R$ 3,36 bi (=). Zero delta numérico. §3.10 = 22 WARNs (=, Zion não gera WARN — Origem Bairro preenchida). Drift script ↔ planilha: 0 ✅. index.html regenerado (build_panorama v8.2.1).
 
 - **v11.19** (25/05/2026) — **Correção de Bairro: Monte Meru (Berg Engenharia) — Ponta d'Areia → Península.**
    - Rafael instruiu manualmente. `Bairro` "Ponta d'Areia" → "Península"; `Origem Bairro` None → `informado_manualmente` (§3.10 nível 5).

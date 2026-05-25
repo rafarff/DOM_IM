@@ -19,8 +19,27 @@ from openpyxl.drawing.image import Image as XLImage
 # ═══════════════════════════════════════════════════════════════
 # PARÂMETROS GLOBAIS
 # ═══════════════════════════════════════════════════════════════
-VERSION = "11.19"
+VERSION = "11.21"
 DATE_STR = "25/05/2026"
+# v11.21 — (25/05/2026): Correções pós-kickoff Planejamento Comercial (Dom Manuel).
+#   (A1) Entry Dom Manuel atualizada ao modelo de preço correto:
+#     - Tipo 02 (3D): área 113,50 → 116,38 m².
+#     - R$/m² 12.000 → 13.400 (média ponderada apto+vagas / área priv., tabela T0).
+#     - Tickets T0: 3D 1.362.000 → 1.559.492; 4D 1.616.160 → 1.804.712.
+#     - VGV fixado R$ 77.533.740 (calc_vgv simples-média subestima o split 30/15).
+#     - Cronograma: lançamento 08/2026 → 06/2026; entrega — → 11/2029.
+#   (A2) Dedup do U_RAW Renaissance Conceito: 44 linhas (22 únicas ×2) → 22.
+#     Corrige % vendido (estoque 0,42→0,21 ⇒ ~58%→~79% vendido). Aba Unidades 943→921.
+#   Empreend 55 (=); Incorp 20 (=); Composição 102 linhas (=). Drift 0.
+# v11.20 — (25/05/2026): Correção de Bairro — Zion Ponta d'Areia (Ergus).
+#   Rafael instruiu manualmente: Bairro "Península" → "Ponta d'Areia".
+#   Origem Bairro permanece "informado_manualmente" (§3.10 nível 5).
+#   Racional: o Zion fica de fato na Ponta d'Areia, NÃO na Península —
+#     Península é região distinta e mais valorizada. Endereço do empreend.
+#     (Rua Aziz Heluy, Ponta d'Areia) e o vizinho de rua LIV Residence
+#     (mesma Rua Aziz Heluy, já com Bairro="Ponta d'Areia") confirmam.
+#     Reverte a movimentação Ponta d'Areia→Península feita na v10.3.
+#   Sem mudanças estruturais. Empreend 55 (=); zero delta numérico.
 # v11.19 — (25/05/2026): Correção de Bairro — Monte Meru (Berg Engenharia).
 #   Rafael instruiu manualmente: Bairro "Ponta d'Areia" → "Península".
 #   Origem Bairro: None → "informado_manualmente" (§3.10 nível 5).
@@ -732,7 +751,7 @@ E_RAW = [
 
     # ═══ ERGUS ═════════════════════════════════════════════════════════
     ("Ergus","Zion Ponta d'Areia",
-     "Rua Aziz Heluy, 34, Lotes 8/10/12/14/16, Quadra 28, Ponta d'Areia, São Luís - MA","Península",
+     "Rua Aziz Heluy, 34, Lotes 8/10/12/14/16, Quadra 28, Ponta d'Areia, São Luís - MA","Ponta d'Areia",
      "Vertical","Alto",
      60,"09/2025","12/2026", 148.55,148.55,None, "4D",
      2170378,2556972, None,None, None,  # v9.4: corrigido (estoque, não vendido); calc 10/60
@@ -1031,11 +1050,11 @@ E_RAW = [
     ("DOM Incorporação","Dom Manuel",
      "Endereço a confirmar, Ponta d'Areia, São Luís - MA","Ponta d'Areia",
      "Vertical","Alto",
-     45,"08/2026","—", 113.50,134.68,None, "3D; 4D",
-     1362000,1616160, None,None, 1.0,
+     45,"06/2026","11/2029", 116.38,134.68,None, "3D; 4D",
+     1559492,1804712, None,77533740, 1.0,
      "N/A","informado_manualmente","informado_manualmente",
-     "https://www.dom.inc.br/","04/05/2026",
-     "Tipologia detalhada (Rafael 04/05/2026): Empreendimento INTERNO DOM Incorporação. **45 unid** = 30u 4D 134,68m² + 15u 3D 113,50m². R$/m² 12.000. Tickets: 4D R$ 1.616.160 / 3D R$ 1.362.000. Bairro Ponta d'Areia. Lançamento 08/2026 (futuro). Tabela B Panorama. Composição §3.7 nível 5.2.", "informado_manualmente", "informado_manualmente", "informado_manualmente"),
+     "https://www.dom.inc.br/","25/05/2026",
+     "Tipologia detalhada (atualizado v11.21 25/05/2026 — kickoff Planejamento Comercial): Empreendimento INTERNO DOM Incorporação. **45 unid** = 30u Tipo 01 (4D 134,68m², 3 suítes, finais 01/03) + 15u Tipo 02 (3D 116,38m², 3 suítes, final 02). 15 pavtos-tipo × 3 aptos/andar. **Modelo de preço:** R$/m² 13.400 = média ponderada (apto+vagas)/área privativa na tabela T0; curva de andar centrada no 8º andar [mult = 1+(andar-8)×0,5%], VGV-neutra; escada T0->T4 +2,0% simples (R$/m² médio: 13.400/13.668/13.936/14.204/14.472). Tickets T0 (média ponderada): 4D R$ 1.804.712 / 3D R$ 1.559.492. VGV T0 (45u) R$ 77.533.740; VGV de comercialização (39u escalonado) ~R$ 69,2M. Lançamento 06/2026, entrega 11/2029. Bairro Ponta d'Areia. Tabela B Panorama. Composição §3.7 nível 5.2.", "informado_manualmente", "informado_manualmente", "informado_manualmente"),
 
     ("DOM Incorporação","Dom Guilherme",
      "Endereço a confirmar, Olho D'Água, São Luís - MA","Olho D'Água",
