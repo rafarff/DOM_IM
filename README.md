@@ -66,3 +66,5 @@ Portfólio · Segmento · Localização · Tipologia · Faixa de preço (VGV, ti
 ---
 
 *Versão v4.4 · Fase 2 — Dashboard Interativo*
+
+<!-- v11.22.1 — force pages rebuild 2026-05-26_12:51:55 -->
