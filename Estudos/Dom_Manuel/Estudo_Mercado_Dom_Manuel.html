@@ -10,7 +10,7 @@
     --line:#333; --line-soft:#2a2a2a;
     --gold:#C9A84C; --gold-light:#E8D5A3; --gold-dark:#8B6914;
     --txt:#e9e7e2; --muted:#9a978f; --faint:#6f6c66;
-    --direta:#E06B5A; --indireta:#5B8FB0; --produto:#6BAE8E;
+    --direta:#E06B5A; --indireta:#5B8FB0; --produto:#6BAE8E; --paisagem:#8a8780;
     --ok:#5Fae7e; --warn:#d98a3d;
   }
   *{box-sizing:border-box;margin:0;padding:0;}
@@ -45,9 +45,10 @@
   .kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;}
   .kpi{background:var(--panel);border:1px solid var(--line);border-radius:7px;
     padding:14px 15px;border-top:2px solid var(--gold);}
-  .kpi .v{font-size:21px;font-weight:700;color:#fff;}
-  .kpi .v small{font-size:12px;color:var(--gold-light);font-weight:600;}
-  .kpi .l{font-size:10.5px;color:var(--muted);margin-top:3px;letter-spacing:.3px;}
+  .kpi .v{font-size:18px;font-weight:700;color:#fff;line-height:1.2;}
+  .kpi .v small{font-size:11px;color:var(--gold-light);font-weight:600;}
+  .kpi .v2{font-size:11px;color:var(--gold-light);margin-top:4px;font-weight:600;}
+  .kpi .l{font-size:10.5px;color:var(--muted);margin-top:5px;letter-spacing:.3px;}
   .kpi .x{font-size:10px;color:var(--faint);margin-top:5px;letter-spacing:.2px;}
   .types{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px;}
   .type{background:var(--panel);border:1px solid var(--line);border-radius:7px;padding:13px 16px;
@@ -66,7 +67,7 @@
   .vlist li::before{content:"";position:absolute;left:0;top:7px;width:8px;height:8px;
     background:var(--gold);border-radius:2px;transform:rotate(45deg);}
 
-  .chartcard{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:20px 22px;}
+  .chartcard{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:20px 22px;margin-bottom:14px;}
   .chartcard .ct{font-size:13px;color:#fff;font-weight:600;margin-bottom:2px;}
   .chartcard .cs{font-size:11.5px;color:var(--muted);margin-bottom:14px;}
   svg{display:block;width:100%;height:auto;overflow:visible;}
@@ -76,41 +77,43 @@
   .swatch{width:13px;height:9px;border-radius:2px;display:inline-block;}
 
   table{width:100%;border-collapse:collapse;font-size:12px;}
-  th,td{padding:7px 9px;text-align:right;border-bottom:1px solid var(--line-soft);}
+  th,td{padding:7px 9px;text-align:right;border-bottom:1px solid var(--line-soft);vertical-align:top;}
   th:first-child,td:first-child{text-align:left;}
   thead th{background:#262626;color:#fff;font-size:10.5px;text-transform:uppercase;
     letter-spacing:.6px;border-bottom:2px solid var(--gold);}
   tbody tr:nth-child(even){background:var(--panel-2);}
-  .rowDM td{color:var(--txt);}
-  .rowComp td{background:#241f12 !important;color:var(--gold-light);font-weight:600;
-    border-top:1px solid var(--gold-dark);border-bottom:1px solid var(--gold-dark);}
+  caption{caption-side:top;text-align:left;font-size:11px;color:var(--faint);padding-bottom:6px;}
   tr.bgrp td{background:#1a1a1a !important;color:var(--gold);font-weight:600;font-size:10.5px;
     letter-spacing:1.5px;text-transform:uppercase;padding:9px;border-bottom:1px solid var(--gold-dark);text-align:left;}
-  caption{caption-side:top;text-align:left;font-size:11px;color:var(--faint);padding-bottom:6px;}
 
-  .match{background:var(--panel);border:1px solid var(--line);border-radius:8px;
-    padding:16px 18px;margin-bottom:13px;}
-  .match.pendente{border-style:dashed;border-color:var(--warn);}
-  .match h3{font-size:14px;color:#fff;}
-  .match .vs{font-size:11.5px;color:var(--muted);margin:2px 0 12px;}
-  .match .take{font-size:12.5px;color:var(--txt);margin-top:12px;
-    padding-top:11px;border-top:1px solid var(--line-soft);}
-  .match .take b{color:var(--gold-light);}
-  .gap{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;
-    border-radius:10px;margin-left:6px;}
-  .gap.good{background:rgba(95,174,126,.16);color:var(--ok);border:1px solid rgba(95,174,126,.4);}
-  .gap.flat{background:rgba(217,138,61,.14);color:var(--warn);border:1px solid rgba(217,138,61,.4);}
+  /* Tabela cruzada — comparativos por camada */
+  table.cross{font-size:11.5px;}
+  table.cross th,table.cross td{text-align:left;padding:6px 9px;border-bottom:1px solid var(--line-soft);}
+  table.cross thead th{font-size:10.5px;text-align:left;}
+  table.cross th.dm,table.cross td.dm{background:rgba(201,168,76,0.10);
+    border-left:2px solid var(--gold);border-right:1px solid var(--gold-dark);}
+  table.cross thead th.dm{color:var(--gold);border-bottom:2px solid var(--gold);}
+  table.cross tbody tr td:first-child{color:var(--muted);font-weight:500;font-size:10.5px;letter-spacing:.3px;text-transform:uppercase;}
+  table.cross .t01{display:block;color:var(--gold-light);font-weight:600;font-size:11px;}
+  table.cross .t02{display:block;color:var(--gold-light);font-weight:600;font-size:11px;margin-top:3px;}
+  table.cross .pend{color:var(--warn);font-style:italic;font-size:10.5px;}
+  .cs-note{font-size:11px;color:var(--faint);margin-top:8px;}
 
   .bairro-h{font-size:11.5px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);
     margin:22px 0 10px;padding-bottom:6px;border-bottom:1px solid var(--gold-dark);}
   .bairro-h:first-child{margin-top:6px;}
   .bairro-h .cnt{color:var(--muted);font-size:10px;margin-left:8px;letter-spacing:.5px;text-transform:none;}
 
+  .synth{font-size:12.5px;color:var(--txt);background:var(--panel);
+    border:1px solid var(--line);border-left:3px solid var(--gold);
+    border-radius:5px;padding:13px 16px;margin-top:14px;}
+  .synth b{color:var(--gold-light);}
   .note{font-size:12px;color:var(--muted);background:var(--panel);
     border:1px solid var(--line);border-left:3px solid var(--gold);
     border-radius:5px;padding:12px 15px;margin-top:14px;}
   .note b{color:var(--gold-light);}
   .two{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+  .twotables{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
   .gaps li{font-size:12.5px;color:var(--txt);margin-bottom:9px;list-style:none;
     padding-left:20px;position:relative;}
   .gaps li::before{content:"›";position:absolute;left:4px;color:var(--gold);font-weight:700;}
@@ -124,16 +127,16 @@
   footer{padding:24px 0 40px;font-size:11px;color:var(--faint);}
   footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;}
 
-  @media (max-width:880px){
+  @media (max-width:1000px){
     .kpis{grid-template-columns:repeat(2,1fr);}
-    .two,.types{grid-template-columns:1fr;}
+    .two,.types,.twotables{grid-template-columns:1fr;}
   }
   @media print{
     :root{--bg:#0e0e0e;}
     body{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
     .printbtn{display:none;}
     section{break-inside:avoid;}
-    .match,.chartcard,.verdict,.kpi{break-inside:avoid;}
+    .chartcard,.verdict,.kpi,.synth{break-inside:avoid;}
   }
 </style>
 </head>
@@ -148,7 +151,7 @@
     </div>
     <h1>Estudo de Mercado — Condomínio Dom Manuel</h1>
     <div class="tag">Posicionamento competitivo do pré-lançamento · Vertical · Ponta D'Areia, São Luís/MA</div>
-    <div class="meta">Maio 2026 · base Planilha Mestre Panorama v11.21 · modelo de preço conforme Planejamento Comercial (T0–T4)</div>
+    <div class="meta">Maio 2026 · base Planilha Mestre Panorama v11.22 · modelo de preço conforme Planejamento Comercial (T0–T4)</div>
   </div>
 </div>
 
@@ -159,7 +162,12 @@
     <p class="lead">Empreendimento próprio da DOM em pré-lançamento (fase F0). Tabela escalonada T0→T4, preço por R$/m² com curva de andar centrada no 8º pavimento.</p>
     <div class="kpis">
       <div class="kpi"><div class="v">45 <small>un.</small></div><div class="l">15 pav.-tipo · 3 aptos/andar</div></div>
-      <div class="kpi"><div class="v">R$ 13.400<small>/m²</small></div><div class="l">T0 · média ponderada (apto+vagas)</div></div>
+      <div class="kpi">
+        <div class="v">R$ 13.936<small>/m²</small></div>
+        <div class="v2">média geral da escada</div>
+        <div class="l">Escada T0–T4: 13.400 · 13.668 · 13.936 · 14.204 · 14.472</div>
+        <div class="x">média ponderada (apto + vagas) ÷ área priv.</div>
+      </div>
       <div class="kpi"><div class="v">R$ 69,2 <small>M</small></div><div class="l">VGV de comercialização</div><div class="x">39 un. escalonado T0→T4 (plano comercial) · VGV total T0/45u = R$ 77,5 M</div></div>
       <div class="kpi"><div class="v">R$ 1,77 <small>M</small></div><div class="l">Ticket médio de comercialização</div></div>
       <div class="kpi"><div class="v">jun/26</div><div class="l">Lançamento · entrega nov/2029</div></div>
@@ -177,12 +185,12 @@
     <h2>Veredito de competitividade</h2>
     <p class="lead">Síntese do posicionamento — detalhamento nas seções seguintes.</p>
     <div class="verdict">
-      <div class="big">O Dom Manuel é competitivo contra o seu mercado direto — a Ponta d'Areia — nos <b>cinco degraus</b> da tabela: o R$/m² médio abre <b>−15%</b> abaixo da concorrência no T0 e termina ainda <b>−8%</b> abaixo no T4. Não há ponto crítico de competitividade.</div>
+      <div class="big">O Dom Manuel é competitivo contra o seu mercado direto — a Ponta d'Areia — nos <b>cinco degraus</b> da tabela: o R$/m² médio abre <b>−15%</b> abaixo da Camada I no T0 e termina ainda <b>−8%</b> abaixo no T4. Não há ponto crítico de competitividade.</div>
       <ul class="vlist">
-        <li>Contra a Renascença II: por R$/m² o Renaissance fica abaixo do Dom Manuel a partir do T1, mas por <b>ticket</b> são prateleiras diferentes (Renaissance 4D R$ 1,36–1,57 M / Dom Manuel Tipo 01 R$ 1,74–2,02 M). O Entre Rios cobre a mesma faixa de ticket que o Dom Manuel em Renascença II, mas a tabela é publicada sempre completa — <b>% vendido e velocidade não são aferíveis pela base</b>; Renascença II não dá leitura conclusiva de tração nessa faixa.</li>
+        <li>Contra a Camada II (Renascença II): por R$/m² o Renaissance fica abaixo do Dom Manuel a partir do T1, mas por <b>ticket</b> são prateleiras diferentes (Renaissance 4D R$ 1,36–1,57 M / Dom Manuel Tipo 01 R$ 1,74–2,02 M). O Entre Rios cobre a faixa de ticket do Dom Manuel, mas a tabela é publicada sempre completa — <b>% vendido não aferível</b>. O <b>Nexus Renascença</b> (Ergus · Luxo · 152 un. · "Porsche Consulting") entrou na C2 como produto distinto: mix Studio/1D/2D/3D-pequeno a R$/m² 16,1 mil — Luxo de compactos, não disputa o ticket do Dom Manuel.</li>
         <li>A <b>Tipo 02</b> (3D de 116 m²) não tem concorrente do mesmo porte: ocupa sozinha a faixa de "3D grande" — espaço de 4D com ticket de 3D.</li>
         <li>Teto de preço: a escada inteira, do T0 ao T4, fica abaixo da zona de giro lento (~R$ 15–16 mil/m²), evidenciada pelo <b>Zion</b> — mesma Ponta d'Areia, zero vendas entre abr e mai/26.</li>
-        <li>A curva de andar de <b>+0,5%/andar</b> é a mais plana do mercado — decisão de mix interno, VGV-neutra (ver seção Curva de andar).</li>
+        <li>A curva de andar de <b>±0,5%/andar</b> (centrada no 8º) é a mais plana do mercado — decisão de mix interno, VGV-neutra.</li>
       </ul>
     </div>
   </div>
@@ -192,16 +200,29 @@
   <div class="wrap">
     <div class="eyebrow">Visão competitiva</div>
     <h2>Régua de posicionamento — R$/m² médio</h2>
-    <p class="lead">Onde a escada do Dom Manuel (faixa dourada, T0→T4) se posiciona contra cada concorrente das três primeiras camadas. Quanto mais à esquerda, mais barato o R$/m². A zona avermelhada é a faixa de preço onde o mercado trava (Zion, parado).</p>
+    <p class="lead">Onde a escada do Dom Manuel (faixa dourada, T0→T4) se posiciona contra o mercado. <b>Primeiro gráfico:</b> todas as quatro camadas — visão panorâmica do mercado de São Luís. <b>Segundo gráfico:</b> só Camadas I e II — foco na concorrência mais direta.</p>
+
     <div class="chartcard">
-      <div class="ct">R$/m² médio — Dom Manuel × concorrência (Camadas I, II e III)</div>
-      <div class="cs">Concorrentes plotados pelo R$/m² do andar médio. Dom Manuel: faixa da escada de pré-lançamento.</div>
-      <svg id="svgRegua" viewBox="0 0 1040 430"></svg>
+      <div class="ct">Visão panorâmica — todas as camadas (I, II, III e IV)</div>
+      <div class="cs">Todo o mercado vertical de São Luís com dados de preço, do popular ao luxo. Concorrentes plotados pelo R$/m² do andar médio.</div>
+      <svg id="svgReguaAll" viewBox="0 0 1040 660"></svg>
+      <div class="legend">
+        <span><i class="swatch" style="background:var(--gold)"></i> Dom Manuel</span>
+        <span><i class="dot" style="background:var(--direta)"></i> Camada I — direta</span>
+        <span><i class="dot" style="background:var(--indireta)"></i> Camada II — indireta</span>
+        <span><i class="dot" style="background:var(--produto)"></i> Camada III — similaridade de produto</span>
+        <span><i class="dot" style="background:var(--paisagem)"></i> Camada IV — paisagem</span>
+      </div>
+    </div>
+
+    <div class="chartcard">
+      <div class="ct">Foco competitivo — Camadas I e II</div>
+      <div class="cs">Concorrência direta (Ponta d'Areia) e indireta (Renascença II) — quem realmente disputa o mesmo comprador.</div>
+      <svg id="svgReguaFocus" viewBox="0 0 1040 230"></svg>
       <div class="legend">
         <span><i class="swatch" style="background:var(--gold)"></i> Dom Manuel (escada T0→T4)</span>
-        <span><i class="dot" style="background:var(--direta)"></i> Camada I — concorrência direta (Ponta d'Areia)</span>
-        <span><i class="dot" style="background:var(--indireta)"></i> Camada II — concorrência indireta (Renascença II)</span>
-        <span><i class="dot" style="background:var(--produto)"></i> Camada III — similaridade de produto (todos bairros)</span>
+        <span><i class="dot" style="background:var(--direta)"></i> Camada I — Ponta d'Areia</span>
+        <span><i class="dot" style="background:var(--indireta)"></i> Camada II — Renascença II</span>
       </div>
     </div>
   </div>
@@ -211,17 +232,31 @@
   <div class="wrap">
     <div class="eyebrow">Modelo de preço</div>
     <h2>A escada T0 → T4</h2>
-    <p class="lead">A tabela sobe o R$/m² médio em +2,0% simples por degrau. A pergunta de competitividade é a que distância do mercado cada degrau se posiciona — e a resposta é favorável nos cinco.</p>
+    <p class="lead">A tabela sobe o R$/m² médio em +2,0% simples por degrau. A pergunta de competitividade é a que distância de cada camada cada degrau se posiciona — favorável nos cinco.</p>
     <div class="chartcard" style="margin-bottom:16px;">
       <div class="ct">R$/m² médio por degrau × referências de mercado</div>
-      <div class="cs">A escada inteira corre abaixo da Ponta d'Areia e abaixo da zona de giro lento.</div>
-      <svg id="svgEscada" viewBox="0 0 1040 340"></svg>
+      <div class="cs">A escada inteira corre abaixo da Camada I e abaixo da zona de giro lento. Renascença II (Camada II) cruza a escada por volta de T1–T2.</div>
+      <svg id="svgEscada" viewBox="0 0 1040 360"></svg>
     </div>
-    <table>
-      <caption>Posição global por tabela — ticket médio e distância vs cada micro-região (modelo Planejamento Comercial)</caption>
-      <thead><tr><th>Tabela</th><th>R$/m² médio</th><th>Ticket méd. Tipo 01</th><th>Ticket méd. Tipo 02</th><th>vs Ponta d'Areia</th><th>vs Renascença II</th><th>vs Península</th></tr></thead>
-      <tbody id="tbEscada"></tbody>
-    </table>
+
+    <h3 style="font-size:13px;color:var(--gold);letter-spacing:1.5px;text-transform:uppercase;margin:18px 0 8px;">Posição global por tabela — ticket e distância vs Camadas I, II e III</h3>
+    <div class="twotables">
+      <div>
+        <table>
+          <caption>Tipo 01 — 4D · 134,68 m² · 30 unidades</caption>
+          <thead><tr><th>Tabela</th><th>R$/m²</th><th>Ticket Tipo 01</th><th>vs C I</th><th>vs C II</th><th>vs C III</th></tr></thead>
+          <tbody id="tbPosT01"></tbody>
+        </table>
+      </div>
+      <div>
+        <table>
+          <caption>Tipo 02 — 3D · 116,38 m² · 15 unidades</caption>
+          <thead><tr><th>Tabela</th><th>R$/m²</th><th>Ticket Tipo 02</th><th>vs C I</th><th>vs C II</th><th>vs C III</th></tr></thead>
+          <tbody id="tbPosT02"></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="cs-note">Referências usadas para o "vs": Camada I = média R$ 15.804/m² (Vernazza · Zion · ORO; LIV sem dado) · Camada II = média R$ 14.825/m² (Renaissance · Entre Rios · Nexus) · Camada III = média R$ 15.217/m² (Giardino · Landscape · Reserva SM · Monte Meru · Mount Solaro; Reserva Península sem dado).</div>
   </div>
 </section>
 
@@ -229,8 +264,11 @@
   <div class="wrap">
     <div class="eyebrow">Camada I</div>
     <h2>Concorrência direta — Ponta d'Areia</h2>
-    <p class="lead">A microlocalização do Dom Manuel: mesma região, mesmo comprador. Cada confronto compara a escada T0→T4 do Dom Manuel à faixa de preço do concorrente, por faixa de andar (baixa 1º–4º · médio 5º–9º · alto 10º–15º).</p>
-    <div id="diretos"></div>
+    <p class="lead">A microlocalização do Dom Manuel: mesma região, mesmo comprador. Tabela cruzada — todos os parâmetros do Dom Manuel (Tipo 01 + Tipo 02) ao lado de cada concorrente, faixa de andar separada por baixa (1º–4º) · médio (5º–9º) · alto (10º–15º).</p>
+    <div style="overflow-x:auto;">
+      <table class="cross" id="tbC1"></table>
+    </div>
+    <div class="synth" id="syC1"></div>
   </div>
 </section>
 
@@ -238,8 +276,11 @@
   <div class="wrap">
     <div class="eyebrow">Camada II</div>
     <h2>Concorrência indireta — Renascença II</h2>
-    <p class="lead">Microrregião de padrão equivalente, de desejabilidade inferior à Ponta d'Areia. Aqui o R$/m² e o ticket contam histórias diferentes — e a leitura por ticket é a que importa.</p>
-    <div id="indiretos"></div>
+    <p class="lead">Microrregião de padrão equivalente, de desejabilidade inferior à Ponta d'Areia. Inclui o <b>Nexus Renascença</b> (Ergus · Luxo · 152 un. · Complexo Nexus Coupé · "Powered by Porsche Consulting"), lançado mai/2026 — produto multi-tipo (Studio + 1D + 2D + 3D), R$/m² médio 16.107, ticket R$ 535 k – 1,50 M.</p>
+    <div style="overflow-x:auto;">
+      <table class="cross" id="tbC2"></table>
+    </div>
+    <div class="synth" id="syC2"></div>
   </div>
 </section>
 
@@ -247,13 +288,18 @@
   <div class="wrap">
     <div class="eyebrow">Camada III</div>
     <h2>Similaridade de produto — todos os bairros</h2>
-    <p class="lead">Verticais com porte de planta (área 98,9–154,9 m²) e/ou faixa de ticket (~R$ 1,5–2,0 M) comparáveis ao Dom Manuel, <b>independente de bairro</b>. Em São Luís, qualquer empreendimento com metragem ou ticket parecido é potencial concorrente — sub-agrupado aqui por região.</p>
+    <p class="lead">Verticais com porte de planta (área 98,9–154,9 m²) e/ou faixa de ticket (~R$ 1,5–2,0 M) comparáveis ao Dom Manuel, <b>independente de bairro</b>. Sub-agrupado por região para facilitar a leitura geográfica.</p>
+
     <h3 class="bairro-h">Ponta do Farol <span class="cnt">· 1 empreendimento</span></h3>
-    <div id="produto-pdf"></div>
+    <div style="overflow-x:auto;"><table class="cross" id="tbC3pdf"></table></div>
+
     <h3 class="bairro-h">Calhau <span class="cnt">· 2 empreendimentos</span></h3>
-    <div id="produto-calhau"></div>
+    <div style="overflow-x:auto;"><table class="cross" id="tbC3calhau"></table></div>
+
     <h3 class="bairro-h">Península <span class="cnt">· 3 empreendimentos · região-prêmio adjacente</span></h3>
-    <div id="produto-peninsula"></div>
+    <div style="overflow-x:auto;"><table class="cross" id="tbC3peninsula"></table></div>
+
+    <div class="synth" id="syC3"></div>
   </div>
 </section>
 
@@ -261,12 +307,12 @@
   <div class="wrap">
     <div class="eyebrow">Camada IV</div>
     <h2>Demais verticais com dados — paisagem competitiva</h2>
-    <p class="lead">Verticais com dados suficientes (tipologia, área, R$/m² ou ticket) que não entraram nas três primeiras camadas. Compõem o contexto geral do mercado de São Luís — produtos com porte, ticket ou bairro distintos do Dom Manuel, mas relevantes para a leitura competitiva do todo. Agrupados por bairro.</p>
+    <p class="lead">Verticais com dados suficientes que não entraram nas três primeiras camadas. Contexto geral do mercado de São Luís — produtos com porte, ticket ou bairro distintos do Dom Manuel, mas relevantes para a leitura do todo. Agrupados por bairro.</p>
     <table>
       <thead><tr><th>Empreendimento (Incorp.)</th><th>Tipologia · Área</th><th>R$/m² médio</th><th>Ticket</th><th>% vend.</th></tr></thead>
       <tbody id="tbC4"></tbody>
     </table>
-    <div class="note"><b>Como ler.</b> A Camada IV não é comparação direta — é referência de mercado. Mostra que o mercado de São Luís cobre uma banda larga de R$/m² (de ~R$ 6 mil em Cohab Anil até ~R$ 19 mil em Wave/Sky/Quartier), e que o Dom Manuel (R$ 13,4–14,5 mil) se posiciona na faixa intermediária, no eixo competitivo de Ponta d'Areia.</div>
+    <div class="note"><b>Como ler.</b> A Camada IV não é comparação direta — é referência de mercado. Mostra que o mercado de São Luís cobre uma banda larga de R$/m² (de ~R$ 6 mil em Cohab Anil até ~R$ 19 mil em Wave/Sky/Quartier 22), e que o Dom Manuel (R$ 13,4–14,5 mil) se posiciona na faixa intermediária, no eixo competitivo de Ponta d'Areia.</div>
   </div>
 </section>
 
@@ -274,7 +320,7 @@
   <div class="wrap">
     <div class="eyebrow">Prêmio por andar</div>
     <h2>Curva de andar — quanto cada andar acima vale</h2>
-    <p class="lead">Prêmio percentual por pavimento efetivamente praticado por cada concorrente. O Dom Manuel, a +0,5%/andar, tem a curva mais plana de toda a amostra.</p>
+    <p class="lead">Prêmio percentual por pavimento praticado por cada concorrente. O Dom Manuel, a ±0,5%/andar centrada no 8º, tem a curva mais plana de toda a amostra.</p>
     <div class="chartcard">
       <div class="ct">Prêmio praticado por andar (%)</div>
       <div class="cs">Variação de preço entre andares consecutivos dentro de uma mesma planta.</div>
@@ -287,14 +333,28 @@
 <section>
   <div class="wrap">
     <div class="eyebrow">Leitura por ticket</div>
-    <h2>Prateleiras de ticket — quem disputa o mesmo comprador</h2>
-    <p class="lead">R$/m² compara eficiência de preço; ticket define o bolso do comprador. Por ticket, fica claro quem realmente concorre com cada tipo do Dom Manuel — e onde há espaço vazio.</p>
+    <h2>Prateleiras de ticket — por tipo de unidade</h2>
+    <p class="lead">R$/m² compara eficiência de preço; ticket define o bolso do comprador. Aqui o mercado é separado por <b>tipologia</b>: 4D (onde compete o Tipo 01 do Dom Manuel), 3D (Tipo 02) e Compactos (Studio/1D/2D — sem produto Dom Manuel, contexto de mercado).</p>
+
     <div class="chartcard">
-      <div class="ct">Faixa de ticket (R$ milhões) — Dom Manuel × concorrência</div>
+      <div class="ct">4 quartos · 4D — Tipo 01 do Dom Manuel × concorrentes 4D</div>
       <div class="cs">Barras = faixa do menor ao maior ticket. Dom Manuel em dourado.</div>
-      <svg id="svgTicket" viewBox="0 0 1040 420"></svg>
+      <svg id="svgTicket4D" viewBox="0 0 1040 540"></svg>
     </div>
-    <div class="note"><b>Destaque.</b> A <b>Tipo 02</b> (3D de 116 m²) ocupa uma prateleira praticamente vazia: acima das 3D compactas da Ponta d'Areia (ORO, R$ 1,0–1,5 M) e abaixo das 4D grandes. É espaço de 4D com ticket de 3D — oportunidade de posicionamento.</div>
+
+    <div class="chartcard">
+      <div class="ct">3 quartos · 3D — Tipo 02 do Dom Manuel × concorrentes 3D</div>
+      <div class="cs">Inclui Monte Meru e Entre Rios (declarados 3D mas com área comparável a 4D).</div>
+      <svg id="svgTicket3D" viewBox="0 0 1040 540"></svg>
+    </div>
+
+    <div class="chartcard">
+      <div class="ct">Compactos · Studio / 1D / 2D — contexto de mercado</div>
+      <div class="cs">Dom Manuel não tem produto compacto; tabela mostra o mercado disponível em São Luís.</div>
+      <svg id="svgTicketCmp" viewBox="0 0 1040 540"></svg>
+    </div>
+
+    <div class="note"><b>Destaque.</b> A <b>Tipo 02</b> (3D de 116 m²) ocupa uma prateleira praticamente vazia no gráfico 3D: acima das 3D compactas da Ponta d'Areia (ORO, Vernazza Sul, Fiji) e abaixo das 3D grandes (Monte Meru, Entre Rios). É espaço de 4D com ticket de 3D — oportunidade de posicionamento.</div>
   </div>
 </section>
 
@@ -314,14 +374,15 @@
       <div>
         <h3 style="font-size:14px;color:#fff;margin-bottom:10px;">Lacunas de dado</h3>
         <ul class="gaps">
-          <li><b>LIV Residence (Alfa)</b> — concorrente direto de Ponta d'Areia sem tabela de preço na base. Captura em andamento pelo Planejamento Comercial. <span class="badge crit">crítico</span></li>
-          <li><b>Entre Rios (Mota Machado)</b> — a tabela é publicada sempre completa (todas as 30 unidades como disponíveis), então % vendido e velocidade <b>não são aferíveis</b> pela base. Lacuna metodológica — não dá pra usar como evidência nem de tração nem de teto em Renascença II.</li>
+          <li><b>LIV Residence (Alfa)</b> — concorrente direto de Ponta d'Areia sem tabela de preço na base. Captura em andamento. <span class="badge crit">crítico</span></li>
+          <li><b>Nexus Renascença (Ergus)</b> — incluído na v11.22 da base com tabela completa (152 un. · multi-tipo · R$/m² 16,1 mil). Falta apenas derivar a curva de andar do U_RAW. <span class="badge ok">resolvido</span></li>
+          <li><b>Entre Rios (Mota Machado)</b> — tabela publicada sempre completa; % vendido e velocidade <b>não aferíveis</b>. Lacuna metodológica.</li>
           <li><b>Faixa de andar dos concorrentes</b> — hoje aproximada por menor/médio/maior preço. Registrar o andar físico real nas próximas extrações (algumas construtoras numeram o 1º pavto-tipo como "4º andar").</li>
           <li><b>Reserva Península / Mount Solaro</b> — sem tabela; refresh de Vernazza (02/26) e ORO (01/26) recomendável.</li>
         </ul>
         <h3 style="font-size:14px;color:#fff;margin:16px 0 8px;">Base corrigida</h3>
         <div class="tags">
-          <span class="badge ok">Planilha v11.21</span>
+          <span class="badge ok">Planilha v11.22</span>
           <span class="badge ok">entry Dom Manuel atualizada</span>
           <span class="badge ok">bug Renaissance saneado</span>
         </div>
@@ -338,97 +399,262 @@
 </footer>
 
 <script>
-const fmt = n => n.toLocaleString('pt-BR');
-const ROT = {direta:'#E06B5A', indireta:'#5B8FB0', produto:'#6BAE8E'};
+const fmt = n => n==null?'n/d':n.toLocaleString('pt-BR');
+const fmtM = v => v==null?'n/d':'R$ '+v.toFixed(2).replace('.',',')+' M';
+const ROT = {direta:'#E06B5A', indireta:'#5B8FB0', produto:'#6BAE8E', paisagem:'#8a8780'};
+const SVGNS='http://www.w3.org/2000/svg';
+function el(tag,attrs,txt){
+  const e=document.createElementNS(SVGNS,tag);
+  for(const k in attrs) e.setAttribute(k,attrs[k]);
+  if(txt!=null) e.textContent=txt;
+  return e;
+}
 
-const ESCADA = [
-  {t:'T0', rsm2:13400, tk1:1801521, tk2:1565875, pa:'−15%', rii:'par',  pen:'−6%'},
-  {t:'T1', rsm2:13668, tk1:1837551, tk2:1597192, pa:'−13%', rii:'+2%',  pen:'−4%'},
-  {t:'T2', rsm2:13936, tk1:1873581, tk2:1628510, pa:'−11%', rii:'+4%',  pen:'−3%'},
-  {t:'T3', rsm2:14204, tk1:1909612, tk2:1659827, pa:'−9%',  rii:'+6%',  pen:'−1%'},
-  {t:'T4', rsm2:14472, tk1:1945642, tk2:1691145, pa:'−8%',  rii:'+8%',  pen:'+1%'}
-];
+const ESCADA=[13400,13668,13936,14204,14472];
+const ESC_TKT01=[1801521,1837551,1873581,1909612,1945642];
+const ESC_TKT02=[1565875,1597192,1628510,1659827,1691145];
+const REF_C1=15804, REF_C2=14825, REF_C3=15217;
 
-const REGUA = [
-  {n:'Renaissance · Renascença II', r:'indireta', v:13168},
-  {n:'Monte Meru · Península',      r:'produto',  v:14300},
-  {n:'Landscape · Calhau',          r:'produto',  v:14600},
-  {n:'Entre Rios · Renascença II',  r:'indireta', v:15200},
-  {n:'Mount Solaro · Península',    r:'produto',  v:15384},
-  {n:'Giardino · Ponta do Farol',   r:'produto',  v:15500},
-  {n:'Vernazza · Ponta d\'Areia',   r:'direta',   v:15560},
-  {n:'Zion · Ponta d\'Areia',       r:'direta',   v:15900},
-  {n:'ORO · Ponta d\'Areia',        r:'direta',   v:15952},
-  {n:'Reserva S. Marcos · Calhau',  r:'produto',  v:16300}
-];
+/* ===== POSIÇÃO GLOBAL — duas tabelas ===== */
+function pct(v,ref){
+  const p=((v/ref)-1)*100;
+  if(Math.abs(p)<0.6) return {t:'par',c:'#5Fae7e'};
+  const s=(p<0?'−':'+')+Math.abs(Math.round(p))+'%';
+  return {t:s,c:p<0?'#5Fae7e':'#d98a3d'};
+}
+function fillPos(){
+  const labels=['T0','T1','T2','T3','T4'];
+  ['tbPosT01','tbPosT02'].forEach((id,idx)=>{
+    const tb=document.getElementById(id);
+    const tkArr= idx===0?ESC_TKT01:ESC_TKT02;
+    ESCADA.forEach((rsm,i)=>{
+      const p1=pct(rsm,REF_C1), p2=pct(rsm,REF_C2), p3=pct(rsm,REF_C3);
+      const tr=document.createElement('tr');
+      tr.innerHTML=`<td><b style="color:#E8D5A3">${labels[i]}</b></td>
+        <td>R$ ${fmt(rsm)}</td>
+        <td>R$ ${fmt(tkArr[i])}</td>
+        <td style="color:${p1.c}">${p1.t}</td>
+        <td style="color:${p2.c}">${p2.t}</td>
+        <td style="color:${p3.c}">${p3.t}</td>`;
+      tb.appendChild(tr);
+    });
+  });
+}
 
-const DM1 = {
-  T0:[12882,13181,13869], T1:[13140,13444,14146], T2:[13398,13708,14423],
-  T3:[13655,13971,14701], T4:[13913,14235,14978]
-};
-const DM2 = { T0:[12978,13278,13920], T4:[14016,14340,15034] };
+/* ===== RÉGUA ===== */
+const REGUA_ALL=[
+  {n:'Residencial Novo Anil · Cohab Anil IV',r:'paisagem',v:6009},
+  {n:'Altos do São Francisco · São Francisco',r:'paisagem',v:10053},
+  {n:'Edifício Sanpaolo · Cohama',r:'paisagem',v:10796},
+  {n:'Fiji Residence · Cohama',r:'paisagem',v:11777},
+  {n:'Renaissance Conceito · Renascença II',r:'indireta',v:13168},
+  {n:'Cidade de Viena · Turu',r:'paisagem',v:13771},
+  {n:'Le Noir · Renascença II',r:'paisagem',v:14062},
+  {n:'Al Mare Tirreno · Calhau',r:'paisagem',v:14294},
+  {n:'Monte Meru · Península',r:'produto',v:14300},
+  {n:'Landscape · Calhau',r:'produto',v:14600},
+  {n:'Entre Rios · Renascença II',r:'indireta',v:15200},
+  {n:'Mount Solaro · Península',r:'produto',v:15384},
+  {n:'Giardino Residenza · Ponta do Farol',r:'produto',v:15500},
+  {n:'Vernazza · Ponta d\'Areia',r:'direta',v:15560},
+  {n:'Zion · Ponta d\'Areia',r:'direta',v:15900},
+  {n:'ORO · Ponta d\'Areia',r:'direta',v:15952},
+  {n:'Studio Design 7 Península · Península',r:'paisagem',v:15981},
+  {n:'Nexus Renascença · Renascença',r:'indireta',v:16107},
+  {n:'Reserva São Marcos · Calhau',r:'produto',v:16300},
+  {n:'The View · Calhau',r:'paisagem',v:16765},
+  {n:'Edifício Bossa · Calhau',r:'paisagem',v:16945},
+  {n:'Quartier 22 · Península',r:'paisagem',v:18182},
+  {n:'Azimuth · Península',r:'paisagem',v:18309},
+  {n:'Sky Residence · Península',r:'paisagem',v:19052},
+  {n:'Wave Residence · Ponta do Farol',r:'paisagem',v:19237}
+];
+const REGUA_FOCUS=[
+  {n:'Renaissance · Renascença II',r:'indireta',v:13168},
+  {n:'Entre Rios · Renascença II',r:'indireta',v:15200},
+  {n:'Vernazza · Ponta d\'Areia',r:'direta',v:15560},
+  {n:'Zion · Ponta d\'Areia',r:'direta',v:15900},
+  {n:'ORO · Ponta d\'Areia',r:'direta',v:15952},
+  {n:'Nexus Renascença · Renascença',r:'indireta',v:16107}
+];
+function drawRegua(svgId, data, opts){
+  const svg=document.getElementById(svgId);
+  const W=1040, L=opts.L||225, Rp=95, top=34;
+  const axisY=opts.h-30;
+  const x0=opts.x0||12000, x1=opts.x1||17000;
+  const X=v=>L+(v-x0)/(x1-x0)*(W-L-Rp);
+  const rows=[...data].sort((a,b)=>a.v-b.v);
+  const rowH=(axisY-top)/rows.length;
+  if(opts.dz!==false){
+    svg.appendChild(el('rect',{x:X(15000),y:top,width:X(x1)-X(15000),height:axisY-top,
+      fill:'rgba(224,107,90,0.10)'}));
+    svg.appendChild(el('text',{x:X(15000)+8,y:top+13,fill:'#E06B5A','font-size':10.5,'font-weight':600},
+      'Zona de giro lento (~R$ 15–16 mil)'));
+  }
+  // grid X ticks
+  const stepX=opts.stepX||1000;
+  for(let v=x0;v<=x1;v+=stepX){
+    svg.appendChild(el('line',{x1:X(v),y1:top,x2:X(v),y2:axisY,stroke:'#2a2a2a'}));
+    svg.appendChild(el('text',{x:X(v),y:axisY+21,fill:'#9a978f','font-size':10.5,'text-anchor':'middle'},
+      'R$ '+fmt(v)));
+  }
+  // Dom Manuel band
+  svg.appendChild(el('rect',{x:X(13400),y:top,width:X(14472)-X(13400),height:axisY-top,
+    fill:'rgba(201,168,76,0.17)',stroke:'#C9A84C','stroke-width':1}));
+  ESCADA.forEach((d,i)=>{
+    svg.appendChild(el('line',{x1:X(d),y1:top,x2:X(d),y2:top+9,stroke:'#C9A84C','stroke-width':1.5}));
+    svg.appendChild(el('text',{x:X(d),y:top-5,fill:'#E8D5A3','font-size':9,'text-anchor':'middle'},'T'+i));
+  });
+  svg.appendChild(el('text',{x:(X(13400)+X(14472))/2,y:axisY-9,fill:'#C9A84C',
+    'font-size':10,'font-weight':700,'text-anchor':'middle'},'DOM MANUEL · T0→T4'));
+  rows.forEach((c,i)=>{
+    const y=top+i*rowH+rowH/2;
+    svg.appendChild(el('text',{x:L-14,y:y+4,fill:'#e9e7e2','font-size':10.5,'text-anchor':'end','font-weight':600},c.n));
+    svg.appendChild(el('line',{x1:L,y1:y,x2:X(c.v),y2:y,stroke:ROT[c.r],'stroke-width':1.5,opacity:.4}));
+    svg.appendChild(el('circle',{cx:X(c.v),cy:y,r:5.5,fill:ROT[c.r],stroke:'#1d1d1d','stroke-width':1.5}));
+    svg.appendChild(el('text',{x:X(c.v)+12,y:y+4,fill:ROT[c.r],'font-size':10.5,'font-weight':600},'R$ '+fmt(c.v)));
+  });
+  svg.appendChild(el('line',{x1:L,y1:axisY,x2:X(x1),y2:axisY,stroke:'#555'}));
+}
 
-// CAMADA I — Concorrência direta
-const DIRETOS = [
-  {n:'Vernazza', inc:'Treviso', tipo:1,
-   vs:'Dom Manuel Tipo 01 (4D · 134,68 m²)  ×  Vernazza 4D · ~130 m² · 65% vendido · entrega 12/2029',
-   comp:[14005,15560,17199], compRsm2:15560, gap:'−14% a −7%', cls:'good',
-   take:'O Tipo 01 é <b>maior e mais barato</b> que o Vernazza em todas as faixas — abre 14% abaixo no T0 e termina 7% abaixo no T4. Mesmo o andar alto na T4 (R$ 2,02 M) não alcança o andar alto do Vernazza (R$ 2,24 M).'},
-  {n:'Zion', inc:'Ergus', tipo:1,
-   vs:'Dom Manuel Tipo 01 (4D · 134,68 m²)  ×  Zion 4D · 148,55 m² · 83% vendido · entrega 12/2026',
-   comp:[14610,15900,17213], compRsm2:15900, gap:'−16% a −9%', cls:'good',
-   take:'O vertical mais caro da Ponta d\'Areia. O Tipo 01 abre 16% abaixo no T0 e segue 9% abaixo no T4 — o andar alto do Tipo 01 na T4 (R$ 2,02 M) fica <b>abaixo do andar baixo do Zion</b> (R$ 2,17 M). O Zion vendeu 83%, mas registrou zero venda entre abr e mai/2026 — sinal de teto, e o Dom Manuel está com folga abaixo dele.'},
-  {n:'ORO', inc:'Niágara', tipo:2,
-   vs:'Dom Manuel Tipo 02 (3D · 116,38 m²)  ×  ORO 3D · 80,32 m² · lançado 01/2026',
-   comp:[12492,15952,19141], compRsm2:15952, gap:'produto distinto', cls:'flat',
-   take:'A ORO trabalha um 3D <b>compacto</b> (80 m²) — produto e comprador distintos da Tipo 02 (116 m²). Por ticket os dois quase não se cruzam: a ORO 3D vai de R$ 1,0 a 1,5 M, a Tipo 02 de R$ 1,5 a 1,75 M. A ORO pratica a curva de andar mais íngreme do mercado (+3,4%/andar).'}
-];
+/* ===== ESCADA ===== */
+function drawEscada(){
+  const svg=document.getElementById('svgEscada');
+  const W=1040,L=60,Rp=40,top=40,baseY=290,y0=12800,y1=16200;
+  const Y=v=>baseY-(v-y0)/(y1-y0)*(baseY-top);
+  [['Ponta d\'Areia (Camada I) ~R$ 15.700',15700,'#E06B5A'],
+   ['Zona de giro lento ~R$ 15.000',15000,'#d98a3d'],
+   ['Renascença II (Camada II) ~R$ 14.825',14825,'#5B8FB0']].forEach(([lab,v,c])=>{
+    svg.appendChild(el('line',{x1:L,y1:Y(v),x2:W-Rp,y2:Y(v),stroke:c,'stroke-width':1,'stroke-dasharray':'5 4',opacity:.85}));
+    svg.appendChild(el('text',{x:W-Rp,y:Y(v)-6,fill:c,'font-size':10.5,'text-anchor':'end'},lab));
+  });
+  const n=ESCADA.length, slotW=(W-L-Rp)/n;
+  ESCADA.forEach((rsm,i)=>{
+    const cx=L+slotW*i+slotW/2, bw=slotW*0.52;
+    const h=baseY-Y(rsm);
+    svg.appendChild(el('rect',{x:cx-bw/2,y:Y(rsm),width:bw,height:h,
+      fill:'url(#gg)',stroke:'#C9A84C','stroke-width':1,rx:3}));
+    svg.appendChild(el('text',{x:cx,y:Y(rsm)-22,fill:'#fff','font-size':13,'font-weight':700,'text-anchor':'middle'},'R$ '+fmt(rsm)));
+    const p1=pct(rsm,REF_C1);
+    svg.appendChild(el('text',{x:cx,y:Y(rsm)-8,fill:p1.c,'font-size':10.5,'text-anchor':'middle','font-weight':600},p1.t+' vs C I'));
+    svg.appendChild(el('text',{x:cx,y:baseY+18,fill:'#E8D5A3','font-size':12,'font-weight':700,'text-anchor':'middle'},'T'+i));
+  });
+  svg.appendChild(el('line',{x1:L,y1:baseY,x2:W-Rp,y2:baseY,stroke:'#555'}));
+  const defs=el('defs',{});
+  const lg=el('linearGradient',{id:'gg',x1:0,y1:0,x2:0,y2:1});
+  lg.appendChild(el('stop',{offset:'0%','stop-color':'#C9A84C'}));
+  lg.appendChild(el('stop',{offset:'100%','stop-color':'#8B6914'}));
+  defs.appendChild(lg); svg.appendChild(defs);
+}
 
-// CAMADA II — Concorrência indireta (Renascença II)
-const INDIRETOS = [
-  {n:'Renaissance Conceito', inc:'Monteplan', tipo:1,
-   vs:'Dom Manuel Tipo 01 (4D · 134,68 m²)  ×  Renaissance 4D "Leonardo" · 110 m² · ~79% vendido',
-   comp:[12358,13168,14229], compRsm2:13168, gap:'prateleiras distintas', cls:'flat',
-   take:'Por R$/m² o Dom Manuel passa o Renaissance a partir do T1 — isoladamente assusta. Mas por <b>ticket os dois não se cruzam</b>: o 4D do Renaissance custa R$ 1,36–1,57 M (apê de 110 m²); o Tipo 01 custa R$ 1,7–2,0 M (apê de 135 m²). São portes e bolsos diferentes — e o prêmio de R$/m² é o preço da localização superior de Ponta d\'Areia.'},
-  {n:'Entre Rios', inc:'Mota Machado', tipo:1,
-   vs:'Dom Manuel Tipo 01 (4D · 134,68 m²)  ×  Entre Rios 3D · 125–157 m² · 30 unidades · lançado 08/2024',
-   comp:[14679,15200,15787], compRsm2:15200, gap:'% vendido n/d', cls:'flat',
-   take:'O Entre Rios é o único produto de Renascença II na faixa de ticket do Dom Manuel (R$ 1,73–2,72 M). A Mota Machado publica a tabela <b>sempre completa</b> (mostra todas as 30 unidades como disponíveis) — % vendido e velocidade <b>não são aferíveis</b> pela base. Lacuna metodológica: o Entre Rios não dá leitura conclusiva nem de tração nem de teto.'}
+/* ===== TABELAS CRUZADAS — COMPARATIVOS POR CAMADA ===== */
+// Cada competitor é: {n, inc, tip, area, total, rsmB, rsmM, rsmA, tkmin, tkmax, pvend, lanc, entreg, curva, vagas}
+// rsmB/M/A = baixa/médio/alto R$/m²; nulls aceitos
+const PARAMS=[
+  {k:'Tipologia',f:c=>c.tip||'—'},
+  {k:'Área privativa',f:c=>c.area?c.area+' m²':'—'},
+  {k:'Total de unidades',f:c=>c.total||'—'},
+  {k:'R$/m² · faixa baixa (1º–4º)',f:c=>c.rsmB?'R$ '+fmt(c.rsmB):'—'},
+  {k:'R$/m² · faixa médio (5º–9º)',f:c=>c.rsmM?'R$ '+fmt(c.rsmM):'—'},
+  {k:'R$/m² · faixa alto (10º–15º)',f:c=>c.rsmA?'R$ '+fmt(c.rsmA):'—'},
+  {k:'Ticket mín – máx',f:c=>c.tkmin?'R$ '+c.tkmin+(c.tkmax&&c.tkmax!==c.tkmin?'–'+c.tkmax:''):'—'},
+  {k:'% vendido',f:c=>c.pvend||'—'},
+  {k:'Lançamento → Entrega',f:c=>c.lanc?c.lanc+' → '+(c.entreg||'—'):'—'},
+  {k:'Vagas',f:c=>c.vagas||'—'},
+  {k:'Prêmio por andar',f:c=>c.curva||'—'}
 ];
+// Coluna especial Dom Manuel — duas linhas por célula (Tipo 01 / Tipo 02)
+const DM_T01={tip:'4D · 3 suítes',area:'134,68',total:'30',
+  rsmB:'12.882 → 13.913',rsmM:'13.181 → 14.235',rsmA:'13.869 → 14.978',
+  tkmin:'1.74 M',tkmax:'2,02 M',pvend:'pré-lanç.',lanc:'jun/2026',entreg:'nov/2029',
+  vagas:'2 padrão',curva:'±0,5%/and (centrada 8º)'};
+const DM_T02={tip:'3D · 3 suítes',area:'116,38',total:'15',
+  rsmB:'12.978 → 14.016',rsmM:'13.278 → 14.340',rsmA:'13.920 → 15.034',
+  tkmin:'1,51 M',tkmax:'1,75 M',pvend:'pré-lanç.',lanc:'jun/2026',entreg:'nov/2029',
+  vagas:'2 padrão',curva:'±0,5%/and (centrada 8º)'};
+function dmCell(p){
+  // Para a coluna Dom Manuel, retorna HTML com Tipo 01 e Tipo 02 empilhados
+  const v1=p.f(DM_T01), v2=p.f(DM_T02);
+  if(v1===v2) return `<span class="t01">${v1}</span>`;
+  return `<span class="t01"><b style="color:var(--gold)">T01</b> · ${v1}</span><span class="t02"><b style="color:var(--gold)">T02</b> · ${v2}</span>`;
+}
+function renderCross(tableId, competitors, syntId, syntText){
+  const table=document.getElementById(tableId);
+  const head=document.createElement('thead');
+  const hr=document.createElement('tr');
+  hr.innerHTML='<th></th><th class="dm">Dom Manuel</th>'+competitors.map(c=>`<th>${c.n}<br><span style="font-weight:400;color:var(--muted);font-size:10px">${c.inc||''}</span></th>`).join('');
+  head.appendChild(hr); table.appendChild(head);
+  const body=document.createElement('tbody');
+  PARAMS.forEach(p=>{
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td>${p.k}</td><td class="dm">${dmCell(p)}</td>`+
+      competitors.map(c=>`<td${c.pend?' class="pend"':''}>${p.f(c)}</td>`).join('');
+    body.appendChild(tr);
+  });
+  table.appendChild(body);
+  if(syntId) document.getElementById(syntId).innerHTML=syntText;
+}
 
-// CAMADA III — Similaridade de produto (todos bairros), sub-agrupado
-const C3_PDF = [
-  {n:'Giardino Residenza', inc:'Alfa Engenharia', tipo:1,
-   vs:'Dom Manuel Tipo 01 (4D · 134,68 m²)  ×  Giardino 3D · 99–128 m² · ~89% vendido (11 disp / 105) · entrega 12/2029',
-   comp:[14442,15181,16865], compRsm2:15500, gap:'~−14% a −7%', cls:'good',
-   take:'Giardino tem porte de planta na faixa do Dom Manuel (99–128 m²) e absorveu ~89% em 13 meses — <b>referência clara</b> de que a banda de R$/m² ~15,4 mil é absorvível. O Dom Manuel abre 14% abaixo dessa referência e fecha 7% abaixo no T4.'}
+// CAMADA I — concorrentes
+const C1=[
+  {n:'Vernazza Norte',inc:'Treviso · Ponta d\'Areia', tip:'4D · 3 suítes',area:'130',total:'120',
+   rsmB:'14.005',rsmM:'15.560',rsmA:'17.199',tkmin:'1,82 M',tkmax:'2,24 M',pvend:'65%',
+   lanc:'fev/2025',entreg:'dez/2029',vagas:'2 padrão',curva:'+1,50%/and'},
+  {n:'Zion',inc:'Ergus · Ponta d\'Areia',tip:'4D · 4 suítes',area:'148,55',total:'60',
+   rsmB:'14.610',rsmM:'15.900',rsmA:'17.213',tkmin:'2,17 M',tkmax:'2,56 M',pvend:'83% (0 vendas abr→mai/26)',
+   lanc:'set/2025',entreg:'dez/2026',vagas:'3 padrão',curva:'~+1,3%/and (inferido)'},
+  {n:'LIV Residence',inc:'Alfa · Ponta d\'Areia',tip:'3D · 3 suítes',area:'90–100',total:'75',
+   rsmB:null,rsmM:null,rsmA:null,tkmin:null,tkmax:null,pvend:null,
+   lanc:'jul/2023',entreg:'jul/2027',vagas:'2 padrão',curva:null,pend:true},
+  {n:'ORO',inc:'Niágara · Ponta d\'Areia',tip:'3D padrão / 4D Cob',area:'80,32 / 160,65',total:'96 (88+8)',
+   rsmB:'12.492',rsmM:'15.952',rsmA:'19.141',tkmin:'1,00 M',tkmax:'1,54 M (Cob 2,42 M)',pvend:'matriz (n/d)',
+   lanc:'jan/2026',entreg:'~2029',vagas:'2 padrão',curva:'+3,41%/and (escalonado)'}
 ];
-const C3_CALHAU = [
-  {n:'Landscape', inc:'Delman', tipo:1,
-   vs:'Dom Manuel Tipo 01 (4D · 134,68 m²)  ×  Landscape 4D · 103,6 m² (núcleo) + duplex 123–143 m² · 46% vendido em pré-lançamento',
-   comp:[13789,14578,16213], compRsm2:14600, gap:'~−8% (núcleo)', cls:'good',
-   take:'Landscape é o lançamento mais recente do Calhau (mar/2026) e absorveu 46% em ~2 meses — sinal de demanda firme. O Dom Manuel abre 8% abaixo do R$/m² núcleo do Landscape; as plantas duplex (123–143 m²) sobem para ~16,2 mil, mas são unidades especiais.'},
-  {n:'Reserva São Marcos', inc:'Mota Machado', tipo:1,
-   vs:'Dom Manuel Tipo 01 (4D · 134,68 m²)  ×  Reserva SM 4D Litorânea · 103 m² · ~89% vendido · entrega 02/2029',
-   comp:[14581,16263,17944], compRsm2:16300, gap:'~−18%', cls:'good',
-   take:'Reserva São Marcos absorveu ~89% a R$/m² na faixa alta (~16,3 mil) — produto menor (103 m²) mas vintage parecido (jan/2025). Mostra que <b>mesmo R$/m² na faixa alta é absorvível em Calhau quando o ticket cabe</b>. O Dom Manuel abre 18% abaixo desse R$/m².'}
-];
-const C3_PENINSULA = [
-  {n:'Monte Meru', inc:'Berg', tipo:1,
-   vs:'Dom Manuel Tipo 01 (4D · 134,68 m²)  ×  Monte Meru 3D · ~135,5 m² · ~82% rastreado · tabela mai/2026',
-   comp:[14300,null,null], compRsm2:14300, gap:'~−6% (cruza no T4)', cls:'good',
-   take:'<b>Gêmeo de produto</b> da Tipo 01 — mesma metragem (~135 m²), vertical, alto padrão. Só há unidades de andar baixo rastreadas. O Tipo 01 abre 6% abaixo no R$/m² e só cruza o Monte Meru no T4. Monte Meru está na Península (região mais valorizada) e tem vintage mais antigo (lanç. 04/2024) — alcançar o R$/m² dele apenas no último degrau é posicionamento sólido.'},
-  {n:'Mount Solaro', inc:'Berg + Gonçalves', tipo:1,
-   vs:'Dom Manuel Tipo 01 (4D · 134,68 m²)  ×  Mount Solaro 3D · 104 m² · sem tabela comercial confirmada',
-   comp:null, compRsm2:15384, gap:'estimativa de site', cls:'flat',
-   take:'Vertical da Península com 3D na faixa de área comparável (104 m²). R$/m² estimado em ~15.384 (site oficial). Sem tabela comercial — referência indicativa, não comparável firme.', skipTable:true},
-  {n:'Reserva Península', inc:'Sá Cavalcante', tipo:1,
-   vs:'Dom Manuel Tipo 01 (4D · 134,68 m²)  ×  Reserva Península 4D · 127–171 m² · sem tabela',
-   comp:null, compRsm2:null, gap:'sem preço', cls:'flat',
-   take:'Lançado 09/2025 na Península, com 4D de porte compatível com a Tipo 01 (127–171 m²). <b>Sem tabela de preço na base</b> — lacuna a fechar; potencial concorrente direto por produto e região-prêmio.', skipTable:true}
-];
+const SY_C1 = `Por R$/m², o <b>Tipo 01</b> abre 14% abaixo do Vernazza, 16% abaixo do Zion e ainda 16% abaixo da ORO em produto — mas a ORO trabalha um <b>3D compacto</b> de 80 m², comparador menos direto. Por ticket o Tipo 01 fica abaixo de Vernazza Norte e Zion mesmo no topo (T4 alto: R$ 2,02 M × Vernazza R$ 2,24 M × Zion R$ 2,56 M). O <b>LIV Residence</b>, único C1 sem tabela na base, é o ponto cego — captura em andamento. A <b>Tipo 02</b> (3D 116 m²) ocupa um espaço próprio: maior que a ORO 3D (80 m²) e que a Vernazza Sul (88–90 m²), com ticket entre os dois — "3D grande" sem concorrente direto.`;
 
-// CAMADA IV — Demais verticais com dados, agrupados por bairro
+// CAMADA II — concorrentes (com Nexus placeholder)
+const C2=[
+  {n:'Renaissance Conceito',inc:'Monteplan · Renascença II',tip:'4D Leonardo · 3 suítes',area:'110',total:'~45 (Leonardo)',
+   rsmB:'12.358',rsmM:'13.168',rsmA:'14.229',tkmin:'1,36 M',tkmax:'1,57 M',pvend:'~79%',
+   lanc:'jun/2025',entreg:'ago/2027',vagas:'2–3 (6º+)',curva:'+1,09%/and'},
+  {n:'Entre Rios',inc:'Mota Machado · Renascença II',tip:'3D · 3 suítes',area:'125–157',total:'30',
+   rsmB:'14.679',rsmM:'15.200',rsmA:'15.787',tkmin:'1,73 M',tkmax:'2,72 M',pvend:'n/d (tabela completa)',
+   lanc:'ago/2024',entreg:'—',vagas:'2 padrão',curva:'n/d'},
+  {n:'Nexus Renascença',inc:'Ergus · Renascença · Luxo "Porsche Consulting"',
+   tip:'Multi-tipo · Studio + 1D + 2D + 3D',area:'30,79–95,84',total:'152',
+   rsmB:null,rsmM:16107,rsmA:null,tkmin:'0,54 M',tkmax:'1,50 M',pvend:'0% (lanç. mai/26)',
+   lanc:'mai/2026',entreg:'jun/2031',vagas:'a confirmar',curva:'a derivar do U_RAW'}
+];
+const SY_C2 = `Por R$/m² o Dom Manuel passa o Renaissance a partir do T1 — mas por <b>ticket são prateleiras diferentes</b> (Renaissance 4D R$ 1,36–1,57 M para apê de 110 m² × DM Tipo 01 R$ 1,74–2,02 M para apê de 135 m²). O <b>Entre Rios</b> cobre a faixa de ticket do Dom Manuel em Renascença II, mas a Mota Machado publica a tabela <b>sempre completa</b> — % vendido e velocidade <b>não são aferíveis</b>. O <b>Nexus Renascença</b> (Ergus, lançado 05/2026 · 152 un. · Complexo Nexus Coupé "Powered by Porsche Consulting") é um produto distinto: <b>Luxo de compactos</b> — mix Studio + 1D + 2D + 3D-pequeno (30–96 m²), R$/m² médio 16,1 mil, tickets R$ 0,54–1,50 M. Apesar do R$/m² alto, o ticket fica todo <b>abaixo</b> do Dom Manuel Tipo 02 (R$ 1,51–1,75 M) — disputam compradores diferentes, mas Nexus puxa a média de R$/m² de Renascença II para cima (C2 média subiu de R$ 14.184 para R$ 14.825).`;
+
+// CAMADA III — sub-bairros
+const C3_PDF=[
+  {n:'Giardino Residenza',inc:'Alfa · Ponta do Farol',tip:'3D · 3 suítes',area:'99–128',total:'105',
+   rsmB:'14.442',rsmM:'15.181',rsmA:'16.865',tkmin:'1,44 M',tkmax:'2,03 M',pvend:'~89%',
+   lanc:'fev/2025',entreg:'dez/2029',vagas:'3 padrão',curva:'+1,12%/and'}
+];
+const C3_CALHAU=[
+  {n:'Landscape',inc:'Delman · Calhau',tip:'3D + 4D · 3 suítes',area:'88 / 103,6 (núcleo) / 123–143',total:'95',
+   rsmB:'13.789',rsmM:'14.578',rsmA:'16.213',tkmin:'1,21 M',tkmax:'2,33 M',pvend:'46% (pré-lanç.)',
+   lanc:'mar/2026',entreg:'set/2029',vagas:'2 padrão',curva:'+0,78–0,93%/and'},
+  {n:'Reserva São Marcos',inc:'Mota Machado · Calhau',tip:'4D Litorânea',area:'103,15',total:'36 (Litorânea)',
+   rsmB:'14.581',rsmM:'16.263',rsmA:'17.944',tkmin:'1,50 M',tkmax:'1,85 M',pvend:'~89%',
+   lanc:'jan/2025',entreg:'fev/2029',vagas:'2 padrão',curva:'+1,90%/and (2 pontos)'}
+];
+const C3_PENINSULA=[
+  {n:'Monte Meru',inc:'Berg · Península',tip:'3D · 4 suítes',area:'~135,5',total:'~11 rastreadas',
+   rsmB:'14.300',rsmM:null,rsmA:null,tkmin:'1,93 M',tkmax:'1,95 M',pvend:'82% rastreado',
+   lanc:'abr/2024',entreg:'abr/2027',vagas:'2–3',curva:'n/d (só andar 1)'},
+  {n:'Mount Solaro',inc:'Berg+Gonçalves · Península',tip:'3D · 3 suítes',area:'104',total:'20 (3D)',
+   rsmB:null,rsmM:'15.384',rsmA:null,tkmin:'1,50 M',tkmax:'1,70 M',pvend:'sem tabela',
+   lanc:'jun/2025',entreg:'—',vagas:'2',curva:'n/d',pend:true},
+  {n:'Reserva Península',inc:'Sá Cavalcante · Península',tip:'4D · mono',area:'127–171',total:'a confirmar',
+   rsmB:null,rsmM:null,rsmA:null,tkmin:null,tkmax:null,pvend:null,
+   lanc:'set/2025',entreg:'—',vagas:'2–3',curva:null,pend:true}
+];
+const SY_C3 = `<b>Ponta do Farol</b> — Giardino é a referência mais clara da banda comparável: 99–128 m², R$/m² 14,4–16,9 mil, ~89% vendido em ~13 meses. O Dom Manuel abre 14% abaixo do R$/m² médio do Giardino. <b>Calhau</b> — Landscape (pré-lanç. mar/26, 46% absorvido em 2 meses) confirma demanda firme no Calhau; Reserva São Marcos chegou a ~89% mesmo na faixa alta (R$/m² ~16,3 mil), mostrando que a banda é absorvível quando o ticket cabe. <b>Península</b> — Monte Meru é o <b>gêmeo de produto</b> da Tipo 01 (mesma metragem ~135 m²); o R$/m² do Dom Manuel só cruza o de Monte Meru no T4, posicionamento sólido. Mount Solaro e Reserva Península ainda sem tabela — lacunas de referência-prêmio a fechar.`;
+
+/* ===== CAMADA IV — tabela ===== */
 const C4 = [
   {b:'Calhau', items:[
     {n:'The View',          inc:'Delman',       tip:'Studio/1D/2D/3D · 36–86 m²', rsm2:16765, tk:'540k–1,50 M',   pv:'52%'},
@@ -461,159 +687,6 @@ const C4 = [
     {n:'Residencial Novo Anil', inc:'Monteplan',tip:'2D · 54 m²',                rsm2:6009,  tk:'324 k',          pv:'n/d'}
   ]}
 ];
-
-/* ===== HELPERS SVG ===== */
-const SVGNS='http://www.w3.org/2000/svg';
-function el(tag,attrs,txt){
-  const e=document.createElementNS(SVGNS,tag);
-  for(const k in attrs) e.setAttribute(k,attrs[k]);
-  if(txt!=null) e.textContent=txt;
-  return e;
-}
-
-/* ===== RÉGUA ===== */
-function drawRegua(){
-  const svg=document.getElementById('svgRegua');
-  const W=1040, L=215, Rp=95, top=34, axisY=388, x0=12000, x1=17000;
-  const X=v=>L+(v-x0)/(x1-x0)*(W-L-Rp);
-  const rows=[...REGUA].sort((a,b)=>a.v-b.v);
-  const rowH=(axisY-top)/rows.length;
-  svg.appendChild(el('rect',{x:X(15000),y:top,width:X(x1)-X(15000),height:axisY-top,
-    fill:'rgba(224,107,90,0.10)'}));
-  svg.appendChild(el('text',{x:X(15000)+8,y:top+13,fill:'#E06B5A','font-size':10.5,'font-weight':600},
-    'Zona de giro lento (~R$ 15–16 mil)'));
-  for(let v=x0;v<=x1;v+=1000){
-    svg.appendChild(el('line',{x1:X(v),y1:top,x2:X(v),y2:axisY,stroke:'#2a2a2a'}));
-    svg.appendChild(el('text',{x:X(v),y:axisY+21,fill:'#9a978f','font-size':10.5,'text-anchor':'middle'},
-      'R$ '+fmt(v)));
-  }
-  svg.appendChild(el('rect',{x:X(13400),y:top,width:X(14472)-X(13400),height:axisY-top,
-    fill:'rgba(201,168,76,0.17)',stroke:'#C9A84C','stroke-width':1}));
-  ESCADA.forEach(d=>{
-    svg.appendChild(el('line',{x1:X(d.rsm2),y1:top,x2:X(d.rsm2),y2:top+9,stroke:'#C9A84C','stroke-width':1.5}));
-    svg.appendChild(el('text',{x:X(d.rsm2),y:top-5,fill:'#E8D5A3','font-size':9,'text-anchor':'middle'},d.t));
-  });
-  svg.appendChild(el('text',{x:(X(13400)+X(14472))/2,y:axisY-9,fill:'#C9A84C',
-    'font-size':10,'font-weight':700,'text-anchor':'middle'},'DOM MANUEL · T0→T4'));
-  rows.forEach((c,i)=>{
-    const y=top+i*rowH+rowH/2;
-    svg.appendChild(el('text',{x:L-14,y:y+4,fill:'#e9e7e2','font-size':10.5,'text-anchor':'end','font-weight':600},c.n));
-    svg.appendChild(el('line',{x1:L,y1:y,x2:X(c.v),y2:y,stroke:ROT[c.r],'stroke-width':1.5,opacity:.45}));
-    svg.appendChild(el('circle',{cx:X(c.v),cy:y,r:6,fill:ROT[c.r],stroke:'#1d1d1d','stroke-width':1.5}));
-    svg.appendChild(el('text',{x:X(c.v)+12,y:y+4,fill:ROT[c.r],'font-size':10.5,'font-weight':600},'R$ '+fmt(c.v)));
-  });
-  svg.appendChild(el('line',{x1:L,y1:axisY,x2:X(x1),y2:axisY,stroke:'#555'}));
-}
-
-/* ===== ESCADA ===== */
-function drawEscada(){
-  const svg=document.getElementById('svgEscada');
-  const W=1040,L=60,Rp=40,top=40,baseY=270,y0=12800,y1=16200;
-  const Y=v=>baseY-(v-y0)/(y1-y0)*(baseY-top);
-  [['Ponta d\'Areia ~R$ 15.700',15700,'#E06B5A'],
-   ['Zona de giro lento ~R$ 15.000',15000,'#d98a3d']].forEach(([lab,v,c])=>{
-    svg.appendChild(el('line',{x1:L,y1:Y(v),x2:W-Rp,y2:Y(v),stroke:c,'stroke-width':1,'stroke-dasharray':'5 4',opacity:.8}));
-    svg.appendChild(el('text',{x:W-Rp,y:Y(v)-6,fill:c,'font-size':10.5,'text-anchor':'end'},lab));
-  });
-  const n=ESCADA.length, slotW=(W-L-Rp)/n;
-  ESCADA.forEach((d,i)=>{
-    const cx=L+slotW*i+slotW/2, bw=slotW*0.52;
-    const h=baseY-Y(d.rsm2);
-    svg.appendChild(el('rect',{x:cx-bw/2,y:Y(d.rsm2),width:bw,height:h,
-      fill:'url(#gg)',stroke:'#C9A84C','stroke-width':1,rx:3}));
-    svg.appendChild(el('text',{x:cx,y:Y(d.rsm2)-22,fill:'#fff','font-size':13,'font-weight':700,'text-anchor':'middle'},'R$ '+fmt(d.rsm2)));
-    svg.appendChild(el('text',{x:cx,y:Y(d.rsm2)-8,fill:'#5Fae7e','font-size':10.5,'text-anchor':'middle','font-weight':600},d.pa+' vs P. d\'Areia'));
-    svg.appendChild(el('text',{x:cx,y:baseY+18,fill:'#E8D5A3','font-size':12,'font-weight':700,'text-anchor':'middle'},d.t));
-  });
-  svg.appendChild(el('line',{x1:L,y1:baseY,x2:W-Rp,y2:baseY,stroke:'#555'}));
-  const defs=el('defs',{});
-  const lg=el('linearGradient',{id:'gg',x1:0,y1:0,x2:0,y2:1});
-  lg.appendChild(el('stop',{offset:'0%','stop-color':'#C9A84C'}));
-  lg.appendChild(el('stop',{offset:'100%','stop-color':'#8B6914'}));
-  defs.appendChild(lg); svg.appendChild(defs);
-}
-
-function fillEscadaTable(){
-  const tb=document.getElementById('tbEscada');
-  ESCADA.forEach(d=>{
-    const tr=document.createElement('tr');
-    const cls=g=>g.startsWith('−')||g==='par'?'style="color:#5Fae7e"':(g.startsWith('+')?'style="color:#d98a3d"':'');
-    tr.innerHTML=`<td><b style="color:#E8D5A3">${d.t}</b></td>`+
-      `<td>R$ ${fmt(d.rsm2)}</td>`+
-      `<td>R$ ${fmt(d.tk1)}</td>`+
-      `<td>R$ ${fmt(d.tk2)}</td>`+
-      `<td ${cls(d.pa)}>${d.pa}</td>`+
-      `<td ${cls(d.rii)}>${d.rii}</td>`+
-      `<td ${cls(d.pen)}>${d.pen}</td>`;
-    tb.appendChild(tr);
-  });
-}
-
-/* ===== MATCHUP CARDS ===== */
-function drawMatch(containerId, list, rotulo){
-  const cont=document.getElementById(containerId);
-  const markerColor = ROT[rotulo] || ROT.produto;
-  list.forEach(m=>{
-    const dm = m.tipo===1?DM1:DM2;
-    const dmLo = dm.T0[0], dmHi=(dm.T4||DM1.T4)[2];
-    const card=document.createElement('div'); card.className='match';
-    const gapCls = m.cls==='good'?'good':'flat';
-    card.innerHTML=`<h3>${m.n} <span style="color:#9a978f;font-weight:400;font-size:12px">· ${m.inc}</span>
-      <span class="gap ${gapCls}">${m.gap}</span></h3>
-      <div class="vs">${m.vs}</div>`;
-    // mini-chart
-    const chart=document.createElementNS(SVGNS,'svg');
-    chart.setAttribute('viewBox','0 0 1000 96'); chart.style.width='100%';
-    const L=120,Rp=70,x0=12000,x1=17500;
-    const X=v=>L+(v-x0)/(x1-x0)*(1000-L-Rp);
-    for(let v=12000;v<=17000;v+=1000){
-      chart.appendChild(el('line',{x1:X(v),y1:14,x2:X(v),y2:74,stroke:'#2a2a2a'}));
-      chart.appendChild(el('text',{x:X(v),y:90,fill:'#6f6c66','font-size':9.5,'text-anchor':'middle'},fmt(v)));
-    }
-    chart.appendChild(el('rect',{x:X(15000),y:14,width:X(17500)-X(15000),height:60,fill:'rgba(224,107,90,0.08)'}));
-    chart.appendChild(el('rect',{x:X(dmLo),y:22,width:X(dmHi)-X(dmLo),height:18,
-      fill:'rgba(201,168,76,0.25)',stroke:'#C9A84C','stroke-width':1,rx:2}));
-    chart.appendChild(el('text',{x:L-10,y:35,fill:'#C9A84C','font-size':10,'text-anchor':'end','font-weight':700},'Dom Manuel'));
-    if(m.compRsm2!=null){
-      chart.appendChild(el('rect',{x:X(m.compRsm2)-2,y:48,width:4,height:20,fill:markerColor}));
-      chart.appendChild(el('circle',{cx:X(m.compRsm2),cy:58,r:6,fill:markerColor,stroke:'#1d1d1d','stroke-width':1.5}));
-      chart.appendChild(el('text',{x:X(m.compRsm2),y:44,fill:'#e9e7e2','font-size':10,'text-anchor':'middle'},'R$ '+fmt(m.compRsm2)+'/m²'));
-    }else{
-      chart.appendChild(el('text',{x:X(15000),y:62,fill:'#9a978f','font-size':10.5,'text-anchor':'middle','font-style':'italic'},'R$/m² n/d — sem tabela'));
-    }
-    chart.appendChild(el('text',{x:L-10,y:62,fill:'#9a978f','font-size':10,'text-anchor':'end','font-weight':600},m.n));
-    card.appendChild(chart);
-    if(!m.skipTable && m.comp){
-      const tbl=document.createElement('table');
-      tbl.style.marginTop='10px'; tbl.style.fontSize='11px';
-      const dmRows=['T0','T4'].map(t=>{
-        const d=dm[t]||DM1[t];
-        return `<tr class="rowDM"><td>Dom Manuel ${t}</td>
-          <td>${fmt(d[0])}</td><td>${fmt(d[1])}</td><td>${fmt(d[2])}</td></tr>`;
-      }).join('');
-      const c=m.comp;
-      const compRow=`<tr class="rowComp"><td>${m.n}</td>
-        <td>${c[0]?fmt(c[0]):'n/d'}</td><td>${c[1]?fmt(c[1]):'n/d'}</td><td>${c[2]?fmt(c[2]):'n/d'}</td></tr>`;
-      tbl.innerHTML=`<thead><tr><th>R$/m² por faixa de andar</th><th>Baixa 1º–4º</th><th>Médio 5º–9º</th><th>Alto 10º–15º</th></tr></thead>
-        <tbody>${dmRows}${compRow}</tbody>`;
-      card.appendChild(tbl);
-    }
-    card.innerHTML+=`<div class="take">${m.take}</div>`;
-    cont.appendChild(card);
-  });
-}
-
-function drawLiv(){
-  const cont=document.getElementById('diretos');
-  const card=document.createElement('div'); card.className='match pendente';
-  card.innerHTML=`<h3>LIV Residence <span style="color:#9a978f;font-weight:400;font-size:12px">· Alfa Engenharia</span>
-    <span class="gap flat">dado pendente</span></h3>
-    <div class="vs">3D · 90–100 m² · 75 unidades · lançado 07/2023</div>
-    <div class="take">Concorrente direto de Ponta d'Areia, mas o <b>único da microlocalização sem tabela de preço</b> na base de inteligência de mercado — a comparação por faixa fica pendente. Captura da tabela atual em andamento pelo Planejamento Comercial. Em produto, é um 3D de porte intermediário entre as 3D compactas do bairro e a Tipo 02 do Dom Manuel.</div>`;
-  cont.appendChild(card);
-}
-
-/* ===== CAMADA IV — tabela ===== */
 function fillC4(){
   const tb=document.getElementById('tbC4');
   C4.forEach(g=>{
@@ -664,52 +737,94 @@ function drawCurva(){
   svg.appendChild(el('line',{x1:L,y1:top,x2:L,y2:baseY,stroke:'#555'}));
 }
 
-/* ===== TICKET / PRATELEIRAS ===== */
-function drawTicket(){
-  const svg=document.getElementById('svgTicket');
-  const data=[
-    {n:'Dom Manuel · Tipo 02 (3D 116 m²)',lo:1.50,hi:1.75,c:'#C9A84C',dm:1},
-    {n:'Dom Manuel · Tipo 01 (4D 135 m²)',lo:1.74,hi:2.02,c:'#C9A84C',dm:1},
-    {n:'ORO · 3D 80 m²',lo:1.00,hi:1.54,c:ROT.direta},
-    {n:'Renaissance · 4D 110 m²',lo:1.36,hi:1.57,c:ROT.indireta},
-    {n:'Monte Meru · 3D 135 m²',lo:1.93,hi:1.95,c:ROT.produto},
-    {n:'Vernazza · 4D 130 m²',lo:1.82,hi:2.24,c:ROT.direta},
-    {n:'Entre Rios · 3D 125–157 m²',lo:1.73,hi:2.72,c:ROT.indireta},
-    {n:'Zion · 4D 148 m²',lo:2.17,hi:2.56,c:ROT.direta}
-  ];
-  const W=1040,L=270,Rp=50,top=22,baseY=370;
-  const x0=0.8,x1=2.9, X=v=>L+(v-x0)/(x1-x0)*(W-L-Rp);
+/* ===== PRATELEIRAS DE TICKET POR TIPO ===== */
+const TICKET_4D=[
+  {n:'Renaissance Leonardo · Renascença II (110 m²)',lo:1.36,hi:1.57,c:ROT.indireta},
+  {n:'Landscape 4D núcleo · Calhau (103,6 m²)',lo:1.43,hi:1.61,c:ROT.produto},
+  {n:'Reserva São Marcos Litorânea · Calhau (103 m²)',lo:1.50,hi:1.85,c:ROT.produto},
+  {n:'Dom Manuel · Tipo 01 (134,68 m²)',lo:1.74,hi:2.02,dm:1},
+  {n:'Vernazza Norte · Ponta d\'Areia (130 m²)',lo:1.82,hi:2.24,c:ROT.direta},
+  {n:'Landscape duplex · Calhau (123–143 m²)',lo:2.00,hi:2.33,c:ROT.produto},
+  {n:'Zion · Ponta d\'Areia (148,55 m²)',lo:2.17,hi:2.56,c:ROT.direta},
+  {n:'ORO Cobertura Duplex · Ponta d\'Areia (160 m²)',lo:2.42,hi:2.42,c:ROT.direta},
+  {n:'Edifício Bossa · Calhau (191–196 m²)',lo:2.85,hi:3.71,c:ROT.paisagem},
+  {n:'Al Mare Tirreno · Calhau (215 m²)',lo:3.02,hi:3.12,c:ROT.paisagem},
+  {n:'Sky Residence · Península (246 m²)',lo:4.70,hi:4.70,c:ROT.paisagem},
+  {n:'Wave Residence · Ponta do Farol (293 m²)',lo:5.50,hi:5.80,c:ROT.paisagem}
+];
+const TICKET_3D=[
+  {n:'Fiji Residence 3D · Cohama (80 m²)',lo:0.81,hi:1.02,c:ROT.paisagem},
+  {n:'Cidade de Viena 3D · Turu (87 m²)',lo:0.98,hi:1.29,c:ROT.paisagem},
+  {n:'ORO 3D · Ponta d\'Areia (80,32 m²)',lo:1.00,hi:1.54,c:ROT.direta},
+  {n:'Vernazza Sul · Ponta d\'Areia (88–90 m²)',lo:1.28,hi:1.59,c:ROT.direta},
+  {n:'Giardino Residenza · Ponta do Farol (99–128 m²)',lo:1.44,hi:2.03,c:ROT.produto},
+  {n:'Mount Solaro · Península (104 m²) — estim.',lo:1.50,hi:1.70,c:ROT.produto},
+  {n:'Dom Manuel · Tipo 02 (116,38 m²)',lo:1.51,hi:1.75,dm:1},
+  {n:'Studio Design 7 Península 3D · Península (88 m²)',lo:1.55,hi:1.55,c:ROT.paisagem},
+  {n:'Nexus Renascença 3D · Renascença (80–96 m²)',lo:1.02,hi:1.50,c:ROT.indireta},
+  {n:'Entre Rios · Renascença II (125–157 m²)',lo:1.73,hi:2.72,c:ROT.indireta},
+  {n:'Monte Meru · Península (135 m²)',lo:1.93,hi:1.95,c:ROT.produto},
+  {n:'Quartier 22 · Península (165 m²)',lo:3.00,hi:3.00,c:ROT.paisagem},
+  {n:'Azimuth · Península (196 m²)',lo:3.60,hi:3.60,c:ROT.paisagem}
+];
+const TICKET_CMP=[
+  {n:'Edifício Sanpaolo 1D · Cohama (54 m²)',lo:0.305,hi:0.305,c:ROT.paisagem},
+  {n:'Residencial Novo Anil · Cohab Anil IV (54 m² · 2D)',lo:0.324,hi:0.324,c:ROT.paisagem},
+  {n:'Altos do São Francisco 2D · São Francisco (58 m²)',lo:0.50,hi:0.67,c:ROT.paisagem},
+  {n:'The View Studio · Calhau (36 m²)',lo:0.54,hi:0.69,c:ROT.paisagem},
+  {n:'Nexus Studio · Renascença (30,79 m²)',lo:0.54,hi:0.54,c:ROT.indireta},
+  {n:'The View 1D · Calhau (43 m²)',lo:0.63,hi:0.75,c:ROT.paisagem},
+  {n:'Nexus 1D · Renascença (45,20 m²)',lo:0.64,hi:0.76,c:ROT.indireta},
+  {n:'Fiji Residence 2D · Cohama (62 m²)',lo:0.66,hi:0.86,c:ROT.paisagem},
+  {n:'Le Noir 1D · Renascença II (50 m²)',lo:0.71,hi:0.71,c:ROT.paisagem},
+  {n:'Studio Design 7 1D · Península (43 m²)',lo:0.71,hi:0.74,c:ROT.paisagem},
+  {n:'Cidade de Viena 2D · Turu (61 m²)',lo:0.74,hi:0.92,c:ROT.paisagem},
+  {n:'Nexus 2D · Renascença (59,30 m²)',lo:0.80,hi:1.06,c:ROT.indireta},
+  {n:'Le Noir 2D · Renascença II (59–63 m²)',lo:0.80,hi:0.87,c:ROT.paisagem},
+  {n:'Reserva São Marcos Lagoa 2D · Calhau (68 m²)',lo:0.98,hi:1.32,c:ROT.produto},
+  {n:'Studio Design 7 2D · Península (64 m²)',lo:1.00,hi:1.15,c:ROT.paisagem},
+  {n:'The View 2D · Calhau (69 m²)',lo:1.06,hi:1.36,c:ROT.paisagem}
+];
+function drawTicket(svgId, data, axisMax){
+  const svg=document.getElementById(svgId);
+  const W=1040,L=320,Rp=60,top=22,baseY=510;
+  const x0=0.2,x1=axisMax;
+  const X=v=>L+(v-x0)/(x1-x0)*(W-L-Rp);
   const rowH=(baseY-top)/data.length;
-  for(let g=1.0;g<=2.8;g+=0.2){
+  const step=axisMax<=2?0.2:(axisMax<=4?0.5:1.0);
+  for(let g=Math.ceil(x0/step)*step;g<=x1;g+=step){
     svg.appendChild(el('line',{x1:X(g),y1:top,x2:X(g),y2:baseY,stroke:'#2a2a2a'}));
     svg.appendChild(el('text',{x:X(g),y:baseY+18,fill:'#6f6c66','font-size':10,'text-anchor':'middle'},'R$ '+g.toFixed(1)+' M'));
   }
   data.forEach((d,i)=>{
-    const y=top+i*rowH+rowH*0.22, h=rowH*0.50;
-    svg.appendChild(el('rect',{x:X(d.lo),y:y,width:Math.max(X(d.hi)-X(d.lo),4),height:h,
+    const y=top+i*rowH+rowH*0.22, h=rowH*0.52;
+    const w=Math.max(X(d.hi)-X(d.lo),4);
+    svg.appendChild(el('rect',{x:X(d.lo),y:y,width:w,height:h,
       fill:d.dm?'rgba(201,168,76,0.9)':d.c,rx:h/2,opacity:d.dm?1:0.82,
       stroke:d.dm?'#E8D5A3':'none','stroke-width':d.dm?1:0}));
     svg.appendChild(el('text',{x:L-12,y:y+h/2+4,fill:d.dm?'#C9A84C':'#e9e7e2',
-      'font-size':11,'text-anchor':'end','font-weight':d.dm?700:500},d.n));
-    svg.appendChild(el('text',{x:X(d.hi)+8,y:y+h/2+4,fill:'#9a978f','font-size':10},
-      'R$ '+d.lo.toFixed(2).replace('.',',')+'–'+d.hi.toFixed(2).replace('.',',')+' M'));
+      'font-size':10.5,'text-anchor':'end','font-weight':d.dm?700:500},d.n));
+    const lab = d.lo===d.hi?'R$ '+d.lo.toFixed(2).replace('.',',')+' M':'R$ '+d.lo.toFixed(2).replace('.',',')+'–'+d.hi.toFixed(2).replace('.',',')+' M';
+    svg.appendChild(el('text',{x:X(d.hi)+8,y:y+h/2+4,fill:'#9a978f','font-size':10},lab));
   });
   svg.appendChild(el('line',{x1:L,y1:top,x2:L,y2:baseY,stroke:'#555'}));
 }
 
 document.addEventListener('DOMContentLoaded',()=>{
-  drawRegua();
+  drawRegua('svgReguaAll',REGUA_ALL,{h:660,x0:6000,x1:20000,stepX:2000,L:225});
+  drawRegua('svgReguaFocus',REGUA_FOCUS,{h:230,x0:12000,x1:17000,stepX:1000,L:225});
   drawEscada();
-  fillEscadaTable();
-  drawMatch('diretos',DIRETOS,'direta');
-  drawLiv();
-  drawMatch('indiretos',INDIRETOS,'indireta');
-  drawMatch('produto-pdf',C3_PDF,'produto');
-  drawMatch('produto-calhau',C3_CALHAU,'produto');
-  drawMatch('produto-peninsula',C3_PENINSULA,'produto');
+  fillPos();
+  renderCross('tbC1',C1,'syC1',SY_C1);
+  renderCross('tbC2',C2,'syC2',SY_C2);
+  renderCross('tbC3pdf',C3_PDF,null,null);
+  renderCross('tbC3calhau',C3_CALHAU,null,null);
+  renderCross('tbC3peninsula',C3_PENINSULA,'syC3',SY_C3);
   fillC4();
   drawCurva();
-  drawTicket();
+  drawTicket('svgTicket4D',TICKET_4D,6.0);
+  drawTicket('svgTicket3D',TICKET_3D,4.0);
+  drawTicket('svgTicketCmp',TICKET_CMP,1.6);
 });
 </script>
 </body>
