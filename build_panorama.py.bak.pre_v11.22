@@ -46,7 +46,7 @@ OUTPUT_HTML = SCRIPT_DIR / "index.html"  # nome padrão do GitHub Pages
 #   Tabela C — Demais (lançados sem tabela, info parcial)
 # Rafael mantém manualmente a lista de Breve Lançamentos abaixo.
 BREVE_LANCAMENTO_NAMES = {
-    # "Nexus Renascença" — removido v11.22 (destravado para Tabela A pré-launch com 152 unid)
+    "Nexus Renascença",   # Ergus, lanc. 04/2026 — site sem ficha técnica
     "Bay View",           # Alfa Engenharia, lanc. 05/2026 — Rafael 04/05/2026
     "Villa Terrari",      # DOM Incorporação, lanc. 07/2026 — interno DOM
     "Dom Manuel",         # DOM Incorporação, lanc. 08/2026 — interno DOM

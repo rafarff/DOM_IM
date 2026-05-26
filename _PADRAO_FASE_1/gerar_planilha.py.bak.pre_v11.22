@@ -19,36 +19,8 @@ from openpyxl.drawing.image import Image as XLImage
 # ═══════════════════════════════════════════════════════════════
 # PARÂMETROS GLOBAIS
 # ═══════════════════════════════════════════════════════════════
-VERSION = "11.22"
+VERSION = "11.21"
 DATE_STR = "25/05/2026"
-# v11.22 — (25/05/2026): DESTRAVAMENTO Nexus Renascença (Ergus) + enriquecimento Monte Meru (Berg).
-#   INBOX 25/05 — 4 PDFs novos (Berg Monte Meru, Ergus Nexus Coupé):
-#     (A) NEXUS RENASCENÇA destravado de BREVE_LANCAMENTO (Tabela B) → TABELA A pré-launch.
-#         Book Nexus Coupé + 2 tabelas maio/2026 (visão multimodal): 152 unidades visíveis em
-#         3 produtos Ergus — On Residence (90u 3D 3 plantas 80,38/81,21/95,84m²), Open Design
-#         (62u Studio+1Q+2Q em 4 plantas: 30,79/33,51/45,20/59,30m²), Lead Office (corporativo,
-#         fora de escopo IM). Rebrand "Nexus Coupé" Powered by Porsche Consulting. Endereço
-#         atualizado: Av. Avicenia 15, Calhau (mantém Bairro=Renascença marketing). Tickets
-#         R$ 535k–1.504k. R$/m² médio ~R$ 15.842 (LUXO). VGV est. ~R$ 164M. Lançamento 05/2026
-#         (data tabela). Entrega 06/2031 (mais tardia entre 12/2030 Open + 06/2031 On Res).
-#         U_RAW: unidades/Ergus__Nexus_Renascenca.yaml com 152 entries (orig=tabela_local_imagem,
-#         status=disponível, estoque=1.0 por Rafael — pre-launch fase de reserva).
-#         Removido de BREVE_LANCAMENTO_NAMES em build_panorama.py.
-#     (B) MONTE MERU enriquecido com book digital (57p). Tipologia "—" → "3D" (3 suítes); 4 plantas
-#         por andar confirmadas: APT01 141,36m² + APT02 135,77m² + APT03 135,32m² + APT04 135,83m²
-#         (áreas E_RAW 135.32–141.36, era 135.32–135.83). Total inferido 40 unid (10 andares × 4
-#         aptos, origem book §3.6 nível 3). Diferenciais: SPA Aquecido (1º de SLZ), piscina borda
-#         infinita, Smart Home Alexa, energia solar, reuso água.
-#   Total mapeado v11.21 → v11.22: Empreend 55 (=); Incorp 20 (=);
-#     U_RAW arquivos/unid: 27/921 → 28/1.073 (+1 Nexus YAML +152 entries);
-#     VGV total: R$ 3,37bi → ~R$ 3,53bi (+R$ 164M Nexus visível).
-#   Drift script ↔ planilha esperado = 0 (a verificar). Invariantes §3.7.C.4 + C.6 a verificar.
-#   Distribuição A/B/C: A +1 Nexus (28→29); B -1 Nexus (7→6); C (=).
-#   INSIGHT estratégico DOM: Nexus Renascença = concorrente direto em vários segmentos. 3D
-#     80–95m² Renascença R$ 1,0–1,5M vs Dom Lucas (3D ~100m² R$ 850k Cantinho do Céu) e Dom José
-#     (4D 154m² R$ 1,4M). Open Design Studios + 1Q + 2Q ocupam nicho jovem profissional onde
-#     DOM não atua. Em fase de reserva, 55+ studios já reservados antes do launch oficial.
-#
 # v11.21 — (25/05/2026): Correções pós-kickoff Planejamento Comercial (Dom Manuel).
 #   (A1) Entry Dom Manuel atualizada ao modelo de preço correto:
 #     - Tipo 02 (3D): área 113,50 → 116,38 m².
@@ -788,13 +760,13 @@ E_RAW = [
      "Tipologia detalhada: 4 suítes + 3 vagas. 2 torres × 14 pavtos tipo × 2 aptos/andar (Coluna 1 + Coluna 2) = 56 aptos no edifício. **TABELA 04/2026 EXTRAÍDA VIA VISÃO MULTIMODAL (v8.2 — 02/05/2026)** a partir do PDF imagem (pdftoppm + Claude visão). Tabela mostra 10 unidades disponíveis: Torre 1 col 1: aptos 202, 1101, 1201, 1202, 1301, 1501 (R$2.170k-2.557k); Torre 2 col 1: aptos 302, 1102, 1202 (R$2.192k-2.445k). Todas 148,55m² (4D suítes uniforme). R$/m² 14.610-17.212 (média ~R$15.500). Estimativa total ~60 unid. % Vendido estimado 83%. Memorial Reg. nº 02, Matrícula 130.345, 1º Cartório SL. Nota da tabela: obra entregue DEZ/26 mas unidades vendidas após ABRIL/26 serão entregues JUN/27 — sinal de tração tardia. **TABELA 05/2026 (v11.14, 07/05/2026):** confirmou todas as 10 SKUs e preços via text-extraction. Velocidade de vendas = 0 unid no mês ABR→MAI. Política de preço inalterada (sem reajuste). Único delta: re-parcelamento mecânico (14→13 mensais; semestral OUT/26→NOV/26).", "book", None, "informado_manualmente"),
 
     ("Ergus","Nexus Renascença",
-     "Av. Avicenia, 15, Calhau, São Luís - MA, 65071-370","Renascença",
+     "Endereço não localizado, Renascença, São Luís - MA","Renascença",
      "Vertical",None,
-     152,"05/2026","06/2031", 30.79,95.84,None, "Studio; 1D; 2D; 3D",
-     535902,1503726, None,None, None,
-     "tabela_local_imagem","tabela_local_imagem","tabela_local",
-     "https://www.ergus.com.br","25/05/2026",
-     "Tipologia detalhada: Studio + 1Q + 2Q + 3Q/3 suítes. Complexo Nexus Coupé (rebrand MAI/2026 com Powered by Porsche Consulting) = mixed-use Av. Avicenia 15 Calhau (Bairro mantido Renascença por marketing/nome do empreendimento — §3.10 nível 1 book). **Destravamento v11.22 (25/05/2026)** via 1 book + 2 tabelas maio/2026 (visão multimodal). Composto por 3 produtos Ergus: (1) **On Residence** — 15 pav × 6 aptos = 90 unid 3D, 3 plantas (80,38m² 3Q / 81,21m² 3Q / 95,84m² 3 suítes), tickets R$ 1,02–1,50M, entrega 06/2031. (2) **Open Design** — 14 pav × 9 aptos = 126 unid plan., 4 plantas (Studio 30,79m² + Studio 33,51m² + 1Q 45,20m² + 2Q 59,30m²), tickets R$ 0,54–1,06M, entrega 12/2030. (3) **Lead Office** (corporativo, fora do escopo IM residencial) — salas 175,15m² divisíveis. + Open Mall comercial. Tabela maio/2026 em 'fase de reserva' (pré-registro de incorporação) mostra 152 unidades em oferta: 90 On Res (todas disp, pré-launch) + 62 Open Des (estudios + 1Q parcialmente reservados). Estoque tratado como 1.0 (pré-launch — opção Rafael 25/05). VGV est. ~R$ 164M para residencial visível. R$/m² médio R$ 15.842 (Luxo). U_RAW completo em unidades/Ergus__Nexus_Renascenca.yaml (152 entries). Diferenciais comerciais: paisagismo como experiência urbana, Lead Office para corporativo, mall integrado. Porsche Consulting na gestão de processos. Saiu de BREVE_LANCAMENTO_NAMES (build_panorama).", "tabela_local_imagem", None, "informado_manualmente"),
+     None,"04/2026","—", 33,94,None, "Studio; 1D; 2D",
+     None,None, None,None,None,
+     "site_oficial","N/A","imprensa",
+     "https://www.ergus.com.br","14/04/2026",
+     "Tipologia detalhada: Studio a 2Q. Complexo 10mil m² multi-produto (residencial + comercial + Open Mall). Book local + site oficial.", None, None, None),
 
     # ═══ TREVISO ═══════════════════════════════════════════════════════
     ("Treviso","Vernazza Torre Norte",
@@ -873,13 +845,13 @@ E_RAW = [
 
     # ═══ BERG ══════════════════════════════════════════════════════════
     ("Berg Engenharia","Monte Meru",
-     "Endereço não localizado, Península da Ponta D'Areia, São Luís - MA","Península",
+     "Endereço não localizado, Ponta d'Areia, São Luís - MA","Península",
      "Vertical",None,
-     40,"04/2024","04/2027", 135.32,141.36,None, "3D",
+     None,"04/2024","04/2027", 135.32,135.83,None, "—",
      1932400,1944500, None,None,None,
      "tabela_local","tabela_local","imprensa",
-     "https://www.bergengenharia.com.br","25/05/2026",
-     'Tipologia detalhada: 3 SUÍTES + lavabo + WC serviço + até 3 vagas + depósito (Plus) + opções de planta (cozinha ampliada / 2 suítes + closet ampliado / grand home office). **Book digital Berg confirmou (v11.22, 25/05/2026):** 4 plantas por andar — APT01 141,36m² + APT02 135,77m² + APT03 135,32m² + APT04 135,83m². Tipologia E_RAW corrigida "—" → "3D" (3 suítes contam). Tabela MAI/2026 confirma 2 unid. disponíveis: apto 103 (135,32m² APT03, R$ 1.932.400) + apto 104 (135,83m² APT04, R$ 1.944.500). 9 unidades VENDIDAS (apto 204–1004 = posição 04 floors 2–10). Posições 01 e 02 (APT01 141,36m² + APT02 135,77m²) inferidas como 100% vendidas (não aparecem na tabela disp). Total inferido = 10 andares × 4 aptos = 40 unid (origem book — descrição arquitetônica + numeração). Lançamento 04/2024 estimado pela pasta. Conclusão: 30/04/2027 (T-36 perfeito). **Diferenciais comerciais:** vista permanente mar OU lagoa, todos aptos nascente, Smart Home (Alexa + biometria + tomadas USB), 1º SPA AQUECIDO de SLZ, piscina com borda infinita, energia solar (~2500 kWh/mês cobertura), reuso de água condensadores, infra carros elétricos. Apto 704 tem 3 vagas (diferencial). 1º andar disp tem pé-direito de 4º pavimento + nascente total (WhatsApp corretor 06/05/2026). Correção INCC. Histórico Berg 28 anos: Montparnasse, Golden Tower, Peninsula Mall, Monte Olimpo, Monte Fuji.', "book", None, "informado_manualmente"),
+     "https://www.bergengenharia.com.br","06/05/2026",
+     "Tipologia detalhada: Aptos 135 m², 2-3 vagas. Tabela MAI/2026 (Berg Engenharia) confirma 2 unid. disponíveis: apto 103 (135,32 m², R$ 1.932.400) + apto 104 (135,83 m², R$ 1.944.500). 9 unidades VENDIDAS (apto 204-1004). 4 tipologias (1-4) com áreas similares. Lançamento 04/2024 estimado pela pasta. Conclusão: 30/04/2027 (T-36 perfeito). **Diferenciais comerciais (WhatsApp corretor 06/05/2026):** unidades disponíveis são de 1º andar mas com pé-direito de 4º pavimento + nascente total. Apto 704 tem 3 vagas (diferencial). Correção INCC. Histórico Berg: Montparnasse, Golden Tower, Peninsula Mall, Monte Olimpo, Monte Fuji.", None, None, "informado_manualmente"),
 
     ("Berg Engenharia","Mount Solaro",
      "Endereço não localizado, Península da Ponta D'Areia, São Luís - MA","Península",

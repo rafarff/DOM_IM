@@ -1,15 +1,19 @@
 incorporadora: Berg Engenharia
 empreendimento: Monte Meru
-fonte: {origem_principal: tabela_local, parser: berg, data_extracao: '2026-05-06'}
+fonte: {origem_principal: tabela_local, parser: berg, data_extracao: '2026-05-25'}
+# v11.22: planta labels adicionados (APT01-04) via book digital Berg.
+# APT01 141,36m² + APT02 135,77m² + APT03 135,32m² + APT04 135,83m² (4 plantas distintas por andar).
+# Tabela MAI/26 só lista posição 04 (10 vendidos + 1 disp) + apto 103 (1 disp).
+# Posições 01 e 02 inferidas como 100% vendidas (não aparecem na tabela disp).
 unidades:
-- {apto: '103', tip: 3D, planta: '', area: 135.32, status: disponível, ticket: 1932400, origem: tabela_local}
-- {apto: '104', tip: 3D, planta: '', area: 135.83, status: disponível, ticket: 1944500, origem: tabela_local}
-- {apto: '204', tip: 3D, planta: '', area: 135.83, status: vendido, ticket: null, origem: tabela_local}
-- {apto: '304', tip: 3D, planta: '', area: 135.83, status: vendido, ticket: null, origem: tabela_local}
-- {apto: '404', tip: 3D, planta: '', area: 135.83, status: vendido, ticket: null, origem: tabela_local}
-- {apto: '504', tip: 3D, planta: '', area: 135.83, status: vendido, ticket: null, origem: tabela_local}
-- {apto: '604', tip: 3D, planta: '', area: 135.83, status: vendido, ticket: null, origem: tabela_local}
-- {apto: '704', tip: 3D, planta: '', area: 135.83, status: vendido, ticket: null, origem: tabela_local}
-- {apto: '804', tip: 3D, planta: '', area: 135.83, status: vendido, ticket: null, origem: tabela_local}
-- {apto: '904', tip: 3D, planta: '', area: 135.83, status: vendido, ticket: null, origem: tabela_local}
-- {apto: '1004', tip: 3D, planta: '', area: 135.83, status: vendido, ticket: null, origem: tabela_local}
+- {apto: '103', tip: 3D, planta: 'APT03 (135,32m²)', area: 135.32, status: disponível, ticket: 1932400, origem: tabela_local}
+- {apto: '104', tip: 3D, planta: 'APT04 (135,83m²)', area: 135.83, status: disponível, ticket: 1944500, origem: tabela_local}
+- {apto: '204', tip: 3D, planta: 'APT04 (135,83m²)', area: 135.83, status: vendido, ticket: null, origem: tabela_local}
+- {apto: '304', tip: 3D, planta: 'APT04 (135,83m²)', area: 135.83, status: vendido, ticket: null, origem: tabela_local}
+- {apto: '404', tip: 3D, planta: 'APT04 (135,83m²)', area: 135.83, status: vendido, ticket: null, origem: tabela_local}
+- {apto: '504', tip: 3D, planta: 'APT04 (135,83m²)', area: 135.83, status: vendido, ticket: null, origem: tabela_local}
+- {apto: '604', tip: 3D, planta: 'APT04 (135,83m²)', area: 135.83, status: vendido, ticket: null, origem: tabela_local}
+- {apto: '704', tip: 3D, planta: 'APT04 (135,83m²) — 3 vagas (diferencial)', area: 135.83, status: vendido, ticket: null, origem: tabela_local}
+- {apto: '804', tip: 3D, planta: 'APT04 (135,83m²)', area: 135.83, status: vendido, ticket: null, origem: tabela_local}
+- {apto: '904', tip: 3D, planta: 'APT04 (135,83m²)', area: 135.83, status: vendido, ticket: null, origem: tabela_local}
+- {apto: '1004', tip: 3D, planta: 'APT04 (135,83m²)', area: 135.83, status: vendido, ticket: null, origem: tabela_local}

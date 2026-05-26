@@ -1,0 +1,156 @@
+incorporadora: Ergus
+empreendimento: Nexus Renascença
+fonte: {origem_principal: tabela_local_imagem, parser: visao_multimodal_v11.22, data_extracao: '2026-05-25'}
+unidades:
+- {apto: '101', tip: 3D, planta: "On Res — 3 quartos 81,21m²", area: 81.21, status: disponível, ticket: 1024056, origem: tabela_local_imagem}
+- {apto: '102', tip: 3D, planta: "On Res — 3 suítes 95,84m²", area: 95.84, status: disponível, ticket: 1268967, origem: tabela_local_imagem}
+- {apto: '103', tip: 3D, planta: "On Res — 3 quartos 80,38m²", area: 80.38, status: disponível, ticket: 1064269, origem: tabela_local_imagem}
+- {apto: '104', tip: 3D, planta: "On Res — 3 quartos 80,38m²", area: 80.38, status: disponível, ticket: 1064269, origem: tabela_local_imagem}
+- {apto: '105', tip: 3D, planta: "On Res — 3 suítes 95,84m²", area: 95.84, status: disponível, ticket: 1268967, origem: tabela_local_imagem}
+- {apto: '106', tip: 3D, planta: "On Res — 3 quartos 81,21m²", area: 81.21, status: disponível, ticket: 1024056, origem: tabela_local_imagem}
+- {apto: '201', tip: 3D, planta: "On Res — 3 quartos 81,21m²", area: 81.21, status: disponível, ticket: 1034297, origem: tabela_local_imagem}
+- {apto: '202', tip: 3D, planta: "On Res — 3 suítes 95,84m²", area: 95.84, status: disponível, ticket: 1281657, origem: tabela_local_imagem}
+- {apto: '203', tip: 3D, planta: "On Res — 3 quartos 80,38m²", area: 80.38, status: disponível, ticket: 1074912, origem: tabela_local_imagem}
+- {apto: '204', tip: 3D, planta: "On Res — 3 quartos 80,38m²", area: 80.38, status: disponível, ticket: 1074912, origem: tabela_local_imagem}
+- {apto: '205', tip: 3D, planta: "On Res — 3 suítes 95,84m²", area: 95.84, status: disponível, ticket: 1281657, origem: tabela_local_imagem}
+- {apto: '206', tip: 3D, planta: "On Res — 3 quartos 81,21m²", area: 81.21, status: disponível, ticket: 1034297, origem: tabela_local_imagem}
+- {apto: '301', tip: 3D, planta: "On Res — 3 quartos 81,21m²", area: 81.21, status: disponível, ticket: 1044537, origem: tabela_local_imagem}
+- {apto: '302', tip: 3D, planta: "On Res — 3 suítes 95,84m²", area: 95.84, status: disponível, ticket: 1294346, origem: tabela_local_imagem}
+- {apto: '303', tip: 3D, planta: "On Res — 3 quartos 80,38m²", area: 80.38, status: disponível, ticket: 1085555, origem: tabela_local_imagem}
+- {apto: '304', tip: 3D, planta: "On Res — 3 quartos 80,38m²", area: 80.38, status: disponível, ticket: 1085555, origem: tabela_local_imagem}
+- {apto: '305', tip: 3D, planta: "On Res — 3 suítes 95,84m²", area: 95.84, status: disponível, ticket: 1294346, origem: tabela_local_imagem}
+- {apto: '306', tip: 3D, planta: "On Res — 3 quartos 81,21m²", area: 81.21, status: disponível, ticket: 1044537, origem: tabela_local_imagem}
+- {apto: '401', tip: 3D, planta: "On Res — 3 quartos 81,21m²", area: 81.21, status: disponível, ticket: 1054778, origem: tabela_local_imagem}
+- {apto: '402', tip: 3D, planta: "On Res — 3 suítes 95,84m²", area: 95.84, status: disponível, ticket: 1307036, origem: tabela_local_imagem}
+- {apto: '403', tip: 3D, planta: "On Res — 3 quartos 80,38m²", area: 80.38, status: disponível, ticket: 1096197, origem: tabela_local_imagem}
+- {apto: '404', tip: 3D, planta: "On Res — 3 quartos 80,38m²", area: 80.38, status: disponível, ticket: 1096197, origem: tabela_local_imagem}
+- {apto: '405', tip: 3D, planta: "On Res — 3 suítes 95,84m²", area: 95.84, status: disponível, ticket: 1307036, origem: tabela_local_imagem}
+- {apto: '406', tip: 3D, planta: "On Res — 3 quartos 81,21m²", area: 81.21, status: disponível, ticket: 1054778, origem: tabela_local_imagem}
+- {apto: '501', tip: 3D, planta: "On Res — 3 quartos 81,21m²", area: 81.21, status: disponível, ticket: 1065018, origem: tabela_local_imagem}
+- {apto: '502', tip: 3D, planta: "On Res — 3 suítes 95,84m²", area: 95.84, status: disponível, ticket: 1319726, origem: tabela_local_imagem}
+- {apto: '503', tip: 3D, planta: "On Res — 3 quartos 80,38m²", area: 80.38, status: disponível, ticket: 1106840, origem: tabela_local_imagem}
+- {apto: '504', tip: 3D, planta: "On Res — 3 quartos 80,38m²", area: 80.38, status: disponível, ticket: 1106840, origem: tabela_local_imagem}
+- {apto: '505', tip: 3D, planta: "On Res — 3 suítes 95,84m²", area: 95.84, status: disponível, ticket: 1319726, origem: tabela_local_imagem}
+- {apto: '506', tip: 3D, planta: "On Res — 3 quartos 81,21m²", area: 81.21, status: disponível, ticket: 1065018, origem: tabela_local_imagem}
+- {apto: '601', tip: 3D, planta: "On Res — 3 quartos 81,21m²", area: 81.21, status: disponível, ticket: 1075259, origem: tabela_local_imagem}
+- {apto: '602', tip: 3D, planta: "On Res — 3 suítes 95,84m²", area: 95.84, status: disponível, ticket: 1332415, origem: tabela_local_imagem}
+- {apto: '603', tip: 3D, planta: "On Res — 3 quartos 80,38m²", area: 80.38, status: disponível, ticket: 1117483, origem: tabela_local_imagem}
+- {apto: '604', tip: 3D, planta: "On Res — 3 quartos 80,38m²", area: 80.38, status: disponível, ticket: 1117483, origem: tabela_local_imagem}
+- {apto: '605', tip: 3D, planta: "On Res — 3 suítes 95,84m²", area: 95.84, status: disponível, ticket: 1332415, origem: tabela_local_imagem}
+- {apto: '606', tip: 3D, planta: "On Res — 3 quartos 81,21m²", area: 81.21, status: disponível, ticket: 1075259, origem: tabela_local_imagem}
+- {apto: '701', tip: 3D, planta: "On Res — 3 quartos 81,21m²", area: 81.21, status: disponível, ticket: 1085499, origem: tabela_local_imagem}
+- {apto: '702', tip: 3D, planta: "On Res — 3 suítes 95,84m²", area: 95.84, status: disponível, ticket: 1345105, origem: tabela_local_imagem}
+- {apto: '703', tip: 3D, planta: "On Res — 3 quartos 80,38m²", area: 80.38, status: disponível, ticket: 1128125, origem: tabela_local_imagem}
+- {apto: '704', tip: 3D, planta: "On Res — 3 quartos 80,38m²", area: 80.38, status: disponível, ticket: 1128125, origem: tabela_local_imagem}
+- {apto: '705', tip: 3D, planta: "On Res — 3 suítes 95,84m²", area: 95.84, status: disponível, ticket: 1345105, origem: tabela_local_imagem}
+- {apto: '706', tip: 3D, planta: "On Res — 3 quartos 81,21m²", area: 81.21, status: disponível, ticket: 1085499, origem: tabela_local_imagem}
+- {apto: '801', tip: 3D, planta: "On Res — 3 quartos 81,21m²", area: 81.21, status: disponível, ticket: 1095740, origem: tabela_local_imagem}
+- {apto: '802', tip: 3D, planta: "On Res — 3 suítes 95,84m²", area: 95.84, status: disponível, ticket: 1357795, origem: tabela_local_imagem}
+- {apto: '803', tip: 3D, planta: "On Res — 3 quartos 80,38m²", area: 80.38, status: disponível, ticket: 1138768, origem: tabela_local_imagem}
+- {apto: '804', tip: 3D, planta: "On Res — 3 quartos 80,38m²", area: 80.38, status: disponível, ticket: 1138768, origem: tabela_local_imagem}
+- {apto: '805', tip: 3D, planta: "On Res — 3 suítes 95,84m²", area: 95.84, status: disponível, ticket: 1357795, origem: tabela_local_imagem}
+- {apto: '806', tip: 3D, planta: "On Res — 3 quartos 81,21m²", area: 81.21, status: disponível, ticket: 1095740, origem: tabela_local_imagem}
+- {apto: '901', tip: 3D, planta: "On Res — 3 quartos 81,21m²", area: 81.21, status: disponível, ticket: 1111107, origem: tabela_local_imagem}
+- {apto: '902', tip: 3D, planta: "On Res — 3 suítes 95,84m²", area: 95.84, status: disponível, ticket: 1376829, origem: tabela_local_imagem}
+- {apto: '903', tip: 3D, planta: "On Res — 3 quartos 80,38m²", area: 80.38, status: disponível, ticket: 1154732, origem: tabela_local_imagem}
+- {apto: '904', tip: 3D, planta: "On Res — 3 quartos 80,38m²", area: 80.38, status: disponível, ticket: 1154732, origem: tabela_local_imagem}
+- {apto: '905', tip: 3D, planta: "On Res — 3 suítes 95,84m²", area: 95.84, status: disponível, ticket: 1376829, origem: tabela_local_imagem}
+- {apto: '906', tip: 3D, planta: "On Res — 3 quartos 81,21m²", area: 81.21, status: disponível, ticket: 1111107, origem: tabela_local_imagem}
+- {apto: '1001', tip: 3D, planta: "On Res — 3 quartos 81,21m²", area: 81.21, status: disponível, ticket: 1126474, origem: tabela_local_imagem}
+- {apto: '1002', tip: 3D, planta: "On Res — 3 suítes 95,84m²", area: 95.84, status: disponível, ticket: 1395864, origem: tabela_local_imagem}
+- {apto: '1003', tip: 3D, planta: "On Res — 3 quartos 80,38m²", area: 80.38, status: disponível, ticket: 1170696, origem: tabela_local_imagem}
+- {apto: '1004', tip: 3D, planta: "On Res — 3 quartos 80,38m²", area: 80.38, status: disponível, ticket: 1170696, origem: tabela_local_imagem}
+- {apto: '1005', tip: 3D, planta: "On Res — 3 suítes 95,84m²", area: 95.84, status: disponível, ticket: 1395864, origem: tabela_local_imagem}
+- {apto: '1006', tip: 3D, planta: "On Res — 3 quartos 81,21m²", area: 81.21, status: disponível, ticket: 1126474, origem: tabela_local_imagem}
+- {apto: '1101', tip: 3D, planta: "On Res — 3 quartos 81,21m²", area: 81.21, status: disponível, ticket: 1141823, origem: tabela_local_imagem}
+- {apto: '1102', tip: 3D, planta: "On Res — 3 suítes 95,84m²", area: 95.84, status: disponível, ticket: 1414898, origem: tabela_local_imagem}
+- {apto: '1103', tip: 3D, planta: "On Res — 3 quartos 80,38m²", area: 80.38, status: disponível, ticket: 1186660, origem: tabela_local_imagem}
+- {apto: '1104', tip: 3D, planta: "On Res — 3 quartos 80,38m²", area: 80.38, status: disponível, ticket: 1186660, origem: tabela_local_imagem}
+- {apto: '1105', tip: 3D, planta: "On Res — 3 suítes 95,84m²", area: 95.84, status: disponível, ticket: 1414898, origem: tabela_local_imagem}
+- {apto: '1106', tip: 3D, planta: "On Res — 3 quartos 81,21m²", area: 81.21, status: disponível, ticket: 1141823, origem: tabela_local_imagem}
+- {apto: '1201', tip: 3D, planta: "On Res — 3 quartos 81,21m²", area: 81.21, status: disponível, ticket: 1157183, origem: tabela_local_imagem}
+- {apto: '1202', tip: 3D, planta: "On Res — 3 suítes 95,84m²", area: 95.84, status: disponível, ticket: 1433933, origem: tabela_local_imagem}
+- {apto: '1203', tip: 3D, planta: "On Res — 3 quartos 80,38m²", area: 80.38, status: disponível, ticket: 1202624, origem: tabela_local_imagem}
+- {apto: '1204', tip: 3D, planta: "On Res — 3 quartos 80,38m²", area: 80.38, status: disponível, ticket: 1202624, origem: tabela_local_imagem}
+- {apto: '1205', tip: 3D, planta: "On Res — 3 suítes 95,84m²", area: 95.84, status: disponível, ticket: 1433933, origem: tabela_local_imagem}
+- {apto: '1206', tip: 3D, planta: "On Res — 3 quartos 81,21m²", area: 81.21, status: disponível, ticket: 1157183, origem: tabela_local_imagem}
+- {apto: '1301', tip: 3D, planta: "On Res — 3 quartos 81,21m²", area: 81.21, status: disponível, ticket: 1172544, origem: tabela_local_imagem}
+- {apto: '1302', tip: 3D, planta: "On Res — 3 suítes 95,84m²", area: 95.84, status: disponível, ticket: 1452967, origem: tabela_local_imagem}
+- {apto: '1303', tip: 3D, planta: "On Res — 3 quartos 80,38m²", area: 80.38, status: disponível, ticket: 1218588, origem: tabela_local_imagem}
+- {apto: '1304', tip: 3D, planta: "On Res — 3 quartos 80,38m²", area: 80.38, status: disponível, ticket: 1218588, origem: tabela_local_imagem}
+- {apto: '1305', tip: 3D, planta: "On Res — 3 suítes 95,84m²", area: 95.84, status: disponível, ticket: 1452967, origem: tabela_local_imagem}
+- {apto: '1306', tip: 3D, planta: "On Res — 3 quartos 81,21m²", area: 81.21, status: disponível, ticket: 1172544, origem: tabela_local_imagem}
+- {apto: '1401', tip: 3D, planta: "On Res — 3 quartos 81,21m²", area: 81.21, status: disponível, ticket: 1193025, origem: tabela_local_imagem}
+- {apto: '1402', tip: 3D, planta: "On Res — 3 suítes 95,84m²", area: 95.84, status: disponível, ticket: 1478347, origem: tabela_local_imagem}
+- {apto: '1403', tip: 3D, planta: "On Res — 3 quartos 80,38m²", area: 80.38, status: disponível, ticket: 1239874, origem: tabela_local_imagem}
+- {apto: '1404', tip: 3D, planta: "On Res — 3 quartos 80,38m²", area: 80.38, status: disponível, ticket: 1239874, origem: tabela_local_imagem}
+- {apto: '1405', tip: 3D, planta: "On Res — 3 suítes 95,84m²", area: 95.84, status: disponível, ticket: 1478347, origem: tabela_local_imagem}
+- {apto: '1406', tip: 3D, planta: "On Res — 3 quartos 81,21m²", area: 81.21, status: disponível, ticket: 1193025, origem: tabela_local_imagem}
+- {apto: '1501', tip: 3D, planta: "On Res — 3 quartos 81,21m²", area: 81.21, status: disponível, ticket: 1213506, origem: tabela_local_imagem}
+- {apto: '1502', tip: 3D, planta: "On Res — 3 suítes 95,84m²", area: 95.84, status: disponível, ticket: 1503726, origem: tabela_local_imagem}
+- {apto: '1503', tip: 3D, planta: "On Res — 3 quartos 80,38m²", area: 80.38, status: disponível, ticket: 1261159, origem: tabela_local_imagem}
+- {apto: '1504', tip: 3D, planta: "On Res — 3 quartos 80,38m²", area: 80.38, status: disponível, ticket: 1261159, origem: tabela_local_imagem}
+- {apto: '1505', tip: 3D, planta: "On Res — 3 suítes 95,84m²", area: 95.84, status: disponível, ticket: 1503726, origem: tabela_local_imagem}
+- {apto: '1506', tip: 3D, planta: "On Res — 3 quartos 81,21m²", area: 81.21, status: disponível, ticket: 1213506, origem: tabela_local_imagem}
+- {apto: '102', tip: 2D, planta: "Open — 02 quartos 59,30m²", area: 59.3, status: disponível, ticket: 821679, origem: tabela_local_imagem}
+- {apto: '106', tip: 2D, planta: "Open — 02 quartos 59,30m²", area: 59.3, status: disponível, ticket: 821679, origem: tabela_local_imagem}
+- {apto: '201', tip: 2D, planta: "Open — 02 quartos 59,30m²", area: 59.3, status: disponível, ticket: 800437, origem: tabela_local_imagem}
+- {apto: '202', tip: 2D, planta: "Open — 02 quartos 59,30m²", area: 59.3, status: disponível, ticket: 829896, origem: tabela_local_imagem}
+- {apto: '206', tip: 2D, planta: "Open — 02 quartos 59,30m²", area: 59.3, status: disponível, ticket: 829896, origem: tabela_local_imagem}
+- {apto: '208', tip: 2D, planta: "Open — 02 quartos 59,30m²", area: 59.3, status: disponível, ticket: 829896, origem: tabela_local_imagem}
+- {apto: '301', tip: 2D, planta: "Open — 02 quartos 59,30m²", area: 59.3, status: disponível, ticket: 808472, origem: tabela_local_imagem}
+- {apto: '302', tip: 2D, planta: "Open — 02 quartos 59,30m²", area: 59.3, status: disponível, ticket: 838113, origem: tabela_local_imagem}
+- {apto: '306', tip: 2D, planta: "Open — 02 quartos 59,30m²", area: 59.3, status: disponível, ticket: 838113, origem: tabela_local_imagem}
+- {apto: '309', tip: 2D, planta: "Open — 02 quartos 59,30m²", area: 59.3, status: disponível, ticket: 880016, origem: tabela_local_imagem}
+- {apto: '401', tip: 2D, planta: "Open — 02 quartos 59,30m²", area: 59.3, status: disponível, ticket: 818268, origem: tabela_local_imagem}
+- {apto: '402', tip: 2D, planta: "Open — 02 quartos 59,30m²", area: 59.3, status: disponível, ticket: 846330, origem: tabela_local_imagem}
+- {apto: '406', tip: 2D, planta: "Open — 02 quartos 59,30m²", area: 59.3, status: disponível, ticket: 846330, origem: tabela_local_imagem}
+- {apto: '501', tip: 2D, planta: "Open — 02 quartos 59,30m²", area: 59.3, status: disponível, ticket: 827183, origem: tabela_local_imagem}
+- {apto: '502', tip: 2D, planta: "Open — 02 quartos 59,30m²", area: 59.3, status: disponível, ticket: 854546, origem: tabela_local_imagem}
+- {apto: '506', tip: 2D, planta: "Open — 02 quartos 59,30m²", area: 59.3, status: disponível, ticket: 854546, origem: tabela_local_imagem}
+- {apto: '509', tip: 2D, planta: "Open — 02 quartos 59,30m²", area: 59.3, status: disponível, ticket: 897274, origem: tabela_local_imagem}
+- {apto: '601', tip: 2D, planta: "Open — 02 quartos 59,30m²", area: 59.3, status: disponível, ticket: 836058, origem: tabela_local_imagem}
+- {apto: '602', tip: 2D, planta: "Open — 02 quartos 59,30m²", area: 59.3, status: disponível, ticket: 862763, origem: tabela_local_imagem}
+- {apto: '606', tip: 2D, planta: "Open — 02 quartos 59,30m²", area: 59.3, status: disponível, ticket: 862763, origem: tabela_local_imagem}
+- {apto: '608', tip: 2D, planta: "Open — 02 quartos 59,30m²", area: 59.3, status: disponível, ticket: 862763, origem: tabela_local_imagem}
+- {apto: '609', tip: 2D, planta: "Open — 02 quartos 59,30m²", area: 59.3, status: disponível, ticket: 905901, origem: tabela_local_imagem}
+- {apto: '702', tip: 2D, planta: "Open — 02 quartos 59,30m²", area: 59.3, status: disponível, ticket: 870980, origem: tabela_local_imagem}
+- {apto: '707', tip: 1D, planta: "Open — 01 quarto 45,20m²", area: 45.2, status: disponível, ticket: 643678, origem: tabela_local_imagem}
+- {apto: '708', tip: 2D, planta: "Open — 02 quartos 59,30m²", area: 59.3, status: disponível, ticket: 870980, origem: tabela_local_imagem}
+- {apto: '709', tip: 2D, planta: "Open — 02 quartos 59,30m²", area: 59.3, status: disponível, ticket: 945013, origem: tabela_local_imagem}
+- {apto: '801', tip: 2D, planta: "Open — 02 quartos 59,30m²", area: 59.3, status: disponível, ticket: 858386, origem: tabela_local_imagem}
+- {apto: '802', tip: 2D, planta: "Open — 02 quartos 59,30m²", area: 59.3, status: disponível, ticket: 883305, origem: tabela_local_imagem}
+- {apto: '806', tip: 2D, planta: "Open — 02 quartos 59,30m²", area: 59.3, status: disponível, ticket: 883305, origem: tabela_local_imagem}
+- {apto: '808', tip: 2D, planta: "Open — 02 quartos 59,30m²", area: 59.3, status: disponível, ticket: 883305, origem: tabela_local_imagem}
+- {apto: '809', tip: 2D, planta: "Open — 02 quartos 59,30m²", area: 59.3, status: disponível, ticket: 958386, origem: tabela_local_imagem}
+- {apto: '901', tip: 2D, planta: "Open — 02 quartos 59,30m²", area: 59.3, status: disponível, ticket: 871759, origem: tabela_local_imagem}
+- {apto: '902', tip: 2D, planta: "Open — 02 quartos 59,30m²", area: 59.3, status: disponível, ticket: 895630, origem: tabela_local_imagem}
+- {apto: '906', tip: 2D, planta: "Open — 02 quartos 59,30m²", area: 59.3, status: disponível, ticket: 895630, origem: tabela_local_imagem}
+- {apto: '908', tip: 2D, planta: "Open — 02 quartos 59,30m²", area: 59.3, status: disponível, ticket: 895630, origem: tabela_local_imagem}
+- {apto: '909', tip: 2D, planta: "Open — 02 quartos 59,30m²", area: 59.3, status: disponível, ticket: 971759, origem: tabela_local_imagem}
+- {apto: '1001', tip: 2D, planta: "Open — 02 quartos 59,30m²", area: 59.3, status: disponível, ticket: 889589, origem: tabela_local_imagem}
+- {apto: '1002', tip: 2D, planta: "Open — 02 quartos 59,30m²", area: 59.3, status: disponível, ticket: 912064, origem: tabela_local_imagem}
+- {apto: '1008', tip: 2D, planta: "Open — 02 quartos 59,30m²", area: 59.3, status: disponível, ticket: 912064, origem: tabela_local_imagem}
+- {apto: '1009', tip: 2D, planta: "Open — 02 quartos 59,30m²", area: 59.3, status: disponível, ticket: 989589, origem: tabela_local_imagem}
+- {apto: '1101', tip: 2D, planta: "Open — 02 quartos 59,30m²", area: 59.3, status: disponível, ticket: 1007420, origem: tabela_local_imagem}
+- {apto: '1102', tip: 2D, planta: "Open — 02 quartos 59,30m²", area: 59.3, status: disponível, ticket: 928497, origem: tabela_local_imagem}
+- {apto: '1106', tip: 2D, planta: "Open — 02 quartos 59,30m²", area: 59.3, status: disponível, ticket: 928497, origem: tabela_local_imagem}
+- {apto: '1108', tip: 2D, planta: "Open — 02 quartos 59,30m²", area: 59.3, status: disponível, ticket: 928497, origem: tabela_local_imagem}
+- {apto: '1109', tip: 2D, planta: "Open — 02 quartos 59,30m²", area: 59.3, status: disponível, ticket: 1007420, origem: tabela_local_imagem}
+- {apto: '1201', tip: 2D, planta: "Open — 02 quartos 59,30m²", area: 59.3, status: disponível, ticket: 1025250, origem: tabela_local_imagem}
+- {apto: '1202', tip: 2D, planta: "Open — 02 quartos 59,30m²", area: 59.3, status: disponível, ticket: 944931, origem: tabela_local_imagem}
+- {apto: '1204', tip: 2D, planta: "Open — 02 quartos 59,30m²", area: 59.3, status: disponível, ticket: 944931, origem: tabela_local_imagem}
+- {apto: '1206', tip: 2D, planta: "Open — 02 quartos 59,30m²", area: 59.3, status: disponível, ticket: 944931, origem: tabela_local_imagem}
+- {apto: '1208', tip: 2D, planta: "Open — 02 quartos 59,30m²", area: 59.3, status: disponível, ticket: 944931, origem: tabela_local_imagem}
+- {apto: '1209', tip: 2D, planta: "Open — 02 quartos 59,30m²", area: 59.3, status: disponível, ticket: 1025250, origem: tabela_local_imagem}
+- {apto: '1301', tip: 2D, planta: "Open — 02 quartos 59,30m²", area: 59.3, status: disponível, ticket: 1043081, origem: tabela_local_imagem}
+- {apto: '1302', tip: 2D, planta: "Open — 02 quartos 59,30m²", area: 59.3, status: disponível, ticket: 961365, origem: tabela_local_imagem}
+- {apto: '1304', tip: 2D, planta: "Open — 02 quartos 59,30m²", area: 59.3, status: disponível, ticket: 961365, origem: tabela_local_imagem}
+- {apto: '1306', tip: 2D, planta: "Open — 02 quartos 59,30m²", area: 59.3, status: disponível, ticket: 961365, origem: tabela_local_imagem}
+- {apto: '1308', tip: 2D, planta: "Open — 02 quartos 59,30m²", area: 59.3, status: disponível, ticket: 961365, origem: tabela_local_imagem}
+- {apto: '1309', tip: 2D, planta: "Open — 02 quartos 59,30m²", area: 59.3, status: disponível, ticket: 1043081, origem: tabela_local_imagem}
+- {apto: '1401', tip: 2D, planta: "Open — 02 quartos 59,30m²", area: 59.3, status: disponível, ticket: 1060911, origem: tabela_local_imagem}
+- {apto: '1402', tip: 2D, planta: "Open — 02 quartos 59,30m²", area: 59.3, status: disponível, ticket: 977798, origem: tabela_local_imagem}
+- {apto: '1406', tip: Studio, planta: "Open — Studio 30,79m²", area: 30.79, status: disponível, ticket: 535902, origem: tabela_local_imagem}
+- {apto: '1407', tip: 1D, planta: "Open — 01 quarto 45,20m²", area: 45.2, status: disponível, ticket: 762566, origem: tabela_local_imagem}
+- {apto: '1408', tip: 2D, planta: "Open — 02 quartos 59,30m²", area: 59.3, status: disponível, ticket: 977798, origem: tabela_local_imagem}

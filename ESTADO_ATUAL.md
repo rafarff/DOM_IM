@@ -2,38 +2,53 @@
 
 > **Para Claude (toda sessão):** este é o **primeiro arquivo a ler** antes de qualquer ação. Confirma a base de trabalho. Se a invariante 0.3 do PADRAO falhar contra os números aqui, **PARAR**.
 
-**Última atualização:** 25/05/2026 (correções pós-kickoff Plan. Comercial — entry Dom Manuel + dedup Renaissance)
-**Versão Planilha vigente:** v11.21
+**Última atualização:** 25/05/2026 (v11.22 — DESTRAVAMENTO Nexus Renascença + enriquecimento Monte Meru)
+**Versão Planilha vigente:** v11.22
 **Versão PADRAO vigente:** v7.0 (com §3.7.0 — U_RAW)
-**Versão script `gerar_planilha.py`:** 11.21 (DATE_STR: 25/05/2026)
-**Versão `build_panorama.py`:** v8.2.1 (expandiu filtro Panorama ciclo 25-26 → 24-26 + entrega futura)
+**Versão script `gerar_planilha.py`:** 11.22 (DATE_STR: 25/05/2026)
+**Versão `build_panorama.py`:** v8.2.2 (Nexus removido de BREVE_LANCAMENTO_NAMES — destravado)
 
 ---
 
-## Snapshot da carteira (v11.21)
+## ⚠ Pasta canônica — onde o projeto vive (LER SEMPRE)
 
-| Métrica | Valor | Δ vs v11.15 |
+**O projeto Inteligência de Mercado DOM vive em UMA pasta só:**
+`00_DOM/06.Gestão Restrita/01.Inteligência Mercado/00_ESTUDO_CONSOLIDADO/` — é o repositório Git `github.com/rafarff/DOM_IM`, o `publish.sh` roda aqui e o GitHub Pages serve o `index.html` desta pasta. Todo código (`gerar_planilha.py`, `build_panorama.py`), dados (YAMLs, Planilha Mestre), este `ESTADO_ATUAL.md` e os estudos vivem **aqui**.
+
+**NÃO usar** a pasta `~/Documents/Claude/Projects/Inteligência de Mercado - DOM` — é uma **cópia antiga e descartável** (git quebrado, sem remote, `index.html` parado em 11/05/2026). Qualquer arquivo criado lá fica desconectado do projeto vivo.
+
+**Estudos por empreendimento** (EME — Estudo de Mercado de Empreendimento) ficam em `00_ESTUDO_CONSOLIDADO/Estudos/<Empreendimento>/`. Ex.: `Estudos/Dom_Manuel/` (análise competitiva, diagnóstico/plano, HTML do estudo).
+
+**Nomenclatura — não confundir:** `index.html` = dashboard Panorama (instrumento vivo, todas as incorporadoras). `Estudo_Mercado_<Empreendimento>.html` = estudo dedicado de um empreendimento (será, futuramente, uma aba do `index.html`).
+
+**Restrição operacional:** a pasta canônica está sob "06.Gestão Restrita" e **bloqueia as ferramentas Write/Edit diretas** — escrever nela só via shell (bash). Ao gerar entregáveis, salvar/copiar para a pasta canônica via bash; nunca deixar o entregável só na cópia descartável.
+
+---
+
+## Snapshot da carteira (v11.22)
+
+| Métrica | Valor | Δ vs v11.21 |
 |---|---:|---:|
-| Aba Empreendimentos | **55 linhas** | +1 (Residencial Arizona) |
-| Aba Incorporadoras | **20 linhas — DERIVADA** | +1 (BelSul — 20ª oficial) |
-| Aba Composição | **102 linhas / 3.453 unidades / 45 empreend.** | +2 / +38 / +1 |
-| **Aba Unidades** | **921 unidades / 27 empreend.** — átomo do sistema | −22 (dedup Renaissance v11.21) |
-| **Cobertura Total apurado** | **46/55 = 84%** | +1 (Arizona declarado oficial) |
-| **Bloqueados** | **10 empreend.** em pendencias_TOTAL.md | sem mudança |
-| Fonte de U_RAW | **27 arquivos YAML** em `unidades/<inc>__<emp>.yaml` | +1 Arizona |
+| Aba Empreendimentos | **55 linhas** | = |
+| Aba Incorporadoras | **20 linhas — DERIVADA** | = |
+| Aba Composição | **109 linhas / 3.634 unidades / 46 empreend.** | +7 plantas / +181 / +1 empreend (Nexus destravado) |
+| **Aba Unidades** | **1.073 unidades / 28 empreend.** — átomo do sistema | **+152 / +1 (Nexus Renascença)** |
+| **Cobertura Total apurado** | **47/55 = 85%** | +1 (Nexus destravado) |
+| **Bloqueados** | **9 empreend.** em pendencias_TOTAL.md | **−1 (Nexus saiu)** |
+| Fonte de U_RAW | **28 arquivos YAML** em `unidades/<inc>__<emp>.yaml` | **+1 Nexus** |
 | Fonte de C_RAW (residual) | **21 arquivos YAML** em `composicao/<inc>__<emp>.yaml` | sem mudança |
-| Fonte de I_META | **1 arquivo YAML** em `incorporadoras_meta.yaml` | +1 entry (BelSul) |
-| **Cobertura U_RAW** | **26 / 28 empreend. com fonte nível 1-2 = 93%** | +1 Arizona |
-| **Invariante §3.7.C.6** | **63/63 ✅** | +1 planta (Arizona 167,5m² mono) |
+| Fonte de I_META | **1 arquivo YAML** em `incorporadoras_meta.yaml` | sem mudança |
+| **Cobertura U_RAW** | **27 / 29 empreend. com fonte nível 1-2 = 93%** | +1 Nexus |
+| **Invariante §3.7.C.6** | **67/67 ✅** | **+4** (6 plantas Nexus mas 2 fundem nas tipologias existentes; +1 Monte Meru APT04 dedupe) |
 | Aba Empreendimentos schema | **27 colunas** (sem mudança) |
 | Aba Composição schema | **12 colunas (v7.0)** (sem mudança) |
 | Drift script ↔ planilha | **0** ✅ |
-| VGV total mapeado | **R$ 3,37 bi** (R$ 3.369.522.777 — +R$ 10,5M correção Dom Manuel v11.21)
-| Cobertura Composição | **35/45 empreend. = 78%** (+1 Arizona) |
-| **Invariante v6.2 Σ Total tip = E_RAW.Total** | **41/45 fechado exato** ⚠ 4 parciais (Vila Coimbra, Le Noir, Bossa, Reserva SM, Prime Cohama WARN §3.8) |
-| **Invariante v7.0 Σ Total planta = Total tip** | **63/63 fechado exato** ✅ |
-| Bloqueados sem Total | **10 empreend.** → `pendencias_TOTAL.md` (sem mudança) |
-| **Plantas declaradas com label** | **9 plantas** (sem mudança) |
+| VGV total mapeado | **R$ 3,60 bi** (R$ 3.602.072.505 — +R$ 233M Nexus destravado v11.22)
+| Cobertura Composição | **36/46 empreend. = 78%** (+1 Nexus) |
+| **Invariante v6.2 Σ Total tip = E_RAW.Total** | **43/46 fechado exato** ⚠ 3 parciais (Vila Coimbra, Le Noir, Bossa, Reserva SM, Prime Cohama WARN §3.8) |
+| **Invariante v7.0 Σ Total planta = Total tip** | **67/67 fechado exato** ✅ |
+| Bloqueados sem Total | **9 empreend.** → `pendencias_TOTAL.md` (−1 Nexus destravado) |
+| **Plantas declaradas com label** | **16 plantas** (+7 Nexus On Res 3 + Open Des 4 — todos com label descritivo) |
 
 ### Cobertura por incorporadora (% empreend. com composição detalhada)
 
@@ -79,6 +94,39 @@ cd 00_ESTUDO_CONSOLIDADO/ && ls -1 Planilha_Mestre_Panorama_v*.xlsx | sort -V | 
 ---
 
 ## Mudanças estruturais recentes
+
+- **v11.22** (25/05/2026) — **DESTRAVAMENTO Nexus Renascença (Ergus) + enriquecimento Monte Meru (Berg). 4 PDFs do INBOX 25/05.**
+   - **(A) Nexus Renascença DESTRAVADO** — saiu de  (Tabela B) → **Tabela A pré-launch** com tabela_local_imagem.
+     - Material processado: 1 book Nexus Coupé (Powered by Porsche Consulting, 19p) + 2 tabelas de preços maio/2026 (On Residence + Open Design, formato imagem 1920×1080, lidas via visão multimodal pdftoppm + Read PNG).
+     - **Complexo = mixed-use Nexus Coupé** (rebrand maio/2026, ex-"Nexus Renascença"). 3 produtos Ergus identificados:
+       - **On Residence** — 15 pav × 6 aptos = **90 unid 3D**, 3 plantas: 80,38m² (3Q 30u, R$ 1.064k–1.261k) + 81,21m² (3Q 30u, R$ 1.024k–1.214k) + 95,84m² (3 suítes 30u, R$ 1.269k–1.504k). Entrega 06/2031.
+       - **Open Design** — 14 pav × 9 aptos = **126 unid planejadas**, 4 plantas: Studio 30,79m² + Studio 33,51m² + 1Q 45,20m² + 2Q 59,30m² (R$ 535k–1.061k). Apenas 62 unid em oferta na tabela maio/26 (estudios + 1Q parcialmente reservados). Entrega 12/2030.
+       - **Lead Office** (corporativo, fora do escopo IM residencial) + Open Mall comercial.
+     - **U_RAW**:  com **152 entries** apto-a-apto (orig=, status=disponível, estoque=1.0 — Rafael escolheu modelo pre-launch).
+     - **E_RAW**: Total=152, Tipologia="Studio; 1D; 2D; 3D", Tickets R$ 535.902–1.503.726, áreas 30,79–95,84m², lançamento 05/2026 (data da tabela), entrega 06/2031 (mais tardia entre 12/30 Open + 06/31 On Res).
+     - **Endereço atualizado:** Av. Avicenia, 15, Calhau, São Luís - MA, 65071-370. Bairro **mantido Renascença** (per nome do empreendimento + marketing — §3.10 nível 5 informado_manualmente).
+     - VGV estimado: ~R$ 164M (residencial visível em fase de reserva).
+     - R$/m² médio: ~R$ 15.842 → segmento auto = **Luxo** (faixa > R$ 15k/m²).
+     - **Distribuição A/B/C Panorama:** A=+1 Nexus (28→29); B=−1 Nexus (7→6); C=(=).
+   - **(B) Monte Meru (Berg Engenharia)** — enriquecimento via book digital (57p compactado).
+     - Tipologia E_RAW corrigida  → **** (3 SUÍTES per book + lavabo + WC serviço + até 3 vagas).
+     - Áreas mín-máx E_RAW: 135,32–135,83 → **135,32–141,36 m²** (book revelou 4 plantas distintas: **APT01 141,36m² + APT02 135,77m² + APT03 135,32m² + APT04 135,83m²**).
+     - Total inferido = **40 unid** (10 andares × 4 aptos/andar, origem  §3.6 nível 3 descrição arquitetônica). Antes era None.
+     - Diferenciais comerciais: **1º SPA AQUECIDO de SLZ** + piscina borda infinita + Smart Home Alexa + biometria + energia solar (~2500 kWh/mês cobertura) + reuso água + infra carros elétricos + vista permanente mar OU lagoa + todos aptos nascente. Apto 704 com 3 vagas (diferencial).
+     - U_RAW  enriquecido com labels APT01-APT04 (11 entries existentes mantidas — 2 disp APT03/APT04 + 9 vendidas APT04. Posições 01/02 inferidas 100% vendidas, não na tabela).
+   - **Total mapeado v11.21 → v11.22:** Empreend 55 (=); Incorporadoras 20 (=); Composição 102 → **109 linhas** / 3.453 → **3.634 unidades render** (+181); U_RAW 27 → **28** arquivos / 921 → **1.073 unidades** (+152); VGV R$ 3,37bi → **R$ 3,60bi** (+R$ 233M).
+   - **Cobertura Total apurado:** 46/55 → **47/55 = 85%** (Nexus destravado). Bloqueados: 10 → **9** (Nexus saiu).
+   - **Cobertura U_RAW:** 26/28 → **27/29 = 93%** (mantida).
+   - **Drift script ↔ planilha: 0 ✅.** Invariantes §3.7.C.4 = **43/46** ✅ (era 41/45); §3.7.C.6 = **67/67 ✅** (era 63/63 — +7 plantas Nexus + Monte Meru não mexeu pq tipologia única já fechava).
+   - **§3.10 WARNs:** 22 → **21** (Nexus saiu da lista — Bairro=Renascença com origem ).
+   - **Updates sintéticos:** script bumped 11.21 → **11.22** + build_panorama v8.2.1 → **v8.2.2** (remove Nexus de BREVE_LANCAMENTO_NAMES). Bloco changelog completo no topo de .
+   - **INSIGHT estratégico DOM:**
+     - **Nexus Renascença emerge como concorrente direto da DOM em vários segmentos:**
+       - (1) **On Residence 3D 80–95m² Renascença R$ 1,0–1,5M** concorre direto com **Dom Lucas** (3D casas ~100m² R$ 850k Cantinho do Céu, R$/m² ~R$ 8,4k) e **Dom José** (4D casas 154m² R$ 1,4M Eldorado, R$/m² ~R$ 9,1k). Posicionamento vertical Renascença alvo classe média-alta jovem família.
+       - (2) **Open Design Studios + 1Q + 2Q** ocupam nicho **jovem profissional** onde DOM **não atua hoje** — oportunidade ou ameaça? Studios 30–33m² R$ 535–700k (~R$ 17k/m²) competem com Cidade de Viena (Lua Nova 61,38m² 2D R$ 743k Turu R$/m² ~R$ 12k).
+       - (3) **Velocidade Nexus em fase de reserva:** ~55 studios já reservados antes do lançamento oficial — **sinal forte de demanda** por produto pequeno bem localizado SLZ. Ponto de aprendizado: pre-vendas via "reserva" é técnica comercial eficaz que DOM pode aplicar.
+       - (4) **Branding Porsche Consulting** + paisagismo "experiência urbana" + Lead Office corporativo: pacote sofisticado de mix-use que comunica posicionamento premium. Comparável ao Wave/Sky/Azimuth da Delman em Luxo, mas com **mall integrado** (diferencial vs verticais clássicos).
+     - **Monte Meru (Berg) confirma posicionamento Alto/Luxo na Península:** 3 suítes 135–141m² + spa aquecido + piscina borda infinita + Smart Home — mesmo cluster competitivo do Zion (Ergus 4D 148m²) e Quartier 22 (Delman 3D 99m²). Ticket Monte Meru R$ 1,93M está entre Zion (R$ 2,17–2,56M) e Quartier 22 (R$ 1,8M faixa).
 
 - **v11.21** (25/05/2026) — **Correções pós-kickoff Planejamento Comercial (Dom Manuel): entry Dom Manuel + dedup Renaissance.**
    - **(A1) Entry Dom Manuel atualizada ao modelo de preço correto** (kickoff Plan. Comercial). Tipo 02 (3D): área **113,50 → 116,38 m²**. R$/m² **12.000 → 13.400** (média ponderada apto+vagas / área priv. na tabela T0 — NÃO é o piso do 1º andar). Tickets T0: 3D 1.362.000 → **1.559.492**; 4D 1.616.160 → **1.804.712**. VGV fixado em **R$ 77.533.740** (`calc_vgv` simples-média subestimava o split 30/15 — daria R$ 75,7M). Cronograma: lançamento 08/2026 → **06/2026**; entrega — → **11/2029**. Modelo documentado nas Observações (curva de andar centrada no 8º andar, VGV-neutra; escada T0→T4 +2,0% simples: 13.400/13.668/13.936/14.204/14.472).

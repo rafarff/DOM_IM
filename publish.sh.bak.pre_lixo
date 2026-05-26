@@ -20,28 +20,11 @@ echo "  DOM · Panorama de Lançamentos · Publish"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo ""
 
-# 0. Limpa locks travados (sandbox às vezes deixa órfãos quando crash).
-#    Tenta rm primeiro; se falhar (Operation not permitted do sandbox Cowork),
-#    move para ../_LIXO_DELETAR_MANUAL/ (pasta operacional). Rafael deleta depois.
-LIXO_DIR="../_LIXO_DELETAR_MANUAL"
-TS=$(date +%Y%m%d_%H%M%S)
-for lock in .git/index.lock .git/HEAD.lock .git/objects/maintenance.lock .git/config.lock .git/refs/heads/main.lock; do
-    if [ -f "$lock" ]; then
-        echo "▸ Lock encontrado: $lock"
-        if rm -f "$lock" 2>/dev/null; then
-            echo "  ✓ removido."
-        elif [ -d "$LIXO_DIR" ]; then
-            DEST="$LIXO_DIR/$(basename "$lock")_${TS}_$$"
-            if mv "$lock" "$DEST" 2>/dev/null; then
-                echo "  ✓ movido para _LIXO_DELETAR_MANUAL/ (delete manual no Finder depois)."
-            else
-                echo "  ✗ FALHOU rm e mv. Delete manual: $lock"
-            fi
-        else
-            echo "  ✗ FALHOU rm e _LIXO_DELETAR_MANUAL/ não existe. Crie a pasta ou delete manual."
-        fi
-    fi
-done
+# 0. Limpa locks travados (sandbox às vezes deixa órfãos quando crash)
+if [ -f .git/index.lock ] || [ -f .git/HEAD.lock ]; then
+    echo "▸ Limpando locks órfãos do git..."
+    rm -f .git/index.lock .git/HEAD.lock
+fi
 
 # 1. Regenera Planilha Mestre a partir do source-of-truth (gerar_planilha.py)
 echo "▸ Regenerando Planilha Mestre (gerar_planilha.py)..."
