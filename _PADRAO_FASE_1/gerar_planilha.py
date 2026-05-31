@@ -19,8 +19,15 @@ from openpyxl.drawing.image import Image as XLImage
 # ═══════════════════════════════════════════════════════════════
 # PARÂMETROS GLOBAIS
 # ═══════════════════════════════════════════════════════════════
-VERSION = "11.22"
-DATE_STR = "25/05/2026"
+VERSION = "11.23"
+DATE_STR = "28/05/2026"
+# v11.23 — (28/05/2026): CORREÇÃO Landscape (Delman) — tipologia 4D->3D em 3 das 4 plantas.
+#   Causa raiz: parser parse_delman inferiu tipologia pela HEURÍSTICA DE ÁREA (PADRAO §3.7:
+#   >95m²->4D), pois a TABELA_LANDSCAPE_042026.pdf só tem coluna de área e preço (sem dorm).
+#   O BOOK_LANDSCAPE_032026.pdf (plantas reais) confirma que TODAS as 4 plantas têm 3 dormitórios:
+#   88,07m² (1 suíte + 2 qtos), 103,60m² (3 suítes), coberturas duplex 123,69 e 143,64m² (3 dorm).
+#   Landscape é empreendimento 100% 3D. Corrigido unidades/ (34 unid 4D->3D) e composicao/ (3 plantas).
+#   Apontado por Rafael 28/05. PENDÊNCIA: parse_delman deve ler tipologia do BOOK, não por área.
 # v11.22 — (25/05/2026): DESTRAVAMENTO Nexus Renascença (Ergus) + enriquecimento Monte Meru (Berg).
 #   INBOX 25/05 — 4 PDFs novos (Berg Monte Meru, Ergus Nexus Coupé):
 #     (A) NEXUS RENASCENÇA destravado de BREVE_LANCAMENTO (Tabela B) → TABELA A pré-launch.

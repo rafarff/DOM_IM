@@ -124,6 +124,19 @@
   .badge.crit{color:var(--direta);border-color:var(--direta);}
   .badge.ok{color:var(--ok);border-color:var(--ok);}
 
+  .tier-tbl{width:100%;border-collapse:collapse;font-size:13px;color:var(--txt);}
+  .tier-tbl thead th{font-size:10.5px;letter-spacing:.6px;text-transform:uppercase;color:var(--muted);
+    font-weight:600;text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);}
+  .tier-tbl tbody td{padding:13px 12px;vertical-align:top;border-bottom:1px solid var(--line-soft);line-height:1.5;}
+  .tier-tbl tbody tr:last-child td{border-bottom:none;}
+  .tier-tbl tfoot td{padding:11px 12px;font-size:12px;color:var(--gold);border-top:1px solid var(--line);}
+  .tier-tbl td .muted{font-size:11px;color:var(--muted);}
+  .tier-pill{display:inline-block;padding:4px 10px;border-radius:14px;font-size:11px;font-weight:700;
+    letter-spacing:.4px;margin-bottom:4px;}
+  .placeholder{padding:24px;border:1px dashed var(--line);border-radius:6px;background:var(--panel);
+    color:var(--muted);font-size:13px;text-align:center;line-height:1.6;}
+  .placeholder b{color:var(--gold);}
+
   footer{padding:24px 0 40px;font-size:11px;color:var(--faint);}
   footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;}
 
@@ -179,7 +192,7 @@
   </div>
 </section>
 
-<section>
+<section style="display:none;" data-bloco="veredito-antigo">
   <div class="wrap">
     <div class="eyebrow">Leitura rápida</div>
     <h2>Veredito de competitividade</h2>
@@ -196,7 +209,7 @@
   </div>
 </section>
 
-<section>
+<section style="display:none;" data-bloco="regua-rm2-antiga">
   <div class="wrap">
     <div class="eyebrow">Visão competitiva</div>
     <h2>Régua de posicionamento — R$/m² médio</h2>
@@ -229,7 +242,7 @@
 </section>
 
 
-<section>
+<section style="display:none;" data-bloco="regua-ticket-antiga">
   <div class="wrap">
     <div class="eyebrow">Leitura por ticket</div>
     <h2>Régua de ticket — visão panorâmica + por tipo de unidade</h2>
@@ -272,26 +285,92 @@
 
 <section>
   <div class="wrap">
-    <div class="eyebrow">Leitura por tamanho</div>
-    <h2>Régua de área — visão panorâmica</h2>
-    <p class="lead">Primeira peneira do funil competitivo: <b>área privativa</b>. Cada linha = um empreendimento com sua faixa total de área (do menor ao maior valor consolidado). A <b>banda dourada</b> é a faixa competitiva: parte de <b>25% abaixo do Tipo 02</b> (116,38 × 0,75 = 87,3 m²) e vai até <b>25% acima do Tipo 01</b> (134,68 × 1,25 = 168,4 m²). Dentro da banda, duas linhas tracejadas marcam exatamente as áreas dos tipos do Dom Manuel. Critério largo de propósito — depois peneiramos por dormitórios, ticket, R$/m² e modelo de preço.</p>
+    <div class="eyebrow">Bloco A — Funil de concorrência · Peneira 1</div>
+    <h2>A.1 — Peneira por área</h2>
+    <p class="lead">Primeira peneira do funil competitivo: <b>área privativa</b>. Cada linha = um empreendimento com sua faixa total de área (do menor ao maior valor consolidado). A <b>banda dourada</b> é a faixa competitiva — corte <b>assimétrico</b>: -30% abaixo do Tipo 02 (116,38 × 0,70 = <b>81,5 m²</b>) e +25% acima do Tipo 01 (134,68 × 1,25 = <b>168,4 m²</b>). A assimetria reflete a lógica de ticket-equivalência: produto menor pode competir por ticket parecido mesmo com R$/m² maior; produto muito maior dificilmente vira upgrade real. Dentro da banda, duas linhas tracejadas marcam exatamente as áreas dos tipos do Dom Manuel. <b>17 empreendimentos passam</b>.</p>
     <div class="chartcard">
       <div class="ct">Visão panorâmica — todos os empreendimentos × faixa competitiva por área</div>
       <div class="cs">Áreas em metros quadrados. Concorrentes coloridos por camada; ordem ascendente pela menor área. Empreendimentos cuja faixa toca ou cruza a banda dourada disputam o Dom Manuel por porte de planta.</div>
       <svg id="svgAreaAll" viewBox="0 0 1040 920"></svg>
       <div class="legend">
-        <span><i class="swatch" style="background:var(--gold)"></i> Faixa competitiva (±25% do Dom Manuel) — 87,3 a 168,4 m²</span>
+        <span><i class="swatch" style="background:var(--gold)"></i> Faixa competitiva (-30% / +25% do Dom Manuel) — 81,5 a 168,4 m²</span>
         <span style="color:var(--gold);font-weight:700;">┊┊</span><span>Linhas tracejadas: T01 (134,68 m²) e T02 (116,38 m²)</span>
-        <span><i class="dot" style="background:var(--direta)"></i> Camada I — direta</span>
-        <span><i class="dot" style="background:var(--indireta)"></i> Camada II — direta fora</span>
-        <span><i class="dot" style="background:var(--produto)"></i> Camada III — produto</span>
-        <span><i class="dot" style="background:var(--paisagem)"></i> Camada IV — paisagem</span>
+        <span><i class="dot" style="background:var(--direta)"></i> T1 — equivalência por microrregião (Ponta d'Areia)</span>
+        <span><i class="dot" style="background:var(--indireta)"></i> T2 — localização equivalente (Renascença/Renascença II)</span>
+        <span><i class="dot" style="background:var(--produto)"></i> T3 — demais localizações concorrentes</span>
+        <span><i class="dot" style="background:var(--paisagem)"></i> T4 — eliminação por localização sem equivalência</span>
+      </div>
+    </div>
+
+    <div class="chartcard" style="margin-top:18px;">
+      <div class="ct">Capturados pela peneira de área — ordenados por mediana de área (asc.)</div>
+      <div class="cs">Apenas os 17 empreendimentos cuja faixa toca a banda dourada, ordenados pela <b>mediana da própria faixa de área</b> — do produto mais compacto (topo) ao mais amplo (base). Leitura natural pequeno → grande; o Dom Manuel (mediana 125,5 m²) cai entre ORO e Monte Meru. Tier de localização indicado no rótulo — Cidade de Viena (Turu) sai do funil na peneira A.2 [T4 eliminado].</div>
+      <svg id="svgAreaCapt" viewBox="0 0 1040 620"></svg>
+      <div class="legend">
+        <span><i class="swatch" style="background:var(--gold)"></i> Faixa competitiva — 81,5 a 168,4 m²</span>
+        <span><i class="dot" style="background:var(--direta)"></i> T1</span>
+        <span><i class="dot" style="background:var(--indireta)"></i> T2</span>
+        <span><i class="dot" style="background:var(--produto)"></i> T3</span>
+        <span><i class="dot" style="background:var(--paisagem)"></i> T4 (será eliminado em A.2)</span>
       </div>
     </div>
   </div>
 </section>
 
 <section>
+  <div class="wrap">
+    <div class="eyebrow">Bloco A — Funil de concorrência · Peneira 2</div>
+    <h2>A.2 — Peneira por localização (tiers)</h2>
+    <p class="lead">Localização é um <b>fato estrutural</b>: define o cliente, a história e o teto/piso de preço da microrregião. Aplico a peneira sobre os 17 sobreviventes da peneira de área, classificando cada bairro em quatro tiers de equivalência. Quem cai em T4 sai do funil — não compete pelo mesmo cliente do Dom Manuel mesmo com área compatível. Ticket e R$/m² <b>não</b> são peneiras: são o retrato descritivo da realidade no Bloco B.</p>
+    <div class="chartcard">
+      <table class="tier-tbl">
+        <thead>
+          <tr>
+            <th>Tier</th>
+            <th>Critério</th>
+            <th>Bairros</th>
+            <th>Empreendimentos (n)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="tier-pill" style="background:var(--direta);color:#fff;">T1</span><br><span class="muted">Equivalência por microrregião</span></td>
+            <td>Mesma microrregião do Dom Manuel · cabeça-a-cabeça</td>
+            <td><b>Ponta d'Areia</b></td>
+            <td><b>4</b> — Vernazza, Zion, LIV, ORO</td>
+          </tr>
+          <tr>
+            <td><span class="tier-pill" style="background:var(--indireta);color:#fff;">T2</span><br><span class="muted">Localização equivalente</span></td>
+            <td>Bairros pares de equivalência de cliente · disputa lateral</td>
+            <td><b>Renascença / Renascença II</b></td>
+            <td><b>3</b> — Renaissance Conceito, Entre Rios, Nexus Renascença</td>
+          </tr>
+          <tr>
+            <td><span class="tier-pill" style="background:var(--produto);color:#fff;">T3</span><br><span class="muted">Demais localizações concorrentes</span></td>
+            <td>Bairros com produto concorrente em área, mas localização não-equivalente</td>
+            <td><b>Calhau · Ponta do Farol · Península</b></td>
+            <td><b>9</b> — Landscape, Reserva São Marcos, The View, Giardino, Reserva Península, Monte Meru, Quartier 22, Studio Design 7, Mount Solaro</td>
+          </tr>
+          <tr style="opacity:.55;">
+            <td><span class="tier-pill" style="background:var(--paisagem);color:#1a1a1a;">T4</span><br><span class="muted">Eliminação</span></td>
+            <td>Localização sem equivalência com Ponta d'Areia · não compete pelo cliente</td>
+            <td><b>Turu</b></td>
+            <td><b>1</b> — Cidade de Viena <i>[eliminado do funil]</i></td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="3" style="text-align:right;"><b>Total sobreviventes (T1+T2+T3)</b></td>
+            <td><b>16</b></td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+    <p class="lead" style="margin-top:18px;">Os 16 sobreviventes — distribuídos em T1 (4), T2 (3), T3 (9) — são a base do <b>Bloco B (Retrato)</b>: R$/m², ticket e modelo de preço sem mais filtros. Cor das barras nos próximos gráficos = cor do tier.</p>
+  </div>
+</section>
+
+<section style="display:none;">
   <div class="wrap">
     <div class="eyebrow">Leitura por dormitórios</div>
     <h2>Régua de dormitórios — visão panorâmica</h2>
@@ -314,37 +393,186 @@
 
 <section>
   <div class="wrap">
-    <div class="eyebrow">Modelo de preço</div>
-    <h2>A escada T0 → T4</h2>
-    <p class="lead">A tabela sobe o R$/m² médio em +2,0% simples por degrau. A pergunta de competitividade é a que distância de cada camada cada degrau se posiciona — favorável nos cinco.</p>
+    <div class="eyebrow">Bloco B — Retrato dos sobreviventes</div>
+    <h2>Leitura descritiva — 16 empreendimentos (T1+T2+T3)</h2>
+    <p class="lead">Os 16 que passaram pelas duas peneiras do Bloco A entram aqui em quatro retratos descritivos. <b>Ticket e R$/m² não são peneiras</b> — são <i>medidas</i> do posicionamento competitivo. A leitura responde "onde o Dom Manuel se posiciona no mercado dos seus equivalentes em área e localização". Ordem de leitura: <b>ticket primeiro</b> (B.1 panorâmico, B.2 por tipo), <b>depois R$/m²</b> (B.3 panorâmico, B.4 por tipo).</p>
+    <div class="chartcard" style="background:transparent;border:none;padding:0;">
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;">
+        <div class="placeholder" style="padding:14px;font-size:12px;background:rgba(201,168,76,.08);border-color:var(--gold);"><b style="color:var(--gold);">B.1</b> · Ticket panorâmico<br><span style="color:var(--ok);">↓ abaixo</span></div>
+        <div class="placeholder" style="padding:14px;font-size:12px;background:rgba(201,168,76,.08);border-color:var(--gold);"><b style="color:var(--gold);">B.2</b> · Ticket por tipo<br><span style="color:var(--ok);">↓ abaixo</span></div>
+        <div class="placeholder" style="padding:14px;font-size:12px;background:rgba(201,168,76,.08);border-color:var(--gold);"><b style="color:var(--gold);">B.3</b> · R$/m² panorâmico<br><span style="color:var(--ok);">↓ abaixo</span></div>
+        <div class="placeholder" style="padding:14px;font-size:12px;background:rgba(201,168,76,.08);border-color:var(--gold);"><b style="color:var(--gold);">B.4</b> · R$/m² por tipo<br><span style="color:var(--ok);">↓ abaixo</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="eyebrow">Bloco B — Retrato dos sobreviventes</div>
+    <h2>B.1 — Ticket panorâmico</h2>
+    <p class="lead">Cada linha = um empreendimento sobrevivente com sua <b>faixa de ticket</b> (do menor ao maior valor publicado, todas as tipologias). A <b>banda dourada</b> é o <b>envelope completo de ticket do Dom Manuel</b>: do menor ticket (T0 do Tipo 02 = R$ 1,57 M) ao maior (T4 do Tipo 01 = R$ 1,94 M). Sem ticks internos no panorâmico — a granularidade T0→T4 por tipo entra no <b>B.2</b>. Ordem: <b>mediana de ticket asc.</b> — leitura do mais barato ao mais caro. Cor = tier de localização.</p>
+    <div class="chartcard">
+      <div class="ct">Ticket panorâmico — 14 empreendimentos com tabela × envelope DM</div>
+      <div class="cs">Eixo: R$ M por unidade. O envelope DM cobre todos os tickets oferecidos pelo prédio (Tipo 02 + Tipo 01, todos os degraus). Empreendimentos cuja faixa cruza o envelope competem por algum ponto da tabela; quem fica todo abaixo joga em segmento mais econômico; quem fica todo acima, em segmento mais aspiracional.</div>
+      <svg id="svgTicketSurv" viewBox="0 0 1040 580"></svg>
+      <div class="legend">
+        <span><i class="swatch" style="background:var(--gold)"></i> Envelope DM · T0 (Tipo 02) → T4 (Tipo 01) · R$ 1,57 → 1,94 M</span>
+        <span><i class="dot" style="background:var(--direta)"></i> T1</span>
+        <span><i class="dot" style="background:var(--indireta)"></i> T2</span>
+        <span><i class="dot" style="background:var(--produto)"></i> T3</span>
+      </div>
+    </div>
+    <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6;">
+      <b style="color:var(--warn);">⚠ Lacuna de dado</b> — sem tabela publicada, ausentes do gráfico: <b>LIV Residence</b> (T1 · Ponta d'Areia · 3D 90,8–100,2 m²) e <b>Reserva Península</b> (T3 · Península · 4D 127,1–171,4 m²). Total no funil: 16 · com dados: 14 · em captura: 2.
+    </p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="eyebrow">Bloco B — Retrato dos sobreviventes</div>
+    <h2>B.2 — Ticket por tipo de unidade</h2>
+    <p class="lead">Desdobramento granular do B.1: cada linha = um <b>empreendimento × tipologia</b> (um concorrente com 3D e 4D aparece em ambos os gráficos). Duas bandas DM, uma por tipo, cada uma com 5 ticks T0→T4 da própria escada. Ordem: <b>mediana de ticket asc.</b> dentro de cada chart. Cor por tier. Layout: 4D em cima (vs DM Tipo 01), 3D embaixo (vs DM Tipo 02).</p>
+
     <div class="chartcard" style="margin-bottom:16px;">
-      <div class="ct">R$/m² médio por degrau × referências de mercado</div>
-      <div class="cs">A escada inteira corre abaixo das três referências de camada (linhas tracejadas). Camada II é a mais próxima — Dom Manuel fecha o gap de −11% no T0 para −4% no T4.</div>
-      <svg id="svgEscada" viewBox="0 0 1040 360"></svg>
+      <div class="ct">Tipo 01 (4D) — concorrentes 4D × banda DM Tipo 01 (T0 R$ 1,80 M → T4 R$ 1,94 M)</div>
+      <div class="cs">Eixo: R$ M por unidade. Banda DM Tipo 01 = R$ 1.800.456 (T0) a R$ 1.944.492 (T4) — ticket × área Tipo 01 (134,68 m²) em cada degrau. Ticks T1, T2, T3 marcam degraus internos. <b>Renaissance Leonardo</b> (1,36–1,57) fica abaixo do T0; <b>Reserva SM Litorânea</b> (1,50–1,85) cruza a banda; <b>Vernazza Norte</b> (1,82–2,24) cobre boa parte; <b>Zion</b> (2,17–2,56) e <b>ORO Cob.</b> (2,42) ficam acima. <b>Nota:</b> o Landscape saiu deste gráfico (correção v11.23: 100% 3D).</div>
+      <svg id="svgTicketT01" viewBox="0 0 1040 460"></svg>
+      <div class="legend">
+        <span><i class="swatch" style="background:var(--gold)"></i> Banda DM · Tipo 01 (4D) · T0 R$ 1,80 → T4 R$ 1,94 M</span>
+        <span><i class="dot" style="background:var(--direta)"></i> T1</span>
+        <span><i class="dot" style="background:var(--indireta)"></i> T2</span>
+        <span><i class="dot" style="background:var(--produto)"></i> T3</span>
+      </div>
     </div>
 
-    <h3 style="font-size:13px;color:var(--gold);letter-spacing:1.5px;text-transform:uppercase;margin:18px 0 8px;">Posição global por tabela — ticket e distância vs Camadas I, II e III</h3>
+    <div class="chartcard">
+      <div class="ct">Tipo 02 (3D) — concorrentes 3D × banda DM Tipo 02 (T0 R$ 1,57 M → T4 R$ 1,69 M)</div>
+      <div class="cs">Eixo: R$ M por unidade. Banda DM Tipo 02 = R$ 1.567.519 (T0) a R$ 1.692.920 (T4) — ticket × área Tipo 02 (116,38 m²) em cada degrau. <b>Landscape núcleo</b> (1,21–1,61 · 88–103,6 m², dado real), <b>Vernazza Sul</b> (1,28–1,59), <b>SD7 3D</b> (1,55), <b>Mount Solaro</b> (1,50–1,70 estim.) e <b>Giardino</b> (1,44–2,03) cruzam ou tocam a banda — concorrentes diretos por ticket da Tipo 02. <b>ORO 3D</b> (1,00–1,54), <b>Nexus 3D</b> (1,02–1,50), <b>The View</b> (1,30–1,50) e <b>Botticelli</b> (1,04–1,36 estim.) jogam abaixo do T0 — segmento mais econômico. <b>Monte Meru</b> (1,93–1,95), <b>Landscape cobertura duplex</b> (2,00–2,33), <b>Entre Rios</b> (1,73–2,72) e <b>Quartier 22</b> (3,00) jogam acima — segmento mais aspiracional.</div>
+      <svg id="svgTicketT02" viewBox="0 0 1040 600"></svg>
+      <div class="legend">
+        <span><i class="swatch" style="background:var(--gold)"></i> Banda DM · Tipo 02 (3D) · T0 R$ 1,57 → T4 R$ 1,69 M</span>
+        <span><i class="dot" style="background:var(--direta)"></i> T1</span>
+        <span><i class="dot" style="background:var(--indireta)"></i> T2</span>
+        <span><i class="dot" style="background:var(--produto)"></i> T3</span>
+      </div>
+    </div>
+
+    <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6;">
+      <b style="color:var(--warn);">⚠ Lacuna de dado</b> — sem ticket publicado: <b>LIV Residence</b> (T1 · 3D 90–100 m²) e <b>Reserva Península</b> (T3 · 4D 127–171 m²).<br>
+      <b style="color:var(--muted);">Estimativas</b> — derivadas da combinação publicada do empreend menos tipologias com dado explícito: <b>Renaissance Botticelli 3D</b> (combinação total 1,04–1,57 menos Leonardo 1,36–1,57), <b>The View 3D</b> (top do range total 0,54–1,50), <b>Mount Solaro</b> (sem tabela publicada, estimativa pelo R$/m² médio × área). O <b>Landscape</b> agora usa <b>dado real por planta</b> (tabela Delman 04/2026): núcleo 88–103,6 m² e cobertura duplex 123–143 m² — todos 3D (correção v11.23).
+    </p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="eyebrow">Bloco B — Retrato dos sobreviventes</div>
+    <h2>B.3 — R$/m² panorâmico</h2>
+    <p class="lead">Cada linha = um empreendimento sobrevivente com seu <b>R$/m² médio publicado</b> (marcador único — variação por tipologia entra no B.2, variação por andar entra no Modelo de Preço/C.2). A <b>banda dourada</b> é o <b>envelope de R$/m² do Dom Manuel no 8º andar mediano</b>: do menor R$/m² (T0 do Tipo 01, R$ 13.370/m²) ao maior (T4 do Tipo 02, R$ 14.547/m²). Ordem: <b>R$/m² médio asc.</b> — leitura do mais barato ao mais caro. Cor = tier de localização.</p>
+    <div class="chartcard">
+      <div class="ct">R$/m² panorâmico — 14 empreendimentos com tabela × envelope DM</div>
+      <div class="cs">Eixo: R$/m². Leitura imediata: o Dom Manuel se posiciona <b>no terço inferior do R$/m² do mercado equivalente</b> — apenas Renaissance Conceito (R$ 13.168) fica abaixo do T0 do DM; todos os 13 demais sobreviventes têm R$/m² acima do T4 do DM (R$ 14.547). Reforça o posicionamento de <b>preço competitivo</b> da escada do DM contra o entorno direto e equivalente.</div>
+      <svg id="svgRm2Surv" viewBox="0 0 1040 580"></svg>
+      <div class="legend">
+        <span><i class="swatch" style="background:var(--gold)"></i> Envelope DM · T0 Tipo 01 (R$ 13.370) → T4 Tipo 02 (R$ 14.547)</span>
+        <span><i class="dot" style="background:var(--direta)"></i> T1</span>
+        <span><i class="dot" style="background:var(--indireta)"></i> T2</span>
+        <span><i class="dot" style="background:var(--produto)"></i> T3</span>
+      </div>
+    </div>
+    <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6;">
+      <b style="color:var(--warn);">⚠ Lacuna de dado</b> — sem tabela publicada, ausentes do gráfico: <b>LIV Residence</b> (T1) e <b>Reserva Península</b> (T3). Total no funil: 16 · com dados: 14 · em captura: 2.<br>
+      <b style="color:var(--muted);">Nota metodológica</b> — valores correspondem ao R$/m² médio publicado por empreendimento (8º andar mediano). Variação por tipologia (4D × 3D) entra no B.4; variação por andar entra no Modelo de Preço/C.2.
+    </p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="eyebrow">Bloco B — Retrato dos sobreviventes</div>
+    <h2>B.4 — R$/m² por tipo de unidade</h2>
+    <p class="lead">Desdobramento granular do B.3: cada linha = um <b>empreendimento × tipologia</b>. Duas bandas DM, uma por tipo, com 5 ticks T0→T4 da escada do tipo. Ordem: <b>R$/m² médio asc.</b> dentro de cada chart. Cor por tier. Layout: 4D em cima (vs DM Tipo 01 R$ 13.370 → 14.440), 3D embaixo (vs DM Tipo 02 R$ 13.469 → 14.547). Zona de giro lento (~R$ 15-16k) marcada em ambos.</p>
+
+    <div class="chartcard" style="margin-bottom:16px;">
+      <div class="ct">Tipo 01 (4D) — concorrentes 4D × banda DM Tipo 01 (T0 R$ 13.370 → T4 R$ 14.440)</div>
+      <div class="cs">Banda DM Tipo 01 = escada T0→T4 do tipo (R$ 13.370 base · +2%/degrau). <b>Renaissance Leonardo</b> (R$ 13.168) fica abaixo do T0; todos os T1 (ORO Cob., Vernazza Norte, Zion) e Reserva SM Litorânea ficam acima do T4 — dentro ou além da zona de giro lento. <b>Nota:</b> o Landscape saiu deste gráfico — correção v11.23 mostrou que é 100% 3D (ver Tipo 02 abaixo).</div>
+      <svg id="svgRm2T01" viewBox="0 0 1040 420"></svg>
+      <div class="legend">
+        <span><i class="swatch" style="background:var(--gold)"></i> Banda DM · Tipo 01 (4D) · T0 R$ 13.370 → T4 R$ 14.440</span>
+        <span><i class="dot" style="background:var(--direta)"></i> T1</span>
+        <span><i class="dot" style="background:var(--indireta)"></i> T2</span>
+        <span><i class="dot" style="background:var(--produto)"></i> T3</span>
+      </div>
+    </div>
+
+    <div class="chartcard">
+      <div class="ct">Tipo 02 (3D) — concorrentes 3D × banda DM Tipo 02 (T0 R$ 13.469 → T4 R$ 14.547)</div>
+      <div class="cs">Banda DM Tipo 02 = escada T0→T4 do tipo (R$ 13.469 base · +2%/degrau). <b>Renaissance Botticelli</b> (R$ 13.168) abaixo do T0; <b>Monte Meru</b> (R$ 14.300) dentro da banda; <b>Landscape núcleo</b> (R$ 14.640 · 88–103,6 m²) cola na borda superior. Os demais jogam acima do T4 do DM Tipo 02 — a maioria na zona de giro lento; a <b>cobertura duplex do Landscape</b> (R$ 16.136) e o <b>Quartier 22</b> (R$ 18.182) são os mais caros. Correção v11.23: o Landscape é 100% 3D e entra aqui com 2 linhas (núcleo + cobertura).</div>
+      <svg id="svgRm2T02" viewBox="0 0 1040 600"></svg>
+      <div class="legend">
+        <span><i class="swatch" style="background:var(--gold)"></i> Banda DM · Tipo 02 (3D) · T0 R$ 13.469 → T4 R$ 14.547</span>
+        <span><i class="dot" style="background:var(--direta)"></i> T1</span>
+        <span><i class="dot" style="background:var(--indireta)"></i> T2</span>
+        <span><i class="dot" style="background:var(--produto)"></i> T3</span>
+      </div>
+    </div>
+
+    <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6;">
+      <b style="color:var(--warn);">⚠ Lacuna de dado</b> — sem R$/m² publicado por tipo: <b>LIV Residence</b> (T1 · 3D).<br>
+      <b style="color:var(--muted);">Estimativas (marcadas "estim." no rótulo)</b> — para empreendimentos com mais de uma tipologia ou sub-tipo, o R$/m² mostrado é a <i>mediana do empreendimento</i> (de REGUA_ALL) — o R$/m² por tipo específico pode diferir. Granularidade per-tipologia disponível apenas para C1 Ponta d'Areia (Vernazza Norte/Sul, Zion, ORO Cob/3D) e para empreendimentos mono-tipo (Monte Meru, Entre Rios, Giardino, Quartier 22).
+    </p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="eyebrow">Bloco C — Modelo de preço</div>
+    <h2>C.1 — A escada T0 → T4</h2>
+    <p class="lead">A tabela sobe o R$/m² médio em +2,0% simples por degrau. A pergunta de competitividade é a que distância de cada <b>tier de localização</b> cada degrau se posiciona — favorável nos cinco. Abaixo, a escada média ponderada e, em seguida, as escadas por tipo (Tipo 01 e Tipo 02) contra os concorrentes do mesmo tipo.</p>
+    <div class="chartcard" style="margin-bottom:16px;">
+      <div class="ct">R$/m² médio por degrau × referências de mercado</div>
+      <div class="cs">A escada inteira corre abaixo das três referências de tier (linhas tracejadas, médias por tier). Tier 2 (Renascença, R$ 14.825) é a mais próxima — o Dom Manuel fecha o gap de −10% no T0 para −2% no T4.</div>
+      <svg id="svgEscada" viewBox="0 0 1040 360"></svg>
+    </div>
+    <div class="two">
+      <div class="chartcard">
+        <div class="ct">Tipo 01 (4D) — escada R$/m² × concorrentes 4D</div>
+        <div class="cs">Escada R$/m² do DM Tipo 01 (base R$ 13.370, +2%/degrau) × médias por tier dos concorrentes 4D. A escada inteira corre abaixo do Tier 1 (Ponta d'Areia 4D, R$ 15.518: ORO Cob. · Vernazza Norte · Zion) e do Tier 3 (Reserva SM, R$ 16.300); só supera o Tier 2 (Renaissance Leonardo, R$ 13.168) a partir do T1. Detalhe concorrente-a-concorrente no B.4.</div>
+        <svg id="svgEscadaT01" viewBox="0 0 1040 380"></svg>
+        <div class="legend"><span><i class="dot" style="background:var(--direta)"></i> T1</span><span><i class="dot" style="background:var(--indireta)"></i> T2</span><span><i class="dot" style="background:var(--produto)"></i> T3</span></div>
+      </div>
+      <div class="chartcard">
+        <div class="ct">Tipo 02 (3D) — escada R$/m² × concorrentes 3D</div>
+        <div class="cs">Escada R$/m² do DM Tipo 02 (base R$ 13.469, +2%/degrau) × médias por tier dos concorrentes 3D. A escada inteira corre abaixo dos três tiers — Tier 2 Renascença R$ 14.825, Tier 1 Ponta d'Areia 3D R$ 15.715, Tier 3 demais R$ 15.861. O topo T4 do DM (R$ 14.547) ainda fica 2% abaixo do tier mais próximo (Tier 2). Detalhe concorrente-a-concorrente no B.4.</div>
+        <svg id="svgEscadaT02" viewBox="0 0 1040 380"></svg>
+        <div class="legend"><span><i class="dot" style="background:var(--direta)"></i> T1</span><span><i class="dot" style="background:var(--indireta)"></i> T2</span><span><i class="dot" style="background:var(--produto)"></i> T3</span></div>
+      </div>
+    </div>
+
+    <h3 style="font-size:13px;color:var(--gold);letter-spacing:1.5px;text-transform:uppercase;margin:18px 0 8px;">Posição global por tabela — ticket e distância vs Tier 1, 2 e 3</h3>
     <div class="twotables">
       <div>
         <table>
           <caption>Tipo 01 — 4D · 134,68 m² · 30 unidades</caption>
-          <thead><tr><th>Tabela</th><th>R$/m²</th><th>Ticket Tipo 01</th><th>vs C I</th><th>vs C II</th><th>vs C III</th></tr></thead>
+          <thead><tr><th>Tabela</th><th>R$/m²</th><th>Ticket Tipo 01</th><th>vs T1</th><th>vs T2</th><th>vs T3</th></tr></thead>
           <tbody id="tbPosT01"></tbody>
         </table>
       </div>
       <div>
         <table>
           <caption>Tipo 02 — 3D · 116,38 m² · 15 unidades</caption>
-          <thead><tr><th>Tabela</th><th>R$/m²</th><th>Ticket Tipo 02</th><th>vs C I</th><th>vs C II</th><th>vs C III</th></tr></thead>
+          <thead><tr><th>Tabela</th><th>R$/m²</th><th>Ticket Tipo 02</th><th>vs T1</th><th>vs T2</th><th>vs T3</th></tr></thead>
           <tbody id="tbPosT02"></tbody>
         </table>
       </div>
     </div>
-    <div class="cs-note"><b>R$/m² por Tipo</b> — cada tabela usa o R$/m² do seu próprio Tipo, não a média global do prédio. Tipo 01 (média dos lados mar/lagoa) parte de R$ 13.370/m² na T0 (vs R$ 13.469/m² do Tipo 02). Por isso o "vs Camada" difere ligeiramente entre as duas tabelas — Tipo 02, por ter R$/m² 0,7% maior, fica um pouco mais perto das referências de mercado. <b>Referências usadas:</b> Camada I = média R$ 15.804/m² (Vernazza · Zion · ORO; LIV sem dado) · Camada II = média R$ 15.025/m² (Renaissance · Entre Rios · Nexus · Giardino · Landscape · Reserva SM · Monte Meru) · Camada III = R$ 15.384/m² (Mount Solaro; Reserva Península sem dado).</div>
+    <div class="cs-note"><b>R$/m² por Tipo</b> — cada tabela usa o R$/m² do seu próprio Tipo, não a média global do prédio. Tipo 01 (média dos lados mar/lagoa) parte de R$ 13.370/m² na T0 (vs R$ 13.469/m² do Tipo 02). Por isso o "vs Tier" difere ligeiramente entre as duas tabelas — Tipo 02, por ter R$/m² 0,7% maior, fica um pouco mais perto das referências. <b>Referências (médias por tier, pós-correção v11.23):</b> Tier 1 = R$ 15.790/m² (Vernazza · Zion · ORO; LIV sem dado) · Tier 2 = R$ 14.825/m² (Renaissance · Entre Rios · Nexus) · Tier 3 = R$ 15.877/m² (Landscape · Reserva SM · The View · Giardino · Monte Meru · Quartier 22 · SD7 · Mount Solaro).</div>
   </div>
 </section>
 
-<section>
+<section style="display:none;" data-bloco="camada-I-antiga">
   <div class="wrap">
     <div class="eyebrow">Camada I</div>
     <h2>Concorrência direta — Ponta d'Areia</h2>
@@ -384,7 +612,7 @@
   </div>
 </section>
 
-<section>
+<section style="display:none;" data-bloco="camada-II-antiga">
   <div class="wrap">
     <div class="eyebrow">Camada II</div>
     <h2>Concorrência fora da micro-região — Renascença II · Ponta do Farol · Calhau · Península</h2>
@@ -396,7 +624,7 @@
   </div>
 </section>
 
-<section>
+<section style="display:none;" data-bloco="camada-III-antiga">
   <div class="wrap">
     <div class="eyebrow">Camada III</div>
     <h2>Similaridade de produto — todos os bairros</h2>
@@ -406,7 +634,7 @@
   </div>
 </section>
 
-<section>
+<section style="display:none;" data-bloco="camada-IV-antiga">
   <div class="wrap">
     <div class="eyebrow">Camada IV</div>
     <h2>Demais verticais com dados — paisagem competitiva</h2>
@@ -421,8 +649,8 @@
 
 <section>
   <div class="wrap">
-    <div class="eyebrow">Prêmio por andar</div>
-    <h2>Curva de andar — quanto cada andar acima vale</h2>
+    <div class="eyebrow">Bloco C — Modelo de preço</div>
+    <h2>C.2 — Curva de andar (prêmio por pavimento)</h2>
     <p class="lead">Prêmio percentual por pavimento praticado por cada concorrente. O Dom Manuel, a ±0,5%/andar centrada no 8º, tem a curva mais plana de toda a amostra.</p>
     <div class="chartcard">
       <div class="ct">Prêmio praticado por andar (%)</div>
@@ -434,33 +662,21 @@
 </section>
 <section>
   <div class="wrap">
-    <div class="eyebrow">Síntese</div>
-    <h2>Teto de preço, lacunas e próximos passos</h2>
-    <div class="two">
-      <div>
-        <h3 style="font-size:14px;color:#fff;margin-bottom:10px;">Teto de preço do bairro</h3>
-        <p style="font-size:12.5px;color:var(--txt);">No preço do apartamento, a escada inteira do Dom Manuel — do T0 ao T4 — fica abaixo da zona de giro lento (~R$ 15–16 mil/m²). O teto máximo de toda a tabela (T4, andar alto) é <b style="color:var(--gold-light)">R$ 14.978/m²</b>. A zona é evidenciada por:</p>
-        <ul class="gaps" style="margin-top:10px;">
-          <li><b>Zion</b> (Ponta d'Areia) — as 10 unidades restantes a R$ 14,6–17,2 mil/m²; <b>zero vendas</b> entre abr e mai/2026. Evidência clara, na própria microlocalização do Dom Manuel.</li>
-        </ul>
-        <p style="font-size:12.5px;color:var(--muted);margin-top:10px;">A tabela do Dom Manuel está, em todos os degraus, do lado certo do teto.</p>
-      </div>
-      <div>
-        <h3 style="font-size:14px;color:#fff;margin-bottom:10px;">Lacunas de dado</h3>
-        <ul class="gaps">
-          <li><b>LIV Residence (Alfa)</b> — concorrente direto de Ponta d'Areia sem tabela de preço na base. Captura em andamento. <span class="badge crit">crítico</span></li>
-          <li><b>Nexus Renascença (Ergus)</b> — incluído na v11.22 da base com tabela completa (152 un. · multi-tipo · R$/m² 16,1 mil). Falta apenas derivar a curva de andar do U_RAW. <span class="badge ok">resolvido</span></li>
-          <li><b>Entre Rios (Mota Machado)</b> — tabela publicada sempre completa; % vendido e velocidade <b>não aferíveis</b>. Lacuna metodológica.</li>
-          <li><b>Faixa de andar dos concorrentes</b> — hoje aproximada por menor/médio/maior preço. Registrar o andar físico real nas próximas extrações (algumas construtoras numeram o 1º pavto-tipo como "4º andar").</li>
-          <li><b>Reserva Península / Mount Solaro</b> — sem tabela; refresh de Vernazza (02/26) e ORO (01/26) recomendável.</li>
-        </ul>
-        <h3 style="font-size:14px;color:#fff;margin:16px 0 8px;">Base corrigida</h3>
-        <div class="tags">
-          <span class="badge ok">Planilha v11.22</span>
-          <span class="badge ok">entry Dom Manuel atualizada</span>
-          <span class="badge ok">bug Renaissance saneado</span>
-        </div>
-      </div>
+    <div class="eyebrow">Bloco D — Lupa</div>
+    <h2>Em construção</h2>
+    <div class="placeholder">
+      <p style="margin:0;">Perfil aprofundado dos 4–6 principais concorrentes diretos do Dom Manuel — definidos a partir da leitura cruzada dos Blocos A e B (maior intersecção de área + posição de R$/m² e ticket mais próximas). Conteúdo a definir após validação de B.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="eyebrow">Bloco E — Veredito</div>
+    <h2>Em construção</h2>
+    <div class="placeholder">
+      <p style="margin:0 0 10px;">Síntese final do posicionamento competitivo do Dom Manuel — escrita ao final, depois que todos os retratos do Bloco B e a lupa do Bloco D estiverem prontos. Conteúdo a definir.</p>
+      <p style="margin:0;">Inclui também: <b>destino da Camada IV (paisagem)</b> — se mantém como anexo, se vira referência de teto/piso, ou se sai por completo do relatório.</p>
     </div>
   </div>
 </section>
@@ -489,7 +705,7 @@ const ESCADA_T01=[13370,13637,13905,14172,14440];      // Tipo 01 (mar+lagoa) �
 const ESCADA_T02=[13469,13738,14008,14277,14547];      // Tipo 02 — base 13.205 × 1,02 × (1+0,02n)
 const ESC_TKT01=[1800456,1836465,1872474,1908483,1944492]; // Tipo 01 × 134,68
 const ESC_TKT02=[1567519,1598869,1630220,1661570,1692920]; // Tipo 02 × 116,38
-const REF_C1=15804, REF_C2=15025, REF_C3=15384;
+const REF_T1=15790, REF_T2=14825, REF_T3=15877;  // médias por tier (pós-correção v11.23)
 
 /* ===== POSIÇÃO GLOBAL — duas tabelas ===== */
 function pct(v,ref){
@@ -503,7 +719,7 @@ function fillPos(){
   [['tbPosT01',ESCADA_T01,ESC_TKT01],['tbPosT02',ESCADA_T02,ESC_TKT02]].forEach(([id,rsmArr,tkArr])=>{
     const tb=document.getElementById(id);
     rsmArr.forEach((rsm,i)=>{
-      const p1=pct(rsm,REF_C1), p2=pct(rsm,REF_C2), p3=pct(rsm,REF_C3);
+      const p1=pct(rsm,REF_T1), p2=pct(rsm,REF_T2), p3=pct(rsm,REF_T3);
       const tr=document.createElement('tr');
       tr.innerHTML=`<td><b style="color:#E8D5A3">${labels[i]}</b></td>
         <td>R$ ${fmt(rsm)}</td>
@@ -558,17 +774,19 @@ const REGUA_FOCUS=[
 ];
 function drawRegua(svgId, data, opts){
   const svg=document.getElementById(svgId);
-  const W=1040, L=opts.L||225, Rp=95, top=34;
+  const W=1040, L=opts.L||225, Rp=opts.Rp||95, top=opts.top||34;
   const axisY=opts.h-30;
   const x0=opts.x0||12000, x1=opts.x1||17000;
   const X=v=>L+(v-x0)/(x1-x0)*(W-L-Rp);
   const rows=[...data].sort((a,b)=>a.v-b.v);
   const rowH=(axisY-top)/rows.length;
+  // Zona de giro lento — opt false desliga; opt {from,label} customiza
   if(opts.dz!==false){
-    svg.appendChild(el('rect',{x:X(15000),y:top,width:X(x1)-X(15000),height:axisY-top,
+    const dzFrom = (opts.dz && opts.dz.from) || 15000;
+    const dzLabel = (opts.dz && opts.dz.label) || 'Zona de giro lento (~R$ 15–16 mil)';
+    svg.appendChild(el('rect',{x:X(dzFrom),y:top,width:X(x1)-X(dzFrom),height:axisY-top,
       fill:'rgba(224,107,90,0.10)'}));
-    svg.appendChild(el('text',{x:X(15000)+8,y:top+13,fill:'#E06B5A','font-size':10.5,'font-weight':600},
-      'Zona de giro lento (~R$ 15–16 mil)'));
+    svg.appendChild(el('text',{x:X(dzFrom)+8,y:top+13,fill:'#E06B5A','font-size':10.5,'font-weight':600},dzLabel));
   }
   // grid X ticks
   const stepX=opts.stepX||1000;
@@ -577,15 +795,35 @@ function drawRegua(svgId, data, opts){
     svg.appendChild(el('text',{x:X(v),y:axisY+21,fill:'#9a978f','font-size':10.5,'text-anchor':'middle'},
       'R$ '+fmt(v)));
   }
-  // Dom Manuel band
-  svg.appendChild(el('rect',{x:X(13400),y:top,width:X(14472)-X(13400),height:axisY-top,
+  // Dom Manuel band — default = v1 (13400-14472 com ESCADA, centered label); custom via opts.dmBand
+  const band = opts.dmBand || {lo:13400, hi:14472, ticks:ESCADA, centerLabel:'DOM MANUEL · T0→T4'};
+  svg.appendChild(el('rect',{x:X(band.lo),y:top,width:X(band.hi)-X(band.lo),height:axisY-top,
     fill:'rgba(201,168,76,0.17)',stroke:'#C9A84C','stroke-width':1}));
-  ESCADA.forEach((d,i)=>{
-    svg.appendChild(el('line',{x1:X(d),y1:top,x2:X(d),y2:top+9,stroke:'#C9A84C','stroke-width':1.5}));
-    svg.appendChild(el('text',{x:X(d),y:top-5,fill:'#E8D5A3','font-size':9,'text-anchor':'middle'},'T'+i));
-  });
-  svg.appendChild(el('text',{x:(X(13400)+X(14472))/2,y:axisY-9,fill:'#C9A84C',
-    'font-size':10,'font-weight':700,'text-anchor':'middle'},'DOM MANUEL · T0→T4'));
+  // border labels — opt-in, posicionados FORA dos bordos (não conflita com ticks internos quando existem)
+  if(band.loLabel){
+    svg.appendChild(el('text',{x:X(band.lo)-6,y:top-12,fill:'#C9A84C',
+      'font-size':10.5,'font-weight':700,'text-anchor':'end'},band.loLabel));
+  }
+  if(band.hiLabel){
+    svg.appendChild(el('text',{x:X(band.hi)+6,y:top-12,fill:'#C9A84C',
+      'font-size':10.5,'font-weight':700,'text-anchor':'start'},band.hiLabel));
+  }
+  // ticks internos — opcionais; suprime labels nas bordas quando há border labels (evita duplicidade com Mín/Máx · T0/T4)
+  if(band.ticks){
+    const skipEdgeLabels = !!(band.loLabel || band.hiLabel);
+    band.ticks.forEach((d,i)=>{
+      svg.appendChild(el('line',{x1:X(d),y1:top,x2:X(d),y2:top+9,stroke:'#C9A84C','stroke-width':1.5}));
+      const atEdge = skipEdgeLabels && (i===0 || i===band.ticks.length-1);
+      if(!atEdge){
+        svg.appendChild(el('text',{x:X(d),y:top-5,fill:'#E8D5A3','font-size':9,'text-anchor':'middle'},'T'+i));
+      }
+    });
+  }
+  // center label (rodapé da banda) — opcional
+  if(band.centerLabel){
+    svg.appendChild(el('text',{x:(X(band.lo)+X(band.hi))/2,y:axisY-9,fill:'#C9A84C',
+      'font-size':10,'font-weight':700,'text-anchor':'middle'},band.centerLabel));
+  }
   rows.forEach((c,i)=>{
     const y=top+i*rowH+rowH/2;
     svg.appendChild(el('text',{x:L-14,y:y+4,fill:'#e9e7e2','font-size':10.5,'text-anchor':'end','font-weight':600},c.n));
@@ -635,7 +873,7 @@ function drawEscadaWithRefs(svgId, escadaArr, refs, yRange, showGap){
     svg.appendChild(el('text',{x:cx,y:Y(rsm)-22,fill:'#fff','font-size':13,'font-weight':700,'text-anchor':'middle'},'R$ '+fmt(rsm)));
     if(showGap && refs[0]){
       const p=pct(rsm,refs[0][1]);
-      svg.appendChild(el('text',{x:cx,y:Y(rsm)-8,fill:p.c,'font-size':10.5,'text-anchor':'middle','font-weight':600},p.t+' vs C I'));
+      svg.appendChild(el('text',{x:cx,y:Y(rsm)-8,fill:p.c,'font-size':10.5,'text-anchor':'middle','font-weight':600},p.t+' vs T1'));
     }
     svg.appendChild(el('text',{x:cx,y:baseY+18,fill:'#E8D5A3','font-size':12,'font-weight':700,'text-anchor':'middle'},'T'+i));
   });
@@ -644,9 +882,9 @@ function drawEscadaWithRefs(svgId, escadaArr, refs, yRange, showGap){
 }
 function drawEscada(){
   drawEscadaWithRefs('svgEscada', ESCADA, [
-    ['Camada I (Ponta d\'Areia) ~R$ 15.804',15804,'#E06B5A'],
-    ['Camada II (fora da micro-região) ~R$ 15.025',15025,'#5B8FB0'],
-    ['Camada III (Península) ~R$ 15.384',15384,'#6BAE8E']
+    ['Tier 1 — Ponta d\'Areia (média R$ 15.790)',15790,ROT.direta],
+    ['Tier 2 — Renascença (média R$ 14.825)',14825,ROT.indireta],
+    ['Tier 3 — demais (média R$ 15.877)',15877,ROT.produto]
   ], [12800,16200], true);
 }
 
@@ -883,8 +1121,8 @@ const DORM_ALL=[
 // Visão panorâmica — área privativa por empreendimento (ordenado por menor área asc.)
 const AREA_ALL=[
   {n:'Nexus Renascença · Renascença (Studio+1D+2D+3D)',lo:30.79,hi:95.84,c:ROT.indireta},
-  {n:'The View · Calhau (Studio/1D/2D/3D)',lo:36.05,hi:85.87,c:ROT.paisagem},
-  {n:'Studio Design 7 Península · Península (Studio/2D/3D)',lo:42.4,hi:88.78,c:ROT.paisagem},
+  {n:'The View · Calhau (Studio/1D/2D/3D)',lo:36.05,hi:85.87,c:ROT.produto},
+  {n:'Studio Design 7 Península · Península (Studio/2D/3D)',lo:42.4,hi:88.78,c:ROT.produto},
   {n:'Le Noir · Renascença II (Studio/1D/2D)',lo:49.74,hi:62.62,c:ROT.paisagem},
   {n:'Residencial Novo Anil · Cohab Anil IV (2D)',lo:53.94,hi:53.94,c:ROT.paisagem},
   {n:'Edifício Sanpaolo · Cohama (1D/2D)',lo:54,hi:59,c:ROT.paisagem},
@@ -892,23 +1130,136 @@ const AREA_ALL=[
   {n:'Cidade de Viena · Turu (2D/3D)',lo:61.38,hi:86.58,c:ROT.paisagem},
   {n:'Fiji Residence · Cohama (2D/3D)',lo:61.79,hi:80.53,c:ROT.paisagem},
   {n:'Mount Solaro · Península (Loft+Apt 2D/3D)',lo:68,hi:104,c:ROT.produto},
-  {n:'Reserva São Marcos · Calhau (2D Lagoa + 4D Litorânea)',lo:68.12,hi:103.15,c:ROT.indireta},
+  {n:'Reserva São Marcos · Calhau (2D Lagoa + 4D Litorânea)',lo:68.12,hi:103.15,c:ROT.produto},
   {n:'ORO Ponta d\'Areia · Ponta d\'Areia (3D + Cob 4D)',lo:80.32,hi:160.65,c:ROT.direta},
   {n:'Renaissance Conceito · Renascença II (Botticelli 3D + Leonardo 4D)',lo:82,hi:110,c:ROT.indireta},
   {n:'Vernazza · Ponta d\'Areia (Sul 3D + Norte 4D)',lo:87.98,hi:130.49,c:ROT.direta},
-  {n:'Landscape · Calhau (3D + 4D núcleo + duplex)',lo:88.07,hi:143.64,c:ROT.indireta},
+  {n:'Landscape · Calhau (3D · 88–143 m², 4 plantas)',lo:88.07,hi:143.64,c:ROT.produto},
   {n:'LIV Residence · Ponta d\'Areia (3D três plantas)',lo:90.83,hi:100.23,c:ROT.direta},
-  {n:'Giardino Residenza · Ponta do Farol (3D 4 plantas)',lo:93.62,hi:128.37,c:ROT.indireta},
+  {n:'Giardino Residenza · Ponta do Farol (3D 4 plantas)',lo:93.62,hi:128.37,c:ROT.produto},
   {n:'Entre Rios · Renascença II (3D três tipologias)',lo:125,hi:157,c:ROT.indireta},
   {n:'Reserva Península · Península (4D mono)',lo:127.14,hi:171.36,c:ROT.produto},
-  {n:'Monte Meru · Península (3D mono)',lo:135.32,hi:135.83,c:ROT.indireta},
+  {n:'Monte Meru · Península (3D mono)',lo:135.32,hi:135.83,c:ROT.produto},
   {n:'Zion · Ponta d\'Areia (4D mono)',lo:148.55,hi:148.55,c:ROT.direta},
-  {n:'Quartier 22 · Península (3D mono)',lo:165,hi:165,c:ROT.paisagem},
+  {n:'Quartier 22 · Península (3D mono)',lo:165,hi:165,c:ROT.produto},
   {n:'Edifício Bossa · Calhau (4D 3 tipologias)',lo:191.02,hi:196.04,c:ROT.paisagem},
   {n:'Azimuth · Península (3D mono)',lo:196.62,hi:196.62,c:ROT.paisagem},
   {n:'Al Mare Tirreno · Calhau (4D mono)',lo:215,hi:215,c:ROT.paisagem},
   {n:'Sky Residence · Península (4D mono)',lo:246.69,hi:246.69,c:ROT.paisagem},
   {n:'Wave Residence · Ponta do Farol (4D mono)',lo:293.69,hi:293.69,c:ROT.paisagem}
+];
+// A.1 secundário — capturados pela peneira de área, ordenados por mediana de área (asc.)
+// banda 81,47–168,35 m². Mediana = (lo+hi)/2. Tier no label esquerdo.
+const AREA_CAPT=[
+  {n:'The View · Calhau · T3 · mediana 61,0 m²',lo:36.05,hi:85.87,c:ROT.produto},
+  {n:'Nexus Renascença · Renascença · T2 · mediana 63,3 m²',lo:30.79,hi:95.84,c:ROT.indireta},
+  {n:'Studio Design 7 · Península · T3 · mediana 65,6 m²',lo:42.4,hi:88.78,c:ROT.produto},
+  {n:'Cidade de Viena · Turu · T4 · mediana 74,0 m² · [eliminado]',lo:61.38,hi:86.58,c:ROT.paisagem},
+  {n:'Reserva São Marcos · Calhau · T3 · mediana 85,6 m²',lo:68.12,hi:103.15,c:ROT.produto},
+  {n:'Mount Solaro · Península · T3 · mediana 86,0 m²',lo:68,hi:104,c:ROT.produto},
+  {n:'LIV Residence · Ponta d\'Areia · T1 · mediana 95,5 m²',lo:90.83,hi:100.23,c:ROT.direta},
+  {n:'Renaissance Conceito · Renascença II · T2 · mediana 96,0 m²',lo:82,hi:110,c:ROT.indireta},
+  {n:'Vernazza · Ponta d\'Areia · T1 · mediana 109,2 m²',lo:87.98,hi:130.49,c:ROT.direta},
+  {n:'Giardino Residenza · Ponta do Farol · T3 · mediana 111,0 m²',lo:93.62,hi:128.37,c:ROT.produto},
+  {n:'Landscape · Calhau · T3 · mediana 115,9 m²',lo:88.07,hi:143.64,c:ROT.produto},
+  {n:'ORO Ponta d\'Areia · Ponta d\'Areia · T1 · mediana 120,5 m²',lo:80.32,hi:160.65,c:ROT.direta},
+  {n:'Monte Meru · Península · T3 · mediana 135,6 m²',lo:135.32,hi:135.83,c:ROT.produto},
+  {n:'Entre Rios · Renascença II · T2 · mediana 141,0 m²',lo:125,hi:157,c:ROT.indireta},
+  {n:'Zion · Ponta d\'Areia · T1 · mediana 148,5 m²',lo:148.55,hi:148.55,c:ROT.direta},
+  {n:'Reserva Península · Península · T3 · mediana 149,3 m²',lo:127.14,hi:171.36,c:ROT.produto},
+  {n:'Quartier 22 · Península · T3 · mediana 165,0 m²',lo:165,hi:165,c:ROT.produto}
+];
+// B.1 — R$/m² panorâmico dos sobreviventes (14 com tabela; 2 sem: LIV, Reserva Península)
+// Estrutura para drawRegua: {n, r:tier ROT key, v: R$/m² médio}
+// Envelope DM: T0 Tipo 01 média = R$ 13.370 → T4 Tipo 02 = R$ 14.547 (8º andar mediano)
+const RM2_SURV=[
+  {n:'Renaissance Conceito · Renascença II · T2',r:'indireta',v:13168},
+  {n:'Monte Meru · Península · T3',r:'produto',v:14300},
+  {n:'Landscape · Calhau · T3',r:'produto',v:14600},
+  {n:'Entre Rios · Renascença II · T2',r:'indireta',v:15200},
+  {n:'Mount Solaro · Península · T3 · estim.',r:'produto',v:15384},
+  {n:'Giardino Residenza · Ponta do Farol · T3',r:'produto',v:15500},
+  {n:'Vernazza · Ponta d\'Areia · T1',r:'direta',v:15519},
+  {n:'Zion · Ponta d\'Areia · T1',r:'direta',v:15900},
+  {n:'ORO Ponta d\'Areia · Ponta d\'Areia · T1',r:'direta',v:15952},
+  {n:'Studio Design 7 · Península · T3',r:'produto',v:15981},
+  {n:'Nexus Renascença · Renascença · T2',r:'indireta',v:16107},
+  {n:'Reserva São Marcos · Calhau · T3',r:'produto',v:16300},
+  {n:'The View · Calhau · T3',r:'produto',v:16765},
+  {n:'Quartier 22 · Península · T3',r:'produto',v:18182}
+];
+// B.2 — R$/m² por tipo · Tipo 01 (4D) — concorrentes 4D × banda DM Tipo 01 (R$ 13.370 → 14.440)
+// Estrutura para drawRegua: {n, r:tier ROT key, v: R$/m²}
+const RM2_T01_SURV=[
+  {n:'Renaissance Leonardo · Monteplan · 4D · 110 m² · T2 · estim.',r:'indireta',v:13168},
+  {n:'ORO Cobertura Duplex · Niágara · 4D · 160,65 m² · T1',r:'direta',v:15095},
+  {n:'Vernazza Norte · Treviso · 4D · 130 m² · T1',r:'direta',v:15560},
+  {n:'Zion · Ergus · 4D · 148,55 m² · T1',r:'direta',v:15900},
+  {n:'Reserva São Marcos Litorânea · Mota Machado · 4D · 103 m² · T3 · estim.',r:'produto',v:16300}
+];
+// B.2 — R$/m² por tipo · Tipo 02 (3D) — concorrentes 3D × banda DM Tipo 02 (R$ 13.469 → 14.547)
+// Landscape (Delman) é 100% 3D (correção v11.23): núcleo 88–103,6m² ~R$14.640 + cobertura duplex 123–143m² ~R$16.136
+const RM2_T02_SURV=[
+  {n:'Renaissance Botticelli · Monteplan · 3D · 82 m² · T2 · estim.',r:'indireta',v:13168},
+  {n:'Monte Meru · Berg · 3D · 135 m² · T3',r:'produto',v:14300},
+  {n:'Landscape núcleo · Delman · 3D · 88–103,6 m² · T3',r:'produto',v:14640},
+  {n:'Entre Rios · Mota Machado · 3D · 125–157 m² · T2',r:'indireta',v:15200},
+  {n:'Mount Solaro · Berg · 3D · 104 m² · T3 · estim.',r:'produto',v:15384},
+  {n:'Vernazza Sul · Treviso · 3D · 88–90 m² · T1',r:'direta',v:15477},
+  {n:'Giardino Residenza · Alfa Engenharia · 3D · 99–128 m² · T3',r:'produto',v:15500},
+  {n:'ORO 3D · Niágara · 3D · 80 m² · T1',r:'direta',v:15952},
+  {n:'Studio Design 7 · Delman · 3D · 88 m² · T3 · estim.',r:'produto',v:15981},
+  {n:'Nexus · Ergus · 3D · 80–96 m² · T2 · estim.',r:'indireta',v:16107},
+  {n:'Landscape cobertura duplex · Delman · 3D · 123–143 m² · T3',r:'produto',v:16136},
+  {n:'The View · Delman · 3D · 86 m² · T3 · estim.',r:'produto',v:16765},
+  {n:'Quartier 22 · Delman · 3D · 165 m² · T3',r:'produto',v:18182}
+];
+// B.4 — Ticket por tipo · Tipo 01 (4D) — concorrentes 4D × banda DM Tipo 01 (R$ 1,80→1,94 M)
+// Ordem: mediana de ticket asc. Tier no label esquerdo.
+const TICKET_T01_SURV=[
+  {n:'Renaissance Leonardo · Monteplan · 4D · 110 m² · T2',lo:1.36,hi:1.57,c:ROT.indireta},
+  {n:'Reserva São Marcos Litorânea · Mota Machado · 4D · 103 m² · T3',lo:1.50,hi:1.85,c:ROT.produto},
+  {n:'Vernazza Norte · Treviso · 4D · 130 m² · T1',lo:1.82,hi:2.24,c:ROT.direta},
+  {n:'Zion · Ergus · 4D · 148,55 m² · T1',lo:2.17,hi:2.56,c:ROT.direta},
+  {n:'ORO Cobertura Duplex · Niágara · 4D · 160,65 m² · T1',lo:2.42,hi:2.42,c:ROT.direta}
+];
+// B.4 — Ticket por tipo · Tipo 02 (3D) — concorrentes 3D × banda DM Tipo 02 (R$ 1,57→1,69 M)
+// Ordem: mediana de ticket asc. Tier no label esquerdo.
+// Landscape (Delman) é 100% 3D (correção v11.23): núcleo 88–103,6m² (R$1,21–1,61M, dado real) + cobertura duplex 123–143m² (R$2,00–2,33M)
+const TICKET_T02_SURV=[
+  {n:'Renaissance Botticelli · Monteplan · 3D · 82 m² · T2 · estim.',lo:1.04,hi:1.36,c:ROT.indireta},
+  {n:'Nexus · Ergus · 3D · 80–96 m² · T2',lo:1.02,hi:1.50,c:ROT.indireta},
+  {n:'ORO 3D · Niágara · 3D · 80 m² · T1',lo:1.00,hi:1.54,c:ROT.direta},
+  {n:'The View · Delman · 3D · 86 m² · T3 · estim.',lo:1.30,hi:1.50,c:ROT.produto},
+  {n:'Landscape núcleo · Delman · 3D · 88–103,6 m² · T3',lo:1.21,hi:1.61,c:ROT.produto},
+  {n:'Vernazza Sul · Treviso · 3D · 88–90 m² · T1',lo:1.28,hi:1.59,c:ROT.direta},
+  {n:'Studio Design 7 · Delman · 3D · 88 m² · T3',lo:1.55,hi:1.55,c:ROT.produto},
+  {n:'Mount Solaro · Berg · 3D · 104 m² · T3 · estim.',lo:1.50,hi:1.70,c:ROT.produto},
+  {n:'Giardino Residenza · Alfa Engenharia · 3D · 99–128 m² · T3',lo:1.44,hi:2.03,c:ROT.produto},
+  {n:'Monte Meru · Berg · 3D · 135 m² · T3',lo:1.93,hi:1.95,c:ROT.produto},
+  {n:'Landscape cobertura duplex · Delman · 3D · 123–143 m² · T3',lo:2.00,hi:2.33,c:ROT.produto},
+  {n:'Entre Rios · Mota Machado · 3D · 125–157 m² · T2',lo:1.73,hi:2.72,c:ROT.indireta},
+  {n:'Quartier 22 · Delman · 3D · 165 m² · T3',lo:3.00,hi:3.00,c:ROT.produto}
+];
+// B.3 — Ticket panorâmico dos sobreviventes (14 com tabela; 2 sem: LIV, Reserva Península)
+// Ordem: mediana de ticket asc. Tier no label esquerdo.
+// Banda DM: 1,57 (T0 Tipo 02) → 1,94 (T4 Tipo 01); 5 ticks médios ponderados (30u T01 + 15u T02 / 45)
+//   T0=1,72 · T1=1,76 · T2=1,79 · T3=1,83 · T4=1,86
+const TICKET_SURV=[
+  {n:'The View · Calhau · T3 · mediana R$ 1,02 M',lo:0.54,hi:1.50,c:ROT.produto},
+  {n:'Nexus Renascença · Renascença · T2 · mediana R$ 1,02 M',lo:0.54,hi:1.50,c:ROT.indireta},
+  {n:'Studio Design 7 · Península · T3 · mediana R$ 1,13 M',lo:0.71,hi:1.55,c:ROT.produto},
+  {n:'Renaissance Conceito · Renascença II · T2 · mediana R$ 1,31 M',lo:1.04,hi:1.57,c:ROT.indireta},
+  {n:'Reserva São Marcos · Calhau · T3 · mediana R$ 1,42 M',lo:0.98,hi:1.85,c:ROT.produto},
+  {n:'Mount Solaro · Península · T3 · mediana R$ 1,60 M · estim.',lo:1.50,hi:1.70,c:ROT.produto},
+  {n:'ORO Ponta d\'Areia · Ponta d\'Areia · T1 · mediana R$ 1,71 M',lo:1.00,hi:2.42,c:ROT.direta},
+  {n:'Giardino Residenza · Ponta do Farol · T3 · mediana R$ 1,74 M',lo:1.44,hi:2.03,c:ROT.produto},
+  {n:'Vernazza · Ponta d\'Areia · T1 · mediana R$ 1,76 M',lo:1.28,hi:2.24,c:ROT.direta},
+  {n:'Landscape · Calhau · T3 · mediana R$ 1,77 M',lo:1.21,hi:2.33,c:ROT.produto},
+  {n:'Monte Meru · Península · T3 · mediana R$ 1,94 M',lo:1.93,hi:1.95,c:ROT.produto},
+  {n:'Entre Rios · Renascença II · T2 · mediana R$ 2,23 M',lo:1.73,hi:2.72,c:ROT.indireta},
+  {n:'Zion · Ponta d\'Areia · T1 · mediana R$ 2,37 M',lo:2.17,hi:2.56,c:ROT.direta},
+  {n:'Quartier 22 · Península · T3 · mediana R$ 3,00 M',lo:3.00,hi:3.00,c:ROT.produto}
 ];
 // Visão panorâmica — todos os empreendimentos consolidados por empreendimento (range mín–máx do empreend.)
 const TICKET_ALL=[
@@ -1011,16 +1362,43 @@ function drawTicket(svgId, data, axisMax, dmBand, opts){
       fill:bColor,'fill-opacity':0.17,stroke:bColor,'stroke-width':1}));
     (b.ticks||[]).forEach((tk,i)=>{
       svg.appendChild(el('line',{x1:X(tk),y1:top,x2:X(tk),y2:top+9,stroke:bColor,'stroke-width':1.5}));
-      svg.appendChild(el('text',{x:X(tk),y:top-5,fill:bColor,'font-size':9,'text-anchor':'middle'},'T'+i));
+      // se bandBorderTop ativo e tick está numa borda da banda, suprime label (já marcado em border)
+      const atEdge = opts.bandBorderTop && (Math.abs(tk-b.lo)<0.001 || Math.abs(tk-b.hi)<0.001);
+      if(!atEdge){
+        const yOff = (i%2===0) ? 5 : 16;
+        svg.appendChild(el('text',{x:X(tk),y:top-yOff,fill:bColor,'font-size':9,'text-anchor':'middle'},'T'+i));
+      }
     });
-    let labelY;
-    if(labelMode==='above'){
-      labelY = top - 22 + bi*14;
-    }else{
-      labelY = bands.length===1 ? baseY-9 : (bi===0 ? top+22 : baseY-12);
+    // bandBorderTop: rótulos do lo/hi acima do gráfico, nos bordos da banda
+    if(opts.bandBorderTop){
+      // labels explícitos preferidos (evita arredondamento de FP do toFixed); fallback p/ fmtV
+      const fmtV = opts.bandFmt || (v => (Math.round(v*10+1e-9)/10).toFixed(1).replace('.',',')+' m²');
+      const loLbl = b.loLabel || fmtV(b.lo);
+      const hiLbl = b.hiLabel || fmtV(b.hi);
+      // bandBorderLabelOutside: empurra labels para fora dos bordos (necessário em bandas estreitas)
+      if(opts.bandBorderLabelOutside){
+        svg.appendChild(el('text',{x:X(b.lo)-6,y:top-32,fill:bColor,
+          'font-size':10.5,'font-weight':700,'text-anchor':'end'},loLbl));
+        svg.appendChild(el('text',{x:X(b.hi)+6,y:top-32,fill:bColor,
+          'font-size':10.5,'font-weight':700,'text-anchor':'start'},hiLbl));
+      }else{
+        svg.appendChild(el('text',{x:X(b.lo),y:top-32,fill:bColor,
+          'font-size':10.5,'font-weight':700,'text-anchor':'middle'},loLbl));
+        svg.appendChild(el('text',{x:X(b.hi),y:top-32,fill:bColor,
+          'font-size':10.5,'font-weight':700,'text-anchor':'middle'},hiLbl));
+      }
     }
-    svg.appendChild(el('text',{x:bx+bw/2,y:labelY,fill:bColor,
-      'font-size':10,'font-weight':700,'text-anchor':'middle'},b.label));
+    // label centrado (suprime se vazio ou se bandBorderTop)
+    if(b.label && !opts.bandBorderTop){
+      let labelY;
+      if(labelMode==='above'){
+        labelY = top - 22 + bi*14;
+      }else{
+        labelY = bands.length===1 ? baseY-9 : (bi===0 ? top+22 : baseY-12);
+      }
+      svg.appendChild(el('text',{x:bx+bw/2,y:labelY,fill:bColor,
+        'font-size':10,'font-weight':700,'text-anchor':'middle'},b.label));
+    }
   });
   // competidores como barras de range
   data.forEach((d,i)=>{
@@ -1036,7 +1414,8 @@ function drawTicket(svgId, data, axisMax, dmBand, opts){
     const lineCol = rl.color || '#C9A84C';
     svg.appendChild(el('line',{x1:lineX,y1:top,x2:lineX,y2:baseY,
       stroke:lineCol,'stroke-width':1.5,'stroke-dasharray':'5 4',opacity:0.85}));
-    const labelY = top - 22 + (i%2)*14;
+    // labels: linha única quando bandBorderTop (borders já estão em top-32); senão stagger antigo
+    const labelY = opts.bandBorderTop ? (top-12) : (top - 22 + (i%2)*14);
     svg.appendChild(el('text',{x:lineX,y:labelY,fill:lineCol,
       'font-size':10,'font-weight':700,'text-anchor':'middle'},rl.label));
   });
@@ -1048,6 +1427,17 @@ document.addEventListener('DOMContentLoaded',()=>{
   drawRegua('svgReguaFocus',REGUA_FOCUS,{h:230,x0:12000,x1:17000,stepX:1000,L:225});
   drawEscada();
   fillPos();
+  // C.1 — escadas por tipo com concorrentes do mesmo tipo (ref lines coloridas por tier)
+  drawEscadaWithRefs('svgEscadaT01', ESCADA_T01, [
+    ['Tier 2 — Renaissance Leonardo · R$ 13.168',13168,ROT.indireta],
+    ['Tier 1 — Ponta d\'Areia 4D · média R$ 15.518',15518,ROT.direta],
+    ['Tier 3 — Reserva SM Litorânea · R$ 16.300',16300,ROT.produto]
+  ], [12800,16800], false);
+  drawEscadaWithRefs('svgEscadaT02', ESCADA_T02, [
+    ['Tier 2 — Renascença 3D · média R$ 14.825',14825,ROT.indireta],
+    ['Tier 1 — Ponta d\'Areia 3D · média R$ 15.715',15715,ROT.direta],
+    ['Tier 3 — demais 3D · média R$ 15.861',15861,ROT.produto]
+  ], [12800,16400], false);
   renderCross('tbC1_4D',C1_4D,null,null,'t01','Dom Manuel · Tipo 01');
   renderCross('tbC1_3D',C1_3D,'syC1',SY_C1,'t02','Dom Manuel · Tipo 02');
   // Escada R$/m² do DM × concorrentes da C1 (R$/m² médio por concorrente como linha)
@@ -1078,14 +1468,81 @@ document.addEventListener('DOMContentLoaded',()=>{
     {lo:1.51,hi:1.75,ticks:[1.57,1.60,1.63,1.66,1.69],label:'DOM · TIPO 02 · T0→T4'},
     {lo:1.72,hi:2.04,ticks:[1.80,1.84,1.87,1.91,1.94],label:'DOM · TIPO 01 · T0→T4'}
   ]);
-  // Régua panorâmica de área — faixa competitiva ±25% (banda) + linhas T01/T02 (tracejadas)
+  // Régua panorâmica de área — faixa competitiva -30%/+25% (banda) + linhas T01/T02 (tracejadas)
   drawTicket('svgAreaAll',AREA_ALL,300,
-    {lo:87.29,hi:168.35,label:'FAIXA COMPETITIVA · ±25% do Dom Manuel · 87,3 → 168,4 m²'},
-    {x0:20,step:50,fmtX:g=>g.toFixed(0)+' m²',fmtBar:(lo,hi)=>lo===hi?lo.toFixed(1)+' m²':lo.toFixed(1)+'–'+hi.toFixed(1)+' m²',top:40,
+    {lo:81.47,hi:168.35,loLabel:'81,5 m²',hiLabel:'168,4 m²'},
+    {x0:20,step:50,fmtX:g=>g.toFixed(0)+' m²',fmtBar:(lo,hi)=>lo===hi?lo.toFixed(1)+' m²':lo.toFixed(1)+'–'+hi.toFixed(1)+' m²',top:55,
+     bandBorderTop:true,
      refLines:[
-       {v:116.38,label:'Tipo 02 · 116,38 m²'},
-       {v:134.68,label:'Tipo 01 · 134,68 m²'}
+       {v:116.38,label:'116,38 m²'},
+       {v:134.68,label:'134,68 m²'}
      ]});
+  // A.1 secundário — capturados ordenados por mediana de área (asc.); mesma escala, mesma banda
+  drawTicket('svgAreaCapt',AREA_CAPT,200,
+    {lo:81.47,hi:168.35,loLabel:'81,5 m²',hiLabel:'168,4 m²'},
+    {x0:20,step:25,fmtX:g=>g.toFixed(0)+' m²',fmtBar:(lo,hi)=>lo===hi?lo.toFixed(1)+' m²':lo.toFixed(1)+'–'+hi.toFixed(1)+' m²',top:55,
+     bandBorderTop:true,
+     refLines:[
+       {v:116.38,label:'116,38 m²'},
+       {v:134.68,label:'134,68 m²'}
+     ]});
+  // B.1 — R$/m² panorâmico dos 14 sobreviventes (estilo régua v1: dot + linha + valor + zona de giro lento)
+  // Envelope DM: 13.370 (T0 Tipo 01 média) → 14.547 (T4 Tipo 02); sem ticks internos (granularidade vai p/ B.2)
+  drawRegua('svgRm2Surv',RM2_SURV,{
+    h:580,x0:12000,x1:19000,stepX:1000,L:300,Rp:60,top:50,
+    dmBand:{
+      lo:13370,hi:14547,
+      loLabel:'Mín · R$ 13.370/m²',
+      hiLabel:'Máx · R$ 14.547/m²',
+      centerLabel:'ENVELOPE DOM MANUEL'
+    },
+    dz:{from:15000,label:'Zona de giro lento (~R$ 15–16 mil)'}
+  });
+  // B.2 — R$/m² por tipo · Tipo 01 (4D); banda DM Tipo 01 13.370 → 14.440 + 5 ticks T0..T4 (média mar+lagoa)
+  drawRegua('svgRm2T01',RM2_T01_SURV,{
+    h:420,x0:12000,x1:19000,stepX:1000,L:380,Rp:60,top:50,
+    dmBand:{
+      lo:13370,hi:14440,
+      ticks:[13370,13637,13905,14172,14440],
+      loLabel:'T0 · R$ 13.370',
+      hiLabel:'T4 · R$ 14.440',
+      centerLabel:'DM TIPO 01 (4D) · T0→T4'
+    },
+    dz:{from:15000,label:'Zona de giro lento (~R$ 15–16 mil)'}
+  });
+  // B.2 — R$/m² por tipo · Tipo 02 (3D); banda DM Tipo 02 13.469 → 14.547 + 5 ticks T0..T4
+  drawRegua('svgRm2T02',RM2_T02_SURV,{
+    h:600,x0:12000,x1:19000,stepX:1000,L:380,Rp:60,top:50,
+    dmBand:{
+      lo:13469,hi:14547,
+      ticks:[13469,13738,14008,14277,14547],
+      loLabel:'T0 · R$ 13.469',
+      hiLabel:'T4 · R$ 14.547',
+      centerLabel:'DM TIPO 02 (3D) · T0→T4'
+    },
+    dz:{from:15000,label:'Zona de giro lento (~R$ 15–16 mil)'}
+  });
+  // B.3 — Ticket panorâmico dos 14 sobreviventes (com tabela); envelope DM T0(Tipo02)→T4(Tipo01); sem ticks (granularidade vai p/ B.4)
+  drawTicket('svgTicketSurv',TICKET_SURV,3.2,
+    {lo:1.5675,hi:1.9445,loLabel:'T0 · R$ 1,57 M',hiLabel:'T4 · R$ 1,94 M'},
+    {x0:0.4,step:0.5,fmtX:g=>'R$ '+g.toFixed(1).replace('.',',')+' M',
+     fmtBar:(lo,hi)=>lo===hi?'R$ '+lo.toFixed(2).replace('.',',')+' M':'R$ '+lo.toFixed(2).replace('.',',')+'–'+hi.toFixed(2).replace('.',',')+' M',
+     top:55,
+     bandBorderTop:true});
+  // B.4 — Ticket por tipo · Tipo 01 (4D) com banda DM 1,80→1,94 + 5 ticks T0..T4
+  drawTicket('svgTicketT01',TICKET_T01_SURV,3.2,
+    {lo:1.8005,hi:1.9445,ticks:[1.8005,1.8365,1.8725,1.9085,1.9445],loLabel:'T0 · R$ 1,80 M',hiLabel:'T4 · R$ 1,94 M'},
+    {x0:0.8,step:0.5,fmtX:g=>'R$ '+g.toFixed(1).replace('.',',')+' M',
+     fmtBar:(lo,hi)=>lo===hi?'R$ '+lo.toFixed(2).replace('.',',')+' M':'R$ '+lo.toFixed(2).replace('.',',')+'–'+hi.toFixed(2).replace('.',',')+' M',
+     top:55,
+     bandBorderTop:true,bandBorderLabelOutside:true});
+  // B.4 — Ticket por tipo · Tipo 02 (3D) com banda DM 1,57→1,69 + 5 ticks T0..T4
+  drawTicket('svgTicketT02',TICKET_T02_SURV,3.2,
+    {lo:1.5675,hi:1.6929,ticks:[1.5675,1.5989,1.6302,1.6616,1.6929],loLabel:'T0 · R$ 1,57 M',hiLabel:'T4 · R$ 1,69 M'},
+    {x0:0.8,step:0.5,fmtX:g=>'R$ '+g.toFixed(1).replace('.',',')+' M',
+     fmtBar:(lo,hi)=>lo===hi?'R$ '+lo.toFixed(2).replace('.',',')+' M':'R$ '+lo.toFixed(2).replace('.',',')+'–'+hi.toFixed(2).replace('.',',')+' M',
+     top:55,
+     bandBorderTop:true,bandBorderLabelOutside:true});
   // Régua panorâmica de dormitórios — duas faixas (Tipo 02 = slot 3D, Tipo 01 = slot 4D)
   const lblDorm = v => v===0 ? 'Studio' : v+'D';
   drawTicket('svgDormAll',DORM_ALL,5,[

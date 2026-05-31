@@ -4,11 +4,11 @@ fonte: {origem_principal: tabela_local}
 plantas:
 - {tip: 3D, planta: '', area: 88.1, total: 17, disp: 17, t_min: 1206281.7, t_max: 1400281.7,
   rs_m2: 14755, origem: tabela_local}
-- {tip: 4D, planta: '', area: 103.6, total: 31, disp: 31, t_min: 1428516.0, t_max: 1607516.0,
+- {tip: 3D, planta: '', area: 103.6, total: 31, disp: 31, t_min: 1428516.0, t_max: 1607516.0,
   rs_m2: 14578, origem: tabela_local}
-- {tip: 4D, planta: '', area: 123.7, total: 1, disp: 1, t_min: 2003372.07, t_max: 2003372.07,
+- {tip: 3D, planta: '', area: 123.7, total: 1, disp: 1, t_min: 2003372.07, t_max: 2003372.07,
   rs_m2: 16197, origem: tabela_local}
-- {tip: 4D, planta: '', area: 143.6, total: 2, disp: 2, t_min: 2298196.52, t_max: 2328765.77,
+- {tip: 3D, planta: '', area: 143.6, total: 2, disp: 2, t_min: 2298196.52, t_max: 2328765.77,
   rs_m2: 16106, origem: tabela_local}
 notas: 'Re-parsed v11.1 (R1/2026-05-03): 51 unid extraídas → 4 plantas (bucketização
-  §3.7 v7.0)'
+  §3.7 v7.0). CORREÇÃO 2026-05-28: tip 4D->3D nas 4 plantas. Causa: parser parse_delman inferiu tipologia pela heuristica de area (>95m²->4D, PADRAO §3.7); a TABELA nao tem coluna de dorm. BOOK confirma TODAS as plantas com 3 dormitorios (88,07 1suite+2qtos; 103,60 3suites; coberturas duplex 123,69 e 143,64 com 3 dorm). Landscape e empreendimento 100% 3D.'

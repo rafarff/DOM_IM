@@ -2,10 +2,10 @@
 
 > **Para Claude (toda sessão):** este é o **primeiro arquivo a ler** antes de qualquer ação. Confirma a base de trabalho. Se a invariante 0.3 do PADRAO falhar contra os números aqui, **PARAR**.
 
-**Última atualização:** 25/05/2026 (v11.22 — DESTRAVAMENTO Nexus Renascença + enriquecimento Monte Meru)
-**Versão Planilha vigente:** v11.22
+**Última atualização:** 28/05/2026 (v11.23 — CORREÇÃO tipologia Landscape/Delman: 4D→3D, empreendimento é 100% 3D)
+**Versão Planilha vigente:** v11.23
 **Versão PADRAO vigente:** v7.0 (com §3.7.0 — U_RAW)
-**Versão script `gerar_planilha.py`:** 11.22 (DATE_STR: 25/05/2026)
+**Versão script `gerar_planilha.py`:** 11.23 (DATE_STR: 28/05/2026)
 **Versão `build_panorama.py`:** v8.2.2 (Nexus removido de BREVE_LANCAMENTO_NAMES — destravado)
 
 ---
@@ -25,7 +25,7 @@
 
 ---
 
-## Snapshot da carteira (v11.22)
+## Snapshot da carteira (v11.23)
 
 | Métrica | Valor | Δ vs v11.21 |
 |---|---:|---:|
@@ -94,6 +94,12 @@ cd 00_ESTUDO_CONSOLIDADO/ && ls -1 Planilha_Mestre_Panorama_v*.xlsx | sort -V | 
 ---
 
 ## Mudanças estruturais recentes
+
+- **v11.23** (28/05/2026) — **CORREÇÃO tipologia Landscape (Delman): 4D → 3D em 3 das 4 plantas. Empreendimento é 100% 3D.**
+   - **Causa raiz:** o parser `parse_delman` inferiu a tipologia pela **heurística de área** (PADRAO §3.7: `>95m² → 4D`), porque a `TABELA_LANDSCAPE_042026.pdf` só tem coluna de área e preço (sem dormitórios). O `BOOK_LANDSCAPE_032026.pdf` (plantas reais) confirma 3 dormitórios em **todas** as 4 plantas: 88,07m² (1 suíte + 2 quartos), 103,60m² (3 suítes), coberturas duplex 123,69m² (2 suítes + 1 quarto) e 143,64m² (3 suítes).
+   - **Correção aplicada:** `unidades/Delman__Landscape.yaml` (34 unid 4D→3D) + `composicao/Delman__Landscape.yaml` (3 plantas 4D→3D). E_RAW já estava "3D" (correto). Apontado por Rafael 28/05.
+   - **PENDÊNCIA (roadmap):** corrigir `parse_delman` para ler tipologia do BOOK (fonte nível superior §3.7), não pela heurística de área — a heurística falha sistematicamente para 3D grande (>95m²). Auditar outros empreendimentos extraídos por heurística de área com plantas >95m².
+   - **Impacto Estudo Dom Manuel:** Landscape deixa de ser concorrente Tipo 01 (4D) e passa a concorrer só com Tipo 02 (3D). DM Tipo 02 (116m², 3 suítes, R$ 13.469/m²) é maior e mais barato/m² que o Landscape 103,60m² (3 suítes, R$ 14.578/m²).
 
 - **v11.22** (25/05/2026) — **DESTRAVAMENTO Nexus Renascença (Ergus) + enriquecimento Monte Meru (Berg). 4 PDFs do INBOX 25/05.**
    - **(A) Nexus Renascença DESTRAVADO** — saiu de  (Tabela B) → **Tabela A pré-launch** com tabela_local_imagem.
