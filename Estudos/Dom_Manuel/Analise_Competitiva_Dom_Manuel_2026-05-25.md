@@ -1,9 +1,14 @@
 # Análise Competitiva — Lançamento Condomínio Dom Manuel
 
 **Comando:** §5.2 `analisa` — análise focada
-**Data:** 25/05/2026 · **rev. 3** — modelo de preço corrigido (kickoff Planejamento Comercial)
-**Base IM vigente:** Planilha Mestre Panorama **v11.21** · U_RAW (27 YAMLs / 921 unidades) · Composição (102 linhas) · PADRAO v7.0
+**Data:** 25/05/2026 · **rev. 4** — correção tipologia Giardino Torre Fiore (02/06/2026)
+**Base IM vigente:** Planilha Mestre Panorama **v11.24** · U_RAW (28 YAMLs / 1.073 unidades) · Composição (109 linhas) · PADRAO v7.0
 
+> **O que mudou da rev.3 para a rev.4** (Planilha v11.24, book Alfa)
+> 1. **Giardino Torre Fiore — Coluna 01 (127,30 m²) e Coluna 02 (128,37 m²) reclassificadas de 3D para 4D** (2 suítes + 2 semissuítes + dependência + 3 vagas), confirmado pelo book Alfa. Coluna 03 (110,77 m²) e toda a Torre Luce permanecem 3D (3 suítes).
+> 2. **Consequência analítica:** o Giardino passa a ser um **comparável 4D direto** do Dom Manuel Tipo 01 — antes era lido como 3D-grande. Isso **reforça** a tese do nicho 3D-grande não disputado (§3): o que parecia uma 3D de 127 m² na Ponta do Farol some do mapa de concorrência da 3D-116 do Dom Manuel.
+> 3. Tabelas §1.1 e §1.2 e leitura por ticket §2.1 atualizadas. Sem mudança de preço/VGV do Dom Manuel.
+>
 > **O que mudou da rev.2 para a rev.3**
 > 1. **Modelo de preço corrigido** (kickoff item 3): R$ 13.400/m² é a **média ponderada** da T0 (não o piso do 1º andar); curva de andar **centrada no 8º andar**; escada T0→T4 **+2,0% simples**; VGV T0 = **R$ 77.533.740**.
 > 2. **§2.2 — o "+R$ 2,7 M" da rev.2 caiu.** A curva centrada é VGV-neutra; mudar a inclinação redistribui valor entre andares, não cria VGV.
@@ -94,13 +99,15 @@ R$/m² e ticket do **U_RAW** (unidade a unidade) onde disponível; caso contrár
 | **Giardino Residenza** (Alfa) · Ponta do Farol | 3D · Col. 01 (Luce) · 99,08 m² | — / 2 | 14.556 · 14.778 · 15.000 | 1.442.168 – 1.486.200 | **~89%** (11 disp / 105) | 02/2025 → 12/2029 | Tab. 03/2026 |
 | **Giardino Residenza** (Alfa) · Ponta do Farol | 3D · Col. 02 (Luce) · 101,31 m² | — / 2 | 15.668 · 15.708 · 15.747 | 1.587.366 – 1.595.303 | " | " | " |
 | **Giardino Residenza** (Alfa) · Ponta do Farol | 3D · Col. 03 (Fiore) · 110,77 m² | — / 1 | 16.865 | 1.868.169 | " | " | " |
-| **Giardino Residenza** (Alfa) · Ponta do Farol | 3D · Col. 01 (Fiore) · 127,30 m² | — / 4 | 14.442 · 15.181 · 15.970 | 1.838.492 – 2.032.938 | " | " | " |
-| **Giardino Residenza** (Alfa) · Ponta do Farol | 3D · Col. 02 (Fiore) · 128,37 m² | — / 1 | 14.650 | 1.880.620 | " | " | " |
+| **Giardino Residenza** (Alfa) · Ponta do Farol | **4D** · Col. 01 (Fiore) · 127,30 m² | — / 4 | 14.442 · 15.181 · 15.970 | 1.838.492 – 2.032.938 | " | " | " |
+| **Giardino Residenza** (Alfa) · Ponta do Farol | **4D** · Col. 02 (Fiore) · 128,37 m² | — / 1 | 14.650 | 1.880.620 | " | " | " |
 | **Landscape** (Delman) · Calhau | 3D · 88,07 m² *(abaixo da banda)* | — / 17 | 13.697 · 14.755 · 15.900 | 1.206.282 – 1.400.282 | **46%** (44 / 95) | 03/2026 → 09/2029 | Tab. 04/2026 |
 | **Landscape** (Delman) · Calhau | 4D · 103,60 m² | — / 31 | 13.789 · 14.578 · 15.517 | 1.428.516 – 1.607.516 | " | " | " |
 | **Landscape** (Delman) · Calhau | 4D · duplex cob. · 123,69 m² | — / 1 | 16.197 | 2.003.372 | " | " | " |
 | **Landscape** (Delman) · Calhau | 4D · duplex cob. · 143,64 m² | — / 2 | 16.000 · 16.106 · 16.213 | 2.298.197 – 2.328.766 | " | " | " |
 | **Reserva São Marcos** (Mota Machado) · Calhau | 4D · Litorânea · 103,15 m² | 36 / 4 | 14.581 · 16.263 · 17.944 | 1.504.065 – 1.850.952 | **~89%** (10 disp / 90) | 01/2025 → 02/2029 | Tab. 04/2026 |
+
+> **Tipologia Giardino (book Alfa, v11.24).** Torre Fiore: Col 01 (127,30 m²) e Col 02 (128,37 m²) são **4D** (2 suítes + 2 semissuítes, 3 vagas); só a Col 03 (110,77 m²) é 3D (3 suítes). Torre Luce é 100% 3D (3 suítes, 93–101 m²). Ou seja, **a única 3D-grande do Giardino é a Col 03 de 110,77 m²** — toda a faixa 127–128 m² é 4D.
 
 ### 1.2 Curva de andar — prêmio %/pavimento praticado
 
@@ -113,7 +120,7 @@ Andar derivado da numeração do apto; prêmio = variação composta do ticket e
 | **Vernazza** | direta | 4D 130 m² | **+1,50%/andar** | Alta |
 | **Vernazza** | direta | 3D 88–90 m² | +1,38%/andar | Alta |
 | **Zion** | direta | 4D 148 m² | ~+1,3%/andar (inferido) | Baixa — SKUs sintéticos |
-| **Giardino Residenza** | ref. produto | 3D 127 m² | +1,12%/andar | Média |
+| **Giardino Residenza** | ref. produto | **4D** 127 m² | +1,12%/andar | Média |
 | **Renaissance** | indireta | 4D Leonardo 110 m² | +1,09%/andar | Média |
 | **Renaissance** | indireta | 3D Botticelli 82 m² | +0,94%/andar | Média-alta |
 | **Landscape** | ref. produto | 3D 88 m² | +0,93%/andar | Alta |
@@ -141,7 +148,7 @@ Como o R$ 13.400/m² é a **média ponderada da T0** (já incorpora a curva de a
 
 **Conclusão:** R$ 13.400/m² é o **R$/m² mais baixo de todo o conjunto comparável** — único par é o Renaissance (Renascença II, microrregião inferior à Ponta d'Areia). Mesmo o **teto absoluto da tabela** (T4 × andar 15 = R$ 14.979/m²) fica abaixo da concorrência direta atual. **O Dom Manuel oferece produto de Ponta d'Areia ao R$/m² de Renascença II.**
 
-**Leitura por ticket.** O Dom Manuel vende unidades grandes (116–135 m²). O **Tipo 01** (4D, ticket T0 médio R$ 1,80 M) fica abaixo de Vernazza Norte (R$ 1,82–2,24 M) e Zion (R$ 2,17–2,56 M), na própria Ponta d'Areia, e ao nível de Monte Meru (R$ 1,93 M, Península). O **Tipo 02** (3D 116 m², ticket T0 médio R$ 1,56 M) **não tem par direto** — ver §3.
+**Leitura por ticket.** O Dom Manuel vende unidades grandes (116–135 m²). O **Tipo 01** (4D 134,68 m², ticket T0 médio R$ 1,80 M) fica abaixo de Vernazza Norte (R$ 1,82–2,24 M) e Zion (R$ 2,17–2,56 M), na própria Ponta d'Areia, ao nível de Monte Meru (R$ 1,93 M, Península) e — agora confirmado pelo book — **abaixo do par 4D do Giardino Fiore** (127–128 m², R$ 1,84–2,03 M, Ponta do Farol). Ou seja, o Dom Manuel entrega um 4D **maior** (134,68 vs 127–128 m²) e **mais barato** que o 4D do Giardino. O **Tipo 02** (3D 116 m², ticket T0 médio R$ 1,56 M) **não tem par direto** — ver §3.
 
 ### 2.2 Curva de andar — ±0,5% é conservador, mas a discussão mudou
 
@@ -182,7 +189,7 @@ A única forma de criar exposição é **inclinar demais a curva de andar**: a �
 
 ## 3. Sinais de oportunidade para a DOM
 
-- **Posição "3D grande" não disputada.** O Tipo 02 (3D 116 m², 3 suítes, ticket T0 ~R$ 1,56 M) não tem concorrente direto: as 3D da Ponta d'Areia são pequenas (ORO 80 m², Vernazza Sul 88–90 m², LIV 91–100 m²) e as grandes são 4D. Uma 3D de 116 m² entrega **espaço de 4D com ticket de 3D** — nicho vazio.
+- **Posição "3D grande" não disputada — agora ainda mais clara.** O Tipo 02 (3D 116 m², 3 suítes, ticket T0 ~R$ 1,56 M) não tem concorrente direto: as 3D da Ponta d'Areia são pequenas (ORO 80 m², Vernazza Sul 88–90 m², LIV 91–100 m²) e as grandes são 4D. A correção do book **reforça** o nicho: o que parecia uma 3D de 127 m² no Giardino (Ponta do Farol) é na verdade **4D** — a única 3D-grande de toda a referência de produto agora é a Col 03 do Fiore (110,77 m², 1 unidade restante). Uma 3D de 116 m² entrega **espaço de 4D com ticket de 3D** — nicho efetivamente vazio na microrregião.
 - **Preço-âncora competitivo.** R$ 13.400/m² na Ponta d'Areia, com Zion travado no teto na mesma microrregião, posiciona o Dom Manuel como o melhor custo-benefício do bairro no lançamento.
 - **Folga de tabela.** A escada T0→T4 inteira fica abaixo da concorrência direta — há espaço de manobra comercial sem perder a âncora de preço.
 
@@ -211,7 +218,8 @@ Registrar o **andar físico real** (offset de pódio) por unidade — habilita a
 - ✅ **Entry Dom Manuel corrigida:** Tipo 02 área 113,50 → **116,38 m²**; R$/m² 12.000 → **13.400** (média ponderada); tickets e VGV (**R$ 77.533.740**) recalculados; cronograma 06/2026 → 11/2029; modelo de preço documentado nas Observações.
 - ✅ **Bug do Renaissance saneado:** U_RAW deduplicado (44 → 22) — % vendido corrigido de 58% para **~79%**.
 - ✅ Planilha regenerada (**v11.21**), `index.html` regenerado, `ESTADO_ATUAL.md` atualizado. Falta o commit/push, feito pelo Rafael via `publish.sh`.
+- ✅ **(rev.4, 02/06/2026)** Tipologia Giardino Torre Fiore corrigida via book (Col 01/02 3D→4D); base regenerada (**v11.24**), `ESTADO_ATUAL.md` atualizado. Falta o commit/push (Rafael, `publish.sh`).
 
 ---
 
-*Relatório rev.3 — modelo de preço conforme kickoff do Planejamento Comercial (25/05/2026), recalculado e conferido. Base: Planilha Mestre Panorama v11.21, U_RAW, Composição, `ESTADO_ATUAL.md`.*
+*Relatório rev.4 — correção de tipologia do Giardino Torre Fiore (book Alfa, 02/06/2026) sobre a rev.3. Base: Planilha Mestre Panorama v11.24, U_RAW, Composição, `ESTADO_ATUAL.md`.*
