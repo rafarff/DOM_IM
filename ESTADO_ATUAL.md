@@ -2,10 +2,10 @@
 
 > **Para Claude (toda sessão):** este é o **primeiro arquivo a ler** antes de qualquer ação. Confirma a base de trabalho. Se a invariante 0.3 do PADRAO falhar contra os números aqui, **PARAR**.
 
-**Última atualização:** 02/06/2026 (v11.24 — CORREÇÃO tipologia Giardino Torre Fiore/Alfa: Col 01/02 3D→4D via book)
-**Versão Planilha vigente:** v11.24
+**Última atualização:** 02/06/2026 (v11.25 — CORREÇÃO tipologia Renaissance Conceito/Monteplan: Leonardo 4D→3D via site oficial)
+**Versão Planilha vigente:** v11.25
 **Versão PADRAO vigente:** v7.0 (com §3.7.0 — U_RAW)
-**Versão script `gerar_planilha.py`:** 11.24 (DATE_STR: 02/06/2026)
+**Versão script `gerar_planilha.py`:** 11.25 (DATE_STR: 02/06/2026)
 **Versão `build_panorama.py`:** v8.2.2 (Nexus removido de BREVE_LANCAMENTO_NAMES — destravado)
 
 ---
@@ -94,6 +94,13 @@ cd 00_ESTUDO_CONSOLIDADO/ && ls -1 Planilha_Mestre_Panorama_v*.xlsx | sort -V | 
 ---
 
 ## Mudanças estruturais recentes
+
+- **v11.25** (02/06/2026) — **CORREÇÃO tipologia Renaissance Conceito (Monteplan): Torre Leonardo 4D → 3D no U_RAW.**
+   - **Fonte:** site oficial Monteplan (monteplanengenharia.com.br/empreendimentos/renaissance-conceito). Torre Leonardo da Vinci = 110m², **3 SUÍTES + lavabo** = 3 dorm (3D); Torre Botticelli = 82m², 3 quartos (2 suítes, 1 reversível) = 3D. **Empreendimento é 100% 3D — não existe 4 dormitórios.** Apontado por Rafael 02/06.
+   - **Causa raiz:** o E_RAW já estava `"3D"` (correto, obs já dizia "Leonardo 3 SUÍTES"), mas `unidades/Monteplan__Renaissance_Conceito.yaml` tinha as **7 unid Leonardo como 4D** (heurística de área §3.7: 110m²>95→4D). Como a aba Composição é DERIVADA do U_RAW, o panorama mostrava uma planta 4D fantasma. Corrigido U_RAW (7 unid 4D→3D).
+   - **3º caso de heurística de área §3.7 falhar** (após Landscape v11.23 e Giardino Fiore Col 03 v11.24). Plantas 3D grandes (>95m², 3 suítes) são sistematicamente mal-classificadas. PENDÊNCIA roadmap reforçada: parsers devem ler tipologia do book/site, não inferir por área.
+   - **Sem mudanças estruturais.** Empreend 55 (=); Incorp 20 (=); Composição 109 linhas / 3.634 unidades (=); VGV R$ 3,60 bi (=). §3.7.C.6 = **66/66 ✅** (era 67 — Renaissance fundiu 2 tipologias em 1). §3.7.C.4 = 43/46 ✅. §3.10 = 21 WARNs (=).
+   - **Impacto Estudo Dom Manuel:** Renaissance Leonardo (110m², 3 suítes) deixa de ser concorrente **4D** e passa a ser **3D** — vira comparável direto da DM **Tipo 02** (3D 116m², 3 suítes), não da Tipo 01. Atualizar Análise Competitiva + HTML.
 
 - **v11.24** (02/06/2026) — **CORREÇÃO tipologia Giardino Residenza Torre Fiore (Alfa): Coluna 01/02 3D → 4D, confirmado por book.**
    - **Fonte:** Book Alfa (`Book-Giardino-Alfa-Engenharia.pdf`, INBOX 02/06) — páginas 33/44/45. Coluna 01 (127,30m²) e Coluna 02 (128,37m²) da Torre Fiore = **2 suítes + 2 semissuítes = 4 dormitórios (4D)** + dependência + WC serviço + **3 vagas** + 1 box. Coluna 03 (110,77m²) = **3 suítes (3D)**, mantida. Torre Luce permanece **100% 3D** (3 suítes, Col 1-4, 93,18–101,31m²). Apontado por Rafael 02/06.

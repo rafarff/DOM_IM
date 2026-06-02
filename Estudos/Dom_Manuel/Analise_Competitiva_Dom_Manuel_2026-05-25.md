@@ -1,9 +1,15 @@
 # Análise Competitiva — Lançamento Condomínio Dom Manuel
 
 **Comando:** §5.2 `analisa` — análise focada
-**Data:** 25/05/2026 · **rev. 4** — correção tipologia Giardino Torre Fiore (02/06/2026)
-**Base IM vigente:** Planilha Mestre Panorama **v11.24** · U_RAW (28 YAMLs / 1.073 unidades) · Composição (109 linhas) · PADRAO v7.0
+**Data:** 25/05/2026 · **rev. 5** — correção tipologia Renaissance Conceito (02/06/2026)
+**Base IM vigente:** Planilha Mestre Panorama **v11.25** · U_RAW (28 YAMLs / 1.073 unidades) · Composição (109 linhas) · PADRAO v7.0
 
+> **O que mudou da rev.4 para a rev.5** (Planilha v11.25, site Monteplan)
+> 1. **Renaissance Conceito — Torre Leonardo da Vinci reclassificada de 4D para 3D** (110 m², 3 suítes + lavabo), confirmado pelo site oficial Monteplan. O empreendimento é **100% 3D** (Botticelli 82 m² 3D + Leonardo 110 m² 3D); não existe 4 dormitórios.
+> 2. **Consequência analítica:** Renaissance deixa de figurar entre os concorrentes **4D** do DM Tipo 01. O Leonardo (110 m², 3 suítes) passa a ser comparável direto do DM **Tipo 02** (3D 116 m², 3 suítes) — e por R$/m² (~13.168) é o concorrente **mais barato** de toda a referência 3D. Com isso, o **único 4D fora da Ponta d'Areia** (Tier 2) passa a ser a Reserva SM Litorânea.
+> 3. Tabelas §1.1/§1.2 e gráficos B.2/B.4 + escada T01 atualizados. Sem mudança de preço/VGV do Dom Manuel.
+> 4. Causa raiz: heurística de área §3.7 (110 m²>95→4D) no U_RAW — 3º caso após Landscape e Giardino Fiore Col 03.
+>
 > **O que mudou da rev.3 para a rev.4** (Planilha v11.24, book Alfa)
 > 1. **Giardino Torre Fiore — Coluna 01 (127,30 m²) e Coluna 02 (128,37 m²) reclassificadas de 3D para 4D** (2 suítes + 2 semissuítes + dependência + 3 vagas), confirmado pelo book Alfa. Coluna 03 (110,77 m²) e toda a Torre Luce permanecem 3D (3 suítes).
 > 2. **Consequência analítica:** o Giardino passa a ser um **comparável 4D direto** do Dom Manuel Tipo 01 — antes era lido como 3D-grande. Isso **reforça** a tese do nicho 3D-grande não disputado (§3): o que parecia uma 3D de 127 m² na Ponta do Farol some do mapa de concorrência da 3D-116 do Dom Manuel.
@@ -81,7 +87,7 @@ R$/m² e ticket do **U_RAW** (unidade a unidade) onde disponível; caso contrár
 | Empreend. · Bairro | Tipologia · Planta · Área | Total / Disp | R$/m² mín · méd · máx | Ticket mín – máx (R$) | % vend. | Lanç. → Entrega | Frescor |
 |---|---|---|---|---|---|---|---|
 | **Renaissance Conceito** (Monteplan) | 3D · Botticelli · 82,0 m² | 72 / 15 | 12.666 · 13.686 · 14.363 | 1.038.621 – 1.177.759 | **~79%** | 06/2025 → 08/2027 | Tab. 04/2026 |
-| **Renaissance Conceito** (Monteplan) | 4D · Leonardo · 110,0 m² | 33 / 7 | 12.358 · 13.168 · 14.229 | 1.359.410 – 1.565.192 | " | " | " |
+| **Renaissance Conceito** (Monteplan) | 3D · Leonardo · 110,0 m² | 45 / 7 | 12.358 · 13.168 · 14.229 | 1.359.410 – 1.565.192 | " | " | " |
 | **Entre Rios** (Mota Machado) | 3D · 125 / 146,82 / 156,94 m² | 30 / 30 | ~14.679 (planta 146,82) · pond. 15.787 | 1.732.638 – 2.719.860 | **0%** (21 meses) | 08/2024 → — | Tab. 04/2026 |
 
 #### Referência-teto — Península (região-prêmio)
@@ -121,7 +127,7 @@ Andar derivado da numeração do apto; prêmio = variação composta do ticket e
 | **Vernazza** | direta | 3D 88–90 m² | +1,38%/andar | Alta |
 | **Zion** | direta | 4D 148 m² | ~+1,3%/andar (inferido) | Baixa — SKUs sintéticos |
 | **Giardino Residenza** | ref. produto | **4D** 127 m² | +1,12%/andar | Média |
-| **Renaissance** | indireta | 4D Leonardo 110 m² | +1,09%/andar | Média |
+| **Renaissance** | indireta | 3D Leonardo 110 m² | +1,09%/andar | Média |
 | **Renaissance** | indireta | 3D Botticelli 82 m² | +0,94%/andar | Média-alta |
 | **Landscape** | ref. produto | 3D 88 m² | +0,93%/andar | Alta |
 | **Landscape** | ref. produto | 4D 103,6 m² | **+0,78%/andar** | Alta |
@@ -222,4 +228,4 @@ Registrar o **andar físico real** (offset de pódio) por unidade — habilita a
 
 ---
 
-*Relatório rev.4 — correção de tipologia do Giardino Torre Fiore (book Alfa, 02/06/2026) sobre a rev.3. Base: Planilha Mestre Panorama v11.24, U_RAW, Composição, `ESTADO_ATUAL.md`.*
+*Relatório rev.5 — correção de tipologia do Renaissance Conceito (Leonardo 4D→3D, site Monteplan, 02/06/2026) sobre a rev.4. Base: Planilha Mestre Panorama v11.25, U_RAW, Composição, `ESTADO_ATUAL.md`.*

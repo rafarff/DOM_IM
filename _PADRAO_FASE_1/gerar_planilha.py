@@ -19,8 +19,15 @@ from openpyxl.drawing.image import Image as XLImage
 # ═══════════════════════════════════════════════════════════════
 # PARÂMETROS GLOBAIS
 # ═══════════════════════════════════════════════════════════════
-VERSION = "11.24"
+VERSION = "11.25"
 DATE_STR = "02/06/2026"
+# v11.25 — (02/06/2026): CORREÇÃO tipologia Renaissance Conceito (Monteplan) — Leonardo 4D->3D no U_RAW.
+#   Site oficial Monteplan confirma: Torre Leonardo da Vinci = 110m², 3 SUÍTES + lavabo = 3 dorm (3D),
+#   NÃO 4D. Torre Botticelli = 82m², 3 quartos (2 suítes). Empreendimento é 100% 3D.
+#   E_RAW já estava "3D" (correto), mas unidades/Monteplan__Renaissance_Conceito.yaml tinha 7 unid
+#   Leonardo como 4D (heurística de área §3.7: 110m²>95->4D) -> aba Composição DERIVADA mostrava 4D.
+#   Corrigido U_RAW (7 unid 4D->3D). 3º caso de heurística de área falhar (após Landscape v11.23 e
+#   Giardino Fiore Col03 v11.24). Apontado por Rafael 02/06 via site Monteplan.
 # v11.24 — (02/06/2026): CORREÇÃO tipologia Giardino Torre Fiore (Alfa) — Col 01/02 3D->4D.
 #   Book Alfa (INBOX 02/06): Coluna 01 (127,30m²) e Coluna 02 (128,37m²) = 2 suítes + 2 semissuítes
 #   = 4 dormitórios (4D), com dependência + 3 vagas. Coluna 03 (110,77m²) = 3 suítes (3D, mantida).
