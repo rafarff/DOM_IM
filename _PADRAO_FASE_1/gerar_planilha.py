@@ -19,8 +19,14 @@ from openpyxl.drawing.image import Image as XLImage
 # ═══════════════════════════════════════════════════════════════
 # PARÂMETROS GLOBAIS
 # ═══════════════════════════════════════════════════════════════
-VERSION = "11.23"
-DATE_STR = "28/05/2026"
+VERSION = "11.24"
+DATE_STR = "02/06/2026"
+# v11.24 — (02/06/2026): CORREÇÃO tipologia Giardino Torre Fiore (Alfa) — Col 01/02 3D->4D.
+#   Book Alfa (INBOX 02/06): Coluna 01 (127,30m²) e Coluna 02 (128,37m²) = 2 suítes + 2 semissuítes
+#   = 4 dormitórios (4D), com dependência + 3 vagas. Coluna 03 (110,77m²) = 3 suítes (3D, mantida).
+#   Torre Luce permanece 100% 3D (3 suítes, Col 1-4 93-101m²). Apontado por Rafael 02/06.
+#   Editado unidades/ (5 unid Col01/02 3D->4D) + composicao/ (2 plantas) + E_RAW tipologia "3D"->"3D; 4D".
+#   Confirma 2º caso de heurística de área §3.7 falha (110,77m²>95 mas é 3D), após Landscape v11.23.
 # v11.23 — (28/05/2026): CORREÇÃO Landscape (Delman) — tipologia 4D->3D em 3 das 4 plantas.
 #   Causa raiz: parser parse_delman inferiu tipologia pela HEURÍSTICA DE ÁREA (PADRAO §3.7:
 #   >95m²->4D), pois a TABELA_LANDSCAPE_042026.pdf só tem coluna de área e preço (sem dorm).
@@ -916,11 +922,11 @@ E_RAW = [
     ("Alfa Engenharia","Giardino Residenza Torre Fiore",
      "Ponta do Farol, São Luís - MA","Ponta do Farol",
      "Vertical",None,
-     45,"02/2025","12/2029", 110.77,128.37,None, "3D",
+     45,"02/2025","12/2029", 110.77,128.37,None, "3D; 4D",
      1838492,2032939, None,None, None,
      "tabela_local","tabela_local","memorial",
      "https://www.instagram.com/alfaengenhariama/","27/04/2026",
-     "Tipologia detalhada: 2 suítes + 2 semi-suítes OU 3 suítes, varanda, lavabo, 3 vagas, depósito. Torre NORTE do Giardino. 15 pav × 3 un = 45 unidades. 3 tipologias: 127,30 / 128,37 / 110,77 m². Tabela MAR/2026: 6 unidades disponíveis (1001/701/201/101 da coluna 127m², 102 da coluna 128m², 1403 da coluna 110m²) = ~13% estoque, 87% VENDIDO → Últimas unidades. Entrega DEZ/29. Memorial R.06/56.931 - 1º RI SL. Endereço Alfa: Rua Peixe Pedra, Qd 12 lote 04, Calhau.", "book", None, None),
+     "Tipologia detalhada: 2 suítes + 2 semi-suítes OU 3 suítes, varanda, lavabo, 3 vagas, depósito. Torre NORTE do Giardino. 15 pav × 3 un = 45 unidades. 3 tipologias: 127,30 / 128,37 / 110,77 m². **CORREÇÃO v11.24 (book Alfa, INBOX 02/06/2026): Coluna 01 (127,30m²) e Coluna 02 (128,37m²) são 4D = 2 suítes + 2 semissuítes + dependência + 3 vagas; apenas Coluna 03 (110,77m²) é 3D (3 suítes). Heurística de área §3.7 (>95m²->4D) confirmada p/ Col 01/02 mas FALHA p/ Col 03 (110,77m²=3D), igual ao caso Landscape.** Tabela MAR/2026: 6 unidades disponíveis (1001/701/201/101 da coluna 127m², 102 da coluna 128m², 1403 da coluna 110m²) = ~13% estoque, 87% VENDIDO → Últimas unidades. Entrega DEZ/29. Memorial R.06/56.931 - 1º RI SL. Endereço Alfa: Rua Peixe Pedra, Qd 12 lote 04, Calhau.", "book", None, None),
 
     ("Alfa Engenharia","Giardino Residenza Torre Luce",
      "Ponta do Farol, São Luís - MA","Ponta do Farol",
